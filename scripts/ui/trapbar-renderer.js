@@ -46,6 +46,7 @@ export class TrapBarRenderer {
            this._renderHeader() + 
            this._renderMetrics() + 
            this._renderCircles() + 
+           this._renderSeriesList() +
            this._renderFooter() + 
            '</div>';
   }
@@ -150,15 +151,75 @@ export class TrapBarRenderer {
     var currentSet = this.data.sets.find(function(s) { return !s.completed; }) || this.data.sets[0];
     
     return '<div class="trapbar-circles-container">' +
-           '<div class="trapbar-big-circle trapbar-circle-left"></div>' +
-           '<div class="trapbar-big-circle trapbar-circle-center">' +
+           '<div class="trapbar-circle-wrapper green">' +
+           '<div class="trapbar-circle-border green"></div>' +
+           '<div class="trapbar-circle-inner">' +
+           '<div class="trapbar-circle-check">✓</div>' +
+           '</div>' +
+           '</div>' +
+           '<div class="trapbar-circle-wrapper orange">' +
+           '<div class="trapbar-circle-border orange"></div>' +
+           '<div class="trapbar-circle-inner">' +
            '<div class="trapbar-circle-weight">' + currentSet.weight + '</div>' +
            '<div class="trapbar-circle-unit">kg</div>' +
            '</div>' +
-           '<div class="trapbar-big-circle trapbar-circle-right">' +
+           '</div>' +
+           '<div class="trapbar-circle-wrapper blue">' +
+           '<div class="trapbar-circle-border blue"></div>' +
+           '<div class="trapbar-circle-inner">' +
            '<div class="trapbar-circle-reps">' + currentSet.reps + '</div>' +
            '<div class="trapbar-circle-reps-label">reps</div>' +
            '</div>' +
+           '</div>' +
+           '</div>';
+  }
+  
+  _renderSeriesList() {
+    var self = this;
+    var html = '<div class="trapbar-series-list">';
+    
+    this.data.sets.forEach(function(set, index) {
+      html += self._renderSerieRow(set, index);
+    });
+    
+    html += '</div>';
+    return html;
+  }
+  
+  _renderSerieRow(set, index) {
+    var centerElement = '';
+    var checkboxClass = '';
+    var rowClass = 'trapbar-serie-row';
+    var firstUncompleted = this.data.sets.findIndex(function(s) { return !s.completed; });
+    
+    if (set.completed) {
+      checkboxClass = 'completed';
+      rowClass += ' completed';
+    } else if (index === firstUncompleted) {
+      checkboxClass = 'uncompleted-first';
+    } else if (index === firstUncompleted + 1) {
+      checkboxClass = 'uncompleted-gray';
+    } else {
+      checkboxClass = 'uncompleted-beige';
+    }
+    
+    if (set.type === 'dropset') {
+      centerElement = '<div class="trapbar-serie-badge dropset">DROP SET</div>';
+    } else if (set.type === 'restpause') {
+      centerElement = '<div class="trapbar-serie-badge restpause">REST PAUSE</div>';
+    } else {
+      var textClass = set.completed ? 'completed' : '';
+      centerElement = '<div class="trapbar-serie-text ' + textClass + '">' + set.weight + ' kg</div>';
+    }
+    
+    return '<div class="' + rowClass + '" data-index="' + index + '">' +
+           '<div class="trapbar-serie-small-circle">' +
+           '<div class="trapbar-serie-small-num">' + set.weight + '</div>' +
+           '<div class="trapbar-serie-small-unit">kg</div>' +
+           '</div>' +
+           centerElement +
+           '<div class="trapbar-serie-reps-badge">' + set.reps + ' reps</div>' +
+           '<div class="trapbar-serie-checkbox ' + checkboxClass + '" data-action="toggle" data-index="' + index + '"></div>' +
            '</div>';
   }
   
@@ -194,7 +255,7 @@ export class TrapBarRenderer {
       
       var distribution = Math.random();
       var targetCircle = circlePositions[Math.floor(Math.random() * 3)];
-      var radius, angle, distance;
+      var distance;
       
       if (distribution < 0.7) {
         distance = Math.random() * 300;
@@ -204,8 +265,7 @@ export class TrapBarRenderer {
         distance = 500 + Math.random() * 300;
       }
       
-      angle = Math.random() * Math.PI * 2;
-      
+      var angle = Math.random() * Math.PI * 2;
       var offsetX = Math.cos(angle) * distance;
       var offsetY = Math.sin(angle) * distance;
       
@@ -234,12 +294,35 @@ export class TrapBarRenderer {
   
   _attachEvents() {
     var self = this;
+    
+    this.container.querySelectorAll('[data-action="toggle"]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        self.toggleSet(parseInt(e.currentTarget.dataset.index));
+      });
+    });
+    
     var backBtn = this.container.querySelector('[data-action="back"]');
     if (backBtn) {
       backBtn.addEventListener('click', function() {
         self.destroy();
       });
     }
+  }
+  
+  toggleSet(index) {
+    this.data.sets[index].completed = !this.data.sets[index].completed;
+    this._updateVolume();
+    this.save();
+    this.render();
+  }
+  
+  _updateVolume() {
+    var self = this;
+    this.data.totalVolume = this.data.sets.filter(function(s) { 
+      return s.completed; 
+    }).reduce(function(sum, s) { 
+      return sum + (s.weight * s.reps); 
+    }, 0);
   }
   
   startTimer() {
