@@ -1,8 +1,3 @@
-🔥 MAINTENANT LE JAVASCRIPT COMPLET !
-bashcd ~/Desktop/hybrid-master-63
-
-# 2. JS COMPLET avec structure SVG et cercles pour séries
-cat > scripts/ui/trapbar-renderer.js << 'EOFJS'
 export class TrapBarRenderer {
   constructor(containerId) {
     this.containerId = containerId || 'app';
@@ -156,7 +151,7 @@ export class TrapBarRenderer {
     var currentSet = this.data.sets.find(function(s) { return !s.completed; }) || this.data.sets[0];
     
     return '<div class="trapbar-circles-container">' +
-           this._renderCircleWrapper('green', '<div class="trapbar-circle-check">✓</div>') +
+           this._renderCircleWrapper('green', '<div class="trapbar-circle-check">&#10003;</div>') +
            this._renderCircleWrapper('orange', 
              '<div class="trapbar-circle-weight">' + currentSet.weight + '</div>' +
              '<div class="trapbar-circle-unit">kg</div>'
@@ -380,3 +375,4 @@ export class TrapBarRenderer {
 }
 
 export default TrapBarRenderer;
+"
