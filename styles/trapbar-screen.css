@@ -11,7 +11,6 @@
     position: relative;
 }
 
-/* FOND AMBIANT - TRÈS SUBTIL */
 .trapbar-screen::before {
     content: '';
     position: fixed;
@@ -26,7 +25,6 @@
     opacity: 0.3;
 }
 
-/* PARTICULES DORÉES */
 .trapbar-particles {
     position: absolute;
     top: 0;
@@ -54,7 +52,6 @@
     50% { transform: translateY(-25px) translateX(12px); opacity: 0.4; }
 }
 
-/* BOUTON RETOUR */
 .trapbar-back-btn {
     position: absolute;
     top: 20px;
@@ -93,7 +90,6 @@
 .trapbar-back-btn::before { transform: rotate(45deg); }
 .trapbar-back-btn::after { transform: rotate(-45deg); }
 
-/* HEADER */
 .trapbar-header {
     display: flex;
     align-items: center;
@@ -152,7 +148,6 @@
     font-weight: 500;
 }
 
-/* MÉTRIQUES - ICÔNES PLUS GROSSES */
 .trapbar-metrics {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -163,11 +158,7 @@
 }
 
 .trapbar-metric-card {
-    background: linear-gradient(
-        135deg,
-        rgba(20,25,35,0.5) 0%,
-        rgba(10,15,25,0.4) 100%
-    );
+    background: linear-gradient(135deg, rgba(20,25,35,0.5) 0%, rgba(10,15,25,0.4) 100%);
     backdrop-filter: blur(30px) saturate(150%);
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 24px;
@@ -175,22 +166,13 @@
     text-align: center;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
-    box-shadow:
-        0 8px 32px rgba(0,0,0,0.6),
-        inset 0 1px 0 rgba(255,255,255,0.04);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 .trapbar-metric-card:hover {
     transform: translateY(-6px) scale(1.02);
-    background: linear-gradient(
-        135deg,
-        rgba(30,35,45,0.6) 0%,
-        rgba(15,20,30,0.5) 100%
-    );
-    box-shadow:
-        0 12px 48px rgba(0,0,0,0.8),
-        0 0 60px currentColor,
-        inset 0 1px 0 rgba(255,255,255,0.08);
+    background: linear-gradient(135deg, rgba(30,35,45,0.6) 0%, rgba(15,20,30,0.5) 100%);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.8), 0 0 60px currentColor, inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .trapbar-metric-icon {
@@ -237,7 +219,6 @@
     font-weight: 600;
 }
 
-/* 3 GRANDS CERCLES - HERO - PARFAITEMENT RONDS */
 .trapbar-circles-container {
     position: relative;
     display: flex;
@@ -262,7 +243,6 @@
     transform: scale(1.05);
 }
 
-/* HALOS MULTICOUCHES ÉNORMES */
 .trapbar-circle-wrapper.green {
     animation: float-green 4s ease-in-out infinite;
     filter: 
@@ -305,7 +285,6 @@
     50% { transform: translateY(-18px); }
 }
 
-/* SVG BORDURE ROTATIVE */
 .trapbar-circle-svg {
     position: absolute;
     inset: 0;
@@ -320,7 +299,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* INTÉRIEUR NOIR AVEC INNER GLOW */
 .trapbar-circle-inner {
     position: absolute;
     inset: 6px;
@@ -336,40 +314,24 @@
     box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
 }
 
-/* CHECKMARK */
 .trapbar-circle-check {
     font-size: 95px;
     font-weight: 700;
     color: #35FF8B;
-    text-shadow: 
-        0 0 50px rgba(53, 255, 139, 1.0),
-        0 0 100px rgba(53, 255, 139, 0.8),
-        0 4px 8px rgba(0,0,0,0.5);
+    text-shadow: 0 0 50px rgba(53, 255, 139, 1.0), 0 0 100px rgba(53, 255, 139, 0.8), 0 4px 8px rgba(0,0,0,0.5);
     animation: pulse-check 2s ease-in-out infinite;
 }
 
 @keyframes pulse-check {
-    0%, 100% { 
-        text-shadow: 
-            0 0 50px rgba(53, 255, 139, 1.0),
-            0 0 100px rgba(53, 255, 139, 0.8);
-    }
-    50% { 
-        text-shadow: 
-            0 0 70px rgba(53, 255, 139, 1.0),
-            0 0 140px rgba(53, 255, 139, 1.0);
-    }
+    0%, 100% { text-shadow: 0 0 50px rgba(53, 255, 139, 1.0), 0 0 100px rgba(53, 255, 139, 0.8); }
+    50% { text-shadow: 0 0 70px rgba(53, 255, 139, 1.0), 0 0 140px rgba(53, 255, 139, 1.0); }
 }
 
-/* POIDS */
 .trapbar-circle-weight {
     font-size: 76px;
     font-weight: 800;
     color: #FF6D00;
-    text-shadow: 
-        0 0 60px rgba(255, 109, 0, 1.0),
-        0 0 120px rgba(255, 179, 71, 0.9),
-        0 4px 12px rgba(0,0,0,0.6);
+    text-shadow: 0 0 60px rgba(255, 109, 0, 1.0), 0 0 120px rgba(255, 179, 71, 0.9), 0 4px 12px rgba(0,0,0,0.6);
     animation: pulse-weight 2.5s ease-in-out infinite;
 }
 
@@ -378,33 +340,19 @@
     font-weight: 600;
     color: #FF6D00;
     margin-top: -10px;
-    text-shadow: 
-        0 0 40px rgba(255, 109, 0, 0.9),
-        0 2px 6px rgba(0,0,0,0.5);
+    text-shadow: 0 0 40px rgba(255, 109, 0, 0.9), 0 2px 6px rgba(0,0,0,0.5);
 }
 
 @keyframes pulse-weight {
-    0%, 100% { 
-        text-shadow: 
-            0 0 60px rgba(255, 109, 0, 1.0),
-            0 0 120px rgba(255, 179, 71, 0.9);
-    }
-    50% { 
-        text-shadow: 
-            0 0 80px rgba(255, 109, 0, 1.0),
-            0 0 160px rgba(255, 179, 71, 1.0);
-    }
+    0%, 100% { text-shadow: 0 0 60px rgba(255, 109, 0, 1.0), 0 0 120px rgba(255, 179, 71, 0.9); }
+    50% { text-shadow: 0 0 80px rgba(255, 109, 0, 1.0), 0 0 160px rgba(255, 179, 71, 1.0); }
 }
 
-/* REPS */
 .trapbar-circle-reps {
     font-size: 76px;
     font-weight: 800;
     color: #00D9FF;
-    text-shadow: 
-        0 0 60px rgba(0, 217, 255, 1.0),
-        0 0 120px rgba(124, 58, 237, 0.9),
-        0 4px 12px rgba(0,0,0,0.6);
+    text-shadow: 0 0 60px rgba(0, 217, 255, 1.0), 0 0 120px rgba(124, 58, 237, 0.9), 0 4px 12px rgba(0,0,0,0.6);
     animation: pulse-reps 2.8s ease-in-out infinite;
 }
 
@@ -413,25 +361,14 @@
     font-weight: 600;
     color: #00D9FF;
     margin-top: -10px;
-    text-shadow: 
-        0 0 40px rgba(0, 217, 255, 0.9),
-        0 2px 6px rgba(0,0,0,0.5);
+    text-shadow: 0 0 40px rgba(0, 217, 255, 0.9), 0 2px 6px rgba(0,0,0,0.5);
 }
 
 @keyframes pulse-reps {
-    0%, 100% { 
-        text-shadow: 
-            0 0 60px rgba(0, 217, 255, 1.0),
-            0 0 120px rgba(124, 58, 237, 0.9);
-    }
-    50% { 
-        text-shadow: 
-            0 0 80px rgba(0, 217, 255, 1.0),
-            0 0 160px rgba(124, 58, 237, 1.0);
-    }
+    0%, 100% { text-shadow: 0 0 60px rgba(0, 217, 255, 1.0), 0 0 120px rgba(124, 58, 237, 0.9); }
+    50% { text-shadow: 0 0 80px rgba(0, 217, 255, 1.0), 0 0 160px rgba(124, 58, 237, 1.0); }
 }
 
-/* SÉRIES - 5 CERCLES PARFAITS - 4 ÉTATS */
 .trapbar-series-circles {
     display: flex;
     justify-content: center;
@@ -459,98 +396,41 @@
     transform: scale(1.12);
 }
 
-/* 1. CERCLE COMPLÉTÉ - PLEIN CYAN BRILLANT */
 .trapbar-serie-circle.completed {
-    background: radial-gradient(circle at center, 
-        rgba(0, 229, 255, 1.0) 0%,
-        rgba(0, 217, 255, 0.95) 40%,
-        rgba(0, 180, 255, 0.85) 100%
-    );
-    box-shadow:
-        0 0 80px rgba(0,217,255,1.0),
-        0 0 140px rgba(0,217,255,0.9),
-        0 0 220px rgba(0,217,255,0.7),
-        0 8px 24px rgba(0,0,0,0.6),
-        inset 0 2px 12px rgba(255,255,255,0.7),
-        inset 0 -3px 12px rgba(0,0,0,0.5);
+    background: radial-gradient(circle at center, rgba(0, 229, 255, 0.95) 0%, rgba(0, 217, 255, 0.90) 40%, rgba(0, 180, 255, 0.80) 100%);
+    border: 2px solid rgba(0, 229, 255, 0.6);
+    box-shadow: 0 0 80px rgba(0,217,255,1.0), 0 0 140px rgba(0,217,255,0.9), 0 0 220px rgba(0,217,255,0.7), 0 0 320px rgba(53, 255, 139, 0.5), 0 8px 24px rgba(0,0,0,0.6), inset 0 2px 12px rgba(255,255,255,0.7), inset 0 -3px 12px rgba(0,0,0,0.5);
     animation: glow-completed 2s ease-in-out infinite;
 }
 
 @keyframes glow-completed {
-    0%, 100% {
-        box-shadow:
-            0 0 80px rgba(0,217,255,1.0),
-            0 0 140px rgba(0,217,255,0.9),
-            0 0 220px rgba(0,217,255,0.7),
-            0 8px 24px rgba(0,0,0,0.6),
-            inset 0 2px 12px rgba(255,255,255,0.7),
-            inset 0 -3px 12px rgba(0,0,0,0.5);
-    }
-    50% {
-        box-shadow:
-            0 0 100px rgba(0,217,255,1.0),
-            0 0 180px rgba(0,217,255,1.0),
-            0 0 280px rgba(0,217,255,0.9),
-            0 8px 24px rgba(0,0,0,0.6),
-            inset 0 2px 12px rgba(255,255,255,0.9),
-            inset 0 -3px 12px rgba(0,0,0,0.5);
-    }
+    0%, 100% { box-shadow: 0 0 80px rgba(0,217,255,1.0), 0 0 140px rgba(0,217,255,0.9), 0 0 220px rgba(0,217,255,0.7), 0 0 320px rgba(53, 255, 139, 0.5), 0 8px 24px rgba(0,0,0,0.6), inset 0 2px 12px rgba(255,255,255,0.7), inset 0 -3px 12px rgba(0,0,0,0.5); }
+    50% { box-shadow: 0 0 100px rgba(0,217,255,1.0), 0 0 180px rgba(0,217,255,1.0), 0 0 280px rgba(0,217,255,0.9), 0 0 380px rgba(53, 255, 139, 0.7), 0 8px 24px rgba(0,0,0,0.6), inset 0 2px 12px rgba(255,255,255,0.9), inset 0 -3px 12px rgba(0,0,0,0.5); }
 }
 
-/* 2. CERCLE ACTIF - ENCORE PLUS BRILLANT */
 .trapbar-serie-circle.active {
-    background: rgba(0, 0, 0, 0.7);
-    border: 6px solid #00D9FF;
-    box-shadow: 
-        0 0 90px rgba(0, 217, 255, 1.0),
-        0 0 160px rgba(0, 217, 255, 0.95),
-        0 0 260px rgba(0, 217, 255, 0.8),
-        0 8px 28px rgba(0,0,0,0.7),
-        inset 0 0 50px rgba(0,217,255,0.4);
+    background: radial-gradient(circle at center, rgba(0, 229, 255, 1.0) 0%, rgba(0, 217, 255, 0.98) 40%, rgba(0, 200, 255, 0.92) 100%);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 100px rgba(0, 217, 255, 1.0), 0 0 180px rgba(0, 217, 255, 1.0), 0 0 280px rgba(0, 217, 255, 0.95), 0 0 400px rgba(0, 229, 255, 0.8), 0 8px 32px rgba(0,0,0,0.7), inset 0 3px 16px rgba(255,255,255,0.9), inset 0 -4px 16px rgba(0,0,0,0.6);
     animation: pulse-active 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse-active {
-    0%, 100% {
-        box-shadow: 
-            0 0 90px rgba(0, 217, 255, 1.0),
-            0 0 160px rgba(0, 217, 255, 0.95),
-            0 0 260px rgba(0, 217, 255, 0.8),
-            0 8px 28px rgba(0,0,0,0.7),
-            inset 0 0 50px rgba(0,217,255,0.4);
-        transform: scale(1.0);
-    }
-    50% {
-        box-shadow: 
-            0 0 110px rgba(0, 217, 255, 1.0),
-            0 0 200px rgba(0, 217, 255, 1.0),
-            0 0 320px rgba(0, 217, 255, 0.95),
-            0 8px 28px rgba(0,0,0,0.7),
-            inset 0 0 70px rgba(0,217,255,0.6);
-        transform: scale(1.03);
-    }
+    0%, 100% { box-shadow: 0 0 100px rgba(0, 217, 255, 1.0), 0 0 180px rgba(0, 217, 255, 1.0), 0 0 280px rgba(0, 217, 255, 0.95), 0 0 400px rgba(0, 229, 255, 0.8), 0 8px 32px rgba(0,0,0,0.7), inset 0 3px 16px rgba(255,255,255,0.9), inset 0 -4px 16px rgba(0,0,0,0.6); transform: scale(1.0); }
+    50% { box-shadow: 0 0 130px rgba(0, 217, 255, 1.0), 0 0 220px rgba(0, 217, 255, 1.0), 0 0 340px rgba(0, 217, 255, 1.0), 0 0 480px rgba(0, 229, 255, 1.0), 0 8px 32px rgba(0,0,0,0.7), inset 0 4px 20px rgba(255,255,255,1.0), inset 0 -5px 20px rgba(0,0,0,0.6); transform: scale(1.05); }
 }
 
-/* 3. CERCLE EN PAUSE - BORDURE BLEUE ÉLECTRIQUE */
 .trapbar-serie-circle.rest {
-    background: rgba(0, 0, 0, 0.8);
-    border: 4px solid rgba(100, 150, 255, 0.8);
-    box-shadow: 
-        0 0 40px rgba(100, 150, 255, 0.7),
-        0 0 80px rgba(100, 150, 255, 0.5),
-        0 6px 20px rgba(0,0,0,0.6),
-        inset 0 0 30px rgba(100,150,255,0.2);
+    background: radial-gradient(circle at center, rgba(147, 197, 253, 0.85) 0%, rgba(147, 197, 253, 0.75) 40%, rgba(100, 150, 200, 0.65) 100%);
+    border: 2px solid rgba(147, 197, 253, 0.5);
+    box-shadow: 0 0 60px rgba(147, 197, 253, 0.8), 0 0 120px rgba(147, 197, 253, 0.6), 0 0 200px rgba(100, 150, 255, 0.4), 0 6px 24px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.5), inset 0 -2px 10px rgba(0,0,0,0.4);
 }
 
-/* 4. CERCLE FUTUR - BORDURE GRISE/BLANCHE */
 .trapbar-serie-circle.upcoming {
-    background: rgba(0, 0, 0, 0.6);
-    border: 3px solid rgba(200, 200, 200, 0.35);
-    box-shadow: 
-        0 0 20px rgba(200, 200, 200, 0.3),
-        0 4px 16px rgba(0,0,0,0.5),
-        inset 0 0 20px rgba(200,200,200,0.1);
-    opacity: 0.7;
+    background: radial-gradient(circle at center, rgba(220, 220, 210, 0.6) 0%, rgba(200, 200, 190, 0.5) 40%, rgba(180, 180, 170, 0.4) 100%);
+    border: 2px solid rgba(200, 200, 200, 0.3);
+    box-shadow: 0 0 30px rgba(220, 220, 210, 0.4), 0 0 60px rgba(200, 200, 190, 0.3), 0 4px 20px rgba(0,0,0,0.5), inset 0 2px 8px rgba(255,255,255,0.3), inset 0 -2px 8px rgba(0,0,0,0.3);
+    opacity: 0.75;
 }
 
 .trapbar-serie-circle-num {
@@ -561,42 +441,36 @@
 }
 
 .trapbar-serie-circle.completed .trapbar-serie-circle-num {
-    color: #000;
+    color: #001a20;
     font-size: 38px;
-    text-shadow: 0 0 20px rgba(255,255,255,0.9), 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 0 20px rgba(255,255,255,0.9), 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .trapbar-serie-circle.active .trapbar-serie-circle-num {
-    color: #00D9FF;
-    font-size: 38px;
-    text-shadow: 
-        0 0 35px rgba(0,217,255,1.0),
-        0 0 60px rgba(0,217,255,0.8);
+    color: #001a20;
+    font-size: 40px;
+    font-weight: 800;
+    text-shadow: 0 0 40px rgba(255,255,255,1.0), 0 0 70px rgba(255,255,255,0.9), 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .trapbar-serie-circle.rest .trapbar-serie-circle-num {
-    color: rgba(147, 197, 253, 0.9);
+    color: rgba(10, 40, 80, 0.9);
     font-size: 36px;
-    text-shadow: 0 0 20px rgba(147,197,253,0.7);
+    text-shadow: 0 0 20px rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .trapbar-serie-circle.upcoming .trapbar-serie-circle-num {
-    color: rgba(200, 200, 200, 0.6);
+    color: rgba(80, 80, 70, 0.8);
     font-size: 34px;
-    text-shadow: 0 0 15px rgba(200,200,200,0.4);
+    text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* FOOTER */
 .trapbar-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 32px;
-    background: linear-gradient(
-        135deg,
-        rgba(20,25,35,0.45) 0%,
-        rgba(10,15,25,0.35) 100%
-    );
+    background: linear-gradient(135deg, rgba(20,25,35,0.45) 0%, rgba(10,15,25,0.35) 100%);
     backdrop-filter: blur(30px) saturate(150%);
     border-radius: 24px;
     margin-top: 60px;
@@ -604,15 +478,11 @@
     position: relative;
     z-index: 2;
     transition: all 0.3s;
-    box-shadow:
-        0 8px 32px rgba(0,0,0,0.6),
-        inset 0 1px 0 rgba(255,255,255,0.05);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .trapbar-footer:hover {
-    box-shadow:
-        0 12px 48px rgba(0,0,0,0.7),
-        inset 0 1px 0 rgba(255,255,255,0.08);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
     transform: translateY(-3px);
 }
 
@@ -629,23 +499,13 @@
     font-size: 58px;
     font-weight: 800;
     color: white;
-    text-shadow: 
-        0 0 45px rgba(255, 255, 255, 0.8),
-        0 4px 12px rgba(0,0,0,0.5);
+    text-shadow: 0 0 45px rgba(255, 255, 255, 0.8), 0 4px 12px rgba(0,0,0,0.5);
     animation: timer-pulse 2s ease-in-out infinite;
 }
 
 @keyframes timer-pulse {
-    0%, 100% { 
-        text-shadow: 
-            0 0 45px rgba(255, 255, 255, 0.8),
-            0 4px 12px rgba(0,0,0,0.5);
-    }
-    50% { 
-        text-shadow: 
-            0 0 70px rgba(255, 255, 255, 1.0),
-            0 4px 12px rgba(0,0,0,0.5);
-    }
+    0%, 100% { text-shadow: 0 0 45px rgba(255, 255, 255, 0.8), 0 4px 12px rgba(0,0,0,0.5); }
+    50% { text-shadow: 0 0 70px rgba(255, 255, 255, 1.0), 0 4px 12px rgba(0,0,0,0.5); }
 }
 
 .trapbar-volume {
@@ -655,80 +515,23 @@
     text-shadow: 0 0 30px rgba(156, 163, 175, 0.7);
 }
 
-/* RESPONSIVE - IPHONE 15 PRO MAX PORTRAIT */
 @media (max-width: 430px) {
-    .trapbar-circles-container {
-        gap: 20px;
-        margin: 60px 0;
-        flex-wrap: nowrap;
-    }
-    
-    .trapbar-circle-wrapper {
-        width: 180px;
-        height: 180px;
-    }
-    
-    .trapbar-circle-weight,
-    .trapbar-circle-reps {
-        font-size: 62px;
-    }
-    
-    .trapbar-circle-unit,
-    .trapbar-circle-reps-label {
-        font-size: 22px;
-    }
-    
-    .trapbar-circle-check {
-        font-size: 80px;
-    }
-    
-    .trapbar-serie-circle {
-        width: 85px;
-        height: 85px;
-        gap: 18px;
-    }
-    
-    .trapbar-serie-circle-num {
-        font-size: 32px;
-    }
-    
-    .trapbar-metric-icon svg {
-        width: 64px;
-        height: 64px;
-    }
+    .trapbar-circles-container { gap: 20px; margin: 60px 0; flex-wrap: nowrap; }
+    .trapbar-circle-wrapper { width: 180px; height: 180px; }
+    .trapbar-circle-weight, .trapbar-circle-reps { font-size: 62px; }
+    .trapbar-circle-unit, .trapbar-circle-reps-label { font-size: 22px; }
+    .trapbar-circle-check { font-size: 80px; }
+    .trapbar-serie-circle { width: 85px; height: 85px; gap: 18px; }
+    .trapbar-serie-circle-num { font-size: 32px; }
+    .trapbar-metric-icon svg { width: 64px; height: 64px; }
 }
 
 @media (max-width: 768px) {
-    .trapbar-circles-container {
-        gap: 25px;
-        margin: 60px 0;
-    }
-    
-    .trapbar-circle-wrapper {
-        width: 160px;
-        height: 160px;
-    }
-    
-    .trapbar-circle-weight,
-    .trapbar-circle-reps {
-        font-size: 58px;
-    }
-    
-    .trapbar-circle-unit,
-    .trapbar-circle-reps-label {
-        font-size: 20px;
-    }
-    
-    .trapbar-circle-check {
-        font-size: 75px;
-    }
-    
-    .trapbar-serie-circle {
-        width: 75px;
-        height: 75px;
-    }
-    
-    .trapbar-serie-circle-num {
-        font-size: 28px;
-    }
+    .trapbar-circles-container { gap: 25px; margin: 60px 0; }
+    .trapbar-circle-wrapper { width: 160px; height: 160px; }
+    .trapbar-circle-weight, .trapbar-circle-reps { font-size: 58px; }
+    .trapbar-circle-unit, .trapbar-circle-reps-label { font-size: 20px; }
+    .trapbar-circle-check { font-size: 75px; }
+    .trapbar-serie-circle { width: 75px; height: 75px; }
+    .trapbar-serie-circle-num { font-size: 28px; }
 }
