@@ -1,3 +1,8 @@
+🔥 MAINTENANT LE JAVASCRIPT COMPLET !
+bashcd ~/Desktop/hybrid-master-63
+
+# 2. JS COMPLET avec structure SVG et cercles pour séries
+cat > scripts/ui/trapbar-renderer.js << 'EOFJS'
 export class TrapBarRenderer {
   constructor(containerId) {
     this.containerId = containerId || 'app';
@@ -12,11 +17,11 @@ export class TrapBarRenderer {
       tempo: '3-1-2',
       rest: 120,
       sets: [
-        { weight: 100, reps: 5, type: 'normal', completed: true },
-        { weight: 100, reps: 5, type: 'dropset', completed: true },
-        { weight: 100, reps: 5, type: 'restpause', completed: false },
-        { weight: 100, reps: 5, type: 'normal', completed: false },
-        { weight: 100, reps: 5, type: 'normal', completed: false }
+        { weight: 100, reps: 5, completed: true },
+        { weight: 100, reps: 5, completed: true },
+        { weight: 100, reps: 5, completed: false },
+        { weight: 100, reps: 5, completed: false },
+        { weight: 100, reps: 5, completed: false }
       ],
       totalVolume: 1000,
       targetVolume: 2500
@@ -46,7 +51,7 @@ export class TrapBarRenderer {
            this._renderHeader() + 
            this._renderMetrics() + 
            this._renderCircles() + 
-           this._renderSeriesList() +
+           this._renderSeriesCircles() +
            this._renderFooter() + 
            '</div>';
   }
@@ -151,76 +156,81 @@ export class TrapBarRenderer {
     var currentSet = this.data.sets.find(function(s) { return !s.completed; }) || this.data.sets[0];
     
     return '<div class="trapbar-circles-container">' +
-           '<div class="trapbar-circle-wrapper green">' +
-           '<div class="trapbar-circle-border green"></div>' +
+           this._renderCircleWrapper('green', '<div class="trapbar-circle-check">✓</div>') +
+           this._renderCircleWrapper('orange', 
+             '<div class="trapbar-circle-weight">' + currentSet.weight + '</div>' +
+             '<div class="trapbar-circle-unit">kg</div>'
+           ) +
+           this._renderCircleWrapper('blue', 
+             '<div class="trapbar-circle-reps">' + currentSet.reps + '</div>' +
+             '<div class="trapbar-circle-reps-label">reps</div>'
+           ) +
+           '</div>';
+  }
+  
+  _renderCircleWrapper(colorClass, innerContent) {
+    var gradientId = 'grad-' + colorClass;
+    var colors = {
+      green: ['#00d4ff', '#35FF8B', '#9D4EDD', '#00d4ff'],
+      orange: ['#FF6D00', '#FFB347', '#35FF8B', '#FF6D00'],
+      blue: ['#00D9FF', '#7c3aed', '#00D9FF']
+    };
+    
+    var stops = colors[colorClass];
+    var gradientStops = '';
+    
+    if (stops.length === 3) {
+      gradientStops = '<stop offset="0%" stop-color="' + stops[0] + '"/>' +
+                     '<stop offset="50%" stop-color="' + stops[1] + '"/>' +
+                     '<stop offset="100%" stop-color="' + stops[2] + '"/>';
+    } else {
+      gradientStops = '<stop offset="0%" stop-color="' + stops[0] + '"/>' +
+                     '<stop offset="33%" stop-color="' + stops[1] + '"/>' +
+                     '<stop offset="66%" stop-color="' + stops[2] + '"/>' +
+                     '<stop offset="100%" stop-color="' + stops[3] + '"/>';
+    }
+    
+    return '<div class="trapbar-circle-wrapper ' + colorClass + '">' +
+           '<svg class="trapbar-circle-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
+           '<defs>' +
+           '<linearGradient id="' + gradientId + '" x1="0%" y1="0%" x2="100%" y2="100%">' +
+           gradientStops +
+           '</linearGradient>' +
+           '</defs>' +
+           '<circle cx="100" cy="100" r="95" stroke="url(#' + gradientId + ')" stroke-width="5" fill="none"/>' +
+           '</svg>' +
            '<div class="trapbar-circle-inner">' +
-           '<div class="trapbar-circle-check">✓</div>' +
-           '</div>' +
-           '</div>' +
-           '<div class="trapbar-circle-wrapper orange">' +
-           '<div class="trapbar-circle-border orange"></div>' +
-           '<div class="trapbar-circle-inner">' +
-           '<div class="trapbar-circle-weight">' + currentSet.weight + '</div>' +
-           '<div class="trapbar-circle-unit">kg</div>' +
-           '</div>' +
-           '</div>' +
-           '<div class="trapbar-circle-wrapper blue">' +
-           '<div class="trapbar-circle-border blue"></div>' +
-           '<div class="trapbar-circle-inner">' +
-           '<div class="trapbar-circle-reps">' + currentSet.reps + '</div>' +
-           '<div class="trapbar-circle-reps-label">reps</div>' +
-           '</div>' +
+           innerContent +
            '</div>' +
            '</div>';
   }
   
-  _renderSeriesList() {
+  _renderSeriesCircles() {
     var self = this;
-    var html = '<div class="trapbar-series-list">';
+    var html = '<div class="trapbar-series-circles">';
+    
+    var firstUncompleted = this.data.sets.findIndex(function(s) { return !s.completed; });
     
     this.data.sets.forEach(function(set, index) {
-      html += self._renderSerieRow(set, index);
+      var circleClass = '';
+      
+      if (set.completed) {
+        circleClass = 'completed';
+      } else if (index === firstUncompleted) {
+        circleClass = 'active';
+      } else if (index === firstUncompleted + 1) {
+        circleClass = 'upcoming-near';
+      } else {
+        circleClass = 'upcoming-far';
+      }
+      
+      html += '<div class="trapbar-serie-circle ' + circleClass + '" data-action="toggle" data-index="' + index + '">' +
+              '<div class="trapbar-serie-circle-num">' + set.reps + '</div>' +
+              '</div>';
     });
     
     html += '</div>';
     return html;
-  }
-  
-  _renderSerieRow(set, index) {
-    var centerElement = '';
-    var checkboxClass = '';
-    var rowClass = 'trapbar-serie-row';
-    var firstUncompleted = this.data.sets.findIndex(function(s) { return !s.completed; });
-    
-    if (set.completed) {
-      checkboxClass = 'completed';
-      rowClass += ' completed';
-    } else if (index === firstUncompleted) {
-      checkboxClass = 'uncompleted-first';
-    } else if (index === firstUncompleted + 1) {
-      checkboxClass = 'uncompleted-gray';
-    } else {
-      checkboxClass = 'uncompleted-beige';
-    }
-    
-    if (set.type === 'dropset') {
-      centerElement = '<div class="trapbar-serie-badge dropset">DROP SET</div>';
-    } else if (set.type === 'restpause') {
-      centerElement = '<div class="trapbar-serie-badge restpause">REST PAUSE</div>';
-    } else {
-      var textClass = set.completed ? 'completed' : '';
-      centerElement = '<div class="trapbar-serie-text ' + textClass + '">' + set.weight + ' kg</div>';
-    }
-    
-    return '<div class="' + rowClass + '" data-index="' + index + '">' +
-           '<div class="trapbar-serie-small-circle">' +
-           '<div class="trapbar-serie-small-num">' + set.weight + '</div>' +
-           '<div class="trapbar-serie-small-unit">kg</div>' +
-           '</div>' +
-           centerElement +
-           '<div class="trapbar-serie-reps-badge">' + set.reps + ' reps</div>' +
-           '<div class="trapbar-serie-checkbox ' + checkboxClass + '" data-action="toggle" data-index="' + index + '"></div>' +
-           '</div>';
   }
   
   _renderFooter() {
@@ -242,12 +252,12 @@ export class TrapBarRenderer {
     if (!container) return;
     
     var circlePositions = [
-      { x: 25, y: 40 },
-      { x: 50, y: 40 },
-      { x: 75, y: 40 }
+      { x: 25, y: 45 },
+      { x: 50, y: 45 },
+      { x: 75, y: 45 }
     ];
     
-    var particleCount = 80;
+    var particleCount = 90;
     
     for (var i = 0; i < particleCount; i++) {
       var particle = document.createElement('div');
@@ -257,12 +267,12 @@ export class TrapBarRenderer {
       var targetCircle = circlePositions[Math.floor(Math.random() * 3)];
       var distance;
       
-      if (distribution < 0.7) {
-        distance = Math.random() * 300;
-      } else if (distribution < 0.9) {
-        distance = 300 + Math.random() * 200;
+      if (distribution < 0.75) {
+        distance = Math.random() * 350;
+      } else if (distribution < 0.92) {
+        distance = 350 + Math.random() * 250;
       } else {
-        distance = 500 + Math.random() * 300;
+        distance = 600 + Math.random() * 400;
       }
       
       var angle = Math.random() * Math.PI * 2;
@@ -277,12 +287,15 @@ export class TrapBarRenderer {
       
       particle.style.left = finalX + '%';
       particle.style.top = finalY + '%';
-      particle.style.animationDelay = (Math.random() * 4) + 's';
-      particle.style.animationDuration = (3 + Math.random() * 2) + 's';
+      particle.style.animationDelay = (Math.random() * 5) + 's';
+      particle.style.animationDuration = (4 + Math.random() * 3) + 's';
       
-      if (Math.random() > 0.5) {
+      if (Math.random() > 0.6) {
         particle.style.width = '2px';
         particle.style.height = '2px';
+      } else if (Math.random() > 0.3) {
+        particle.style.width = '3px';
+        particle.style.height = '3px';
       } else {
         particle.style.width = '4px';
         particle.style.height = '4px';
