@@ -1,8 +1,11 @@
-🔥 MAINTENANT LE JAVASCRIPT !
+🔥 PUTAIN ! ENCORE UN PROBLÈME D'ENCODAGE EMOJI !
+ON VA RECRÉER LE FICHIER SANS EMOJIS :
 bash
 cd ~/Desktop/hybrid-master-63
 
-# 2. Crée le renderer JavaScript
+# Supprime et recrée le fichier SANS emojis
+rm scripts/ui/trapbar-renderer.js
+
 cat > scripts/ui/trapbar-renderer.js << 'EOFJS'
 export class TrapBarRenderer {
   constructor(containerId) {
@@ -46,17 +49,15 @@ export class TrapBarRenderer {
   }
   
   _buildHTML() {
-    return `
-      <div class="trapbar-screen">
-        ${this._renderParticles()}
-        ${this._renderBackButton()}
-        ${this._renderHeader()}
-        ${this._renderMetrics()}
-        ${this._renderCircles()}
-        ${this._renderSeriesList()}
-        ${this._renderFooter()}
-      </div>
-    `;
+    return '<div class="trapbar-screen">' + 
+           this._renderParticles() + 
+           this._renderBackButton() + 
+           this._renderHeader() + 
+           this._renderMetrics() + 
+           this._renderCircles() + 
+           this._renderSeriesList() + 
+           this._renderFooter() + 
+           '</div>';
   }
   
   _renderParticles() {
@@ -72,63 +73,57 @@ export class TrapBarRenderer {
     var firstWord = parts[0] || 'Exercise';
     var restWords = parts.slice(1).join(' ') || '';
     
-    return `
-      <div class="trapbar-header">
-        <div class="trapbar-trophy"></div>
-        <div class="trapbar-title-wrapper">
-          <h1>
-            <span class="trapbar-title-white">${firstWord}</span> 
-            <span class="trapbar-title-cyan">${restWords}</span>
-          </h1>
-          <div class="trapbar-subtitle">${this.data.category}</div>
-        </div>
-      </div>
-    `;
+    return '<div class="trapbar-header">' +
+           '<div class="trapbar-trophy"></div>' +
+           '<div class="trapbar-title-wrapper">' +
+           '<h1>' +
+           '<span class="trapbar-title-white">' + firstWord + '</span> ' +
+           '<span class="trapbar-title-cyan">' + restWords + '</span>' +
+           '</h1>' +
+           '<div class="trapbar-subtitle">' + this.data.category + '</div>' +
+           '</div>' +
+           '</div>';
   }
   
   _renderMetrics() {
-    return `
-      <div class="trapbar-metrics">
-        <div class="trapbar-metric-card">
-          <div class="trapbar-metric-icon">⚖️</div>
-          <div class="trapbar-metric-value orange">${this.data.weight}kg</div>
-          <div class="trapbar-metric-label">POIDS</div>
-        </div>
-        <div class="trapbar-metric-card">
-          <div class="trapbar-metric-icon">🔄</div>
-          <div class="trapbar-metric-value cyan">${this.data.series}</div>
-          <div class="trapbar-metric-label">SÉRIES</div>
-        </div>
-        <div class="trapbar-metric-card">
-          <div class="trapbar-metric-icon">⚡</div>
-          <div class="trapbar-metric-value green">${this.data.tempo}</div>
-          <div class="trapbar-metric-label">TEMPO</div>
-        </div>
-        <div class="trapbar-metric-card">
-          <div class="trapbar-metric-icon">⏱️</div>
-          <div class="trapbar-metric-value violet">${this.data.rest}s</div>
-          <div class="trapbar-metric-label">REPOS</div>
-        </div>
-      </div>
-    `;
+    return '<div class="trapbar-metrics">' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">W</div>' +
+           '<div class="trapbar-metric-value orange">' + this.data.weight + 'kg</div>' +
+           '<div class="trapbar-metric-label">POIDS</div>' +
+           '</div>' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">S</div>' +
+           '<div class="trapbar-metric-value cyan">' + this.data.series + '</div>' +
+           '<div class="trapbar-metric-label">SERIES</div>' +
+           '</div>' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">T</div>' +
+           '<div class="trapbar-metric-value green">' + this.data.tempo + '</div>' +
+           '<div class="trapbar-metric-label">TEMPO</div>' +
+           '</div>' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">R</div>' +
+           '<div class="trapbar-metric-value violet">' + this.data.rest + 's</div>' +
+           '<div class="trapbar-metric-label">REPOS</div>' +
+           '</div>' +
+           '</div>';
   }
   
   _renderCircles() {
     var currentSet = this.data.sets.find(function(s) { return !s.completed; }) || this.data.sets[0];
     
-    return `
-      <div class="trapbar-circles-container">
-        <div class="trapbar-big-circle trapbar-circle-left"></div>
-        <div class="trapbar-big-circle trapbar-circle-center">
-          <div class="trapbar-circle-weight">${currentSet.weight}</div>
-          <div class="trapbar-circle-unit">kg</div>
-        </div>
-        <div class="trapbar-big-circle trapbar-circle-right">
-          <div class="trapbar-circle-reps">${currentSet.reps}</div>
-          <div class="trapbar-circle-reps-label">reps</div>
-        </div>
-      </div>
-    `;
+    return '<div class="trapbar-circles-container">' +
+           '<div class="trapbar-big-circle trapbar-circle-left"></div>' +
+           '<div class="trapbar-big-circle trapbar-circle-center">' +
+           '<div class="trapbar-circle-weight">' + currentSet.weight + '</div>' +
+           '<div class="trapbar-circle-unit">kg</div>' +
+           '</div>' +
+           '<div class="trapbar-big-circle trapbar-circle-right">' +
+           '<div class="trapbar-circle-reps">' + currentSet.reps + '</div>' +
+           '<div class="trapbar-circle-reps-label">reps</div>' +
+           '</div>' +
+           '</div>';
   }
   
   _renderSeriesList() {
@@ -167,17 +162,15 @@ export class TrapBarRenderer {
       centerElement = '<div class="trapbar-serie-text ' + textClass + '">' + set.weight + ' kg</div>';
     }
     
-    return `
-      <div class="trapbar-serie-row" data-index="${index}">
-        <div class="trapbar-serie-small-circle">
-          <div class="trapbar-serie-small-num">${set.weight}</div>
-          <div class="trapbar-serie-small-unit">kg</div>
-        </div>
-        ${centerElement}
-        <div class="trapbar-serie-reps-badge">${set.reps} reps</div>
-        <div class="trapbar-serie-checkbox ${checkboxClass}" data-action="toggle" data-index="${index}"></div>
-      </div>
-    `;
+    return '<div class="trapbar-serie-row" data-index="' + index + '">' +
+           '<div class="trapbar-serie-small-circle">' +
+           '<div class="trapbar-serie-small-num">' + set.weight + '</div>' +
+           '<div class="trapbar-serie-small-unit">kg</div>' +
+           '</div>' +
+           centerElement +
+           '<div class="trapbar-serie-reps-badge">' + set.reps + ' reps</div>' +
+           '<div class="trapbar-serie-checkbox ' + checkboxClass + '" data-action="toggle" data-index="' + index + '"></div>' +
+           '</div>';
   }
   
   _renderFooter() {
@@ -185,15 +178,13 @@ export class TrapBarRenderer {
     var seconds = this.currentTime % 60;
     var timeStr = minutes + ':' + String(seconds).padStart(2, '0');
     
-    return `
-      <div class="trapbar-footer">
-        <div>
-          <div class="trapbar-footer-label">CHRONO</div>
-          <div class="trapbar-timer" id="trapbar-timer">${timeStr}</div>
-        </div>
-        <div class="trapbar-volume">${this.data.totalVolume.toLocaleString()}/${this.data.targetVolume.toLocaleString()} KG</div>
-      </div>
-    `;
+    return '<div class="trapbar-footer">' +
+           '<div>' +
+           '<div class="trapbar-footer-label">CHRONO</div>' +
+           '<div class="trapbar-timer" id="trapbar-timer">' + timeStr + '</div>' +
+           '</div>' +
+           '<div class="trapbar-volume">' + this.data.totalVolume.toLocaleString() + '/' + this.data.targetVolume.toLocaleString() + ' KG</div>' +
+           '</div>';
   }
   
   _createParticles() {
