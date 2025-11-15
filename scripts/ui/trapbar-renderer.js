@@ -14,11 +14,11 @@ export class TrapBarRenderer {
       sets: [
         { weight: 100, reps: 5, completed: true },
         { weight: 100, reps: 5, completed: true },
-        { weight: 100, reps: 5, completed: false },
+        { weight: 100, reps: 5, completed: true },
         { weight: 100, reps: 5, completed: false },
         { weight: 100, reps: 5, completed: false }
       ],
-      totalVolume: 1000,
+      totalVolume: 1500,
       targetVolume: 2500
     };
   }
@@ -102,32 +102,32 @@ export class TrapBarRenderer {
   }
   
   _getWeightIcon() {
-    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-           '<rect x="4" y="20" width="6" height="8" rx="1" fill="url(#weightGrad)" />' +
-           '<rect x="38" y="20" width="6" height="8" rx="1" fill="url(#weightGrad)" />' +
-           '<rect x="10" y="22" width="28" height="4" rx="2" fill="url(#weightGrad)" />' +
+    return '<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<rect x="6" y="30" width="9" height="12" rx="1.5" fill="url(#weightGrad)" />' +
+           '<rect x="57" y="30" width="9" height="12" rx="1.5" fill="url(#weightGrad)" />' +
+           '<rect x="15" y="33" width="42" height="6" rx="3" fill="url(#weightGrad)" />' +
            '<defs>' +
            '<linearGradient id="weightGrad" x1="0" y1="0" x2="0" y2="1">' +
-           '<stop offset="0%" stop-color="#a0a0a0"/>' +
-           '<stop offset="100%" stop-color="#606060"/>' +
+           '<stop offset="0%" stop-color="#c0c0c0"/>' +
+           '<stop offset="100%" stop-color="#707070"/>' +
            '</linearGradient>' +
            '</defs>' +
            '</svg>';
   }
   
   _getSeriesIcon() {
-    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-           '<rect x="12" y="14" width="24" height="6" rx="3" fill="#00D9FF" opacity="0.4"/>' +
-           '<rect x="14" y="20" width="20" height="6" rx="3" fill="#00D9FF" opacity="0.7"/>' +
-           '<rect x="16" y="26" width="16" height="6" rx="3" fill="#00D9FF"/>' +
+    return '<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<rect x="18" y="21" width="36" height="9" rx="4.5" fill="#00D9FF" opacity="0.4"/>' +
+           '<rect x="21" y="30" width="30" height="9" rx="4.5" fill="#00D9FF" opacity="0.7"/>' +
+           '<rect x="24" y="39" width="24" height="9" rx="4.5" fill="#00D9FF"/>' +
            '</svg>';
   }
   
   _getTempoIcon() {
-    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-           '<path d="M24 8L28 20L24 32L20 20L24 8Z" fill="url(#lightningGrad)"/>' +
+    return '<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<path d="M36 12L42 30L36 48L30 30L36 12Z" fill="url(#lightningGrad)"/>' +
            '<defs>' +
-           '<linearGradient id="lightningGrad" x1="24" y1="8" x2="24" y2="32">' +
+           '<linearGradient id="lightningGrad" x1="36" y1="12" x2="36" y2="48">' +
            '<stop offset="0%" stop-color="#FFD700"/>' +
            '<stop offset="100%" stop-color="#35FF8B"/>' +
            '</linearGradient>' +
@@ -136,12 +136,12 @@ export class TrapBarRenderer {
   }
   
   _getRestIcon() {
-    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-           '<circle cx="24" cy="24" r="12" fill="url(#restGrad)"/>' +
+    return '<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<circle cx="36" cy="36" r="18" fill="url(#restGrad)"/>' +
            '<defs>' +
            '<radialGradient id="restGrad">' +
            '<stop offset="0%" stop-color="#ffffff"/>' +
-           '<stop offset="100%" stop-color="#a0a0a0"/>' +
+           '<stop offset="100%" stop-color="#b0b0b0"/>' +
            '</radialGradient>' +
            '</defs>' +
            '</svg>';
@@ -209,13 +209,17 @@ export class TrapBarRenderer {
       var circleClass = '';
       
       if (set.completed) {
+        // Série terminée - PLEIN CYAN BRILLANT
         circleClass = 'completed';
       } else if (i === firstUncompleted) {
+        // Série active - BORDURE CYAN ÉPAISSE
         circleClass = 'active';
       } else if (i === firstUncompleted + 1) {
-        circleClass = 'upcoming-near';
+        // Prochaine série - BORDURE BLEUE
+        circleClass = 'rest';
       } else {
-        circleClass = 'upcoming-far';
+        // Séries futures - BORDURE GRISE
+        circleClass = 'upcoming';
       }
       
       html += '<div class="trapbar-serie-circle ' + circleClass + '" data-action="toggle" data-index="' + i + '">' +
@@ -251,7 +255,7 @@ export class TrapBarRenderer {
       { x: 75, y: 42 }
     ];
     
-    var particleCount = 100;
+    var particleCount = 120;
     
     for (var i = 0; i < particleCount; i++) {
       var particle = document.createElement('div');
@@ -261,12 +265,12 @@ export class TrapBarRenderer {
       var targetCircle = circlePositions[Math.floor(Math.random() * 3)];
       var distance;
       
-      if (distribution < 0.70) {
-        distance = Math.random() * 300;
-      } else if (distribution < 0.90) {
-        distance = 300 + Math.random() * 200;
+      if (distribution < 0.65) {
+        distance = Math.random() * 280;
+      } else if (distribution < 0.88) {
+        distance = 280 + Math.random() * 220;
       } else {
-        distance = 500 + Math.random() * 300;
+        distance = 500 + Math.random() * 350;
       }
       
       var angle = Math.random() * Math.PI * 2;
@@ -285,10 +289,10 @@ export class TrapBarRenderer {
       particle.style.animationDuration = (4 + Math.random() * 3) + 's';
       
       var size = Math.random();
-      if (size > 0.7) {
+      if (size > 0.75) {
         particle.style.width = '4px';
         particle.style.height = '4px';
-      } else if (size > 0.4) {
+      } else if (size > 0.45) {
         particle.style.width = '3px';
         particle.style.height = '3px';
       } else {
