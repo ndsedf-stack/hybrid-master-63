@@ -1,34 +1,29 @@
 /* ========================================
-   TRAP BAR DEADLIFT - VERSION FINALE PARFAITE
+   TRAP BAR DEADLIFT - TABLEAU DE BORD SPECTACULAIRE
    ======================================== */
 
 .trapbar-screen {
     min-height: 100vh;
-    background: #000000; /* NOIR PUR */
+    background: #000000;
     color: white;
     padding: 20px;
     overflow-x: hidden;
     position: relative;
 }
 
-/* FOND AMBIANT - RADIAUX MASSIFS */
+/* FOND AMBIANT - TRÈS SUBTIL */
 .trapbar-screen::before {
     content: '';
     position: fixed;
     inset: 0;
     background: 
-        radial-gradient(circle 900px at 25% 50%, rgba(53, 255, 139, 0.6), transparent 70%),
-        radial-gradient(circle 1000px at 50% 50%, rgba(255, 179, 71, 0.7), transparent 75%),
-        radial-gradient(circle 950px at 75% 50%, rgba(124, 58, 237, 0.55), transparent 70%);
-    filter: blur(300px);
+        radial-gradient(circle 1200px at 25% 45%, rgba(53, 255, 139, 0.08), transparent 70%),
+        radial-gradient(circle 1300px at 50% 45%, rgba(255, 179, 71, 0.10), transparent 75%),
+        radial-gradient(circle 1250px at 75% 45%, rgba(124, 58, 237, 0.07), transparent 70%);
+    filter: blur(200px);
     pointer-events: none;
     z-index: 0;
-    animation: ambient-pulse 10s ease-in-out infinite alternate;
-}
-
-@keyframes ambient-pulse {
-    0%, 100% { opacity: 0.9; }
-    50% { opacity: 1; }
+    opacity: 0.3;
 }
 
 /* PARTICULES */
@@ -49,14 +44,14 @@
     height: 3px;
     background: #ffd700;
     border-radius: 50%;
-    opacity: 0.8;
+    opacity: 0.7;
     animation: float-particle 5s infinite ease-in-out;
     box-shadow: 0 0 6px #ffd700;
 }
 
 @keyframes float-particle {
-    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.8; }
-    50% { transform: translateY(-20px) translateX(10px); opacity: 0.4; }
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.7; }
+    50% { transform: translateY(-20px) translateX(10px); opacity: 0.3; }
 }
 
 /* BOUTON RETOUR */
@@ -66,7 +61,7 @@
     right: 20px;
     width: 40px;
     height: 40px;
-    background: rgba(30,30,30,0.5);
+    background: rgba(20,20,20,0.6);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -76,12 +71,13 @@
     transition: all 0.3s;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 }
 
 .trapbar-back-btn:hover {
-    background: rgba(50,50,50,0.6);
+    background: rgba(40,40,40,0.7);
     transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255,255,255,0.3);
+    box-shadow: 0 6px 24px rgba(255,255,255,0.2);
 }
 
 .trapbar-back-btn::before,
@@ -110,20 +106,25 @@
 .trapbar-trophy {
     width: 75px;
     height: 75px;
-    background: rgba(15, 15, 15, 0.7);
+    background: rgba(10, 10, 10, 0.8);
     border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 42px;
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 215, 0, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.12);
     transition: all 0.3s;
+    box-shadow: 
+        0 8px 24px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .trapbar-trophy:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+    box-shadow: 
+        0 12px 32px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .trapbar-trophy::before {
@@ -147,7 +148,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 35px rgba(0, 229, 255, 1.0));
+    filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.9));
 }
 
 .trapbar-subtitle {
@@ -158,7 +159,7 @@
     font-weight: 500;
 }
 
-/* MÉTRIQUES - FOND TRÈS SOMBRE */
+/* MÉTRIQUES */
 .trapbar-metrics {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -171,10 +172,10 @@
 .trapbar-metric-card {
     background: linear-gradient(
         135deg,
-        rgba(25,30,40,0.4) 0%,
-        rgba(15,20,30,0.3) 100%
+        rgba(20,25,35,0.5) 0%,
+        rgba(10,15,25,0.4) 100%
     );
-    backdrop-filter: blur(25px) saturate(150%);
+    backdrop-filter: blur(30px) saturate(150%);
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 24px;
     padding: 28px;
@@ -182,40 +183,40 @@
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
     box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.05),
-        0 8px 24px rgba(0,0,0,0.6);
+        0 8px 32px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 .trapbar-metric-card:hover {
-    transform: translateY(-8px) scale(1.03);
+    transform: translateY(-6px) scale(1.02);
     background: linear-gradient(
         135deg,
-        rgba(35,40,50,0.5) 0%,
-        rgba(20,25,35,0.4) 100%
+        rgba(30,35,45,0.6) 0%,
+        rgba(15,20,30,0.5) 100%
     );
     box-shadow:
-        inset 0 1px 3px rgba(255,255,255,0.08),
-        0 12px 40px rgba(0,0,0,0.7),
-        0 0 50px currentColor;
+        0 12px 48px rgba(0,0,0,0.8),
+        0 0 60px currentColor,
+        inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .trapbar-metric-icon {
     font-size: 48px;
     margin-bottom: 14px;
-    filter: drop-shadow(0 0 15px currentColor);
+    filter: drop-shadow(0 0 20px currentColor);
     transition: all 0.3s;
 }
 
 .trapbar-metric-card:hover .trapbar-metric-icon {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 25px currentColor);
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 30px currentColor);
 }
 
 .trapbar-metric-value {
     font-size: 38px;
     font-weight: 700;
     margin-bottom: 8px;
-    text-shadow: 0 0 30px currentColor;
+    text-shadow: 0 0 35px currentColor;
     transition: all 0.3s;
 }
 
@@ -235,70 +236,80 @@
     font-weight: 600;
 }
 
-/* 3 GRANDS CERCLES - HALOS MASSIFS */
+/* 3 GRANDS CERCLES - HERO */
 .trapbar-circles-container {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
-    margin: 80px 0 60px 0;
-    min-height: 280px;
+    gap: 40px;
+    margin: 80px 0 70px 0;
+    min-height: 300px;
     z-index: 10;
 }
 
 .trapbar-circle-wrapper {
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     position: relative;
-    animation: float-circle 4s ease-in-out infinite;
     cursor: pointer;
+    transition: transform 0.4s ease;
 }
 
 .trapbar-circle-wrapper:hover {
-    animation-play-state: paused;
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
-@keyframes float-circle {
+/* HALOS MULTICOUCHES ÉNORMES */
+.trapbar-circle-wrapper.green {
+    animation: float-green 4s ease-in-out infinite;
+    filter: 
+        drop-shadow(0 0 60px rgba(53, 255, 139, 1.0))
+        drop-shadow(0 0 120px rgba(0, 212, 255, 0.9))
+        drop-shadow(0 0 200px rgba(157, 78, 221, 0.7))
+        drop-shadow(0 0 300px rgba(53, 255, 139, 0.5));
+}
+
+.trapbar-circle-wrapper.orange {
+    animation: float-orange 4.2s ease-in-out infinite;
+    filter: 
+        drop-shadow(0 0 70px rgba(255, 179, 71, 1.0))
+        drop-shadow(0 0 140px rgba(255, 109, 0, 0.95))
+        drop-shadow(0 0 220px rgba(255, 200, 0, 0.8))
+        drop-shadow(0 0 320px rgba(255, 179, 71, 0.6));
+}
+
+.trapbar-circle-wrapper.blue {
+    animation: float-blue 3.8s ease-in-out infinite;
+    filter: 
+        drop-shadow(0 0 65px rgba(0, 217, 255, 1.0))
+        drop-shadow(0 0 130px rgba(124, 58, 237, 0.9))
+        drop-shadow(0 0 210px rgba(157, 78, 221, 0.8))
+        drop-shadow(0 0 310px rgba(0, 217, 255, 0.5));
+}
+
+@keyframes float-green {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes float-orange {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-12px); }
 }
 
-/* HALOS ÉNORMES */
-.trapbar-circle-wrapper.green {
-    filter: 
-        drop-shadow(0 0 300px rgba(53, 255, 139, 1.0))
-        drop-shadow(0 0 600px rgba(0, 212, 255, 0.9))
-        drop-shadow(0 0 1000px rgba(157, 78, 221, 0.7))
-        drop-shadow(0 0 1500px rgba(53, 255, 139, 0.5));
-}
-
-.trapbar-circle-wrapper.orange {
-    filter: 
-        drop-shadow(0 0 350px rgba(255, 179, 71, 1.0))
-        drop-shadow(0 0 650px rgba(255, 109, 0, 0.95))
-        drop-shadow(0 0 1100px rgba(255, 200, 0, 0.8))
-        drop-shadow(0 0 1600px rgba(255, 179, 71, 0.6));
-}
-
-.trapbar-circle-wrapper.blue {
-    filter: 
-        drop-shadow(0 0 320px rgba(0, 217, 255, 1.0))
-        drop-shadow(0 0 620px rgba(124, 58, 237, 0.9))
-        drop-shadow(0 0 1050px rgba(157, 78, 221, 0.8))
-        drop-shadow(0 0 1550px rgba(0, 217, 255, 0.5));
+@keyframes float-blue {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
 }
 
 /* SVG BORDURE ROTATIVE */
 .trapbar-circle-svg {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
     animation: rotate-border 8s linear infinite;
-}
-
-.trapbar-circle-wrapper:hover .trapbar-circle-svg {
-    animation-duration: 4s;
 }
 
 @keyframes rotate-border {
@@ -306,27 +317,28 @@
     to { transform: rotate(360deg); }
 }
 
-/* INTÉRIEUR NOIR */
+/* INTÉRIEUR NOIR AVEC INNER GLOW */
 .trapbar-circle-inner {
     position: absolute;
-    inset: 5px;
-    background: #000000;
+    inset: 6px;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,1) 70%);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
 }
 
 /* CHECKMARK */
 .trapbar-circle-check {
-    font-size: 90px;
+    font-size: 95px;
     font-weight: 700;
     color: #35FF8B;
     text-shadow: 
         0 0 50px rgba(53, 255, 139, 1.0),
-        0 0 100px rgba(53, 255, 139, 0.7);
+        0 0 100px rgba(53, 255, 139, 0.8),
+        0 4px 8px rgba(0,0,0,0.5);
     animation: pulse-check 2s ease-in-out infinite;
 }
 
@@ -334,39 +346,42 @@
     0%, 100% { 
         text-shadow: 
             0 0 50px rgba(53, 255, 139, 1.0),
-            0 0 100px rgba(53, 255, 139, 0.7);
+            0 0 100px rgba(53, 255, 139, 0.8);
     }
     50% { 
         text-shadow: 
             0 0 70px rgba(53, 255, 139, 1.0),
-            0 0 140px rgba(53, 255, 139, 0.9);
+            0 0 140px rgba(53, 255, 139, 1.0);
     }
 }
 
 /* POIDS */
 .trapbar-circle-weight {
-    font-size: 72px;
+    font-size: 76px;
     font-weight: 800;
     color: #FF6D00;
     text-shadow: 
         0 0 60px rgba(255, 109, 0, 1.0),
-        0 0 120px rgba(255, 179, 71, 0.8);
+        0 0 120px rgba(255, 179, 71, 0.9),
+        0 4px 12px rgba(0,0,0,0.6);
     animation: pulse-weight 2.5s ease-in-out infinite;
 }
 
 .trapbar-circle-unit {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 600;
     color: #FF6D00;
-    margin-top: -8px;
-    text-shadow: 0 0 40px rgba(255, 109, 0, 0.9);
+    margin-top: -10px;
+    text-shadow: 
+        0 0 40px rgba(255, 109, 0, 0.9),
+        0 2px 6px rgba(0,0,0,0.5);
 }
 
 @keyframes pulse-weight {
     0%, 100% { 
         text-shadow: 
             0 0 60px rgba(255, 109, 0, 1.0),
-            0 0 120px rgba(255, 179, 71, 0.8);
+            0 0 120px rgba(255, 179, 71, 0.9);
     }
     50% { 
         text-shadow: 
@@ -377,28 +392,31 @@
 
 /* REPS */
 .trapbar-circle-reps {
-    font-size: 72px;
+    font-size: 76px;
     font-weight: 800;
     color: #00D9FF;
     text-shadow: 
         0 0 60px rgba(0, 217, 255, 1.0),
-        0 0 120px rgba(124, 58, 237, 0.8);
+        0 0 120px rgba(124, 58, 237, 0.9),
+        0 4px 12px rgba(0,0,0,0.6);
     animation: pulse-reps 2.8s ease-in-out infinite;
 }
 
 .trapbar-circle-reps-label {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 600;
     color: #00D9FF;
-    margin-top: -8px;
-    text-shadow: 0 0 40px rgba(0, 217, 255, 0.9);
+    margin-top: -10px;
+    text-shadow: 
+        0 0 40px rgba(0, 217, 255, 0.9),
+        0 2px 6px rgba(0,0,0,0.5);
 }
 
 @keyframes pulse-reps {
     0%, 100% { 
         text-shadow: 
             0 0 60px rgba(0, 217, 255, 1.0),
-            0 0 120px rgba(124, 58, 237, 0.8);
+            0 0 120px rgba(124, 58, 237, 0.9);
     }
     50% { 
         text-shadow: 
@@ -407,23 +425,22 @@
     }
 }
 
-/* SÉRIES - 5 CERCLES */
+/* SÉRIES - 5 CERCLES PARFAITS */
 .trapbar-series-circles {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 25px;
-    margin: 60px 0 40px 0;
+    gap: 30px;
+    margin: 70px 0 50px 0;
     position: relative;
     z-index: 2;
 }
 
 .trapbar-serie-circle {
-    width: 90px;
-    height: 90px;
+    width: 95px;
+    height: 95px;
     border-radius: 50%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -432,51 +449,60 @@
 }
 
 .trapbar-serie-circle:hover {
-    transform: scale(1.1);
+    transform: scale(1.12);
 }
 
 /* Cercle complété */
 .trapbar-serie-circle.completed {
-    background: linear-gradient(135deg, #00E5FF, #00D9FF);
+    background: linear-gradient(135deg, #00E5FF 0%, #00D9FF 100%);
     box-shadow:
-        0 0 80px rgba(0,217,255,1.0),
-        0 0 150px rgba(0,217,255,0.8),
-        0 0 250px rgba(0,217,255,0.5),
-        inset 0 0 30px rgba(255,255,255,0.7);
+        0 0 60px rgba(0,217,255,1.0),
+        0 0 120px rgba(0,217,255,0.8),
+        0 0 200px rgba(0,217,255,0.5),
+        0 8px 24px rgba(0,0,0,0.6),
+        inset 0 2px 8px rgba(255,255,255,0.6),
+        inset 0 -2px 8px rgba(0,0,0,0.4);
 }
 
-/* Cercle actif (prochain à faire) */
+/* Cercle actif */
 .trapbar-serie-circle.active {
-    background: rgba(0, 217, 255, 0.15);
+    background: rgba(0, 217, 255, 0.12);
     border: 5px solid #00D9FF;
     box-shadow: 
-        0 0 40px rgba(0, 217, 255, 0.8),
-        inset 0 0 20px rgba(0,217,255,0.3);
+        0 0 50px rgba(0, 217, 255, 0.9),
+        0 0 100px rgba(0, 217, 255, 0.6),
+        0 8px 24px rgba(0,0,0,0.5),
+        inset 0 0 30px rgba(0,217,255,0.3);
 }
 
 /* Cercle futur proche */
 .trapbar-serie-circle.upcoming-near {
-    background: rgba(100, 150, 200, 0.2);
+    background: rgba(100, 150, 200, 0.15);
     border: 3px solid rgba(147, 197, 253, 0.5);
-    box-shadow: inset 0 0 15px rgba(147,197,253,0.2);
+    box-shadow: 
+        0 4px 16px rgba(0,0,0,0.4),
+        inset 0 0 20px rgba(147,197,253,0.2);
 }
 
 /* Cercle futur lointain */
 .trapbar-serie-circle.upcoming-far {
-    background: rgba(180, 180, 180, 0.1);
-    border: 2px solid rgba(200, 200, 200, 0.3);
-    box-shadow: inset 0 0 10px rgba(200,200,200,0.1);
+    background: rgba(180, 180, 180, 0.08);
+    border: 2px solid rgba(200, 200, 200, 0.25);
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.3),
+        inset 0 0 15px rgba(200,200,200,0.1);
 }
 
 .trapbar-serie-circle-num {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: white;
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
 }
 
 .trapbar-serie-circle.completed .trapbar-serie-circle-num {
     color: #000;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
 }
 
 /* FOOTER */
@@ -484,29 +510,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 28px;
+    padding: 32px;
     background: linear-gradient(
         135deg,
-        rgba(25,30,40,0.35) 0%,
-        rgba(15,20,30,0.25) 100%
+        rgba(20,25,35,0.45) 0%,
+        rgba(10,15,25,0.35) 100%
     );
-    backdrop-filter: blur(25px) saturate(150%);
+    backdrop-filter: blur(30px) saturate(150%);
     border-radius: 24px;
-    margin-top: 50px;
+    margin-top: 60px;
     border: 1px solid rgba(255,255,255,0.08);
     position: relative;
     z-index: 2;
     transition: all 0.3s;
     box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.05),
-        0 8px 30px rgba(0,0,0,0.5);
+        0 8px 32px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .trapbar-footer:hover {
     box-shadow:
-        inset 0 1px 3px rgba(255,255,255,0.08),
-        0 10px 40px rgba(0,0,0,0.6);
-    transform: translateY(-2px);
+        0 12px 48px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    transform: translateY(-3px);
 }
 
 .trapbar-footer-label {
@@ -514,66 +540,72 @@
     font-size: 11px;
     letter-spacing: 1.5px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     text-transform: uppercase;
 }
 
 .trapbar-timer {
-    font-size: 56px;
+    font-size: 58px;
     font-weight: 800;
     color: white;
-    text-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
+    text-shadow: 
+        0 0 45px rgba(255, 255, 255, 0.8),
+        0 4px 12px rgba(0,0,0,0.5);
     animation: timer-pulse 2s ease-in-out infinite;
 }
 
 @keyframes timer-pulse {
     0%, 100% { 
-        text-shadow: 0 0 40px rgba(255, 255, 255, 0.7); 
+        text-shadow: 
+            0 0 45px rgba(255, 255, 255, 0.8),
+            0 4px 12px rgba(0,0,0,0.5);
     }
     50% { 
-        text-shadow: 0 0 70px rgba(255, 255, 255, 1.0); 
+        text-shadow: 
+            0 0 70px rgba(255, 255, 255, 1.0),
+            0 4px 12px rgba(0,0,0,0.5);
     }
 }
 
 .trapbar-volume {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
-    color: #8a91a0;
-    text-shadow: 0 0 25px rgba(138, 145, 160, 0.7);
+    color: #9ca3af;
+    text-shadow: 0 0 30px rgba(156, 163, 175, 0.7);
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .trapbar-circles-container {
-        gap: 20px;
+        gap: 25px;
         margin: 60px 0;
     }
     
     .trapbar-circle-wrapper {
-        width: 150px;
-        height: 150px;
+        width: 160px;
+        height: 160px;
     }
     
     .trapbar-circle-weight,
     .trapbar-circle-reps {
-        font-size: 54px;
+        font-size: 58px;
     }
     
     .trapbar-circle-unit,
     .trapbar-circle-reps-label {
-        font-size: 18px;
+        font-size: 20px;
     }
     
     .trapbar-circle-check {
-        font-size: 70px;
+        font-size: 75px;
     }
     
     .trapbar-serie-circle {
-        width: 70px;
-        height: 70px;
+        width: 75px;
+        height: 75px;
     }
     
     .trapbar-serie-circle-num {
-        font-size: 22px;
+        font-size: 26px;
     }
 }

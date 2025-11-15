@@ -164,7 +164,7 @@ export class TrapBarRenderer {
   }
   
   _renderCircleWrapper(colorClass, innerContent) {
-    var gradientId = 'grad-' + colorClass;
+    var gradientId = 'grad-' + colorClass + '-' + Math.random().toString(36).substr(2, 9);
     var colors = {
       green: ['#00d4ff', '#35FF8B', '#9D4EDD', '#00d4ff'],
       orange: ['#FF6D00', '#FFB347', '#35FF8B', '#FF6D00'],
@@ -186,13 +186,13 @@ export class TrapBarRenderer {
     }
     
     return '<div class="trapbar-circle-wrapper ' + colorClass + '">' +
-           '<svg class="trapbar-circle-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
+           '<svg class="trapbar-circle-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">' +
            '<defs>' +
            '<linearGradient id="' + gradientId + '" x1="0%" y1="0%" x2="100%" y2="100%">' +
            gradientStops +
            '</linearGradient>' +
            '</defs>' +
-           '<circle cx="100" cy="100" r="95" stroke="url(#' + gradientId + ')" stroke-width="5" fill="none"/>' +
+           '<circle cx="110" cy="110" r="104" stroke="url(#' + gradientId + ')" stroke-width="6" fill="none"/>' +
            '</svg>' +
            '<div class="trapbar-circle-inner">' +
            innerContent +
@@ -201,28 +201,27 @@ export class TrapBarRenderer {
   }
   
   _renderSeriesCircles() {
-    var self = this;
     var html = '<div class="trapbar-series-circles">';
-    
     var firstUncompleted = this.data.sets.findIndex(function(s) { return !s.completed; });
     
-    this.data.sets.forEach(function(set, index) {
+    for (var i = 0; i < this.data.sets.length; i++) {
+      var set = this.data.sets[i];
       var circleClass = '';
       
       if (set.completed) {
         circleClass = 'completed';
-      } else if (index === firstUncompleted) {
+      } else if (i === firstUncompleted) {
         circleClass = 'active';
-      } else if (index === firstUncompleted + 1) {
+      } else if (i === firstUncompleted + 1) {
         circleClass = 'upcoming-near';
       } else {
         circleClass = 'upcoming-far';
       }
       
-      html += '<div class="trapbar-serie-circle ' + circleClass + '" data-action="toggle" data-index="' + index + '">' +
+      html += '<div class="trapbar-serie-circle ' + circleClass + '" data-action="toggle" data-index="' + i + '">' +
               '<div class="trapbar-serie-circle-num">' + set.reps + '</div>' +
               '</div>';
-    });
+    }
     
     html += '</div>';
     return html;
@@ -247,12 +246,12 @@ export class TrapBarRenderer {
     if (!container) return;
     
     var circlePositions = [
-      { x: 25, y: 45 },
-      { x: 50, y: 45 },
-      { x: 75, y: 45 }
+      { x: 25, y: 42 },
+      { x: 50, y: 42 },
+      { x: 75, y: 42 }
     ];
     
-    var particleCount = 90;
+    var particleCount = 100;
     
     for (var i = 0; i < particleCount; i++) {
       var particle = document.createElement('div');
@@ -262,12 +261,12 @@ export class TrapBarRenderer {
       var targetCircle = circlePositions[Math.floor(Math.random() * 3)];
       var distance;
       
-      if (distribution < 0.75) {
-        distance = Math.random() * 350;
-      } else if (distribution < 0.92) {
-        distance = 350 + Math.random() * 250;
+      if (distribution < 0.70) {
+        distance = Math.random() * 300;
+      } else if (distribution < 0.90) {
+        distance = 300 + Math.random() * 200;
       } else {
-        distance = 600 + Math.random() * 400;
+        distance = 500 + Math.random() * 300;
       }
       
       var angle = Math.random() * Math.PI * 2;
@@ -285,15 +284,16 @@ export class TrapBarRenderer {
       particle.style.animationDelay = (Math.random() * 5) + 's';
       particle.style.animationDuration = (4 + Math.random() * 3) + 's';
       
-      if (Math.random() > 0.6) {
-        particle.style.width = '2px';
-        particle.style.height = '2px';
-      } else if (Math.random() > 0.3) {
+      var size = Math.random();
+      if (size > 0.7) {
+        particle.style.width = '4px';
+        particle.style.height = '4px';
+      } else if (size > 0.4) {
         particle.style.width = '3px';
         particle.style.height = '3px';
       } else {
-        particle.style.width = '4px';
-        particle.style.height = '4px';
+        particle.style.width = '2px';
+        particle.style.height = '2px';
       }
       
       container.appendChild(particle);
@@ -303,11 +303,13 @@ export class TrapBarRenderer {
   _attachEvents() {
     var self = this;
     
-    this.container.querySelectorAll('[data-action="toggle"]').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        self.toggleSet(parseInt(e.currentTarget.dataset.index));
+    var toggleBtns = this.container.querySelectorAll('[data-action="toggle"]');
+    for (var i = 0; i < toggleBtns.length; i++) {
+      toggleBtns[i].addEventListener('click', function(e) {
+        var index = parseInt(e.currentTarget.getAttribute('data-index'));
+        self.toggleSet(index);
       });
-    });
+    }
     
     var backBtn = this.container.querySelector('[data-action="back"]');
     if (backBtn) {
@@ -325,12 +327,12 @@ export class TrapBarRenderer {
   }
   
   _updateVolume() {
-    var self = this;
-    this.data.totalVolume = this.data.sets.filter(function(s) { 
-      return s.completed; 
-    }).reduce(function(sum, s) { 
-      return sum + (s.weight * s.reps); 
-    }, 0);
+    this.data.totalVolume = 0;
+    for (var i = 0; i < this.data.sets.length; i++) {
+      if (this.data.sets[i].completed) {
+        this.data.totalVolume += this.data.sets[i].weight * this.data.sets[i].reps;
+      }
+    }
   }
   
   startTimer() {
