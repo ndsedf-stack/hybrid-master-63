@@ -6,7 +6,7 @@ export class TrapBarRenderer {
     this.currentTime = 0;
     this.data = {
       exercise: 'Trap Bar Deadlift',
-      category: 'COMPOUND DOS JAMBES',
+      category: 'COMPOUND · DOS / JAMBES',
       weight: 100,
       series: '5x5',
       tempo: '3-1-2',
@@ -23,80 +23,264 @@ export class TrapBarRenderer {
     };
   }
   
+  init(customData) { 
+    if (customData) {
+      this.data = Object.assign({}, this.data, customData);
+    }
+    return this; 
+  }
+  
   render() {
     this.container = document.getElementById(this.containerId);
     if (!this.container) return;
+    
     this.container.innerHTML = this._buildHTML();
-    this._createParticles();
+    this._createConcentratedParticles();
     this._attachEvents();
   }
   
   _buildHTML() {
     return '<div class="trapbar-screen">' + 
+           this._renderParticles() +
+           this._renderBackButton() + 
            this._renderHeader() + 
            this._renderMetrics() + 
            this._renderCircles() + 
-           this._renderSeriesList() + 
            this._renderFooter() + 
            '</div>';
   }
   
+  _renderParticles() {
+    return '<div class="trapbar-particles" id="trapbar-particles"></div>';
+  }
+  
+  _renderBackButton() { 
+    return '<div class="trapbar-back-btn" data-action="back"></div>'; 
+  }
+  
   _renderHeader() {
+    var parts = this.data.exercise.split(' ');
+    var firstWords = parts.slice(0, 2).join(' ') || 'Trap Bar';
+    var lastWord = parts[2] || 'Deadlift';
+    
     return '<div class="trapbar-header">' +
            '<div class="trapbar-trophy"></div>' +
            '<div class="trapbar-title-wrapper">' +
-           '<h1><span class="trapbar-title-white">Trap Bar</span> <span class="trapbar-title-cyan">Deadlift</span></h1>' +
-           '<div class="trapbar-subtitle">COMPOUND DOS JAMBES</div></div></div>';
+           '<h1>' +
+           '<span class="trapbar-title-white">' + firstWords + '</span> ' +
+           '<span class="trapbar-title-cyan">' + lastWord + '</span>' +
+           '</h1>' +
+           '<div class="trapbar-subtitle">' + this.data.category + '</div>' +
+           '</div>' +
+           '</div>';
   }
   
   _renderMetrics() {
     return '<div class="trapbar-metrics">' +
-           '<div class="trapbar-metric-card"><div class="trapbar-metric-icon">W</div><div class="trapbar-metric-value orange">100kg</div><div class="trapbar-metric-label">POIDS</div></div>' +
-           '<div class="trapbar-metric-card"><div class="trapbar-metric-icon">S</div><div class="trapbar-metric-value cyan">5x5</div><div class="trapbar-metric-label">SERIES</div></div>' +
-           '<div class="trapbar-metric-card"><div class="trapbar-metric-icon">T</div><div class="trapbar-metric-value green">3-1-2</div><div class="trapbar-metric-label">TEMPO</div></div>' +
-           '<div class="trapbar-metric-card"><div class="trapbar-metric-icon">R</div><div class="trapbar-metric-value violet">120s</div><div class="trapbar-metric-label">REPOS</div></div></div>';
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">' + this._getWeightIcon() + '</div>' +
+           '<div class="trapbar-metric-value orange">' + this.data.weight + 'kg</div>' +
+           '<div class="trapbar-metric-label">POIDS</div>' +
+           '</div>' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">' + this._getSeriesIcon() + '</div>' +
+           '<div class="trapbar-metric-value cyan">' + this.data.series + '</div>' +
+           '<div class="trapbar-metric-label">SERIES</div>' +
+           '</div>' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">' + this._getTempoIcon() + '</div>' +
+           '<div class="trapbar-metric-value green">' + this.data.tempo + '</div>' +
+           '<div class="trapbar-metric-label">TEMPO</div>' +
+           '</div>' +
+           '<div class="trapbar-metric-card">' +
+           '<div class="trapbar-metric-icon">' + this._getRestIcon() + '</div>' +
+           '<div class="trapbar-metric-value violet">' + this.data.rest + 's</div>' +
+           '<div class="trapbar-metric-label">REPOS</div>' +
+           '</div>' +
+           '</div>';
+  }
+  
+  _getWeightIcon() {
+    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<rect x="4" y="20" width="6" height="8" rx="1" fill="url(#weightGrad)" />' +
+           '<rect x="38" y="20" width="6" height="8" rx="1" fill="url(#weightGrad)" />' +
+           '<rect x="10" y="22" width="28" height="4" rx="2" fill="url(#weightGrad)" />' +
+           '<defs>' +
+           '<linearGradient id="weightGrad" x1="0" y1="0" x2="0" y2="1">' +
+           '<stop offset="0%" stop-color="#a0a0a0"/>' +
+           '<stop offset="100%" stop-color="#606060"/>' +
+           '</linearGradient>' +
+           '</defs>' +
+           '</svg>';
+  }
+  
+  _getSeriesIcon() {
+    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<rect x="12" y="14" width="24" height="6" rx="3" fill="#00D9FF" opacity="0.4"/>' +
+           '<rect x="14" y="20" width="20" height="6" rx="3" fill="#00D9FF" opacity="0.7"/>' +
+           '<rect x="16" y="26" width="16" height="6" rx="3" fill="#00D9FF"/>' +
+           '</svg>';
+  }
+  
+  _getTempoIcon() {
+    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<path d="M24 8L28 20L24 32L20 20L24 8Z" fill="url(#lightningGrad)"/>' +
+           '<defs>' +
+           '<linearGradient id="lightningGrad" x1="24" y1="8" x2="24" y2="32">' +
+           '<stop offset="0%" stop-color="#FFD700"/>' +
+           '<stop offset="100%" stop-color="#35FF8B"/>' +
+           '</linearGradient>' +
+           '</defs>' +
+           '</svg>';
+  }
+  
+  _getRestIcon() {
+    return '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+           '<circle cx="24" cy="24" r="12" fill="url(#restGrad)"/>' +
+           '<defs>' +
+           '<radialGradient id="restGrad">' +
+           '<stop offset="0%" stop-color="#ffffff"/>' +
+           '<stop offset="100%" stop-color="#a0a0a0"/>' +
+           '</radialGradient>' +
+           '</defs>' +
+           '</svg>';
   }
   
   _renderCircles() {
+    var currentSet = this.data.sets.find(function(s) { return !s.completed; }) || this.data.sets[0];
+    
     return '<div class="trapbar-circles-container">' +
            '<div class="trapbar-big-circle trapbar-circle-left"></div>' +
-           '<div class="trapbar-big-circle trapbar-circle-center"><div class="trapbar-circle-weight">100</div><div class="trapbar-circle-unit">kg</div></div>' +
-           '<div class="trapbar-big-circle trapbar-circle-right"><div class="trapbar-circle-reps">5</div><div class="trapbar-circle-reps-label">reps</div></div></div>';
-  }
-  
-  _renderSeriesList() {
-    var html = '<div class="trapbar-series-list">';
-    for (var i = 0; i < 5; i++) {
-      var completed = i < 2;
-      var checkClass = completed ? 'completed' : (i === 2 ? 'uncompleted-first' : 'uncompleted-gray');
-      html += '<div class="trapbar-serie-row">' +
-              '<div class="trapbar-serie-small-circle"><div class="trapbar-serie-small-num">100</div><div class="trapbar-serie-small-unit">kg</div></div>' +
-              '<div class="trapbar-serie-text">100 kg</div>' +
-              '<div class="trapbar-serie-reps-badge">5 reps</div>' +
-              '<div class="trapbar-serie-checkbox ' + checkClass + '"></div></div>';
-    }
-    return html + '</div>';
+           '<div class="trapbar-big-circle trapbar-circle-center">' +
+           '<div class="trapbar-circle-weight">' + currentSet.weight + '</div>' +
+           '<div class="trapbar-circle-unit">kg</div>' +
+           '</div>' +
+           '<div class="trapbar-big-circle trapbar-circle-right">' +
+           '<div class="trapbar-circle-reps">' + currentSet.reps + '</div>' +
+           '<div class="trapbar-circle-reps-label">reps</div>' +
+           '</div>' +
+           '</div>';
   }
   
   _renderFooter() {
-    return '<div class="trapbar-footer"><div><div class="trapbar-footer-label">CHRONO</div><div class="trapbar-timer">0:00</div></div><div class="trapbar-volume">1,000/2,500 KG</div></div>';
+    var minutes = Math.floor(this.currentTime / 60);
+    var seconds = this.currentTime % 60;
+    var timeStr = minutes + ':' + String(seconds).padStart(2, '0');
+    
+    return '<div class="trapbar-footer">' +
+           '<div>' +
+           '<div class="trapbar-footer-label">CHRONO</div>' +
+           '<div class="trapbar-timer" id="trapbar-timer">' + timeStr + '</div>' +
+           '</div>' +
+           '<div class="trapbar-volume">' + this.data.totalVolume.toLocaleString() + '/' + this.data.targetVolume.toLocaleString() + ' KG</div>' +
+           '</div>';
   }
   
-  _createParticles() {
-    var container = this.container.querySelector('.trapbar-screen');
-    for (var i = 0; i < 30; i++) {
-      var p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.top = Math.random() * 100 + '%';
-      p.style.animationDelay = Math.random() * 3 + 's';
-      container.appendChild(p);
+  _createConcentratedParticles() {
+    var container = document.getElementById('trapbar-particles');
+    if (!container) return;
+    
+    var circlePositions = [
+      { x: 25, y: 40 },
+      { x: 50, y: 40 },
+      { x: 75, y: 40 }
+    ];
+    
+    var particleCount = 80;
+    
+    for (var i = 0; i < particleCount; i++) {
+      var particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      var distribution = Math.random();
+      var targetCircle = circlePositions[Math.floor(Math.random() * 3)];
+      var radius, angle, distance;
+      
+      if (distribution < 0.7) {
+        distance = Math.random() * 300;
+      } else if (distribution < 0.9) {
+        distance = 300 + Math.random() * 200;
+      } else {
+        distance = 500 + Math.random() * 300;
+      }
+      
+      angle = Math.random() * Math.PI * 2;
+      
+      var offsetX = Math.cos(angle) * distance;
+      var offsetY = Math.sin(angle) * distance;
+      
+      var finalX = targetCircle.x + (offsetX / window.innerWidth * 100);
+      var finalY = targetCircle.y + (offsetY / window.innerHeight * 100);
+      
+      finalX = Math.max(0, Math.min(100, finalX));
+      finalY = Math.max(0, Math.min(100, finalY));
+      
+      particle.style.left = finalX + '%';
+      particle.style.top = finalY + '%';
+      particle.style.animationDelay = (Math.random() * 4) + 's';
+      particle.style.animationDuration = (3 + Math.random() * 2) + 's';
+      
+      if (Math.random() > 0.5) {
+        particle.style.width = '2px';
+        particle.style.height = '2px';
+      } else {
+        particle.style.width = '4px';
+        particle.style.height = '4px';
+      }
+      
+      container.appendChild(particle);
     }
   }
   
-  _attachEvents() {}
-  load() { return this; }
-  startTimer() {}
+  _attachEvents() {
+    var self = this;
+    var backBtn = this.container.querySelector('[data-action="back"]');
+    if (backBtn) {
+      backBtn.addEventListener('click', function() {
+        self.destroy();
+      });
+    }
+  }
+  
+  startTimer() {
+    var self = this;
+    if (this.timerInterval) return;
+    
+    this.timerInterval = setInterval(function() {
+      self.currentTime++;
+      var timerEl = document.getElementById('trapbar-timer');
+      if (timerEl) {
+        var minutes = Math.floor(self.currentTime / 60);
+        var seconds = self.currentTime % 60;
+        timerEl.textContent = minutes + ':' + String(seconds).padStart(2, '0');
+      }
+    }, 1000);
+  }
+  
+  stopTimer() {
+    if (this.timerInterval) { 
+      clearInterval(this.timerInterval); 
+      this.timerInterval = null; 
+    }
+  }
+  
+  destroy() {
+    this.stopTimer();
+    if (this.container) this.container.innerHTML = '';
+    window.dispatchEvent(new CustomEvent('trapbar:closed'));
+  }
+  
+  save() { 
+    localStorage.setItem('trapbar_workout', JSON.stringify(this.data)); 
+  }
+  
+  load() {
+    var saved = localStorage.getItem('trapbar_workout');
+    if (saved) {
+      this.data = Object.assign({}, this.data, JSON.parse(saved));
+    }
+    return this;
+  }
 }
 
 export default TrapBarRenderer;
