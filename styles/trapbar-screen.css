@@ -1,5 +1,5 @@
 /* ========================================
-   TRAP BAR DEADLIFT SCREEN - PREMIUM DESIGN
+   TRAP BAR DEADLIFT SCREEN - EXACT DESIGN
    ======================================== */
 
 .trapbar-screen {
@@ -11,7 +11,25 @@
     position: relative;
 }
 
-/* PARTICULES ANIMEES */
+/* AMBIENT BACKGROUND */
+.trapbar-screen::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse at 20% 30%, rgba(0, 217, 255, 0.15), transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(8, 255, 200, 0.12), transparent 50%);
+    animation: ambient-shift 10s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes ambient-shift {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* PARTICULES ETOILES */
 .trapbar-particles {
     position: absolute;
     top: 0;
@@ -20,21 +38,22 @@
     height: 100%;
     pointer-events: none;
     overflow: hidden;
+    z-index: 1;
 }
 
 .particle {
     position: absolute;
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
     background: #ffd700;
-    border-radius: 50%;
-    opacity: 0.6;
-    animation: float 3s infinite ease-in-out;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    opacity: 0.8;
+    animation: float-star 3s infinite ease-in-out;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.6; }
-    50% { transform: translateY(-20px) translateX(10px); opacity: 0.3; }
+@keyframes float-star {
+    0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-20px) translateX(10px) scale(1.2); opacity: 0.4; }
 }
 
 /* BOUTON RETOUR */
@@ -51,6 +70,12 @@
     justify-content: center;
     cursor: pointer;
     z-index: 100;
+    transition: all 0.3s;
+}
+
+.trapbar-back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
 }
 
 .trapbar-back-btn::before,
@@ -71,25 +96,25 @@
     align-items: center;
     gap: 16px;
     margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
 }
 
 .trapbar-trophy {
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 215, 0, 0.15);
-    border-radius: 20px;
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 180, 0, 0.15));
+    border-radius: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-}
-
-.trapbar-trophy::before {
-    content: '\01F3C6';
+    font-size: 48px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .trapbar-title-wrapper h1 {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     margin: 0;
     line-height: 1.2;
@@ -104,51 +129,65 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
 }
 
 .trapbar-subtitle {
     color: #6b7280;
-    font-size: 14px;
-    margin-top: 4px;
-    letter-spacing: 1px;
+    font-size: 13px;
+    margin-top: 6px;
+    letter-spacing: 1.5px;
+    font-weight: 500;
 }
 
-/* METRIQUES (4 cartes en haut) */
+/* METRIQUES (4 cartes) */
 .trapbar-metrics {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 40px;
+    gap: 14px;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 2;
 }
 
 .trapbar-metric-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(30px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 22px;
+    padding: 24px;
     text-align: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.trapbar-metric-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .trapbar-metric-icon {
-    font-size: 28px;
-    margin-bottom: 8px;
+    font-size: 36px;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 8px currentColor);
 }
 
 .trapbar-metric-value {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px currentColor;
 }
 
-.trapbar-metric-value.orange { color: #ff8c42; }
-.trapbar-metric-value.cyan { color: #00d4ff; }
-.trapbar-metric-value.green { color: #00ff9d; }
-.trapbar-metric-value.violet { color: #a855f7; }
+.trapbar-metric-value.orange { color: #FF6D00; }
+.trapbar-metric-value.cyan { color: #00D9FF; }
+.trapbar-metric-value.green { color: #35FF8B; }
+.trapbar-metric-value.violet { color: #9D4EDD; }
 
 .trapbar-metric-label {
-    color: #6b7280;
-    font-size: 12px;
-    letter-spacing: 1px;
+    color: #9ca3af;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
 }
 
 /* 3 GRANDS CERCLES */
@@ -157,214 +196,291 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    margin: 50px 0;
-    min-height: 200px;
+    gap: 25px;
+    margin: 60px 0;
+    min-height: 240px;
+    z-index: 10;
 }
 
 .trapbar-big-circle {
-    width: 160px;
-    height: 160px;
+    width: 190px;
+    height: 190px;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    background: rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Cercle gauche - Checkmark */
+/* Cercle gauche - Checkmark avec GLOW */
 .trapbar-circle-left {
-    background: linear-gradient(135deg, #00d4ff 0%, #00ff9d 50%, #a855f7 100%);
-    padding: 3px;
+    background: linear-gradient(135deg, #00d4ff 0%, #35FF8B 50%, #9D4EDD 100%);
+    padding: 8px;
+    box-shadow: 
+        0 0 40px rgba(0, 212, 255, 0.6),
+        0 0 80px rgba(53, 255, 139, 0.4),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    animation: glow-pulse-cyan 3s ease-in-out infinite;
 }
 
 .trapbar-circle-left::before {
     content: '';
     position: absolute;
-    inset: 3px;
+    inset: 8px;
     background: #0a0e1a;
     border-radius: 50%;
+    z-index: 1;
 }
 
 .trapbar-circle-left::after {
     content: '\2713';
-    font-size: 60px;
-    color: #00ff9d;
-    z-index: 1;
+    font-size: 80px;
+    font-weight: 700;
+    color: #35FF8B;
+    z-index: 2;
+    text-shadow: 0 0 30px rgba(53, 255, 139, 0.8);
 }
 
-/* Cercle centre - Poids */
+/* Cercle centre - Poids avec GLOW orange */
 .trapbar-circle-center {
-    background: linear-gradient(135deg, #ff8c42 0%, #ffb347 50%, #00ff9d 100%);
-    padding: 3px;
+    background: linear-gradient(135deg, #FF6D00 0%, #FFB347 40%, #35FF8B 100%);
+    padding: 8px;
+    box-shadow: 
+        0 0 50px rgba(255, 109, 0, 0.7),
+        0 0 90px rgba(255, 179, 71, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    animation: glow-pulse-orange 3s ease-in-out infinite;
 }
 
 .trapbar-circle-center::before {
     content: '';
     position: absolute;
-    inset: 3px;
+    inset: 8px;
     background: #0a0e1a;
     border-radius: 50%;
+    z-index: 1;
 }
 
 .trapbar-circle-weight {
-    font-size: 56px;
-    font-weight: 700;
-    color: #ff8c42;
-    z-index: 1;
+    font-size: 68px;
+    font-weight: 800;
+    color: #FF6D00;
+    z-index: 2;
+    text-shadow: 0 0 40px rgba(255, 109, 0, 0.9);
 }
 
 .trapbar-circle-unit {
-    font-size: 20px;
-    color: #ff8c42;
-    z-index: 1;
+    font-size: 24px;
+    font-weight: 600;
+    color: #FF6D00;
+    z-index: 2;
+    text-shadow: 0 0 20px rgba(255, 109, 0, 0.7);
 }
 
-/* Cercle droit - Reps */
+/* Cercle droit - Reps avec GLOW cyan-violet */
 .trapbar-circle-right {
-    background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-    padding: 3px;
+    background: linear-gradient(135deg, #00D9FF 0%, #7c3aed 100%);
+    padding: 8px;
+    box-shadow: 
+        0 0 45px rgba(0, 217, 255, 0.6),
+        0 0 85px rgba(124, 58, 237, 0.4),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    animation: glow-pulse-blue 3s ease-in-out infinite;
 }
 
 .trapbar-circle-right::before {
     content: '';
     position: absolute;
-    inset: 3px;
+    inset: 8px;
     background: #0a0e1a;
     border-radius: 50%;
+    z-index: 1;
 }
 
 .trapbar-circle-reps {
-    font-size: 56px;
-    font-weight: 700;
-    color: #00d4ff;
-    z-index: 1;
+    font-size: 68px;
+    font-weight: 800;
+    color: #00D9FF;
+    z-index: 2;
+    text-shadow: 0 0 40px rgba(0, 217, 255, 0.9);
 }
 
 .trapbar-circle-reps-label {
-    font-size: 18px;
-    color: #00d4ff;
-    z-index: 1;
+    font-size: 20px;
+    font-weight: 600;
+    color: #00D9FF;
+    z-index: 2;
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.7);
+}
+
+@keyframes glow-pulse-cyan {
+    0%, 100% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(53, 255, 139, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 0 60px rgba(0, 212, 255, 0.8), 0 0 100px rgba(53, 255, 139, 0.6), inset 0 0 30px rgba(0, 0, 0, 0.3); }
+}
+
+@keyframes glow-pulse-orange {
+    0%, 100% { box-shadow: 0 0 50px rgba(255, 109, 0, 0.7), 0 0 90px rgba(255, 179, 71, 0.5), inset 0 0 30px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 0 70px rgba(255, 109, 0, 0.9), 0 0 110px rgba(255, 179, 71, 0.7), inset 0 0 30px rgba(0, 0, 0, 0.3); }
+}
+
+@keyframes glow-pulse-blue {
+    0%, 100% { box-shadow: 0 0 45px rgba(0, 217, 255, 0.6), 0 0 85px rgba(124, 58, 237, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 0 65px rgba(0, 217, 255, 0.8), 0 0 105px rgba(124, 58, 237, 0.6), inset 0 0 30px rgba(0, 0, 0, 0.3); }
 }
 
 /* LISTE DES SERIES */
 .trapbar-series-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
     margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
 }
 
 .trapbar-serie-row {
     display: grid;
     grid-template-columns: 80px 1fr auto 60px;
     align-items: center;
-    gap: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 12px 16px;
+    gap: 18px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(25px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    padding: 14px 18px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Petit cercle gauche */
+.trapbar-serie-row:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Petit cercle gauche avec gradient 3D */
 .trapbar-serie-small-circle {
-    width: 60px;
-    height: 60px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
-    padding: 2px;
+    background: linear-gradient(135deg, #FF6D00 0%, #ff4500 100%);
+    padding: 3px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
+    box-shadow: 
+        0 4px 12px rgba(255, 109, 0, 0.4),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .trapbar-serie-small-circle::before {
     content: '';
     position: absolute;
-    inset: 2px;
+    inset: 3px;
     background: #0a0e1a;
     border-radius: 50%;
+    z-index: 1;
 }
 
 .trapbar-serie-small-num {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
-    color: #ff8c42;
-    z-index: 1;
+    color: #FF6D00;
+    z-index: 2;
+    text-shadow: 0 0 15px rgba(255, 109, 0, 0.8);
 }
 
 .trapbar-serie-small-unit {
-    font-size: 12px;
-    color: #ff8c42;
-    z-index: 1;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FF6D00;
+    z-index: 2;
+    text-shadow: 0 0 10px rgba(255, 109, 0, 0.6);
 }
 
 /* Badges DROP SET / REST PAUSE */
 .trapbar-serie-badge {
-    padding: 8px 20px;
-    border-radius: 12px;
+    padding: 10px 24px;
+    border-radius: 16px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
 }
 
 .trapbar-serie-badge.dropset {
-    background: #00d4ff;
+    background: #00D9FF;
     color: #0a0e1a;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
 }
 
 .trapbar-serie-badge.restpause {
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #7c3aed 0%, #9D4EDD 100%);
     color: white;
+    box-shadow: 0 0 20px rgba(157, 78, 221, 0.5);
 }
 
-/* Texte poids pour serie normale */
+/* Texte poids */
 .trapbar-serie-text {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 700;
     color: white;
 }
 
 .trapbar-serie-text.completed {
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 /* Badge reps */
 .trapbar-serie-reps-badge {
-    font-size: 22px;
-    font-weight: 600;
-    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    color: #00D9FF;
+    text-shadow: 0 0 15px rgba(0, 217, 255, 0.6);
 }
 
-/* Checkbox */
+/* Checkbox avec GLOW intense */
 .trapbar-serie-checkbox {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .trapbar-serie-checkbox.completed {
-    background: #00d4ff;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+    background: #00D9FF;
+    box-shadow: 
+        0 0 30px rgba(0, 217, 255, 0.9),
+        0 0 60px rgba(0, 217, 255, 0.5),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+    animation: success-glow 1s ease-out;
 }
 
 .trapbar-serie-checkbox.uncompleted-first {
-    background: rgba(0, 212, 255, 0.3);
-    border: 3px solid #00d4ff;
+    background: rgba(0, 217, 255, 0.25);
+    border: 4px solid #00D9FF;
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
 }
 
 .trapbar-serie-checkbox.uncompleted-gray {
     background: rgba(147, 197, 253, 0.3);
+    border: 2px solid rgba(147, 197, 253, 0.5);
 }
 
 .trapbar-serie-checkbox.uncompleted-beige {
-    background: rgba(229, 231, 235, 0.2);
+    background: rgba(229, 231, 235, 0.15);
+    border: 1px solid rgba(229, 231, 235, 0.3);
+}
+
+@keyframes success-glow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); box-shadow: 0 0 50px rgba(0, 217, 255, 1); }
+    100% { transform: scale(1); }
 }
 
 /* FOOTER */
@@ -372,44 +488,62 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 20px;
-    margin-top: 30px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(30px) saturate(180%);
+    border-radius: 22px;
+    margin-top: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
 }
 
 .trapbar-footer-label {
-    color: #6b7280;
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    color: #9ca3af;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
 }
 
 .trapbar-timer {
-    font-size: 48px;
-    font-weight: 700;
+    font-size: 52px;
+    font-weight: 800;
     color: white;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    animation: timer-pulse 2s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+    0%, 100% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
+    50% { text-shadow: 0 0 50px rgba(255, 255, 255, 0.8); }
 }
 
 .trapbar-volume {
-    font-size: 20px;
-    font-weight: 600;
-    color: #6b7280;
+    font-size: 22px;
+    font-weight: 700;
+    color: #9ca3af;
+    text-shadow: 0 0 15px rgba(156, 163, 175, 0.5);
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .trapbar-circles-container {
-        gap: 10px;
+        gap: 15px;
     }
     
     .trapbar-big-circle {
-        width: 110px;
-        height: 110px;
+        width: 140px;
+        height: 140px;
     }
     
     .trapbar-circle-weight,
     .trapbar-circle-reps {
-        font-size: 36px;
+        font-size: 48px;
+    }
+    
+    .trapbar-circle-unit,
+    .trapbar-circle-reps-label {
+        font-size: 18px;
     }
 }
