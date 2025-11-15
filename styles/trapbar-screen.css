@@ -11,7 +11,7 @@
     position: relative;
 }
 
-/* PARTICULES ANIMÉES */
+/* PARTICULES ANIMEES */
 .trapbar-particles {
     position: absolute;
     top: 0;
@@ -85,7 +85,7 @@
 }
 
 .trapbar-trophy::before {
-    content: '🏆';
+    content: '\01F3C6';
 }
 
 .trapbar-title-wrapper h1 {
@@ -113,7 +113,7 @@
     letter-spacing: 1px;
 }
 
-/* MÉTRIQUES (4 cartes en haut) */
+/* METRIQUES (4 cartes en haut) */
 .trapbar-metrics {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -189,7 +189,7 @@
 }
 
 .trapbar-circle-left::after {
-    content: '✓';
+    content: '\2713';
     font-size: 60px;
     color: #00ff9d;
     z-index: 1;
@@ -249,7 +249,7 @@
     z-index: 1;
 }
 
-/* LISTE DES SÉRIES */
+/* LISTE DES SERIES */
 .trapbar-series-list {
     display: flex;
     flex-direction: column;
@@ -322,7 +322,7 @@
     color: white;
 }
 
-/* Texte poids pour série normale */
+/* Texte poids pour serie normale */
 .trapbar-serie-text {
     font-size: 22px;
     font-weight: 600;
