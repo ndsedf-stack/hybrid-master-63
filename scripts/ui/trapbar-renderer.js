@@ -375,4 +375,3 @@ export class TrapBarRenderer {
 }
 
 export default TrapBarRenderer;
-"
