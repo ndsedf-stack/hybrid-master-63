@@ -21,25 +21,20 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // Import dynamique de program-data.js
-        let programData = null;
-
         function WorkoutSession() {
           const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
           const [exercises, setExercises] = useState([]);
           const [loading, setLoading] = useState(true);
-          const [workoutName, setWorkoutName] = useState('');
           const containerRef = useRef(null);
           const [mounted, setMounted] = useState(false);
           const [timer, setTimer] = useState(0);
           const [completedSets, setCompletedSets] = useState([]);
 
-          // Chargement des données
           useEffect(() => {
             async function loadData() {
               try {
                 const module = await import('./scripts/program-data.js');
-                programData = module.default;
+                const programData = module.default;
                 
                 const urlParams = new URLSearchParams(window.location.search);
                 const weekNumber = parseInt(urlParams.get('week')) || 1;
@@ -49,24 +44,19 @@
                 const workout = weekData[dayKey];
                 
                 if (workout) {
-                  setWorkoutName(workout.name);
                   setExercises(workout.exercises);
-                  // Initialiser tous les sets à false
-                  const allSets = workout.exercises.map(ex => 
-                    Array(ex.sets).fill(false)
-                  );
+                  const allSets = workout.exercises.map(ex => Array(ex.sets).fill(false));
                   setCompletedSets(allSets);
                 }
                 setLoading(false);
               } catch (error) {
-                console.error('Erreur chargement données:', error);
+                console.error('Erreur:', error);
                 setLoading(false);
               }
             }
             loadData();
           }, []);
 
-          // Three.js Background
           useEffect(() => {
             if (!containerRef.current) return;
             const scene = new THREE.Scene();
@@ -139,20 +129,8 @@
             return () => clearInterval(interval);
           }, []);
 
-          if (loading) {
-            return (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', color: 'white', fontSize: '24px' }}>
-                Chargement...
-              </div>
-            );
-          }
-
-          if (exercises.length === 0) {
-            return (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', color: 'white', fontSize: '24px' }}>
-                Aucun exercice trouvé
-              </div>
-            );
+          if (loading || exercises.length === 0) {
+            return (<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', color: 'white', fontSize: '24px' }}>{loading ? 'Chargement...' : 'Aucun exercice'}</div>);
           }
 
           const currentExercise = exercises[currentExerciseIndex];
@@ -168,17 +146,8 @@
             if (navigator.vibrate && newCompleted[currentExerciseIndex][index]) navigator.vibrate([30]);
           };
 
-          const goToPrevious = () => {
-            if (currentExerciseIndex > 0) {
-              setCurrentExerciseIndex(currentExerciseIndex - 1);
-            }
-          };
-
-          const goToNext = () => {
-            if (currentExerciseIndex < exercises.length - 1) {
-              setCurrentExerciseIndex(currentExerciseIndex + 1);
-            }
-          };
+          const goToPrevious = () => { if (currentExerciseIndex > 0) setCurrentExerciseIndex(currentExerciseIndex - 1); };
+          const goToNext = () => { if (currentExerciseIndex < exercises.length - 1) setCurrentExerciseIndex(currentExerciseIndex + 1); };
 
           const WeightIcon = () => (<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="5" y="26" width="8" height="12" rx="2" fill="currentColor"/><rect x="51" y="26" width="8" height="12" rx="2" fill="currentColor"/><rect x="13" y="29" width="38" height="6" rx="3" fill="currentColor"/></svg>);
           const SeriesIcon = () => (<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="16" y="18" width="32" height="8" rx="4" fill="currentColor" opacity="0.4"/><rect x="18" y="27" width="28" height="8" rx="4" fill="currentColor" opacity="0.7"/><rect x="20" y="36" width="24" height="8" rx="4" fill="currentColor"/></svg>);
@@ -188,17 +157,9 @@
           const minutes = Math.floor(timer / 60);
           const seconds = timer % 60;
 
-          // Construire les séries
           const series = [];
           for (let i = 0; i < currentExercise.sets; i++) {
-            const baseSet = {
-              weight: currentExercise.weight,
-              center: `${currentExercise.weight} kg`,
-              reps: currentExercise.reps,
-              index: i
-            };
-
-            // Ajouter Rest-Pause ou Drop-set si applicable
+            const baseSet = { weight: currentExercise.weight, center: `${currentExercise.weight} kg`, reps: currentExercise.reps, index: i };
             if (currentExercise.restPause && i === Math.floor(currentExercise.sets / 2)) {
               series.push({ ...baseSet, center: 'REST PAUSE', isButton: true, buttonType: 'rest' });
             } else if (currentExercise.dropSets && i === currentExercise.sets - 1) {
@@ -215,34 +176,25 @@
               {mounted && (
                 <div style={{ position: 'relative', zIndex: 1, width: '100%', minHeight: '100vh', pointerEvents: 'none', padding: '20px', color: 'white', overflowY: 'auto', paddingBottom: '60px' }}>
                   
-                  {/* Bouton Retour */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                     <a href="home-final.html" style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '20px', textDecoration: 'none', pointerEvents: 'auto' }}>←</a>
                     <div style={{ fontSize: '14px', color: '#7a8090', fontWeight: '600' }}>Exercice {currentExerciseIndex + 1}/{exercises.length}</div>
                   </div>
 
-                  <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                    <div style={{ width: '75px', height: '75px', margin: '0 auto 16px', background: 'rgba(10,10,10,0.8)', borderRadius: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '42px', border: '1px solid rgba(255,215,0,0.12)', backdropFilter: 'blur(15px)', boxShadow: '0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)' }}>
-                      {currentExercise.name.toLowerCase().includes('trap') ? '🏋️' : 
-                       currentExercise.name.toLowerCase().includes('squat') ? '💪' :
-                       currentExercise.name.toLowerCase().includes('curl') ? '💪' :
-                       currentExercise.name.toLowerCase().includes('press') ? '🔥' : '💪'}
-                    </div>
-                    <h1 style={{ fontSize: '32px', fontWeight: '700', margin: '0 0 8px 0', lineHeight: 1.2 }}>
-                      <span style={{ background: 'linear-gradient(135deg, #00E5FF 0%, #00FFD0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 40px rgba(0, 229, 255, 0.9))' }}>
-                        {currentExercise.name}
-                      </span>
+                  <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                    <div style={{ width: '75px', height: '75px', margin: '0 auto 16px', background: 'rgba(10,10,10,0.8)', borderRadius: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '42px', border: '1px solid rgba(255,215,0,0.12)', backdropFilter: 'blur(15px)', boxShadow: '0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)' }}>🏆</div>
+                    <h1 style={{ fontSize: '42px', fontWeight: '700', margin: '0 0 8px 0' }}>
+                      <span style={{ color: 'white' }}>{currentExercise.name.split(' ')[0]}</span>{' '}
+                      <span style={{ background: 'linear-gradient(135deg, #00E5FF 0%, #00FFD0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 40px rgba(0, 229, 255, 0.9))' }}>{currentExercise.name.split(' ').slice(1).join(' ')}</span>
                     </h1>
-                    <div style={{ color: '#7a8090', fontSize: '11px', letterSpacing: '2.5px', fontWeight: '500' }}>
-                      {currentExercise.rpe ? `RPE ${currentExercise.rpe}` : 'EXERCICE PRINCIPAL'}
-                    </div>
+                    <div style={{ color: '#7a8090', fontSize: '11px', letterSpacing: '2.5px', fontWeight: '500' }}>COMPOUND · {currentExercise.rpe ? `RPE ${currentExercise.rpe}` : 'EXERCICE'}</div>
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '25px auto', maxWidth: '400px' }}>
                     {[
                       { Icon: WeightIcon, value: `${currentExercise.weight}kg`, label: 'POIDS', color: '#FF6D00' },
                       { Icon: SeriesIcon, value: `${currentExercise.sets}x${currentExercise.reps}`, label: 'SÉRIES', color: '#00D9FF' },
-                      { Icon: TempoIcon, value: currentExercise.tempo || '---', label: 'TEMPO', color: '#35FF8B' },
+                      { Icon: TempoIcon, value: currentExercise.tempo || '3-1-2', label: 'TEMPO', color: '#35FF8B' },
                       { Icon: RestIcon, value: currentExercise.rest, label: 'REPOS', color: '#9D4EDD' }
                     ].map((metric, i) => (
                       <div key={i} style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', padding: '18px 12px', textAlign: 'center' }}>
@@ -253,7 +205,6 @@
                     ))}
                   </div>
 
-                  {/* CERCLES */}
                   <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '20px', margin: '45px 0', overflowX: 'auto', scrollSnapType: 'x mandatory' }}>
                     <div style={{ position: 'relative', minWidth: '180px', width: '180px', height: '180px', flex: '0 0 auto', scrollSnapAlign: 'center', filter: 'drop-shadow(0 0 40px rgba(53,255,139,0.5)) drop-shadow(0 0 80px rgba(53,255,139,0.3))' }}>
                       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)' }} viewBox="0 0 180 180">
@@ -285,7 +236,6 @@
                     ))}
                   </div>
 
-                  {/* SÉRIES */}
                   <div style={{ margin: '45px auto 30px', maxWidth: '500px' }}>
                     {series.map((serie, i) => {
                       const isCompleted = currentSets[serie.index];
@@ -318,56 +268,41 @@
                     })}
                   </div>
 
-                  {/* Notes exercice */}
-                  {currentExercise.notes && (
-                    <div style={{ maxWidth: '500px', margin: '20px auto', padding: '16px 20px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '14px', color: '#7a8090', fontSize: '13px', lineHeight: '1.6' }}>
-                      💡 <strong style={{ color: '#00D9FF' }}>Notes :</strong> {currentExercise.notes}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '500px', margin: '30px auto', gap: '12px' }}>
+                    <button onClick={goToPrevious} disabled={currentExerciseIndex === 0} style={{ flex: 1, padding: '16px', borderRadius: '16px', fontSize: '16px', fontWeight: '700', border: 'none', background: currentExerciseIndex === 0 ? 'rgba(255,255,255,0.05)' : 'linear-gradient(135deg, #00D9FF, #00E5FF)', color: currentExerciseIndex === 0 ? '#555' : '#000', cursor: currentExerciseIndex === 0 ? 'not-allowed' : 'pointer', pointerEvents: 'auto', boxShadow: currentExerciseIndex === 0 ? 'none' : '0 6px 20px rgba(0,217,255,0.5)' }}>← Précédent</button>
+                    <button onClick={goToNext} disabled={currentExerciseIndex === exercises.length - 1} style={{ flex: 1, padding: '16px', borderRadius: '16px', fontSize: '16px', fontWeight: '700', border: 'none', background: currentExerciseIndex === exercises.length - 1 ? 'rgba(255,255,255,0.05)' : 'linear-gradient(135deg, #35FF8B, #00FFD0)', color: currentExerciseIndex === exercises.length - 1 ? '#555' : '#000', cursor: currentExerciseIndex === exercises.length - 1 ? 'not-allowed' : 'pointer', pointerEvents: 'auto', boxShadow: currentExerciseIndex === exercises.length - 1 ? 'none' : '0 6px 20px rgba(53,255,139,0.5)' }}>Suivant →</button>
+                  </div>
+
+                  <div style={{ width: '90%', maxWidth: '500px', margin: '30px auto 0', padding: '28px', background: 'linear-gradient(135deg, rgba(20,25,35,0.4), rgba(10,15,25,0.3))', backdropFilter: 'blur(20px)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 6px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                      <div>
+                        <div style={{ color: '#8a91a0', fontSize: '10px', letterSpacing: '1.5px', marginBottom: '8px', fontWeight: '600' }}>CHRONO TOTAL</div>
+                        <div style={{ fontSize: '52px', fontWeight: '800', color: 'white', textShadow: '0 0 35px rgba(255,255,255,0.6), 0 0 70px rgba(255,255,255,0.3)' }}>{minutes}:{String(seconds).padStart(2, '0')}</div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ color: '#8a91a0', fontSize: '10px', letterSpacing: '1.5px', marginBottom: '8px', fontWeight: '600' }}>VOLUME</div>
+                        <div style={{ fontSize: '24px', fontWeight: '700', color: '#9ca3af', textShadow: '0 0 25px rgba(156,163,175,0.5)' }}>{currentExercise.weight * currentExercise.sets * currentExercise.reps}kg</div>
+                      </div>
+                    </div>
+                    <div style={{ width: '100%', height: '7px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
+                      <div style={{ width: `${((currentExerciseIndex + 1) / exercises.length) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #00E5FF, #35FF8B)', borderRadius: '4px', transition: 'width 0.5s ease', boxShadow: '0 0 15px rgba(0,229,255,0.6)', position: 'relative' }}>
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)', animation: 'shimmer 2s infinite' }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {currentExerciseIndex === exercises.length - 1 && completedCount === totalSets && (
+                    <div style={{ maxWidth: '500px', margin: '30px auto', textAlign: 'center' }}>
+                      <a href="home-final.html" style={{ display: 'inline-block', padding: '20px 40px', borderRadius: '20px', fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #35FF8B, #00FFD0)', color: '#000', textDecoration: 'none', boxShadow: '0 8px 30px rgba(53,255,139,0.6)', pointerEvents: 'auto' }}>🎉 SÉANCE TERMINÉE !</a>
                     </div>
                   )}
-
-                  {/* NAVIGATION ENTRE EXERCICES */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '500px', margin: '30px auto', gap: '12px' }}>
-                    <button onClick={goToPrevious} disabled={currentExerciseIndex === 0} style={{ flex: 1, padding: '16px', borderRadius: '16px', fontSize: '16px', fontWeight: '700', border: 'none', background: currentExerciseIndex === 0 ? 'rgba(255,255,255,0.05)' : 'linear-gradient(135deg, #00D9FF, #00E5FF)', color: currentExerciseIndex === 0 ? '#555' : '#000', cursor: currentExerciseIndex === 0 ? 'not-allowed' : 'pointer', boxShadow: currentExerciseIndex === 0 ? 'none' : '0 6px 20px rgba(0,217,255,0.5)', pointerEvents: 'auto' }}>
-                      ← Précédent
-</button>
-                    <button onClick={goToNext} disabled={currentExerciseIndex === exercises.length - 1} style={{ flex: 1, padding: '16px', borderRadius: '16px', fontSize: '16px', fontWeight: '700', border: 'none', background: currentExerciseIndex === exercises.length - 1 ? 'rgba(255,255,255,0.05)' : 'linear-gradient(135deg, #35FF8B, #00FFD0)', color: currentExerciseIndex === exercises.length - 1 ? '#555' : '#000', cursor: currentExerciseIndex === exercises.length - 1 ? 'not-allowed' : 'pointer', boxShadow: currentExerciseIndex === exercises.length - 1 ? 'none' : '0 6px 20px rgba(53,255,139,0.5)', pointerEvents: 'auto' }}>
-                      Suivant →
-                    </button>
-                  </div>
-              {/* CHRONO ET VOLUME */}
-              <div style={{ width: '90%', maxWidth: '500px', margin: '30px auto 0', padding: '28px', background: 'linear-gradient(135deg, rgba(20,25,35,0.4), rgba(10,15,25,0.3))', backdropFilter: 'blur(20px)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 6px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-                  <div>
-                    <div style={{ color: '#8a91a0', fontSize: '10px', letterSpacing: '1.5px', marginBottom: '8px', fontWeight: '600' }}>CHRONO TOTAL</div>
-                    <div style={{ fontSize: '52px', fontWeight: '800', color: 'white', textShadow: '0 0 35px rgba(255,255,255,0.6), 0 0 70px rgba(255,255,255,0.3)' }}>{minutes}:{String(seconds).padStart(2, '0')}</div>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ color: '#8a91a0', fontSize: '10px', letterSpacing: '1.5px', marginBottom: '8px', fontWeight: '600' }}>EXERCICE</div>
-                    <div style={{ fontSize: '24px', fontWeight: '700', color: '#9ca3af', textShadow: '0 0 25px rgba(156,163,175,0.5)' }}>{currentExerciseIndex + 1}/{exercises.length}</div>
-                  </div>
-                </div>
-                <div style={{ width: '100%', height: '7px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
-                  <div style={{ width: `${((currentExerciseIndex + 1) / exercises.length) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #00E5FF, #35FF8B)', borderRadius: '4px', transition: 'width 0.5s ease', boxShadow: '0 0 15px rgba(0,229,255,0.6)', position: 'relative' }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)', animation: 'shimmer 2s infinite' }} />
-                  </div>
-                </div>
-              </div>
-
-              {/* BOUTON TERMINER */}
-              {currentExerciseIndex === exercises.length - 1 && completedCount === totalSets && (
-                <div style={{ maxWidth: '500px', margin: '30px auto', textAlign: 'center' }}>
-                  <a href="home-final.html" style={{ display: 'inline-block', padding: '20px 40px', borderRadius: '20px', fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #35FF8B, #00FFD0)', color: '#000', textDecoration: 'none', boxShadow: '0 8px 30px rgba(53,255,139,0.6)', pointerEvents: 'auto' }}>
-                    🎉 SÉANCE TERMINÉE !
-                  </a>
                 </div>
               )}
             </div>
-          )}
-        </div>
-      );
-    }
+          );
+        }
 
-    ReactDOM.render(<WorkoutSession />, document.getElementById('root'));
-</script>
+        ReactDOM.render(<WorkoutSession />, document.getElementById('root'));
+    </script>
 </body>
 </html>
