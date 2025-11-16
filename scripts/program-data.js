@@ -51,7 +51,7 @@ function generateProgram() {
     const blockInfo = getBlockTechnique(week);
     const isDeload = [6, 12, 18, 24, 26].includes(week);
     
-    program[`week${week}`] = {
+    program[week] = {
       weekNumber: week,
       block: blockInfo.block,
       technique: blockInfo.technique,
@@ -714,12 +714,19 @@ export class ProgramData {
     this.info = PROGRAM_INFO;
     this.currentWeek = 1;
   }
-
   getWeek(weekNumber) {
     if (weekNumber < 1 || weekNumber > 26) {
-      throw new Error(`Semaine invalide : ${weekNumber}`);
+        throw new Error(`Semaine invalide : ${weekNumber}`);
     }
-    return this.program[`week${weekNumber}`];
+    
+    // 🔍 DEBUG
+    console.log('🔍 getWeek appelée avec:', weekNumber);
+    console.log('🔍 Type de this.program:', typeof this.program);
+    console.log('🔍 Keys de this.program:', Object.keys(this.program).slice(0, 5));
+    console.log('🔍 this.program[1]:', this.program[1]);
+    console.log('🔍 this.program[weekNumber]:', this.program[weekNumber]);
+    
+    return this.program[weekNumber];
   }
 
   getWorkout(weekNumber, day) {
