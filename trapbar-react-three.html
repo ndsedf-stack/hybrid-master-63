@@ -3,61 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Trap Bar Deadlift - Final Perfect</title>
+    <title>Trap Bar Deadlift</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            overflow-x: hidden; 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
-            background: #0b0f18;
-        }
+        body { overflow-x: hidden; font-family: 'Inter', -apple-system, sans-serif; background: #000000; }
         html, body { height: 100%; width: 100%; }
-        
-        @keyframes rotateBorder {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes rotateKPI {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.02); }
-        }
-        
-        @keyframes glowPulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.4); }
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        /* Mix-blend-mode overlay */
-        .halo-overlay {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 2;
-            mix-blend-mode: screen;
-            background: radial-gradient(circle at 25% 45%, rgba(53,255,139,0.15), transparent 40%),
-                        radial-gradient(circle at 50% 45%, rgba(255,179,71,0.15), transparent 40%),
-                        radial-gradient(circle at 75% 45%, rgba(0,217,255,0.15), transparent 40%);
-        }
+        @keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
     </style>
 </head>
 <body>
     <div id="root"></div>
-    
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
@@ -69,67 +30,50 @@
 
           useEffect(() => {
             if (!containerRef.current) return;
-
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0b0f18);
-
+            scene.background = new THREE.Color(0x000000);
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 5;
-
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             containerRef.current.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.15);
             scene.add(ambientLight);
 
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 200;
+            const particlesCount = 50;
             const positions = new Float32Array(particlesCount * 3);
-            
-            const circlePositions = [
-              { x: 0.25, y: 0.45 },
-              { x: 0.50, y: 0.45 },
-              { x: 0.75, y: 0.45 }
-            ];
+            const circlePositions = [{ x: 0.25, y: 0.45 }, { x: 0.50, y: 0.45 }, { x: 0.75, y: 0.45 }];
             
             for (let i = 0; i < particlesCount; i++) {
               const targetCircle = circlePositions[Math.floor(Math.random() * 3)];
-              const distance = Math.random() < 0.7 ? Math.random() * 3 : 3 + Math.random() * 2;
+              const distance = Math.random() < 0.7 ? Math.random() * 2 : 2 + Math.random() * 1.5;
               const angle = Math.random() * Math.PI * 2;
-              
               positions[i * 3] = (targetCircle.x - 0.5) * 10 + Math.cos(angle) * distance;
               positions[i * 3 + 1] = (0.5 - targetCircle.y) * 10 + Math.sin(angle) * distance;
-              positions[i * 3 + 2] = (Math.random() - 0.5) * 3;
+              positions[i * 3 + 2] = (Math.random() - 0.5) * 2;
             }
             
             particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            
             const particlesMaterial = new THREE.PointsMaterial({
-              color: 0xFFD700,
-              size: 0.05,
-              transparent: true,
-              opacity: 0.8,
-              blending: THREE.AdditiveBlending
+              color: 0xFFD700, size: 0.02, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending
             });
-            
             const particles = new THREE.Points(particlesGeometry, particlesMaterial);
             scene.add(particles);
 
             let time = 0;
             function animate() {
               requestAnimationFrame(animate);
-              time += 0.008;
-
+              time += 0.005;
               const positions = particles.geometry.attributes.position.array;
               for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += Math.sin(time + i) * 0.003;
-                positions[i] += Math.cos(time + i) * 0.002;
+                positions[i + 1] += Math.sin(time + i) * 0.002;
+                positions[i] += Math.cos(time + i) * 0.001;
               }
               particles.geometry.attributes.position.needsUpdate = true;
-              particles.rotation.y = time * 0.05;
-
+              particles.rotation.y = time * 0.02;
               renderer.render(scene, camera);
             }
             animate();
@@ -140,7 +84,6 @@
               renderer.setSize(window.innerWidth, window.innerHeight);
             };
             window.addEventListener('resize', handleResize);
-
             setMounted(true);
 
             return () => {
@@ -153,9 +96,7 @@
           }, []);
 
           useEffect(() => {
-            const interval = setInterval(() => {
-              setTimer(t => t + 1);
-            }, 1000);
+            const interval = setInterval(() => setTimer(t => t + 1), 1000);
             return () => clearInterval(interval);
           }, []);
 
@@ -163,216 +104,84 @@
             const newCompleted = [...completedSets];
             newCompleted[index] = !newCompleted[index];
             setCompletedSets(newCompleted);
-            
-            if (navigator.vibrate && newCompleted[index]) {
-              navigator.vibrate([30]);
-            }
+            if (navigator.vibrate && newCompleted[index]) navigator.vibrate([30]);
           };
 
-          const WeightIcon = () => (
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <rect x="5" y="26" width="8" height="12" rx="2" fill="currentColor"/>
-              <rect x="51" y="26" width="8" height="12" rx="2" fill="currentColor"/>
-              <rect x="13" y="29" width="38" height="6" rx="3" fill="currentColor"/>
-            </svg>
-          );
+          const WeightIcon = () => (<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="5" y="26" width="8" height="12" rx="2" fill="currentColor"/><rect x="51" y="26" width="8" height="12" rx="2" fill="currentColor"/><rect x="13" y="29" width="38" height="6" rx="3" fill="currentColor"/></svg>);
+          const SeriesIcon = () => (<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="16" y="18" width="32" height="8" rx="4" fill="currentColor" opacity="0.4"/><rect x="18" y="27" width="28" height="8" rx="4" fill="currentColor" opacity="0.7"/><rect x="20" y="36" width="24" height="8" rx="4" fill="currentColor"/></svg>);
+          const TempoIcon = () => (<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M32 10L38 28L32 46L26 28L32 10Z" fill="currentColor"/></svg>);
+          const RestIcon = () => (<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="16" fill="currentColor"/></svg>);
 
-          const SeriesIcon = () => (
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <rect x="16" y="18" width="32" height="8" rx="4" fill="currentColor" opacity="0.4"/>
-              <rect x="18" y="27" width="28" height="8" rx="4" fill="currentColor" opacity="0.7"/>
-              <rect x="20" y="36" width="24" height="8" rx="4" fill="currentColor"/>
-            </svg>
-          );
-
-          const TempoIcon = () => (
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <path d="M32 10L38 28L32 46L26 28L32 10Z" fill="currentColor"/>
-            </svg>
-          );
-
-          const RestIcon = () => (
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="16" fill="currentColor"/>
-            </svg>
-          );
-
+          const completedCount = completedSets.filter(s => s).length;
+          const totalSets = 5;
+          const progress = (completedCount / totalSets) * 100;
+          const currentVolume = completedCount * 500;
+          const targetVolume = 2500;
           const minutes = Math.floor(timer / 60);
           const seconds = timer % 60;
-          
-          const currentWeight = completedSets.filter(s => s).length * 500;
-          const targetWeight = 2500;
-          const progress = (currentWeight / targetWeight) * 100;
 
           return (
-            <div style={{ position: 'relative', width: '100vw', minHeight: '100vh', background: '#0b0f18' }}>
+            <div style={{ position: 'relative', width: '100vw', minHeight: '100vh', background: '#000000' }}>
               <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }} />
               
-              <div className="halo-overlay" />
-              
               {mounted && (
-                <div style={{
-                  position: 'relative',
-                  zIndex: 3,
-                  width: '100%',
-                  minHeight: '100vh',
-                  pointerEvents: 'none',
-                  padding: '20px',
-                  color: 'white',
-                  overflowY: 'auto',
-                  paddingBottom: '60px'
-                }}>
-                  {/* HEADER */}
+                <div style={{ position: 'relative', zIndex: 1, width: '100%', minHeight: '100vh', pointerEvents: 'none', padding: '20px', color: 'white', overflowY: 'auto', paddingBottom: '60px' }}>
                   <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                    <div style={{
-                      width: '75px',
-                      height: '75px',
-                      margin: '0 auto 16px',
-                      background: 'rgba(10, 10, 10, 0.8)',
-                      borderRadius: '18px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '42px',
-                      border: '1px solid rgba(255, 215, 0, 0.12)',
-                      backdropFilter: 'blur(15px)',
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)'
-                    }}>🏆</div>
-                    
+                    <div style={{ width: '75px', height: '75px', margin: '0 auto 16px', background: 'rgba(10,10,10,0.8)', borderRadius: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '42px', border: '1px solid rgba(255,215,0,0.12)', backdropFilter: 'blur(15px)', boxShadow: '0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)' }}>🏆</div>
                     <h1 style={{ fontSize: '42px', fontWeight: '700', margin: '0 0 8px 0' }}>
                       <span style={{ color: 'white' }}>Trap Bar</span>{' '}
-                      <span style={{
-                        background: 'linear-gradient(135deg, #00E5FF 0%, #00FFD0 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        filter: 'drop-shadow(0 0 40px rgba(0, 229, 255, 0.9))'
-                      }}>Deadlift</span>
+                      <span style={{ background: 'linear-gradient(135deg, #00E5FF 0%, #00FFD0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 40px rgba(0, 229, 255, 0.9))' }}>Deadlift</span>
                     </h1>
-                    <div style={{ color: '#7a8090', fontSize: '11px', letterSpacing: '2.5px', fontWeight: '500' }}>
-                      COMPOUND · DOS / JAMBES
-                    </div>
+                    <div style={{ color: '#7a8090', fontSize: '11px', letterSpacing: '2.5px', fontWeight: '500' }}>COMPOUND · DOS / JAMBES</div>
                   </div>
 
-                  {/* MÉTRIQUES */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
-                    gap: '12px',
-                    margin: '25px auto',
-                    maxWidth: '400px'
-                  }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '25px auto', maxWidth: '400px' }}>
                     {[
                       { Icon: WeightIcon, value: '100kg', label: 'POIDS', color: '#FF6D00' },
                       { Icon: SeriesIcon, value: '5x5', label: 'SÉRIES', color: '#00D9FF' },
                       { Icon: TempoIcon, value: '3-1-2', label: 'TEMPO', color: '#35FF8B' },
                       { Icon: RestIcon, value: '120s', label: 'REPOS', color: '#9D4EDD' }
                     ].map((metric, i) => (
-                      <div key={i} style={{
-                        background: 'rgba(255,255,255,0.03)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(255,255,255,0.06)',
-                        borderRadius: '14px',
-                        padding: '18px 12px',
-                        textAlign: 'center',
-                        transition: 'transform 0.3s',
-                        cursor: 'pointer'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                      >
-                        <div style={{ 
-                          marginBottom: '12px', 
-                          filter: 'drop-shadow(0 0 20px currentColor)',
-                          color: metric.color
-                        }}>
-                          <metric.Icon />
-                        </div>
-                        <div style={{
-                          fontSize: '26px',
-                          fontWeight: '800',
-                          marginBottom: '6px',
-                          color: metric.color,
-                          textShadow: `0 0 20px ${metric.color}80`
-                        }}>{metric.value}</div>
-                        <div style={{ color: '#6a7080', fontSize: '9px', letterSpacing: '1.8px', fontWeight: '600' }}>
-                          {metric.label}
-                        </div>
+                      <div key={i} style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', padding: '18px 12px', textAlign: 'center' }}>
+                        <div style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 20px currentColor)', color: metric.color }}><metric.Icon /></div>
+                        <div style={{ fontSize: '26px', fontWeight: '800', marginBottom: '6px', color: metric.color, textShadow: `0 0 20px ${metric.color}80` }}>{metric.value}</div>
+                        <div style={{ color: '#6a7080', fontSize: '9px', letterSpacing: '1.8px', fontWeight: '600' }}>{metric.label}</div>
                       </div>
                     ))}
                   </div>
 
-                  {/* GRANDS CERCLES */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '25px',
-                    margin: '45px 0',
-                    flexWrap: 'wrap'
-                  }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '45px 0', flexWrap: 'wrap' }}>
+                    {/* CERCLE 2/5 (40%) */}
+                    <div style={{ position: 'relative', width: '220px', height: '220px', filter: 'drop-shadow(0 0 60px #35FF8Bff) drop-shadow(0 0 120px #35FF8Be6) drop-shadow(0 0 200px #35FF8Bb3) drop-shadow(0 0 300px #35FF8B80)', animation: 'pulse 3s ease-in-out infinite' }}>
+                      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)' }} viewBox="0 0 220 220">
+                        <defs><linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#00d4ff"/><stop offset="50%" stopColor="#35FF8B"/><stop offset="100%" stopColor="#9D4EDD"/></linearGradient></defs>
+                        <circle cx="110" cy="110" r="104" stroke="rgba(255,255,255,0.1)" strokeWidth="6" fill="none"/>
+                        <circle cx="110" cy="110" r="104" stroke="url(#progressGrad)" strokeWidth="6" fill="none" strokeDasharray={`${2 * Math.PI * 104 * (progress / 100)} ${2 * Math.PI * 104}`} style={{ transition: 'stroke-dasharray 0.5s ease', filter: 'drop-shadow(0 0 20px #35FF8B)' }}/>
+                      </svg>
+                      <div style={{ position: 'absolute', inset: '6px', borderRadius: '50%', background: 'radial-gradient(circle at 40% 40%, rgba(15,25,40,0.98), rgba(0,0,0,1))', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 0 40px rgba(53,255,139,0.4), 0 0 60px rgba(53,255,139,0.6), 0 0 120px rgba(53,255,139,0.4)' }}>
+                        <div style={{ fontSize: '76px', fontWeight: '900', color: 'white', textShadow: '0 0 50px rgba(255,255,255,0.8)' }}>{completedCount}/{totalSets}</div>
+                        <div style={{ fontSize: '28px', color: '#35FF8B', marginTop: '-8px', fontWeight: '700' }}>({progress}%)</div>
+                        <div style={{ fontSize: '16px', color: '#7a8090', marginTop: '4px', fontWeight: '600' }}>COMPLETE</div>
+                      </div>
+                    </div>
+
                     {[
-                      { content: '✓', label: 'check', color: '#35FF8B', gradient: ['#00d4ff', '#35FF8B', '#9D4EDD', '#00d4ff'] },
                       { content: '100', label: 'kg', color: '#FF6D00', gradient: ['#FF6D00', '#FFB347', '#35FF8B', '#FF6D00'] },
                       { content: '5', label: 'reps', color: '#00D9FF', gradient: ['#00D9FF', '#7c3aed', '#00D9FF'] }
                     ].map((circle, i) => (
-                      <div key={i} style={{ 
-                        position: 'relative', 
-                        width: '220px', 
-                        height: '220px',
-                        filter: `
-                          drop-shadow(0 0 60px ${circle.color}ff)
-                          drop-shadow(0 0 120px ${circle.color}e6)
-                          drop-shadow(0 0 200px ${circle.color}b3)
-                          drop-shadow(0 0 300px ${circle.color}80)
-                        `,
-                        animation: 'pulse 3s ease-in-out infinite'
-                      }}>
-                        <svg style={{
-                          position: 'absolute',
-                          inset: 0,
-                          width: '100%',
-                          height: '100%',
-                          animation: 'rotateBorder 8s linear infinite'
-                        }} viewBox="0 0 220 220">
-                          <defs>
-                            <linearGradient id={`grad${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                              {circle.gradient.map((color, idx) => (
-                                <stop key={idx} offset={`${idx * (100 / (circle.gradient.length - 1))}%`} stopColor={color} />
-                              ))}
-                            </linearGradient>
-                          </defs>
+                      <div key={i} style={{ position: 'relative', width: '220px', height: '220px', filter: `drop-shadow(0 0 60px ${circle.color}ff) drop-shadow(0 0 120px ${circle.color}e6) drop-shadow(0 0 200px ${circle.color}b3) drop-shadow(0 0 300px ${circle.color}80)`, animation: 'pulse 3s ease-in-out infinite' }}>
+                        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', animation: 'rotateBorder 8s linear infinite' }} viewBox="0 0 220 220">
+                          <defs><linearGradient id={`grad${i}`} x1="0%" y1="0%" x2="100%" y2="100%">{circle.gradient.map((color, idx) => <stop key={idx} offset={`${idx * (100 / (circle.gradient.length - 1))}%`} stopColor={color} />)}</linearGradient></defs>
                           <circle cx="110" cy="110" r="104" stroke={`url(#grad${i})`} strokeWidth="6" fill="none"/>
                         </svg>
-                        
-                        <div style={{
-                          position: 'absolute',
-                          inset: '6px',
-                          borderRadius: '50%',
-                          background: 'radial-gradient(circle at 40% 40%, rgba(15,25,40,0.98), rgba(0,0,0,1))',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          boxShadow: `
-                            inset 0 0 40px ${circle.color}66,
-                            0 0 60px ${circle.color}99,
-                            0 0 120px ${circle.color}66
-                          `
-                        }}>
-                          <div style={{
-                            fontSize: '76px',
-                            fontWeight: '900',
-                            color: circle.color,
-                            textShadow: `0 0 50px ${circle.color}ff, 0 0 100px ${circle.color}cc`
-                          }}>{circle.content}</div>
-                          <div style={{ fontSize: '24px', color: '#7a8090', marginTop: '4px', fontWeight: '600' }}>
-                            {circle.label}
-                          </div>
+                        <div style={{ position: 'absolute', inset: '6px', borderRadius: '50%', background: 'radial-gradient(circle at 40% 40%, rgba(15,25,40,0.98), rgba(0,0,0,1))', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: `inset 0 0 40px ${circle.color}66, 0 0 60px ${circle.color}99, 0 0 120px ${circle.color}66` }}>
+                          <div style={{ fontSize: '76px', fontWeight: '900', color: circle.color, textShadow: `0 0 50px ${circle.color}ff, 0 0 100px ${circle.color}cc` }}>{circle.content}</div>
+                          <div style={{ fontSize: '24px', color: '#7a8090', marginTop: '4px', fontWeight: '600' }}>{circle.label}</div>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* SÉRIES - CORRECTIONS COMPLÈTES */}
                   <div style={{ margin: '45px auto 30px', maxWidth: '500px' }}>
                     {[
                       { weight: 100, center: '100 kg', reps: '5 reps', index: 0 },
@@ -383,224 +192,45 @@
                     ].map((serie, i) => {
                       const isCompleted = completedSets[serie.index];
                       const firstUncompleted = completedSets.findIndex(s => !s);
-                      const state = isCompleted ? 'completed' : (serie.index === firstUncompleted ? 'active' : (serie.index === firstUncompleted + 1 ? 'rest' : 'upcoming'));
+                      const state = isCompleted ? 'completed' : (serie.index === firstUncompleted ? 'active' : 'upcoming');
                       
                       return (
-                        <div key={i} style={{
-                          display: 'grid',
-                          gridTemplateColumns: '95px 1fr 110px 95px',
-                          alignItems: 'center',
-                          gap: '12px',
-                          marginBottom: '14px',
-                          padding: '10px 8px',
-                          background: state === 'completed' 
-                            ? 'linear-gradient(135deg, rgba(0,217,255,0.25), rgba(0,217,255,0.15))'
-                            : 'rgba(255,255,255,0.015)',
-                          borderRadius: '14px',
-                          boxShadow: state === 'completed' 
-                            ? 'inset 0 0 80px rgba(0,217,255,0.3), 0 0 50px rgba(0,217,255,0.4)'
-                            : 'none',
-                          transition: 'all 0.3s'
-                        }}>
-                          {/* CERCLE SÉRIE 95px + 4 COULEURS + 3 COUCHES GLOW */}
-                          <div style={{
-                            width: '95px',
-                            height: '95px',
-                            borderRadius: '50%',
-                            border: '3px solid #FF6D00',
-                            background: 'radial-gradient(circle at 30% 35%, rgba(255,230,180,1) 0%, rgba(255,160,60,0.95) 25%, rgba(255,100,20,0.8) 50%, rgba(0,0,0,0.95) 100%)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            boxShadow: `
-                              0 4px 15px rgba(255,109,0,0.5),
-                              0 8px 25px rgba(255,109,0,0.7),
-                              0 12px 40px rgba(255,109,0,0.9),
-                              inset -4px -4px 12px rgba(0,0,0,0.8),
-                              inset 3px 3px 10px rgba(255,200,100,0.6)
-                            `,
-                            transform: 'perspective(500px) rotateX(5deg)'
-                          }}>
-                            <div style={{ fontSize: '30px', fontWeight: '900', color: '#FF6D00', textShadow: '0 0 20px rgba(255, 109, 0, 1.0), 0 0 40px rgba(255, 109, 0, 0.7)' }}>
-                              {serie.weight}
-                            </div>
-                            <div style={{ fontSize: '16px', color: '#FF6D00', marginTop: '-4px', fontWeight: '700', textShadow: '0 0 15px rgba(255, 109, 0, 0.8)' }}>kg</div>
+                        <div key={i} style={{ display: 'grid', gridTemplateColumns: '95px 1fr 110px 95px', alignItems: 'center', gap: '12px', marginBottom: '14px', padding: '10px 8px', background: state === 'completed' ? 'linear-gradient(135deg, rgba(0,217,255,0.25), rgba(0,217,255,0.15))' : 'rgba(255,255,255,0.015)', borderRadius: '14px', boxShadow: state === 'completed' ? 'inset 0 0 80px rgba(0,217,255,0.3), 0 0 50px rgba(0,217,255,0.4)' : 'none' }}>
+                          <div style={{ width: '95px', height: '95px', borderRadius: '50%', border: '3px solid #FF6D00', background: 'radial-gradient(circle at 20% 20%, rgba(255,160,60,1) 0%, rgba(255,100,20,0.9) 35%, rgba(80,40,10,1) 70%, rgba(10,5,2,1) 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 40px rgba(255,109,0,0.6), 0 0 80px rgba(255,109,0,0.3)' }}>
+                            <div style={{ fontSize: '32px', fontWeight: '900', color: '#FF8C00', textShadow: '0 0 20px rgba(255,140,0,0.8), 0 2px 4px rgba(0,0,0,0.8)' }}>{serie.weight}</div>
+                            <div style={{ fontSize: '18px', color: '#FF8C00', marginTop: '-4px', fontWeight: '700', textShadow: '0 0 15px rgba(255,140,0,0.7), 0 1px 3px rgba(0,0,0,0.8)' }}>kg</div>
                           </div>
 
-                          {/* CENTRE - LABELS RENFORCÉS */}
                           <div style={{ textAlign: 'center' }}>
                             {serie.isButton ? (
                               <>
-                                <div style={{ 
-                                  fontSize: '12px', 
-                                  color: serie.buttonType === 'dropset' ? '#00E5FF' : '#C084FC', 
-                                  marginBottom: '8px', 
-                                  letterSpacing: '3px', 
-                                  fontWeight: '800',
-                                  textShadow: serie.buttonType === 'dropset' 
-                                    ? '0 0 25px rgba(0,229,255,0.9)' 
-                                    : '0 0 25px rgba(192,132,252,0.9)'
-                                }}>
-                                  {serie.buttonType === 'dropset' ? 'DROP' : 'REST'}
-                                </div>
-                                <button style={{
-                                  padding: '14px 32px',
-                                  borderRadius: '18px',
-                                  fontSize: '17px',
-                                  fontWeight: '800',
-                                  border: 'none',
-                                  background: serie.buttonType === 'dropset' 
-                                    ? 'linear-gradient(180deg, #00E5FF 0%, #00D9FF 100%)'
-                                    : 'linear-gradient(180deg, #A855F7 0%, #7c3aed 100%)',
-                                  color: serie.buttonType === 'dropset' ? '#000' : '#fff',
-                                  cursor: 'pointer',
-                                  letterSpacing: '1px',
-                                  boxShadow: serie.buttonType === 'dropset'
-                                    ? '0 8px 30px rgba(0, 217, 255, 0.9), inset 0 3px 6px rgba(255,255,255,0.6), inset 0 -4px 8px rgba(0,0,0,0.4)'
-                                    : '0 8px 30px rgba(157, 78, 221, 0.9), inset 0 3px 6px rgba(255,255,255,0.5), inset 0 -4px 8px rgba(0,0,0,0.5)',
-                                  pointerEvents: 'auto',
-                                  animation: 'glowPulse 2s ease-in-out infinite',
-                                  transition: 'transform 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                >
-                                  {serie.buttonType === 'dropset' ? 'SET' : 'PAUSE'}
-                                </button>
+                                <div style={{ fontSize: '12px', color: serie.buttonType === 'dropset' ? '#00E5FF' : '#C084FC', marginBottom: '8px', letterSpacing: '3px', fontWeight: '800', textShadow: serie.buttonType === 'dropset' ? '0 0 25px rgba(0,229,255,0.9)' : '0 0 25px rgba(192,132,252,0.9)' }}>{serie.buttonType === 'dropset' ? 'DROP' : 'REST'}</div>
+                                <button style={{ padding: '14px 32px', borderRadius: '18px', fontSize: '17px', fontWeight: '800', border: 'none', background: serie.buttonType === 'dropset' ? 'linear-gradient(180deg, #00E5FF 0%, #00D9FF 100%)' : 'linear-gradient(180deg, #A855F7 0%, #7c3aed 100%)', color: serie.buttonType === 'dropset' ? '#000' : '#fff', cursor: 'pointer', letterSpacing: '1px', boxShadow: serie.buttonType === 'dropset' ? '0 8px 30px rgba(0, 217, 255, 0.9), inset 0 3px 6px rgba(255,255,255,0.6), inset 0 -4px 8px rgba(0,0,0,0.4)' : '0 8px 30px rgba(157, 78, 221, 0.9), inset 0 3px 6px rgba(255,255,255,0.5), inset 0 -4px 8px rgba(0,0,0,0.5)', pointerEvents: 'auto' }}>{serie.buttonType === 'dropset' ? 'SET' : 'PAUSE'}</button>
                               </>
                             ) : (
                               <div style={{ fontSize: '28px', fontWeight: '700', color: '#ffffff', textShadow: '0 0 25px rgba(255,255,255,0.6)' }}>{serie.center}</div>
                             )}
                           </div>
 
-                          {/* TEXTE REPS 30px */}
-                          <div style={{ fontSize: '30px', fontWeight: '700', color: '#00D9FF', textAlign: 'right', textShadow: '0 0 25px rgba(0,217,255,0.9), 0 0 50px rgba(0,217,255,0.6)' }}>
-                            {serie.reps}
-                          </div>
+                          <div style={{ fontSize: '30px', fontWeight: '700', color: '#00D9FF', textAlign: 'right', textShadow: '0 0 25px rgba(0,217,255,0.9), 0 0 50px rgba(0,217,255,0.6)' }}>{serie.reps}</div>
 
-                          {/* CERCLE KPI 95px + ROTATION GRADIENT + 4 COUCHES */}
-                          <div style={{ position: 'relative', width: '95px', height: '95px' }}>
-                            {/* SVG ROTATIF */}
-                            <svg style={{
-                              position: 'absolute',
-                              inset: 0,
-                              width: '100%',
-                              height: '100%',
-                              animation: state === 'active' ? 'rotateKPI 6s linear infinite' : 'none'
-                            }} viewBox="0 0 95 95">
-                              <defs>
-                                <linearGradient id={`kpi-grad-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" stopColor="#00E5FF"/>
-                                  <stop offset="50%" stopColor="#7c3aed"/>
-                                  <stop offset="100%" stopColor="#00E5FF"/>
-                                </linearGradient>
-                              </defs>
-                              {state === 'active' && (
-                                <circle cx="47.5" cy="47.5" r="44" stroke={`url(#kpi-grad-${i})`} strokeWidth="5" fill="none"/>
-                              )}
-                            </svg>
-                            
-                            <div 
-                              onClick={() => toggleSet(serie.index)}
-                              style={{
-                                width: '95px',
-                                height: '95px',
-                                borderRadius: '50%',
-                                cursor: 'pointer',
-                                pointerEvents: 'auto',
-                                transition: 'transform 0.4s',
-                                ...(state === 'completed' && {
-                                  background: 'linear-gradient(135deg, #00E5FF, #00D9FF)',
-                                  boxShadow: `
-                                    0 0 50px rgba(0,217,255,1.0),
-                                    0 0 100px rgba(0,217,255,0.9),
-                                    0 0 160px rgba(0,217,255,0.7),
-                                    0 0 240px rgba(0,217,255,0.5),
-                                    0 8px 24px rgba(0,0,0,0.6),
-                                    inset 0 2px 8px rgba(255,255,255,0.6),
-                                    inset 0 -2px 8px rgba(0,0,0,0.4)
-                                  `
-                                }),
-                                ...(state === 'active' && {
-                                  background: 'rgba(0, 217, 255, 0.12)',
-                                  border: '5px solid #00D9FF',
-                                  boxShadow: `
-                                    0 0 40px rgba(0, 217, 255, 1.0),
-                                    0 0 80px rgba(0, 217, 255, 0.9),
-                                    0 0 130px rgba(0, 217, 255, 0.7),
-                                    0 0 200px rgba(0, 217, 255, 0.5),
-                                    0 8px 24px rgba(0,0,0,0.5),
-                                    inset 0 0 35px rgba(0,217,255,0.4)
-                                  `
-                                }),
-                                ...(state === 'rest' && {
-                                  background: 'rgba(100,150,200,0.15)',
-                                  border: '3px solid rgba(147,197,253,0.5)',
-                                  boxShadow: '0 4px 16px rgba(0,0,0,0.4), inset 0 0 20px rgba(147,197,253,0.2)'
-                                }),
-                                ...(state === 'upcoming' && {
-                                  background: 'rgba(180,180,180,0.08)',
-                                  border: '2px solid rgba(200,200,200,0.25)',
-                                  boxShadow: '0 4px 12px rgba(0,0,0,0.3), inset 0 0 15px rgba(200,200,200,0.1)'
-                                })
-                              }}
-                              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                            />
-                          </div>
+                          <div onClick={() => toggleSet(serie.index)} style={{ width: '95px', height: '95px', borderRadius: '50%', cursor: 'pointer', pointerEvents: 'auto', transition: 'transform 0.4s', ...(state === 'completed' && { background: 'linear-gradient(135deg, #00E5FF, #00D9FF)', boxShadow: '0 0 50px rgba(0,217,255,1.0), 0 0 100px rgba(0,217,255,0.9), 0 0 160px rgba(0,217,255,0.7), 0 0 240px rgba(0,217,255,0.5), 0 8px 24px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.6), inset 0 -2px 8px rgba(0,0,0,0.4)' }), ...(state === 'active' && { background: 'rgba(0, 217, 255, 0.12)', border: '5px solid #00D9FF', boxShadow: '0 0 40px rgba(0, 217, 255, 1.0), 0 0 80px rgba(0, 217, 255, 0.9), 0 0 130px rgba(0, 217, 255, 0.7), 0 8px 24px rgba(0,0,0,0.5), inset 0 0 35px rgba(0,217,255,0.4)' }), ...(state === 'upcoming' && { background: 'rgba(180,180,180,0.08)', border: '2px solid rgba(200,200,200,0.25)', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }) }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} />
                         </div>
                       );
                     })}
                   </div>
 
-                  {/* FOOTER */}
-                  <div style={{
-                    padding: '32px',
-                    background: 'linear-gradient(135deg, rgba(20,25,35,0.45), rgba(10,15,25,0.35))',
-                    backdropFilter: 'blur(30px)',
-                    borderRadius: '24px',
-                    maxWidth: '500px',
-                    margin: '30px auto 0',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)'
-                  }}>
+                  <div style={{ width: '90%', maxWidth: '500px', margin: '30px auto 0', padding: '32px', background: 'linear-gradient(135deg, rgba(20,25,35,0.45), rgba(10,15,25,0.35))', backdropFilter: 'blur(30px)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                       <div>
-                        <div style={{ color: '#8a91a0', fontSize: '11px', letterSpacing: '1.5px', marginBottom: '10px', fontWeight: '600' }}>
-                          CHRONO
-                        </div>
-                        <div style={{ 
-                          fontSize: '58px', 
-                          fontWeight: '800', 
-                          color: 'white', 
-                          textShadow: '0 0 45px rgba(255,255,255,0.8)',
-                          animation: 'glowPulse 2s ease-in-out infinite'
-                        }}>
-                          {minutes}:{String(seconds).padStart(2, '0')}
-                        </div>
+                        <div style={{ color: '#8a91a0', fontSize: '11px', letterSpacing: '1.5px', marginBottom: '10px', fontWeight: '600' }}>CHRONO</div>
+                        <div style={{ fontSize: '58px', fontWeight: '800', color: 'white', textShadow: '0 0 45px rgba(255,255,255,0.8), 0 0 90px rgba(255,255,255,0.5)' }}>{minutes}:{String(seconds).padStart(2, '0')}</div>
                       </div>
-                      <div style={{ fontSize: '26px', fontWeight: '700', color: '#9ca3af', textShadow: '0 0 30px rgba(156,163,175,0.7)' }}>
-                        {currentWeight.toLocaleString()}/{targetWeight.toLocaleString()} KG
-                      </div>
+                      <div style={{ fontSize: '26px', fontWeight: '700', color: '#9ca3af', textShadow: '0 0 30px rgba(156,163,175,0.7)' }}>{currentVolume.toLocaleString()}/{targetVolume.toLocaleString()} KG</div>
                     </div>
-                    
                     <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
-                      <div style={{
-                        width: `${progress}%`,
-                        height: '100%',
-                        background: 'linear-gradient(90deg, #00E5FF, #35FF8B)',
-                        borderRadius: '4px',
-                        transition: 'width 0.5s ease',
-                        boxShadow: `0 0 20px rgba(0,229,255,0.8)`,
-                        position: 'relative'
-                      }}>
-                        <div style={{
-                          position: 'absolute',
-                          inset: 0,
-                          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-                          animation: 'shimmer 2s infinite'
-                        }} />
+                      <div style={{ width: `${progress}%`, height: '100%', background: 'linear-gradient(90deg, #00E5FF, #35FF8B)', borderRadius: '4px', transition: 'width 0.5s ease', boxShadow: '0 0 20px rgba(0,229,255,0.8)', position: 'relative' }}>
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)', animation: 'shimmer 2s infinite' }} />
                       </div>
                     </div>
                   </div>
