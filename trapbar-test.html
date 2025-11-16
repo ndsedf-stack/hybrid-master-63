@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Trap Bar Deadlift Test</title>
-  
-  <!-- CSS Trap Bar - FORCE RELOAD -->
-  <link rel="stylesheet" href="styles/trapbar-screen.css?v=20251116-001" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trap Bar Deadlift Test</title>
+    <link rel="stylesheet" href="styles/trapbar-screen.css">
 </head>
-<body style="margin: 0; padding: 0; overflow-x: hidden;">
-  <div id="app"></div>
-  
-  <script type="module">
-    import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js?v=20251116-001';
+<body>
+    <div id="app"></div>
     
-    // Crée et affiche le renderer
-    const trapbar = new TrapBarRenderer('app');
-    trapbar.load().render();
-    trapbar.startTimer();
-  </script>
+    <script type="module">
+        import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js';
+        
+        const renderer = new TrapBarRenderer('app');
+        renderer.load().init().render();
+        renderer.startTimer();
+    </script>
 </body>
 </html>
