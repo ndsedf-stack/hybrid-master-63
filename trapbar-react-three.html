@@ -2,15 +2,16 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trap Bar Deadlift - React Three.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trap Bar Deadlift</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { overflow: hidden; }
+        body { overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #000; }
+        html, body { height: 100%; width: 100%; }
     </style>
 </head>
 <body>
@@ -98,43 +99,23 @@
             };
           }, []);
 
-          const metrics = [
-            { icon: '🏋️', value: '100kg', label: 'POIDS', color: '#FF6D00' },
-            { icon: '📊', value: '5x5', label: 'SÉRIES', color: '#00D9FF' },
-            { icon: '⚡', value: '3-1-2', label: 'TEMPO', color: '#35FF8B' },
-            { icon: '⏱️', value: '120s', label: 'REPOS', color: '#9D4EDD' }
-          ];
-
-          const heroCircles = [
-            { content: '✓', label: 'check', color: '#35FF8B' },
-            { content: '100', label: 'kg', color: '#FF6D00' },
-            { content: '5', label: 'reps', color: '#00D9FF' }
-          ];
-
-          const series = [
-            { weight: 100, center: '100 kg', reps: '5 reps', state: 'completed' },
-            { weight: 100, center: 'DROP SET', reps: '5 reps', state: 'active', isButton: true, buttonType: 'dropset' },
-            { weight: 100, center: 'REST PAUSE', reps: '5 reps', state: 'rest', isButton: true, buttonType: 'rest' },
-            { weight: 100, center: '100 kg', reps: '5 reps', state: 'upcoming' }
-          ];
-
           return (
-            <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
-              <div ref={containerRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+            <div style={{ position: 'relative', width: '100vw', minHeight: '100vh', overflow: 'hidden' }}>
+              <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }} />
               
               {mounted && (
                 <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
+                  position: 'relative',
+                  zIndex: 1,
                   width: '100%',
-                  height: '100%',
+                  minHeight: '100vh',
                   pointerEvents: 'none',
                   padding: '20px',
                   color: 'white',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                  overflowY: 'auto'
+                  overflowY: 'auto',
+                  paddingBottom: '60px'
                 }}>
+                  {/* Header */}
                   <div style={{ textAlign: 'center', marginTop: '30px' }}>
                     <div style={{
                       width: '50px',
@@ -161,6 +142,7 @@
                     </div>
                   </div>
 
+                  {/* Métriques */}
                   <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(2, 1fr)',
@@ -168,7 +150,12 @@
                     margin: '25px auto',
                     maxWidth: '400px'
                   }}>
-                    {metrics.map((metric, i) => (
+                    {[
+                      { icon: '🏋️', value: '100kg', label: 'POIDS', color: '#FF6D00' },
+                      { icon: '📊', value: '5x5', label: 'SÉRIES', color: '#00D9FF' },
+                      { icon: '⚡', value: '3-1-2', label: 'TEMPO', color: '#35FF8B' },
+                      { icon: '⏱️', value: '120s', label: 'REPOS', color: '#9D4EDD' }
+                    ].map((metric, i) => (
                       <div key={i} style={{
                         background: 'rgba(255,255,255,0.03)',
                         backdropFilter: 'blur(10px)',
@@ -192,13 +179,19 @@
                     ))}
                   </div>
 
+                  {/* Hero Circles */}
                   <div style={{
                     display: 'flex',
                     justifyContent: 'center',
                     gap: '25px',
-                    margin: '45px 0'
+                    margin: '45px 0',
+                    flexWrap: 'wrap'
                   }}>
-                    {heroCircles.map((circle, i) => (
+                    {[
+                      { content: '✓', label: 'check', color: '#35FF8B' },
+                      { content: '100', label: 'kg', color: '#FF6D00' },
+                      { content: '5', label: 'reps', color: '#00D9FF' }
+                    ].map((circle, i) => (
                       <div key={i} style={{ position: 'relative', width: '160px', height: '160px' }}>
                         <div style={{
                           position: 'absolute',
@@ -226,8 +219,137 @@
                     ))}
                   </div>
 
-                  <div style={{ fontSize: '22px', fontWeight: '700', color: '#8a91a0', textAlign: 'center', marginTop: '30px' }}>
-                    Three.js Particules Actives ✨
+                  {/* SÉRIES - 5 LIGNES COMPLÈTES */}
+                  <div style={{ margin: '45px auto 30px', maxWidth: '500px' }}>
+                    {[
+                      { weight: 100, center: '100 kg', reps: '5 reps', state: 'completed' },
+                      { weight: 100, center: 'DROP SET', reps: '5 reps', state: 'active', isButton: true, buttonType: 'dropset' },
+                      { weight: 100, center: 'REST PAUSE', reps: '5 reps', state: 'rest', isButton: true, buttonType: 'rest' },
+                      { weight: 100, center: '100 kg', reps: '5 reps', state: 'upcoming' },
+                      { weight: 100, center: '100 kg', reps: '5 reps', state: 'upcoming' }
+                    ].map((serie, i) => (
+                      <div key={i} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '80px 1fr 100px 85px',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '14px',
+                        padding: '10px 8px',
+                        background: 'rgba(255,255,255,0.015)',
+                        borderRadius: '14px'
+                      }}>
+                        {/* Cercle poids gauche */}
+                        <div style={{
+                          width: '75px',
+                          height: '75px',
+                          borderRadius: '50%',
+                          border: '3px solid #FF6D00',
+                          background: 'radial-gradient(circle at 38% 35%, rgba(40,40,40,0.9), rgba(10,10,10,1))',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 0 25px rgba(255, 109, 0, 0.4)'
+                        }}>
+                          <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF6D00', textShadow: '0 0 15px rgba(255, 109, 0, 0.5)' }}>
+                            {serie.weight}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#FF6D00', marginTop: '-3px', fontWeight: '600' }}>kg</div>
+                        </div>
+
+                        {/* Centre */}
+                        <div style={{ textAlign: 'center' }}>
+                          {serie.isButton ? (
+                            <>
+                              <div style={{ fontSize: '10px', color: '#8a91ff', marginBottom: '5px', letterSpacing: '2px', fontWeight: '700' }}>
+                                {serie.buttonType === 'dropset' ? 'DROP' : 'REST'}
+                              </div>
+                              <button style={{
+                                padding: '12px 35px',
+                                borderRadius: '40px',
+                                fontSize: '16px',
+                                fontWeight: '700',
+                                border: serie.buttonType === 'dropset' ? 'none' : '3px solid #93C5FD',
+                                background: serie.buttonType === 'dropset' 
+                                  ? 'linear-gradient(135deg, #00E5FF, #00D9FF)'
+                                  : 'rgba(147, 197, 253, 0.08)',
+                                color: serie.buttonType === 'dropset' ? '#000' : '#93C5FD',
+                                cursor: 'pointer',
+                                letterSpacing: '2px',
+                                boxShadow: serie.buttonType === 'dropset'
+                                  ? '0 0 40px rgba(0, 229, 255, 0.9)'
+                                  : '0 0 35px rgba(147, 197, 253, 0.6)',
+                                pointerEvents: 'auto'
+                              }}>
+                                {serie.buttonType === 'dropset' ? 'SET' : 'PAUSE'}
+                              </button>
+                            </>
+                          ) : (
+                            <div style={{ fontSize: '26px', fontWeight: '700', color: '#ffffff' }}>{serie.center}</div>
+                          )}
+                        </div>
+
+                        {/* Reps */}
+                        <div style={{ fontSize: '28px', fontWeight: '700', color: '#ffffff', textAlign: 'right' }}>
+                          {serie.reps}
+                        </div>
+
+                        {/* Checkbox droite */}
+                        <div style={{
+                          width: '85px',
+                          height: '85px',
+                          borderRadius: '50%',
+                          cursor: 'pointer',
+                          pointerEvents: 'auto',
+                          ...(serie.state === 'completed' && {
+                            background: 'transparent',
+                            border: '4px solid #00D9FF',
+                            boxShadow: '0 0 50px rgba(0, 217, 255, 0.7)'
+                          }),
+                          ...(serie.state === 'active' && {
+                            background: 'radial-gradient(circle at 42% 38%, rgba(100, 255, 255, 1.0), rgba(0, 240, 255, 0.98))',
+                            border: '5px solid rgba(255, 255, 255, 0.95)',
+                            boxShadow: '0 0 80px rgba(0, 255, 255, 1.0)'
+                          }),
+                          ...(serie.state === 'rest' && {
+                            background: 'radial-gradient(circle at 42% 38%, rgba(170, 210, 255, 1.0), rgba(147, 197, 253, 0.9))',
+                            border: '3px solid rgba(147, 197, 253, 0.6)',
+                            boxShadow: '0 0 50px rgba(147, 197, 253, 0.7)'
+                          }),
+                          ...(serie.state === 'upcoming' && {
+                            background: 'radial-gradient(circle at 42% 38%, rgba(235, 235, 225, 0.85), rgba(220, 220, 210, 0.65))',
+                            border: '2px solid rgba(200, 200, 200, 0.35)',
+                            boxShadow: '0 0 30px rgba(220, 220, 210, 0.4)',
+                            opacity: 0.7
+                          })
+                        }} />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Footer */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '22px',
+                    background: 'rgba(20,25,35,0.35)',
+                    backdropFilter: 'blur(15px)',
+                    borderRadius: '18px',
+                    maxWidth: '500px',
+                    margin: '30px auto 0'
+                  }}>
+                    <div>
+                      <div style={{ color: '#7a8090', fontSize: '10px', letterSpacing: '2px', marginBottom: '8px', fontWeight: '700' }}>
+                        CHRONO
+                      </div>
+                      <div style={{ fontSize: '48px', fontWeight: '900', color: 'white', textShadow: '0 0 25px rgba(255, 255, 255, 0.3)' }}>
+                        0:36
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#8a91a0' }}>
+                      1,000/2,500 KG
+                    </div>
                   </div>
                 </div>
               )}
