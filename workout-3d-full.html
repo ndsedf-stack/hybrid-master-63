@@ -1,3 +1,14 @@
+🔥 PUTAIN T'AS RAISON ! IL Y A 4 TECHNIQUES !
+D'après program-data.js :
+Rest-Pause (Bloc 2) - série 5
+Drop-set (Bloc 3) - série 4
+Clusters (Bloc 4) - série 5
+Partials (Bloc 4) - série 4
+🔧 JE MODIFIE workout-3d-full.html POUR DÉTECTER TOUTES LES TECHNIQUES !
+bash
+cd ~/Desktop/hybrid-master-63
+
+cat > workout-3d-full.html << 'ENDOFFILE'
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,10 +28,6 @@
       overflow-x: hidden;
     }
 
-    /* ========================================
-       TRAP BAR DEADLIFT - VERSION FINALE CORRECTE
-       ======================================== */
-
     .trapbar-screen {
         min-height: 100vh;
         background: #000000;
@@ -30,7 +37,6 @@
         position: relative;
     }
 
-    /* FOND AMBIANT - TRÈS SUBTIL */
     .trapbar-screen::before {
         content: '';
         position: fixed;
@@ -45,7 +51,6 @@
         opacity: 0.3;
     }
 
-    /* PARTICULES */
     .trapbar-particles {
         position: absolute;
         top: 0;
@@ -71,7 +76,6 @@
         50% { transform: translateY(-20px) translateX(10px); opacity: 0.3; }
     }
 
-    /* BOUTON RETOUR */
     .trapbar-back-btn {
         position: absolute;
         top: 20px;
@@ -108,7 +112,6 @@
     .trapbar-back-btn::before { transform: rotate(45deg); }
     .trapbar-back-btn::after { transform: rotate(-45deg); }
 
-    /* HEADER */
     .trapbar-header {
         display: flex;
         align-items: center;
@@ -163,7 +166,6 @@
         font-weight: 500;
     }
 
-    /* MÉTRIQUES - ICÔNES PLUS GRANDES */
     .trapbar-metrics {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -209,7 +211,6 @@
         font-weight: 600;
     }
 
-    /* 3 GRANDS CERCLES - PARFAITEMENT RONDS */
     .trapbar-circles-container {
         position: relative;
         display: flex;
@@ -230,7 +231,6 @@
         flex-shrink: 0;
     }
 
-    /* HALOS ÉNORMES */
     .trapbar-circle-wrapper.green {
         filter: 
             drop-shadow(0 0 60px rgba(53, 255, 139, 1.0))
@@ -255,7 +255,6 @@
             drop-shadow(0 0 310px rgba(0, 217, 255, 0.5));
     }
 
-    /* SVG BORDURE ROTATIVE */
     .trapbar-circle-svg {
         position: absolute;
         inset: 0;
@@ -269,7 +268,6 @@
         to { transform: rotate(360deg); }
     }
 
-    /* INTÉRIEUR NOIR */
     .trapbar-circle-inner {
         position: absolute;
         inset: 6px;
@@ -325,7 +323,6 @@
         text-shadow: 0 0 40px rgba(0, 217, 255, 0.9);
     }
 
-    /* SÉRIES - LIGNES DÉTAILLÉES */
     .trapbar-series-list {
         display: flex;
         flex-direction: column;
@@ -354,7 +351,6 @@
         box-shadow: 0 6px 30px rgba(0,0,0,0.5);
     }
 
-    /* PETIT CERCLE ORANGE GAUCHE */
     .trapbar-serie-small-circle {
         width: 80px;
         height: 80px;
@@ -387,7 +383,6 @@
         text-shadow: 0 0 10px rgba(255,109,0,0.6);
     }
 
-    /* BADGES DROP SET / REST PAUSE */
     .trapbar-serie-badge {
         padding: 12px 28px;
         border-radius: 18px;
@@ -414,7 +409,24 @@
             inset 0 -3px 6px rgba(0,0,0,0.4);
     }
 
-    /* TEXTE POIDS */
+    .trapbar-serie-badge.clusters {
+        background: linear-gradient(180deg, #FF6D00 0%, #FFB347 100%);
+        color: white;
+        box-shadow: 
+            0 6px 25px rgba(255,109,0,0.7),
+            inset 0 2px 4px rgba(255,255,255,0.4),
+            inset 0 -3px 6px rgba(0,0,0,0.4);
+    }
+
+    .trapbar-serie-badge.partials {
+        background: linear-gradient(180deg, #35FF8B 0%, #00FFD0 100%);
+        color: #000;
+        box-shadow: 
+            0 6px 25px rgba(53,255,139,0.7),
+            inset 0 2px 4px rgba(255,255,255,0.5),
+            inset 0 -3px 6px rgba(0,0,0,0.3);
+    }
+
     .trapbar-serie-text {
         font-size: 26px;
         font-weight: 700;
@@ -429,7 +441,6 @@
         text-shadow: 0 0 20px rgba(0,217,255,0.7);
     }
 
-    /* GROS CERCLE CHECKBOX DROITE */
     .trapbar-serie-checkbox {
         width: 85px;
         height: 85px;
@@ -470,7 +481,6 @@
         box-shadow: inset 0 0 15px rgba(200,200,200,0.1);
     }
 
-    /* LIGNE COMPLÉTÉE ÉCLAIRÉE */
     .trapbar-serie-row.completed {
         background: linear-gradient(135deg, rgba(0,217,255,0.25) 0%, rgba(0,217,255,0.15) 100%);
         box-shadow: 
@@ -478,7 +488,6 @@
             0 0 50px rgba(0,217,255,0.4);
     }
 
-    /* FOOTER */
     .trapbar-footer {
         display: flex;
         justify-content: space-between;
@@ -517,7 +526,6 @@
         text-shadow: 0 0 30px rgba(156,163,175,0.7);
     }
 
-    /* NAVIGATION BOUTONS */
     .nav-buttons {
       display: flex;
       justify-content: space-between;
@@ -566,7 +574,7 @@
   <div id="app"></div>
   
   <script type="module">
-    import programData from './scripts/program-data.js?v=20251116-011';
+    import programData from './scripts/program-data.js?v=20251116-012';
     
     const urlParams = new URLSearchParams(window.location.search);
     const weekNumber = parseInt(urlParams.get('week')) || 1;
@@ -618,6 +626,28 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
         render();
       }
+    }
+    
+    // FONCTION POUR DÉTECTER LA TECHNIQUE D'INTENSIFICATION
+    function detectIntensification(notes, serieIndex) {
+      if (!notes) return null;
+      
+      const noteUpper = notes.toUpperCase();
+      
+      // Vérifier si c'est la bonne série
+      const serieMatch = notes.match(/S(\d+)/);
+      if (serieMatch) {
+        const targetSerie = parseInt(serieMatch[1]);
+        if (serieIndex + 1 !== targetSerie) return null;
+      }
+      
+      // Détecter la technique
+      if (noteUpper.includes('REST-PAUSE')) return { type: 'restpause', label: 'REST PAUSE' };
+      if (noteUpper.includes('DROP-SET')) return { type: 'dropset', label: 'DROP SET' };
+      if (noteUpper.includes('CLUSTERS')) return { type: 'clusters', label: 'CLUSTERS' };
+      if (noteUpper.includes('PARTIALS')) return { type: 'partials', label: 'PARTIALS' };
+      
+      return null;
     }
     
     function getWeightIcon() {
@@ -690,14 +720,13 @@
       
       const series = [];
       for (let i = 0; i < exercise.sets; i++) {
-        const baseSet = { weight: exercise.weight, reps: exercise.reps, index: i, type: 'normal' };
-        if (exercise.restPause && i === Math.floor(exercise.sets / 2)) {
-          series.push({ ...baseSet, type: 'restpause' });
-        } else if (exercise.dropSets && i === exercise.sets - 1) {
-          series.push({ ...baseSet, type: 'dropset' });
-        } else {
-          series.push(baseSet);
-        }
+        const intensification = detectIntensification(exercise.notes, i);
+        series.push({ 
+          weight: exercise.weight, 
+          reps: exercise.reps, 
+          index: i, 
+          intensification: intensification
+        });
       }
       
       const firstUncompleted = currentSets.findIndex(s => !s);
@@ -756,9 +785,13 @@
               const isCompleted = currentSets[s.index];
               const chk = isCompleted ? 'completed' : (i === firstUncompleted ? 'uncompleted-first' : (i === firstUncompleted + 1 ? 'uncompleted-gray' : 'uncompleted-beige'));
               const row = isCompleted ? ' completed' : '';
-              const center = s.type === 'dropset' ? '<div class="trapbar-serie-badge dropset">DROP SET</div>' : 
-                           (s.type === 'restpause' ? '<div class="trapbar-serie-badge restpause">REST PAUSE</div>' : 
-                           `<div class="trapbar-serie-text">${s.weight} kg</div>`);
+              
+              let center;
+              if (s.intensification) {
+                center = `<div class="trapbar-serie-badge ${s.intensification.type}">${s.intensification.label}</div>`;
+              } else {
+                center = `<div class="trapbar-serie-text">${s.weight} kg</div>`;
+              }
               
               return `<div class="trapbar-serie-row${row}">
                 <div class="trapbar-serie-small-circle">
