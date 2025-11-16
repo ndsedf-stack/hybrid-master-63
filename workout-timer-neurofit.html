@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>NeuroFit Timer</title>
+    <title>NeuroFit Timer - Mode Hybride</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,6 @@
             width: 100vw;
         }
 
-        /* Header */
         .header {
             position: relative;
             z-index: 100;
@@ -63,16 +62,15 @@
             color: #FF3366;
         }
 
-        /* Timer Container */
         .timer-container {
             position: relative;
             height: calc(100vh - 280px);
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        /* Circular Timer */
         .circular-timer {
             position: relative;
             width: 320px;
@@ -87,34 +85,29 @@
             border-radius: 50%;
         }
 
-        /* Circle 4 - Séance complète (extérieur) */
         .circle-session {
             width: 320px;
             height: 320px;
             border: 3px solid rgba(255,255,255,0.05);
         }
 
-        /* Circle 3 - Exercice actuel */
         .circle-exercise {
             width: 270px;
             height: 270px;
             border: 3px solid rgba(0,255,136,0.1);
         }
 
-        /* Circle 2 - Série actuelle */
         .circle-set {
             width: 220px;
             height: 220px;
             border: 3px solid rgba(157,78,221,0.15);
         }
 
-        /* Circle 1 - Répétition (tempo) */
         .circle-rep {
             width: 170px;
             height: 170px;
         }
 
-        /* Center Display */
         .center-display {
             position: absolute;
             top: 50%;
@@ -153,7 +146,164 @@
             animation: pulse 1s ease-in-out infinite;
         }
 
-        /* Tempo Bar */
+        /* Modales */
+        .validation-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15,15,15,0.98);
+            border: 2px solid rgba(0,217,255,0.3);
+            border-radius: 24px;
+            padding: 30px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            z-index: 200;
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .validation-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .validation-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #00FF88;
+        }
+
+        .validation-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 25px;
+        }
+
+        .validation-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .val-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .val-btn-yes {
+            background: linear-gradient(135deg, #00FF88 0%, #00D9FF 100%);
+            color: #000000;
+        }
+
+        .val-btn-no {
+            background: rgba(255,51,102,0.2);
+            border: 1px solid rgba(255,51,102,0.5);
+            color: #FF3366;
+        }
+
+        .val-btn:active {
+            transform: scale(0.95);
+        }
+
+        .set-complete-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15,15,15,0.98);
+            border: 2px solid rgba(0,255,136,0.5);
+            border-radius: 24px;
+            padding: 30px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            z-index: 200;
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .set-complete-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .set-complete-title {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .set-complete-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00FF88;
+            margin-bottom: 20px;
+        }
+
+        .set-stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .set-stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .set-stat-value {
+            color: #00D9FF;
+            font-weight: 600;
+        }
+
+        .adjust-reps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .adjust-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .adjust-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00D9FF;
+            min-width: 50px;
+        }
+
         .tempo-bar-container {
             padding: 0 20px 20px;
         }
@@ -207,7 +357,6 @@
             color: rgba(255,255,255,0.5);
         }
 
-        /* Descent - Blue */
         .tempo-phase.descent.active {
             background: rgba(0,217,255,0.15);
             border: 1px solid rgba(0,217,255,0.3);
@@ -215,7 +364,6 @@
         .tempo-phase.descent .tempo-phase-icon { color: #00D9FF; }
         .tempo-phase.descent .tempo-phase-progress { background: #00D9FF; }
 
-        /* Pause - Yellow */
         .tempo-phase.pause.active {
             background: rgba(255,215,0,0.15);
             border: 1px solid rgba(255,215,0,0.3);
@@ -223,7 +371,6 @@
         .tempo-phase.pause .tempo-phase-icon { color: #FFD700; }
         .tempo-phase.pause .tempo-phase-progress { background: #FFD700; }
 
-        /* Lift - Red */
         .tempo-phase.lift.active {
             background: rgba(255,51,102,0.15);
             border: 1px solid rgba(255,51,102,0.3);
@@ -231,7 +378,6 @@
         .tempo-phase.lift .tempo-phase-icon { color: #FF3366; }
         .tempo-phase.lift .tempo-phase-progress { background: #FF3366; }
 
-        /* Exercise Info */
         .exercise-info {
             padding: 20px;
             text-align: center;
@@ -255,7 +401,6 @@
             gap: 15px;
         }
 
-        /* Actions */
         .actions {
             padding: 20px;
             display: flex;
@@ -287,16 +432,16 @@
             transform: scale(0.95);
         }
 
-        .btn-next {
-            background: linear-gradient(135deg, #00D9FF 0%, #00FF88 100%);
-            color: #000000;
+        .btn-skip {
+            background: rgba(255,51,102,0.2);
+            border: 1px solid rgba(255,51,102,0.5);
+            color: #FF3366;
         }
 
-        .btn-next:active {
+        .btn-skip:active {
             transform: scale(0.95);
         }
 
-        /* SVG Circles */
         .progress-ring {
             transform: rotate(-90deg);
         }
@@ -305,7 +450,6 @@
             transition: stroke-dashoffset 0.3s ease;
         }
 
-        /* Animations */
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.2); opacity: 0.8; }
@@ -316,7 +460,6 @@
             50% { filter: drop-shadow(0 0 20px rgba(255,51,102,0.5)); }
         }
 
-        /* Particles (for completing sets) */
         .particle {
             position: absolute;
             width: 8px;
@@ -338,7 +481,6 @@
             }
         }
 
-        /* Settings Icon */
         .settings-btn {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
@@ -352,7 +494,6 @@
             font-size: 20px;
         }
 
-        /* Rest Mode */
         .rest-mode .circle-rep {
             animation: breathe 4s ease-in-out infinite;
         }
@@ -361,22 +502,27 @@
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.1); }
         }
+
+        .rest-mode .time-display {
+            color: #9D4EDD;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="header-info">
-            <div class="week-tag">SEMAINE 7 • JOUR 3</div>
+            <div class="week-tag" id="weekTag">SEMAINE 7 • JOUR 3</div>
             <div class="streak">🔥 <span id="streakCount">15</span></div>
         </div>
         <div class="settings-btn">⚙️</div>
     </div>
 
-    <!-- Timer Container -->
-    <div class="timer-container">
+    <div class="timer-container" id="timerContainer">
         <div class="circular-timer">
-            <!-- Circle 4: Session -->
             <svg class="circle circle-session" viewBox="0 0 320 320">
                 <circle class="progress-ring-circle"
                     stroke="rgba(255,255,255,0.1)"
@@ -385,10 +531,10 @@
                     r="157"
                     cx="160"
                     cy="160"
+                    id="sessionCircle"
                     style="stroke-dasharray: 986; stroke-dashoffset: 493;" />
             </svg>
 
-            <!-- Circle 3: Exercise -->
             <svg class="circle circle-exercise" viewBox="0 0 270 270">
                 <circle class="progress-ring-circle"
                     stroke="#00FF88"
@@ -397,10 +543,10 @@
                     r="132"
                     cx="135"
                     cy="135"
+                    id="exerciseCircle"
                     style="stroke-dasharray: 829; stroke-dashoffset: 207;" />
             </svg>
 
-            <!-- Circle 2: Set -->
             <svg class="circle circle-set" viewBox="0 0 220 220">
                 <circle class="progress-ring-circle"
                     stroke="#9D4EDD"
@@ -409,10 +555,10 @@
                     r="107"
                     cx="110"
                     cy="110"
+                    id="setCircle"
                     style="stroke-dasharray: 672; stroke-dashoffset: 403;" />
             </svg>
 
-            <!-- Circle 1: Rep (Tempo) -->
             <svg class="circle circle-rep" viewBox="0 0 170 170">
                 <defs>
                     <linearGradient id="tempoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -432,7 +578,6 @@
                     style="stroke-dasharray: 490; stroke-dashoffset: 0;" />
             </svg>
 
-            <!-- Center Display -->
             <div class="center-display">
                 <div class="time-display" id="timeDisplay">3.0</div>
                 <div class="phase-display">
@@ -441,9 +586,60 @@
                 </div>
             </div>
         </div>
+
+        <div class="validation-modal" id="validationModal">
+            <div class="validation-title">✓ REP <span id="valRepNumber">1</span>/<span id="valTotalReps">8</span></div>
+            <div class="validation-subtitle">Tempo respecté ?</div>
+            <div class="validation-buttons">
+                <button class="val-btn val-btn-yes" id="btnYes">
+                    <span style="font-size: 28px;">✓</span>
+                    <span>OUI</span>
+                </button>
+                <button class="val-btn val-btn-no" id="btnNo">
+                    <span style="font-size: 28px;">⚠️</span>
+                    <span>NON</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="set-complete-modal" id="setCompleteModal">
+            <div class="set-complete-title">🎉</div>
+            <div class="set-complete-text">SÉRIE TERMINÉE !</div>
+            
+            <div class="set-stats">
+                <div class="set-stat-row">
+                    <span>Reps complétées</span>
+                    <span class="set-stat-value"><span id="statsReps">8</span>/<span id="statsRepsTotal">8</span></span>
+                </div>
+                <div class="set-stat-row">
+                    <span>Tempo respecté</span>
+                    <span class="set-stat-value"><span id="statsTempo">8</span>/<span id="statsTempoTotal">8</span></span>
+                </div>
+                <div class="set-stat-row">
+                    <span>Time Under Tension</span>
+                    <span class="set-stat-value"><span id="statsTUT">48</span>s</span>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px; color: rgba(255,255,255,0.6); font-size: 14px;">
+                Ajuster les reps si nécessaire
+            </div>
+
+            <div class="adjust-reps">
+                <button class="adjust-btn" id="btnMinus">−</button>
+                <div class="adjust-value" id="adjustValue">8</div>
+                <button class="adjust-btn" id="btnPlus">+</button>
+            </div>
+
+            <div class="validation-buttons">
+                <button class="val-btn val-btn-yes" id="btnValidate">
+                    <span style="font-size: 28px;">✓</span>
+                    <span>VALIDER</span>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Tempo Bar -->
     <div class="tempo-bar-container">
         <div class="tempo-bar">
             <div class="tempo-phase descent active">
@@ -451,60 +647,68 @@
                 <div class="tempo-phase-bar">
                     <div class="tempo-phase-progress" id="descentProgress" style="width: 0%"></div>
                 </div>
-                <div class="tempo-phase-time">3s</div>
+                <div class="tempo-phase-time" id="descentTime">3s</div>
             </div>
             <div class="tempo-phase pause">
                 <div class="tempo-phase-icon">⏸️</div>
                 <div class="tempo-phase-bar">
                     <div class="tempo-phase-progress" id="pauseProgress" style="width: 0%"></div>
                 </div>
-                <div class="tempo-phase-time">1s</div>
+                <div class="tempo-phase-time" id="pauseTime">1s</div>
             </div>
             <div class="tempo-phase lift">
                 <div class="tempo-phase-icon">⬆️</div>
                 <div class="tempo-phase-bar">
                     <div class="tempo-phase-progress" id="liftProgress" style="width: 0%"></div>
                 </div>
-                <div class="tempo-phase-time">2s</div>
+                <div class="tempo-phase-time" id="liftTime">2s</div>
             </div>
         </div>
     </div>
 
-    <!-- Exercise Info -->
     <div class="exercise-info">
-        <div class="exercise-name">TRAP BAR DEADLIFT</div>
+        <div class="exercise-name" id="exerciseName">TRAP BAR DEADLIFT</div>
         <div class="exercise-details">
-            <span>💪 120kg</span>
+            <span id="exerciseWeight">💪 120kg</span>
             <span>•</span>
-            <span>SET 3/5</span>
+            <span>SET <span id="currentSet">1</span>/<span id="totalSets">5</span></span>
             <span>•</span>
-            <span>8 reps</span>
+            <span id="exerciseReps">8 reps</span>
             <span>•</span>
-            <span>Tempo 3-1-2</span>
+            <span id="exerciseTempo">Tempo 3-1-2</span>
         </div>
     </div>
 
-    <!-- Actions -->
     <div class="actions">
         <button class="btn btn-pause" id="pauseBtn">
             <span>⏸️</span>
             <span>PAUSE</span>
         </button>
-        <button class="btn btn-next" id="nextBtn">
-            <span>✓</span>
-            <span>TERMINÉ</span>
+        <button class="btn btn-skip" id="skipBtn">
+            <span>⏭️</span>
+            <span>SKIP</span>
         </button>
     </div>
 
-    <script>
-        // Timer State
-        let currentPhase = 0; // 0: descent, 1: pause, 2: lift
-        let currentRep = 1;
-        let totalReps = 8;
-        let tempo = [3, 1, 2]; // descent, pause, lift (seconds)
-        let timeRemaining = tempo[0];
-        let isPaused = false;
-        let isResting = false;
+    <script type="module">
+        // State
+        let state = {
+            phase: 0,
+            rep: 1,
+            set: 1,
+            totalReps: 8,
+            totalSets: 5,
+            tempo: [3, 1, 2],
+            timeRemaining: 3,
+            isPaused: false,
+            isResting: false,
+            restTime: 90,
+            tempoRespected: [],
+            repsCompleted: 0,
+            exerciseName: "TRAP BAR DEADLIFT",
+            weight: 120
+        };
+
         let timerInterval;
 
         // Elements
@@ -512,33 +716,47 @@
         const phaseIcon = document.getElementById('phaseIcon');
         const phaseText = document.getElementById('phaseText');
         const tempoCircle = document.getElementById('tempoCircle');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const nextBtn = document.getElementById('nextBtn');
+        const validationModal = document.getElementById('validationModal');
+        const setCompleteModal = document.getElementById('setCompleteModal');
+        const valRepNumber = document.getElementById('valRepNumber');
+        const valTotalReps = document.getElementById('valTotalReps');
+        const timerContainer = document.getElementById('timerContainer');
+        const currentSetDisplay = document.getElementById('currentSet');
+        const totalSetsDisplay = document.getElementById('totalSets');
 
-        // Tempo bar elements
         const descentProgress = document.getElementById('descentProgress');
         const pauseProgress = document.getElementById('pauseProgress');
         const liftProgress = document.getElementById('liftProgress');
         const tempoPhases = document.querySelectorAll('.tempo-phase');
 
-        // Phase data
         const phases = [
             { name: 'DESCENT', icon: '⬇️', color: '#00D9FF' },
             { name: 'PAUSE', icon: '⏸️', color: '#FFD700' },
             { name: 'LIFT', icon: '⬆️', color: '#FF3366' }
         ];
 
-        // Start timer
+        // Initialize display
+        function initDisplay() {
+            valTotalReps.textContent = state.totalReps;
+            currentSetDisplay.textContent = state.set;
+            totalSetsDisplay.textContent = state.totalSets;
+            document.getElementById('statsRepsTotal').textContent = state.totalReps;
+            document.getElementById('statsTempoTotal').textContent = state.totalReps;
+            document.getElementById('descentTime').textContent = state.tempo[0] + 's';
+            document.getElementById('pauseTime').textContent = state.tempo[1] + 's';
+            document.getElementById('liftTime').textContent = state.tempo[2] + 's';
+        }
+
         function startTimer() {
-            timerInterval = setInterval(updateTimer, 100); // 100ms for smooth animation
+            timerInterval = setInterval(updateTimer, 100);
         }
 
         function updateTimer() {
-            if (isPaused) return;
+            if (state.isPaused) return;
 
-            timeRemaining -= 0.1;
+            state.timeRemaining -= 0.1;
 
-            if (timeRemaining <= 0) {
+            if (state.timeRemaining <= 0) {
                 nextPhase();
             }
 
@@ -547,148 +765,225 @@
         }
 
         function updateDisplay() {
-            timeDisplay.textContent = timeRemaining.toFixed(1);
-            phaseIcon.textContent = phases[currentPhase].icon;
-            phaseText.textContent = phases[currentPhase].name;
+            if (state.isResting) {
+                timeDisplay.textContent = formatTime(state.timeRemaining);
+                phaseIcon.textContent = '🟣';
+                phaseText.textContent = 'REPOS';
+                timerContainer.classList.add('rest-mode');
+            } else {
+                timeDisplay.textContent = state.timeRemaining.toFixed(1);
+                phaseIcon.textContent = phases[state.phase].icon;
+                phaseText.textContent = phases[state.phase].name;
+                timerContainer.classList.remove('rest-mode');
 
-            // Update tempo circle
-            const circumference = 490;
-            const progress = 1 - (timeRemaining / tempo[currentPhase]);
-            const offset = circumference * (1 - progress);
-            tempoCircle.style.strokeDashoffset = offset;
+                const circumference = 490;
+                const progress = 1 - (state.timeRemaining / state.tempo[state.phase]);
+                const offset = circumference * (1 - progress);
+                tempoCircle.style.strokeDashoffset = offset;
+            }
         }
 
         function updateProgressBars() {
-            const progress = ((tempo[currentPhase] - timeRemaining) / tempo[currentPhase]) * 100;
+            if (state.isResting) return;
+
+            const progress = ((state.tempo[state.phase] - state.timeRemaining) / state.tempo[state.phase]) * 100;
             
-            // Reset all
             descentProgress.style.width = '0%';
             pauseProgress.style.width = '0%';
             liftProgress.style.width = '0%';
 
-            // Update active
-            if (currentPhase === 0) descentProgress.style.width = progress + '%';
-            if (currentPhase === 1) pauseProgress.style.width = progress + '%';
-            if (currentPhase === 2) liftProgress.style.width = progress + '%';
+            if (state.phase === 0) descentProgress.style.width = progress + '%';
+            if (state.phase === 1) pauseProgress.style.width = progress + '%';
+            if (state.phase === 2) liftProgress.style.width = progress + '%';
 
-            // Update active class
             tempoPhases.forEach((phase, i) => {
-                phase.classList.toggle('active', i === currentPhase);
+                phase.classList.toggle('active', i === state.phase);
             });
         }
 
         function nextPhase() {
-            // Vibration feedback (Option A: subtle)
             if (navigator.vibrate) {
-                navigator.vibrate(50); // 50ms vibration
+                navigator.vibrate(50);
             }
 
-            currentPhase++;
+            state.phase++;
 
-            if (currentPhase >= 3) {
-                // Rep completed
-                currentPhase = 0;
-                currentRep++;
+            if (state.phase >= 3) {
+                showValidation();
+                return;
+            }
 
-                if (currentRep > totalReps) {
-                    setCompleted();
-                    return;
-                }
+            state.timeRemaining = state.tempo[state.phase];
+        }
 
-                // Particle explosion
+        function showValidation() {
+            clearInterval(timerInterval);
+            valRepNumber.textContent = state.rep;
+            validationModal.classList.add('active');
+        }
+
+        function hideValidation() {
+            validationModal.classList.remove('active');
+        }
+
+        function continueToNextRep(tempoOk) {
+            hideValidation();
+            
+            state.tempoRespected.push(tempoOk);
+            state.repsCompleted++;
+            state.rep++;
+            state.phase = 0;
+            state.timeRemaining = state.tempo[0];
+
+            if (state.rep > state.totalReps) {
+                showSetComplete();
+            } else {
                 createParticles();
+                startTimer();
+            }
+        }
+
+        function showSetComplete() {
+            const tempoOk = state.tempoRespected.filter(t => t).length;
+            const tut = state.repsCompleted * state.tempo.reduce((a, b) => a + b, 0);
+
+            document.getElementById('statsReps').textContent = state.repsCompleted;
+            document.getElementById('statsTempo').textContent = tempoOk;
+            document.getElementById('statsTUT').textContent = tut;
+            document.getElementById('adjustValue').textContent = state.repsCompleted;
+
+            setCompleteModal.classList.add('active');
+
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+        }
+
+        function hideSetComplete() {
+            setCompleteModal.classList.remove('active');
+        }
+
+        function validateSet() {
+            hideSetComplete();
+            
+            console.log('✅ Série sauvegardée:', {
+                set: state.set,
+                reps: state.repsCompleted,
+                tempo: state.tempoRespected.filter(t => t).length + '/' + state.repsCompleted,
+                tut: state.repsCompleted * state.tempo.reduce((a, b) => a + b, 0)
+            });
+
+            startRest();
+        }
+
+        function startRest() {
+            state.isResting = true;
+            state.timeRemaining = state.restTime;
+            startTimer();
+        }
+
+        function endRest() {
+            state.isResting = false;
+            state.set++;
+            state.rep = 1;
+            state.repsCompleted = 0;
+            state.tempoRespected = [];
+            state.phase = 0;
+            state.timeRemaining = state.tempo[0];
+
+            currentSetDisplay.textContent = state.set;
+
+            if (state.set > state.totalSets) {
+                alert('🎉 EXERCICE TERMINÉ !');
+                return;
             }
 
-            timeRemaining = tempo[currentPhase];
+            startTimer();
         }
 
         function createParticles() {
-            const container = document.querySelector('.timer-container');
-            const centerX = container.offsetWidth / 2;
-            const centerY = container.offsetHeight / 2;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
 
             for (let i = 0; i < 12; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
-                const angle = (i / 12) * Math.PI * 2;
+                const angle = (Math.PI * 2 * i) / 12;
                 const distance = 100;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
-
+                
                 particle.style.left = centerX + 'px';
                 particle.style.top = centerY + 'px';
                 particle.style.setProperty('--tx', tx + 'px');
                 particle.style.setProperty('--ty', ty + 'px');
-                particle.style.background = phases[Math.floor(Math.random() * 3)].color;
-
-                container.appendChild(particle);
-
+                
+                document.body.appendChild(particle);
+                
                 setTimeout(() => particle.remove(), 1000);
             }
         }
 
-        function setCompleted() {
-            clearInterval(timerInterval);
-            timeDisplay.textContent = '✓';
-            phaseText.textContent = 'SÉRIE TERMINÉE';
-            
-            // Big vibration (Option A)
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100]);
-            }
-
-            // Save data (will be implemented in session-storage.js)
-            console.log('Set completed, saving data...');
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Pause button
-        pauseBtn.addEventListener('click', () => {
-            isPaused = !isPaused;
-            pauseBtn.innerHTML = isPaused ? 
-                '<span>▶️</span><span>REPRENDRE</span>' : 
-                '<span>⏸️</span><span>PAUSE</span>';
+        // Event Listeners
+        document.getElementById('btnYes').addEventListener('click', () => {
+            continueToNextRep(true);
         });
 
-        // Next button
-        nextBtn.addEventListener('click', () => {
-            setCompleted();
+        document.getElementById('btnNo').addEventListener('click', () => {
+            continueToNextRep(false);
         });
+
+        document.getElementById('btnValidate').addEventListener('click', () => {
+            const adjustedReps = parseInt(document.getElementById('adjustValue').textContent);
+            state.repsCompleted = adjustedReps;
+            validateSet();
+        });
+
+        document.getElementById('btnMinus').addEventListener('click', () => {
+            const current = parseInt(document.getElementById('adjustValue').textContent);
+            if (current > 0) {
+                document.getElementById('adjustValue').textContent = current - 1;
+            }
+        });
+
+        document.getElementById('btnPlus').addEventListener('click', () => {
+            const current = parseInt(document.getElementById('adjustValue').textContent);
+            if (current < state.totalReps) {
+                document.getElementById('adjustValue').textContent = current + 1;
+            }
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            state.isPaused = !state.isPaused;
+            document.getElementById('pauseBtn').innerHTML = state.isPaused 
+                ? '<span>▶️</span><span>REPRENDRE</span>' 
+                : '<span>⏸️</span><span>PAUSE</span>';
+        });
+
+        document.getElementById('skipBtn').addEventListener('click', () => {
+            if (confirm('Passer à l\'exercice suivant ?')) {
+                clearInterval(timerInterval);
+                alert('🎯 Passage à l\'exercice suivant');
+            }
+        });
+
+        // Check for rest mode end
+        setInterval(() => {
+            if (state.isResting && state.timeRemaining <= 0) {
+                endRest();
+            }
+        }, 100);
 
         // Initialize
+        initDisplay();
         startTimer();
     </script>
-    // Importer les données du programme
-import { PROGRAM_DATA } from './scripts/program-data.js';
-import { WorkoutSessionManager } from './scripts/modules/session-storage.js';
-
-// Initialiser le session manager
-const sessionManager = new WorkoutSessionManager();
-
-// Démarrer une session
-const session = sessionManager.startNewSession(7, 'dimanche');
-
-// Charger l'exercice actuel depuis program-data.js
-const weekData = PROGRAM_DATA.weeks[6]; // Semaine 7 (index 6)
-const dayData = weekData.days.find(d => d.name === 'dimanche');
-const exercise = dayData.exercises[0]; // Premier exercice
-
-// Parser le tempo (ex: "3010" → [3, 0, 1, 0])
-function parseTempo(tempoStr) {
-    return tempoStr.split('').map(Number);
-}
-
-const tempo = parseTempo(exercise.tempo); // [3, 0, 1, 0]
-
-// Démarrer l'exercice
-sessionManager.startExercise({
-    name: exercise.name,
-    tempo: tempo.join('-'),
-    sets: exercise.sets,
-    reps: exercise.reps,
-    weight: exercise.weight || 0,
-    rest: exercise.rest || 90
-});
-
 </body>
 </html>
