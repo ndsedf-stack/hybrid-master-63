@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>NeuroFit Timer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 100;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .week-tag {
+            background: rgba(0,217,255,0.15);
+            border: 1px solid rgba(0,217,255,0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #00D9FF;
+        }
+
+        .streak {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,51,102,0.15);
+            border: 1px solid rgba(255,51,102,0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #FF3366;
+        }
+
+        /* Timer Container */
+        .timer-container {
+            position: relative;
+            height: calc(100vh - 280px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Circular Timer */
+        .circular-timer {
+            position: relative;
+            width: 320px;
+            height: 320px;
+        }
+
+        .circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        /* Circle 4 - Séance complète (extérieur) */
+        .circle-session {
+            width: 320px;
+            height: 320px;
+            border: 3px solid rgba(255,255,255,0.05);
+        }
+
+        /* Circle 3 - Exercice actuel */
+        .circle-exercise {
+            width: 270px;
+            height: 270px;
+            border: 3px solid rgba(0,255,136,0.1);
+        }
+
+        /* Circle 2 - Série actuelle */
+        .circle-set {
+            width: 220px;
+            height: 220px;
+            border: 3px solid rgba(157,78,221,0.15);
+        }
+
+        /* Circle 1 - Répétition (tempo) */
+        .circle-rep {
+            width: 170px;
+            height: 170px;
+        }
+
+        /* Center Display */
+        .center-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .time-display {
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00D9FF 0%, #FF3366 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .phase-display {
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .phase-icon {
+            font-size: 24px;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        /* Tempo Bar */
+        .tempo-bar-container {
+            padding: 0 20px 20px;
+        }
+
+        .tempo-bar {
+            display: flex;
+            gap: 8px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .tempo-phase {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .tempo-phase.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,217,255,0.5);
+        }
+
+        .tempo-phase-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .tempo-phase-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .tempo-phase-progress {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        .tempo-phase-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Descent - Blue */
+        .tempo-phase.descent.active {
+            background: rgba(0,217,255,0.15);
+            border: 1px solid rgba(0,217,255,0.3);
+        }
+        .tempo-phase.descent .tempo-phase-icon { color: #00D9FF; }
+        .tempo-phase.descent .tempo-phase-progress { background: #00D9FF; }
+
+        /* Pause - Yellow */
+        .tempo-phase.pause.active {
+            background: rgba(255,215,0,0.15);
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        .tempo-phase.pause .tempo-phase-icon { color: #FFD700; }
+        .tempo-phase.pause .tempo-phase-progress { background: #FFD700; }
+
+        /* Lift - Red */
+        .tempo-phase.lift.active {
+            background: rgba(255,51,102,0.15);
+            border: 1px solid rgba(255,51,102,0.3);
+        }
+        .tempo-phase.lift .tempo-phase-icon { color: #FF3366; }
+        .tempo-phase.lift .tempo-phase-progress { background: #FF3366; }
+
+        /* Exercise Info */
+        .exercise-info {
+            padding: 20px;
+            text-align: center;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .exercise-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #FFFFFF;
+        }
+
+        .exercise-details {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Actions */
+        .actions {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-pause {
+            background: rgba(255,255,255,0.1);
+            color: #FFFFFF;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-pause:active {
+            transform: scale(0.95);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #00D9FF 0%, #00FF88 100%);
+            color: #000000;
+        }
+
+        .btn-next:active {
+            transform: scale(0.95);
+        }
+
+        /* SVG Circles */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0,217,255,0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255,51,102,0.5)); }
+        }
+
+        /* Particles (for completing sets) */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #00D9FF;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Settings Icon */
+        .settings-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* Rest Mode */
+        .rest-mode .circle-rep {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-info">
+            <div class="week-tag">SEMAINE 7 • JOUR 3</div>
+            <div class="streak">🔥 <span id="streakCount">15</span></div>
+        </div>
+        <div class="settings-btn">⚙️</div>
+    </div>
+
+    <!-- Timer Container -->
+    <div class="timer-container">
+        <div class="circular-timer">
+            <!-- Circle 4: Session -->
+            <svg class="circle circle-session" viewBox="0 0 320 320">
+                <circle class="progress-ring-circle"
+                    stroke="rgba(255,255,255,0.1)"
+                    stroke-width="3"
+                    fill="transparent"
+                    r="157"
+                    cx="160"
+                    cy="160"
+                    style="stroke-dasharray: 986; stroke-dashoffset: 493;" />
+            </svg>
+
+            <!-- Circle 3: Exercise -->
+            <svg class="circle circle-exercise" viewBox="0 0 270 270">
+                <circle class="progress-ring-circle"
+                    stroke="#00FF88"
+                    stroke-width="4"
+                    fill="transparent"
+                    r="132"
+                    cx="135"
+                    cy="135"
+                    style="stroke-dasharray: 829; stroke-dashoffset: 207;" />
+            </svg>
+
+            <!-- Circle 2: Set -->
+            <svg class="circle circle-set" viewBox="0 0 220 220">
+                <circle class="progress-ring-circle"
+                    stroke="#9D4EDD"
+                    stroke-width="5"
+                    fill="transparent"
+                    r="107"
+                    cx="110"
+                    cy="110"
+                    style="stroke-dasharray: 672; stroke-dashoffset: 403;" />
+            </svg>
+
+            <!-- Circle 1: Rep (Tempo) -->
+            <svg class="circle circle-rep" viewBox="0 0 170 170">
+                <defs>
+                    <linearGradient id="tempoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#FFD700;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FF3366;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <circle class="progress-ring-circle"
+                    stroke="url(#tempoGradient)"
+                    stroke-width="8"
+                    fill="transparent"
+                    r="78"
+                    cx="85"
+                    cy="85"
+                    id="tempoCircle"
+                    style="stroke-dasharray: 490; stroke-dashoffset: 0;" />
+            </svg>
+
+            <!-- Center Display -->
+            <div class="center-display">
+                <div class="time-display" id="timeDisplay">3.0</div>
+                <div class="phase-display">
+                    <span class="phase-icon" id="phaseIcon">⬇️</span>
+                    <span id="phaseText">DESCENT</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tempo Bar -->
+    <div class="tempo-bar-container">
+        <div class="tempo-bar">
+            <div class="tempo-phase descent active">
+                <div class="tempo-phase-icon">⬇️</div>
+                <div class="tempo-phase-bar">
+                    <div class="tempo-phase-progress" id="descentProgress" style="width: 0%"></div>
+                </div>
+                <div class="tempo-phase-time">3s</div>
+            </div>
+            <div class="tempo-phase pause">
+                <div class="tempo-phase-icon">⏸️</div>
+                <div class="tempo-phase-bar">
+                    <div class="tempo-phase-progress" id="pauseProgress" style="width: 0%"></div>
+                </div>
+                <div class="tempo-phase-time">1s</div>
+            </div>
+            <div class="tempo-phase lift">
+                <div class="tempo-phase-icon">⬆️</div>
+                <div class="tempo-phase-bar">
+                    <div class="tempo-phase-progress" id="liftProgress" style="width: 0%"></div>
+                </div>
+                <div class="tempo-phase-time">2s</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercise Info -->
+    <div class="exercise-info">
+        <div class="exercise-name">TRAP BAR DEADLIFT</div>
+        <div class="exercise-details">
+            <span>💪 120kg</span>
+            <span>•</span>
+            <span>SET 3/5</span>
+            <span>•</span>
+            <span>8 reps</span>
+            <span>•</span>
+            <span>Tempo 3-1-2</span>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+        <button class="btn btn-pause" id="pauseBtn">
+            <span>⏸️</span>
+            <span>PAUSE</span>
+        </button>
+        <button class="btn btn-next" id="nextBtn">
+            <span>✓</span>
+            <span>TERMINÉ</span>
+        </button>
+    </div>
+
+    <script>
+        // Timer State
+        let currentPhase = 0; // 0: descent, 1: pause, 2: lift
+        let currentRep = 1;
+        let totalReps = 8;
+        let tempo = [3, 1, 2]; // descent, pause, lift (seconds)
+        let timeRemaining = tempo[0];
+        let isPaused = false;
+        let isResting = false;
+        let timerInterval;
+
+        // Elements
+        const timeDisplay = document.getElementById('timeDisplay');
+        const phaseIcon = document.getElementById('phaseIcon');
+        const phaseText = document.getElementById('phaseText');
+        const tempoCircle = document.getElementById('tempoCircle');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Tempo bar elements
+        const descentProgress = document.getElementById('descentProgress');
+        const pauseProgress = document.getElementById('pauseProgress');
+        const liftProgress = document.getElementById('liftProgress');
+        const tempoPhases = document.querySelectorAll('.tempo-phase');
+
+        // Phase data
+        const phases = [
+            { name: 'DESCENT', icon: '⬇️', color: '#00D9FF' },
+            { name: 'PAUSE', icon: '⏸️', color: '#FFD700' },
+            { name: 'LIFT', icon: '⬆️', color: '#FF3366' }
+        ];
+
+        // Start timer
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 100); // 100ms for smooth animation
+        }
+
+        function updateTimer() {
+            if (isPaused) return;
+
+            timeRemaining -= 0.1;
+
+            if (timeRemaining <= 0) {
+                nextPhase();
+            }
+
+            updateDisplay();
+            updateProgressBars();
+        }
+
+        function updateDisplay() {
+            timeDisplay.textContent = timeRemaining.toFixed(1);
+            phaseIcon.textContent = phases[currentPhase].icon;
+            phaseText.textContent = phases[currentPhase].name;
+
+            // Update tempo circle
+            const circumference = 490;
+            const progress = 1 - (timeRemaining / tempo[currentPhase]);
+            const offset = circumference * (1 - progress);
+            tempoCircle.style.strokeDashoffset = offset;
+        }
+
+        function updateProgressBars() {
+            const progress = ((tempo[currentPhase] - timeRemaining) / tempo[currentPhase]) * 100;
+            
+            // Reset all
+            descentProgress.style.width = '0%';
+            pauseProgress.style.width = '0%';
+            liftProgress.style.width = '0%';
+
+            // Update active
+            if (currentPhase === 0) descentProgress.style.width = progress + '%';
+            if (currentPhase === 1) pauseProgress.style.width = progress + '%';
+            if (currentPhase === 2) liftProgress.style.width = progress + '%';
+
+            // Update active class
+            tempoPhases.forEach((phase, i) => {
+                phase.classList.toggle('active', i === currentPhase);
+            });
+        }
+
+        function nextPhase() {
+            // Vibration feedback (Option A: subtle)
+            if (navigator.vibrate) {
+                navigator.vibrate(50); // 50ms vibration
+            }
+
+            currentPhase++;
+
+            if (currentPhase >= 3) {
+                // Rep completed
+                currentPhase = 0;
+                currentRep++;
+
+                if (currentRep > totalReps) {
+                    setCompleted();
+                    return;
+                }
+
+                // Particle explosion
+                createParticles();
+            }
+
+            timeRemaining = tempo[currentPhase];
+        }
+
+        function createParticles() {
+            const container = document.querySelector('.timer-container');
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const angle = (i / 12) * Math.PI * 2;
+                const distance = 100;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.background = phases[Math.floor(Math.random() * 3)].color;
+
+                container.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        function setCompleted() {
+            clearInterval(timerInterval);
+            timeDisplay.textContent = '✓';
+            phaseText.textContent = 'SÉRIE TERMINÉE';
+            
+            // Big vibration (Option A)
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+
+            // Save data (will be implemented in session-storage.js)
+            console.log('Set completed, saving data...');
+        }
+
+        // Pause button
+        pauseBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            pauseBtn.innerHTML = isPaused ? 
+                '<span>▶️</span><span>REPRENDRE</span>' : 
+                '<span>⏸️</span><span>PAUSE</span>';
+        });
+
+        // Next button
+        nextBtn.addEventListener('click', () => {
+            setCompleted();
+        });
+
+        // Initialize
+        startTimer();
+    </script>
+</body>
+</html>
