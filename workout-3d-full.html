@@ -1,0 +1,324 @@
+🔥 PARFAIT ! MAINTENANT JE VAIS CRÉER LA VERSION COMPLÈTE !
+Je vais créer workout-3d-full.html qui utilise :
+✅ Le CSS exact de trapbar-screen.css
+✅ La même structure visuelle
+✅ TOUS les exercices chargés depuis program-data.js
+✅ Navigation entre exercices
+bash
+cd ~/Desktop/hybrid-master-63
+
+cat > workout-3d-full.html << 'ENDOFFILE'
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Séance - Hybrid Master 63</title>
+  
+  <link rel="stylesheet" href="styles/trapbar-screen.css?v=20251116-005" />
+  
+  <style>
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 40px 0 20px 0;
+      position: relative;
+      z-index: 100;
+    }
+    
+    .nav-btn {
+      flex: 1;
+      padding: 18px 32px;
+      border: none;
+      border-radius: 18px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(255,255,255,0.05) !important;
+      color: #666 !important;
+      box-shadow: none !important;
+    }
+    
+    .nav-btn.prev {
+      background: linear-gradient(135deg, #00D9FF, #00E5FF);
+      color: #000;
+    }
+    
+    .nav-btn.next {
+      background: linear-gradient(135deg, #35FF8B, #00FFD0);
+      color: #000;
+    }
+    
+    .nav-btn:not(:disabled):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,217,255,0.6);
+    }
+    
+    .exercise-counter {
+      text-align: center;
+      color: #7a8090;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; overflow-x: hidden;">
+  <div id="app"></div>
+  
+  <script type="module">
+    import programData from './scripts/program-data.js?v=20251116-005';
+    
+    // RÉCUPÉRER LES PARAMÈTRES URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const weekNumber = parseInt(urlParams.get('week')) || 1;
+    const dayKey = urlParams.get('day') || 'dimanche';
+    
+    // CHARGER LES DONNÉES
+    const weekData = programData.getWeek(weekNumber);
+    const workout = weekData[dayKey];
+    
+    if (!workout) {
+      document.getElementById('app').innerHTML = '<div style="color:white;padding:40px;text-align:center;font-size:24px;">Séance introuvable</div>';
+      throw new Error('Workout not found');
+    }
+    
+    // STATE
+    let currentExerciseIndex = 0;
+    let completedSets = workout.exercises.map(ex => Array(ex.sets).fill(false));
+    let timer = 0;
+    let timerInterval = null;
+    
+    // DÉMARRER LE CHRONO
+    function startTimer() {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        timer++;
+        const el = document.getElementById('trapbar-timer');
+        if (el) {
+          const m = Math.floor(timer / 60);
+          const s = timer % 60;
+          el.textContent = m + ':' + String(s).padStart(2, '0');
+        }
+      }, 1000);
+    }
+    
+    // TOGGLE SET
+    function toggleSet(index) {
+      completedSets[currentExerciseIndex][index] = !completedSets[currentExerciseIndex][index];
+      render();
+    }
+    
+    // NAVIGATION
+    function goToPrevious() {
+      if (currentExerciseIndex > 0) {
+        currentExerciseIndex--;
+        render();
+      }
+    }
+    
+    function goToNext() {
+      if (currentExerciseIndex < workout.exercises.length - 1) {
+        currentExerciseIndex++;
+        render();
+      }
+    }
+    
+    // ICÔNES SVG
+    function getWeightIcon() {
+      return '<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="5" y="26" width="8" height="12" rx="2" fill="url(#wg)"/><rect x="51" y="26" width="8" height="12" rx="2" fill="url(#wg)"/><rect x="13" y="29" width="38" height="6" rx="3" fill="url(#wg)"/><defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b0b0b0"/><stop offset="100%" stop-color="#707070"/></linearGradient></defs></svg>';
+    }
+    
+    function getSeriesIcon() {
+      return '<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="16" y="18" width="32" height="8" rx="4" fill="#00D9FF" opacity="0.4"/><rect x="18" y="27" width="28" height="8" rx="4" fill="#00D9FF" opacity="0.7"/><rect x="20" y="36" width="24" height="8" rx="4" fill="#00D9FF"/></svg>';
+    }
+    
+    function getTempoIcon() {
+      return '<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M32 10L38 28L32 46L26 28L32 10Z" fill="url(#lg)"/><defs><linearGradient id="lg" x1="32" y1="10" x2="32" y2="46"><stop offset="0%" stop-color="#FFD700"/><stop offset="100%" stop-color="#35FF8B"/></linearGradient></defs></svg>';
+    }
+    
+    function getRestIcon() {
+      return '<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="16" fill="url(#rg)"/><defs><radialGradient id="rg"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#b0b0b0"/></radialGradient></defs></svg>';
+    }
+    
+    // CRÉER PARTICULES
+    function createParticles() {
+      const container = document.getElementById('trapbar-particles');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      const pos = [{x:25,y:42},{x:50,y:42},{x:75,y:42}];
+      for (let i = 0; i < 100; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const t = pos[Math.floor(Math.random() * 3)];
+        const d = Math.random() < 0.7 ? Math.random() * 300 : (Math.random() < 0.9 ? 300 + Math.random() * 200 : 500 + Math.random() * 300);
+        const a = Math.random() * Math.PI * 2;
+        const x = t.x + (Math.cos(a) * d / window.innerWidth * 100);
+        const y = t.y + (Math.sin(a) * d / window.innerHeight * 100);
+        p.style.left = Math.max(0, Math.min(100, x)) + '%';
+        p.style.top = Math.max(0, Math.min(100, y)) + '%';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        p.style.animationDuration = (4 + Math.random() * 3) + 's';
+        const sz = Math.random() > 0.7 ? '4px' : (Math.random() > 0.4 ? '3px' : '2px');
+        p.style.width = sz;
+        p.style.height = sz;
+        container.appendChild(p);
+      }
+    }
+    
+    // RENDER CERCLE
+    function renderCircle(color, content) {
+      const id = 'g' + Math.random().toString(36).substr(2, 9);
+      const colors = {
+        green: ['#00d4ff', '#35FF8B', '#9D4EDD', '#00d4ff'],
+        orange: ['#FF6D00', '#FFB347', '#35FF8B', '#FF6D00'],
+        blue: ['#00D9FF', '#7c3aed', '#00D9FF']
+      };
+      const c = colors[color];
+      const stops = c.length === 3 ? 
+        `<stop offset="0%" stop-color="${c[0]}"/><stop offset="50%" stop-color="${c[1]}"/><stop offset="100%" stop-color="${c[2]}"/>` :
+        `<stop offset="0%" stop-color="${c[0]}"/><stop offset="33%" stop-color="${c[1]}"/><stop offset="66%" stop-color="${c[2]}"/><stop offset="100%" stop-color="${c[3]}"/>`;
+      
+      return `<div class="trapbar-circle-wrapper ${color}">
+        <svg class="trapbar-circle-svg" viewBox="0 0 220 220">
+          <defs><linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%">${stops}</linearGradient></defs>
+          <circle cx="110" cy="110" r="104" stroke="url(#${id})" stroke-width="6" fill="none"/>
+        </svg>
+        <div class="trapbar-circle-inner">${content}</div>
+      </div>`;
+    }
+    
+    // RENDER
+    function render() {
+      const exercise = workout.exercises[currentExerciseIndex];
+      const currentSets = completedSets[currentExerciseIndex];
+      const completedCount = currentSets.filter(s => s).length;
+      const progress = Math.round((completedCount / exercise.sets) * 100);
+      
+      // CONSTRUIRE LES SÉRIES
+      const series = [];
+      for (let i = 0; i < exercise.sets; i++) {
+        const baseSet = { weight: exercise.weight, reps: exercise.reps, index: i, type: 'normal' };
+        if (exercise.restPause && i === Math.floor(exercise.sets / 2)) {
+          series.push({ ...baseSet, type: 'restpause' });
+        } else if (exercise.dropSets && i === exercise.sets - 1) {
+          series.push({ ...baseSet, type: 'dropset' });
+        } else {
+          series.push(baseSet);
+        }
+      }
+      
+      const firstUncompleted = currentSets.findIndex(s => !s);
+      
+      const html = `
+        <div class="trapbar-screen">
+          <div class="trapbar-particles" id="trapbar-particles"></div>
+          
+          <div class="trapbar-back-btn" onclick="window.location.href='home-final.html'"></div>
+          
+          <div class="exercise-counter">Exercice ${currentExerciseIndex + 1}/${workout.exercises.length}</div>
+          
+          <div class="trapbar-header">
+            <div class="trapbar-trophy"></div>
+            <div class="trapbar-title-wrapper">
+              <h1>
+                <span class="trapbar-title-white">${exercise.name.split(' ')[0]}</span>
+                <span class="trapbar-title-cyan">${exercise.name.split(' ').slice(1).join(' ')}</span>
+              </h1>
+              <div class="trapbar-subtitle">COMPOUND · ${exercise.rpe ? 'RPE ' + exercise.rpe : 'EXERCICE'}</div>
+            </div>
+          </div>
+          
+          <div class="trapbar-metrics">
+            <div class="trapbar-metric-card">
+              <div class="trapbar-metric-icon">${getWeightIcon()}</div>
+              <div class="trapbar-metric-value orange">${exercise.weight}kg</div>
+              <div class="trapbar-metric-label">POIDS</div>
+            </div>
+            <div class="trapbar-metric-card">
+              <div class="trapbar-metric-icon">${getSeriesIcon()}</div>
+              <div class="trapbar-metric-value cyan">${exercise.sets}x${exercise.reps}</div>
+              <div class="trapbar-metric-label">SÉRIES</div>
+            </div>
+            <div class="trapbar-metric-card">
+              <div class="trapbar-metric-icon">${getTempoIcon()}</div>
+              <div class="trapbar-metric-value green">${exercise.tempo || '3-1-2'}</div>
+              <div class="trapbar-metric-label">TEMPO</div>
+            </div>
+            <div class="trapbar-metric-card">
+              <div class="trapbar-metric-icon">${getRestIcon()}</div>
+              <div class="trapbar-metric-value violet">${exercise.rest}</div>
+              <div class="trapbar-metric-label">REPOS</div>
+            </div>
+          </div>
+          
+          <div class="trapbar-circles-container">
+            ${renderCircle('green', `<div class="trapbar-circle-check">&#10003;</div><div style="font-size:20px;color:#35FF8B;margin-top:-6px;font-weight:700">${progress}%</div>`)}
+            ${renderCircle('orange', `<div class="trapbar-circle-weight">${exercise.weight}</div><div class="trapbar-circle-unit">kg</div>`)}
+            ${renderCircle('blue', `<div class="trapbar-circle-reps">${exercise.reps}</div><div class="trapbar-circle-reps-label">reps</div>`)}
+          </div>
+          
+          <div class="trapbar-series-list">
+            ${series.map((s, i) => {
+              const isCompleted = currentSets[s.index];
+              const chk = isCompleted ? 'completed' : (i === firstUncompleted ? 'uncompleted-first' : (i === firstUncompleted + 1 ? 'uncompleted-gray' : 'uncompleted-beige'));
+              const row = isCompleted ? ' completed' : '';
+              const center = s.type === 'dropset' ? '<div class="trapbar-serie-badge dropset">DROP SET</div>' : 
+                           (s.type === 'restpause' ? '<div class="trapbar-serie-badge restpause">REST PAUSE</div>' : 
+                           `<div class="trapbar-serie-text">${s.weight} kg</div>`);
+              
+              return `<div class="trapbar-serie-row${row}">
+                <div class="trapbar-serie-small-circle">
+                  <div class="trapbar-serie-small-num">${s.weight}</div>
+                  <div class="trapbar-serie-small-unit">kg</div>
+                </div>
+                ${center}
+                <div class="trapbar-serie-reps-badge">${s.reps} reps</div>
+                <div class="trapbar-serie-checkbox ${chk}" onclick="window.toggleSet(${i})"></div>
+              </div>`;
+            }).join('')}
+          </div>
+          
+          <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="window.goToPrevious()" ${currentExerciseIndex === 0 ? 'disabled' : ''}>← Précédent</button>
+            <button class="nav-btn next" onclick="window.goToNext()" ${currentExerciseIndex === workout.exercises.length - 1 ? 'disabled' : ''}>Suivant →</button>
+          </div>
+          
+          <div class="trapbar-footer">
+            <div>
+              <div class="trapbar-footer-label">CHRONO</div>
+              <div class="trapbar-timer" id="trapbar-timer">0:00</div>
+            </div>
+            <div class="trapbar-volume">${exercise.weight * exercise.sets * exercise.reps} KG</div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('app').innerHTML = html;
+      createParticles();
+    }
+    
+    // FONCTIONS GLOBALES
+    window.toggleSet = toggleSet;
+    window.goToPrevious = goToPrevious;
+    window.goToNext = goToNext;
+    
+    // INIT
+    render();
+    startTimer();
+  </script>
+</body>
+</html>
