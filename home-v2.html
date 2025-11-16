@@ -1,9 +1,3 @@
-🚀 COMMANDES BASH COMPLÈTES
-bash
-cd ~/Desktop/hybrid-master-63
-
-# 1. Créer le fichier home-v2.html
-cat > home-v2.html << 'EOF'
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -44,7 +38,6 @@ cat > home-v2.html << 'EOF'
       -webkit-font-smoothing: antialiased;
     }
 
-    /* FOND ANIMÉ SUBTIL */
     body::before {
       content: '';
       position: fixed;
@@ -66,7 +59,6 @@ cat > home-v2.html << 'EOF'
       50% { transform: translate(20px, 20px) scale(1.05); opacity: 0.8; }
     }
 
-    /* Grain texture */
     body::after {
       content: '';
       position: fixed;
@@ -85,7 +77,6 @@ cat > home-v2.html << 'EOF'
       z-index: 2;
     }
 
-    /* HEADER */
     .header {
       display: flex;
       justify-content: space-between;
@@ -137,7 +128,6 @@ cat > home-v2.html << 'EOF'
       box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     }
 
-    /* CARTES */
     .workout-card {
       background: linear-gradient(135deg, 
         rgba(30,41,59,0.6) 0%, 
@@ -188,7 +178,6 @@ cat > home-v2.html << 'EOF'
       opacity: 1;
     }
 
-    /* ÉTATS DES CARTES */
     .card-completed {
       --card-glow: rgba(16, 185, 129, 0.6);
       --card-shadow: rgba(16, 185, 129, 0.3);
@@ -231,7 +220,6 @@ cat > home-v2.html << 'EOF'
       gap: 12px;
     }
     
-    /* BADGES */
     .day-badge {
       display: inline-flex; 
       align-items: center; 
@@ -295,7 +283,6 @@ cat > home-v2.html << 'EOF'
       letter-spacing: -0.5px;
     }
 
-    /* STATS GRID */
     .stats-grid {
       display: grid; 
       grid-template-columns: repeat(3, 1fr);
@@ -336,7 +323,6 @@ cat > home-v2.html << 'EOF'
       font-weight: 700;
     }
 
-    /* BOUTONS */
     .button-group { 
       display: flex; 
       gap: 12px;
@@ -396,7 +382,6 @@ cat > home-v2.html << 'EOF'
       box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
     }
 
-    /* CHECK CIRCLE - BIEN POSITIONNÉ */
     .check-circle {
       position: absolute;
       right: 20px;
@@ -443,7 +428,6 @@ cat > home-v2.html << 'EOF'
       animation: checkFloat 3s ease-in-out infinite 0.5s, checkPulse 2s ease-in-out infinite 0.5s;
     }
 
-    /* CITATION */
     .quote-section {
       margin: 40px 0;
       padding: 24px 28px;
@@ -484,7 +468,6 @@ cat > home-v2.html << 'EOF'
       text-align: right;
     }
 
-    /* FAB */
     .fab {
       position: fixed; 
       bottom: calc(100px + env(safe-area-inset-bottom)); 
@@ -517,7 +500,6 @@ cat > home-v2.html << 'EOF'
       box-shadow: 0 12px 40px rgba(59, 130, 246, 0.7);
     }
 
-    /* BOTTOM NAV */
     .bottom-nav {
       position: fixed; 
       bottom: 0; 
@@ -616,43 +598,37 @@ cat > home-v2.html << 'EOF'
   <script type="module">
     import programData from './scripts/program-data.js';
     
-    const weekNumber = 1; // Semaine actuelle
+    const weekNumber = 1;
     const weekData = programData.getWeek(weekNumber);
     const container = document.getElementById('workouts');
     
-    // Configuration des jours de la semaine
     const daysConfig = {
       dimanche: { 
         label: 'Dimanche', 
         icon: '🔥', 
         badgeClass: 'badge-blue', 
-        dayNumber: 1,
-        description: 'DOS + JAMBES LOURDES + BRAS'
+        dayNumber: 1
       },
       mardi: { 
         label: 'Mardi', 
         icon: '💪', 
         badgeClass: 'badge-green', 
-        dayNumber: 3,
-        description: 'PECS + ÉPAULES + TRICEPS'
+        dayNumber: 3
       },
       vendredi: { 
         label: 'Vendredi', 
         icon: '⚡', 
         badgeClass: 'badge-purple', 
-        dayNumber: 6,
-        description: 'DOS + JAMBES LÉGÈRES + BRAS + ÉPAULES'
+        dayNumber: 6
       },
       maison: { 
         label: 'Maison', 
         icon: '🏠', 
         badgeClass: 'badge-green', 
-        dayNumber: '2+4',
-        description: 'HAMMER CURL (Mardi soir + Jeudi soir)'
+        dayNumber: '2+4'
       }
     };
 
-    // Détection automatique du type de séance
     function getWorkoutType(workout) {
       const name = workout.name.toLowerCase();
       
@@ -668,7 +644,6 @@ cat > home-v2.html << 'EOF'
       return { emoji: '💪', type: 'Salle' };
     }
 
-    // Génération dynamique des cartes pour chaque jour
     const days = ['dimanche', 'mardi', 'vendredi', 'maison'];
     
     days.forEach((dayKey, index) => {
@@ -680,13 +655,11 @@ cat > home-v2.html << 'EOF'
       
       const card = document.createElement('div');
       
-      // Déterminer l'état de la carte
       let cardState = '';
       let checkCircle = '';
       let buttons = '';
       let badgeStatus = '';
       
-      // Logique d'état : 1er jour complété, 2ème actif, reste à venir
       if (index === 0) {
         cardState = 'card-completed';
         badgeStatus = '<span class="badge-completed">✓ COMPLÉTÉ</span>';
@@ -741,7 +714,6 @@ cat > home-v2.html << 'EOF'
         ${buttons}
       `;
       
-      // Gestion des clics
       if (index === 0) {
         const btnSecondary = card.querySelector('.btn-secondary');
         const btnPrimary = card.querySelector('.btn-primary');
@@ -764,7 +736,6 @@ cat > home-v2.html << 'EOF'
       container.appendChild(card);
     });
 
-    // Navigation bottom bar
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', function() {
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
