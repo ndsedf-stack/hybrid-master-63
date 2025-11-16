@@ -85,28 +85,10 @@
             border-radius: 50%;
         }
 
-        .circle-session {
-            width: 320px;
-            height: 320px;
-            border: 3px solid rgba(255,255,255,0.05);
-        }
-
-        .circle-exercise {
-            width: 270px;
-            height: 270px;
-            border: 3px solid rgba(0,255,136,0.1);
-        }
-
-        .circle-set {
-            width: 220px;
-            height: 220px;
-            border: 3px solid rgba(157,78,221,0.15);
-        }
-
-        .circle-rep {
-            width: 170px;
-            height: 170px;
-        }
+        .circle-session { width: 320px; height: 320px; border: 3px solid rgba(255,255,255,0.05); }
+        .circle-exercise { width: 270px; height: 270px; border: 3px solid rgba(0,255,136,0.1); }
+        .circle-set { width: 220px; height: 220px; border: 3px solid rgba(157,78,221,0.15); }
+        .circle-rep { width: 170px; height: 170px; }
 
         .center-display {
             position: absolute;
@@ -146,7 +128,6 @@
             animation: pulse 1s ease-in-out infinite;
         }
 
-        /* Modales */
         .validation-modal {
             position: absolute;
             top: 50%;
@@ -166,10 +147,7 @@
             transition: all 0.3s ease;
         }
 
-        .validation-modal.active {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .validation-modal.active { opacity: 1; pointer-events: all; }
 
         .validation-title {
             font-size: 20px;
@@ -215,9 +193,7 @@
             color: #FF3366;
         }
 
-        .val-btn:active {
-            transform: scale(0.95);
-        }
+        .val-btn:active { transform: scale(0.95); }
 
         .set-complete-modal {
             position: absolute;
@@ -238,22 +214,10 @@
             transition: all 0.3s ease;
         }
 
-        .set-complete-modal.active {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .set-complete-modal.active { opacity: 1; pointer-events: all; }
 
-        .set-complete-title {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .set-complete-text {
-            font-size: 20px;
-            font-weight: 700;
-            color: #00FF88;
-            margin-bottom: 20px;
-        }
+        .set-complete-title { font-size: 48px; margin-bottom: 10px; }
+        .set-complete-text { font-size: 20px; font-weight: 700; color: #00FF88; margin-bottom: 20px; }
 
         .set-stats {
             background: rgba(255,255,255,0.05);
@@ -270,10 +234,7 @@
             color: rgba(255,255,255,0.7);
         }
 
-        .set-stat-value {
-            color: #00D9FF;
-            font-weight: 600;
-        }
+        .set-stat-value { color: #00D9FF; font-weight: 600; }
 
         .adjust-reps {
             display: flex;
@@ -304,9 +265,7 @@
             min-width: 50px;
         }
 
-        .tempo-bar-container {
-            padding: 0 20px 20px;
-        }
+        .tempo-bar-container { padding: 0 20px 20px; }
 
         .tempo-bar {
             display: flex;
@@ -331,50 +290,20 @@
             box-shadow: 0 0 20px rgba(0,217,255,0.5);
         }
 
-        .tempo-phase-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
+        .tempo-phase-icon { font-size: 20px; margin-bottom: 4px; }
+        .tempo-phase-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin: 8px 0; overflow: hidden; }
+        .tempo-phase-progress { height: 100%; width: 0%; border-radius: 2px; transition: width 0.1s linear; }
+        .tempo-phase-time { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); }
 
-        .tempo-phase-bar {
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            margin: 8px 0;
-            overflow: hidden;
-        }
-
-        .tempo-phase-progress {
-            height: 100%;
-            width: 0%;
-            border-radius: 2px;
-            transition: width 0.1s linear;
-        }
-
-        .tempo-phase-time {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.5);
-        }
-
-        .tempo-phase.descent.active {
-            background: rgba(0,217,255,0.15);
-            border: 1px solid rgba(0,217,255,0.3);
-        }
+        .tempo-phase.descent.active { background: rgba(0,217,255,0.15); border: 1px solid rgba(0,217,255,0.3); }
         .tempo-phase.descent .tempo-phase-icon { color: #00D9FF; }
         .tempo-phase.descent .tempo-phase-progress { background: #00D9FF; }
 
-        .tempo-phase.pause.active {
-            background: rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.3);
-        }
+        .tempo-phase.pause.active { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); }
         .tempo-phase.pause .tempo-phase-icon { color: #FFD700; }
         .tempo-phase.pause .tempo-phase-progress { background: #FFD700; }
 
-        .tempo-phase.lift.active {
-            background: rgba(255,51,102,0.15);
-            border: 1px solid rgba(255,51,102,0.3);
-        }
+        .tempo-phase.lift.active { background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.3); }
         .tempo-phase.lift .tempo-phase-icon { color: #FF3366; }
         .tempo-phase.lift .tempo-phase-progress { background: #FF3366; }
 
@@ -385,27 +314,10 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        .exercise-name {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #FFFFFF;
-        }
+        .exercise-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #FFFFFF; }
+        .exercise-details { font-size: 14px; color: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; gap: 15px; }
 
-        .exercise-details {
-            font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .actions {
-            padding: 20px;
-            display: flex;
-            gap: 12px;
-        }
+        .actions { padding: 20px; display: flex; gap: 12px; }
 
         .btn {
             flex: 1;
@@ -422,33 +334,13 @@
             gap: 8px;
         }
 
-        .btn-pause {
-            background: rgba(255,255,255,0.1);
-            color: #FFFFFF;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+        .btn-pause { background: rgba(255,255,255,0.1); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-pause:active { transform: scale(0.95); }
+        .btn-skip { background: rgba(255,51,102,0.2); border: 1px solid rgba(255,51,102,0.5); color: #FF3366; }
+        .btn-skip:active { transform: scale(0.95); }
 
-        .btn-pause:active {
-            transform: scale(0.95);
-        }
-
-        .btn-skip {
-            background: rgba(255,51,102,0.2);
-            border: 1px solid rgba(255,51,102,0.5);
-            color: #FF3366;
-        }
-
-        .btn-skip:active {
-            transform: scale(0.95);
-        }
-
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.3s ease;
-        }
+        .progress-ring { transform: rotate(-90deg); }
+        .progress-ring-circle { transition: stroke-dashoffset 0.3s ease; }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
@@ -471,14 +363,8 @@
         }
 
         @keyframes explode {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(0);
-                opacity: 0;
-            }
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
         .settings-btn {
@@ -494,29 +380,52 @@
             font-size: 20px;
         }
 
-        .rest-mode .circle-rep {
-            animation: breathe 4s ease-in-out infinite;
-        }
+        .rest-mode .circle-rep { animation: breathe 4s ease-in-out infinite; }
 
         @keyframes breathe {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        .rest-mode .time-display {
-            color: #9D4EDD;
+        .rest-mode .time-display { color: #9D4EDD; }
+        .hidden { display: none !important; }
+
+        .error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,51,102,0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 1000;
+            max-width: 90%;
         }
 
-        .hidden {
-            display: none !important;
+        .error-title {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .error-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .error-details {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 15px;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-info">
-            <div class="week-tag" id="weekTag">SEMAINE 7 • JOUR 3</div>
-            <div class="streak">🔥 <span id="streakCount">15</span></div>
+            <div class="week-tag" id="weekTag">CHARGEMENT...</div>
+            <div class="streak">🔥 <span id="streakCount">0</span></div>
         </div>
         <div class="settings-btn">⚙️</div>
     </div>
@@ -524,39 +433,15 @@
     <div class="timer-container" id="timerContainer">
         <div class="circular-timer">
             <svg class="circle circle-session" viewBox="0 0 320 320">
-                <circle class="progress-ring-circle"
-                    stroke="rgba(255,255,255,0.1)"
-                    stroke-width="3"
-                    fill="transparent"
-                    r="157"
-                    cx="160"
-                    cy="160"
-                    id="sessionCircle"
-                    style="stroke-dasharray: 986; stroke-dashoffset: 493;" />
+                <circle class="progress-ring-circle" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="transparent" r="157" cx="160" cy="160" id="sessionCircle" style="stroke-dasharray: 986; stroke-dashoffset: 493;" />
             </svg>
 
             <svg class="circle circle-exercise" viewBox="0 0 270 270">
-                <circle class="progress-ring-circle"
-                    stroke="#00FF88"
-                    stroke-width="4"
-                    fill="transparent"
-                    r="132"
-                    cx="135"
-                    cy="135"
-                    id="exerciseCircle"
-                    style="stroke-dasharray: 829; stroke-dashoffset: 207;" />
+                <circle class="progress-ring-circle" stroke="#00FF88" stroke-width="4" fill="transparent" r="132" cx="135" cy="135" id="exerciseCircle" style="stroke-dasharray: 829; stroke-dashoffset: 207;" />
             </svg>
 
             <svg class="circle circle-set" viewBox="0 0 220 220">
-                <circle class="progress-ring-circle"
-                    stroke="#9D4EDD"
-                    stroke-width="5"
-                    fill="transparent"
-                    r="107"
-                    cx="110"
-                    cy="110"
-                    id="setCircle"
-                    style="stroke-dasharray: 672; stroke-dashoffset: 403;" />
+                <circle class="progress-ring-circle" stroke="#9D4EDD" stroke-width="5" fill="transparent" r="107" cx="110" cy="110" id="setCircle" style="stroke-dasharray: 672; stroke-dashoffset: 403;" />
             </svg>
 
             <svg class="circle circle-rep" viewBox="0 0 170 170">
@@ -567,22 +452,14 @@
                         <stop offset="100%" style="stop-color:#FF3366;stop-opacity:1" />
                     </linearGradient>
                 </defs>
-                <circle class="progress-ring-circle"
-                    stroke="url(#tempoGradient)"
-                    stroke-width="8"
-                    fill="transparent"
-                    r="78"
-                    cx="85"
-                    cy="85"
-                    id="tempoCircle"
-                    style="stroke-dasharray: 490; stroke-dashoffset: 0;" />
+                <circle class="progress-ring-circle" stroke="url(#tempoGradient)" stroke-width="8" fill="transparent" r="78" cx="85" cy="85" id="tempoCircle" style="stroke-dasharray: 490; stroke-dashoffset: 0;" />
             </svg>
 
             <div class="center-display">
-                <div class="time-display" id="timeDisplay">3.0</div>
+                <div class="time-display" id="timeDisplay">0.0</div>
                 <div class="phase-display">
-                    <span class="phase-icon" id="phaseIcon">⬇️</span>
-                    <span id="phaseText">DESCENT</span>
+                    <span class="phase-icon" id="phaseIcon">⏳</span>
+                    <span id="phaseText">CHARGEMENT</span>
                 </div>
             </div>
         </div>
@@ -609,15 +486,15 @@
             <div class="set-stats">
                 <div class="set-stat-row">
                     <span>Reps complétées</span>
-                    <span class="set-stat-value"><span id="statsReps">8</span>/<span id="statsRepsTotal">8</span></span>
+                    <span class="set-stat-value"><span id="statsReps">0</span>/<span id="statsRepsTotal">0</span></span>
                 </div>
                 <div class="set-stat-row">
                     <span>Tempo respecté</span>
-                    <span class="set-stat-value"><span id="statsTempo">8</span>/<span id="statsTempoTotal">8</span></span>
+                    <span class="set-stat-value"><span id="statsTempo">0</span>/<span id="statsTempoTotal">0</span></span>
                 </div>
                 <div class="set-stat-row">
                     <span>Time Under Tension</span>
-                    <span class="set-stat-value"><span id="statsTUT">48</span>s</span>
+                    <span class="set-stat-value"><span id="statsTUT">0</span>s</span>
                 </div>
             </div>
 
@@ -627,7 +504,7 @@
 
             <div class="adjust-reps">
                 <button class="adjust-btn" id="btnMinus">−</button>
-                <div class="adjust-value" id="adjustValue">8</div>
+                <div class="adjust-value" id="adjustValue">0</div>
                 <button class="adjust-btn" id="btnPlus">+</button>
             </div>
 
@@ -647,35 +524,35 @@
                 <div class="tempo-phase-bar">
                     <div class="tempo-phase-progress" id="descentProgress" style="width: 0%"></div>
                 </div>
-                <div class="tempo-phase-time" id="descentTime">3s</div>
+                <div class="tempo-phase-time" id="descentTime">0s</div>
             </div>
             <div class="tempo-phase pause">
                 <div class="tempo-phase-icon">⏸️</div>
                 <div class="tempo-phase-bar">
                     <div class="tempo-phase-progress" id="pauseProgress" style="width: 0%"></div>
                 </div>
-                <div class="tempo-phase-time" id="pauseTime">1s</div>
+                <div class="tempo-phase-time" id="pauseTime">0s</div>
             </div>
             <div class="tempo-phase lift">
                 <div class="tempo-phase-icon">⬆️</div>
                 <div class="tempo-phase-bar">
                     <div class="tempo-phase-progress" id="liftProgress" style="width: 0%"></div>
                 </div>
-                <div class="tempo-phase-time" id="liftTime">2s</div>
+                <div class="tempo-phase-time" id="liftTime">0s</div>
             </div>
         </div>
     </div>
 
     <div class="exercise-info">
-        <div class="exercise-name" id="exerciseName">TRAP BAR DEADLIFT</div>
+        <div class="exercise-name" id="exerciseName">CHARGEMENT...</div>
         <div class="exercise-details">
-            <span id="exerciseWeight">💪 120kg</span>
+            <span id="exerciseWeight">💪 0kg</span>
             <span>•</span>
-            <span>SET <span id="currentSet">1</span>/<span id="totalSets">5</span></span>
+            <span>SET <span id="currentSet">0</span>/<span id="totalSets">0</span></span>
             <span>•</span>
-            <span id="exerciseReps">8 reps</span>
+            <span id="exerciseReps">0 reps</span>
             <span>•</span>
-            <span id="exerciseTempo">Tempo 3-1-2</span>
+            <span id="exerciseTempo">Tempo 0-0-0</span>
         </div>
     </div>
 
@@ -691,22 +568,112 @@
     </div>
 
     <script type="module">
-        // State
+        // ========================================
+        // 🔥 INTÉGRATION PROGRAM-DATA.JS
+        // ========================================
+        
+        // Import des données (assure-toi que le chemin est correct)
+        import { PROGRAM_DATA } from './scripts/program-data.js';
+
+        // Récupérer les paramètres URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const weekNumber = parseInt(urlParams.get('week')) || 1;
+        const dayName = urlParams.get('day') || 'dimanche';
+
+        console.log('📍 Chargement:', { week: weekNumber, day: dayName });
+
+        // Fonction pour afficher une erreur
+        function showError(title, message, details = '') {
+            document.body.innerHTML = `
+                <div class="error-message">
+                    <div class="error-title">${title}</div>
+                    <div class="error-text">${message}</div>
+                    ${details ? `<div class="error-details">${details}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Vérifier que PROGRAM_DATA existe
+        if (!PROGRAM_DATA || !PROGRAM_DATA.weeks) {
+            showError('❌', 'Erreur: PROGRAM_DATA introuvable', 
+                'Vérifie que scripts/program-data.js existe et exporte correctement PROGRAM_DATA');
+            throw new Error('PROGRAM_DATA non trouvé');
+        }
+
+        // Trouver la semaine
+        const weekData = PROGRAM_DATA.weeks.find(w => w.week_number === weekNumber);
+        if (!weekData) {
+            showError('❌', `Semaine ${weekNumber} introuvable`, 
+                `Semaines disponibles: ${PROGRAM_DATA.weeks.map(w => w.week_number).join(', ')}`);
+            throw new Error(`Semaine ${weekNumber} non trouvée`);
+        }
+
+        // Trouver le jour
+        const dayData = weekData.days[dayName];
+        if (!dayData) {
+            showError('❌', `Jour "${dayName}" introuvable`, 
+                `Jours disponibles: ${Object.keys(weekData.days).join(', ')}`);
+            throw new Error(`Jour ${dayName} non trouvé`);
+        }
+
+        // Récupérer les exercices
+        const exercises = dayData.exercises;
+        if (!exercises || exercises.length === 0) {
+            showError('❌', 'Aucun exercice trouvé', 
+                `La journée "${dayName}" de la semaine ${weekNumber} n'a pas d'exercices`);
+            throw new Error('Aucun exercice');
+        }
+
+        // Exercice actuel (premier pour l'instant)
+        let currentExerciseIndex = 0;
+        const currentExercise = exercises[currentExerciseIndex];
+
+        console.log('✅ Données chargées:', {
+            week: weekData.week_number,
+            day: dayName,
+            exercise: currentExercise.name,
+            exercises: exercises.length
+        });
+
+        // Parser le tempo (ex: "3-1-2" → [3, 1, 2] ou "3010" → [3, 0, 1, 0])
+        function parseTempo(tempoStr) {
+            if (!tempoStr) return [3, 1, 2]; // Défaut
+            
+            // Si format "3-1-2"
+            if (tempoStr.includes('-')) {
+                return tempoStr.split('-').map(Number);
+            }
+            
+            // Si format "3010"
+            return tempoStr.split('').map(Number);
+        }
+
+        const tempo = parseTempo(currentExercise.tempo);
+        console.log('⏱️ Tempo parsé:', tempo, 'depuis', currentExercise.tempo);
+
+        // ========================================
+        // 🎯 STATE INITIALISÉ AVEC LES DONNÉES
+        // ========================================
+        
         let state = {
             phase: 0,
             rep: 1,
             set: 1,
-            totalReps: 8,
-            totalSets: 5,
-            tempo: [3, 1, 2],
-            timeRemaining: 3,
+            totalReps: currentExercise.reps || 8,
+            totalSets: currentExercise.sets || 5,
+            tempo: tempo,
+            timeRemaining: tempo[0],
             isPaused: false,
             isResting: false,
-            restTime: 90,
+            restTime: currentExercise.rest || 90,
             tempoRespected: [],
             repsCompleted: 0,
-            exerciseName: "TRAP BAR DEADLIFT",
-            weight: 120
+            exerciseName: currentExercise.name,
+            weight: currentExercise.weight || 0,
+            weekNumber: weekNumber,
+            dayName: dayName,
+            currentExerciseIndex: 0,
+            totalExercises: exercises.length
         };
 
         let timerInterval;
@@ -735,16 +702,36 @@
             { name: 'LIFT', icon: '⬆️', color: '#FF3366' }
         ];
 
-        // Initialize display
+        // ========================================
+        // 🎨 INITIALISER L'AFFICHAGE
+        // ========================================
+        
         function initDisplay() {
-            valTotalReps.textContent = state.totalReps;
+            // Header
+            document.getElementById('weekTag').textContent = 
+                `SEMAINE ${state.weekNumber} • ${state.dayName.toUpperCase()}`;
+            
+            // Exercice info
+            document.getElementById('exerciseName').textContent = state.exerciseName;
+            document.getElementById('exerciseWeight').textContent = `💪 ${state.weight}kg`;
+            document.getElementById('exerciseReps').textContent = `${state.totalReps} reps`;
+            document.getElementById('exerciseTempo').textContent = `Tempo ${state.tempo.join('-')}`;
+            
+            // Set info
             currentSetDisplay.textContent = state.set;
             totalSetsDisplay.textContent = state.totalSets;
-            document.getElementById('statsRepsTotal').textContent = state.totalReps;
-            document.getElementById('statsTempoTotal').textContent = state.totalReps;
+            
+            // Tempo bar
             document.getElementById('descentTime').textContent = state.tempo[0] + 's';
             document.getElementById('pauseTime').textContent = state.tempo[1] + 's';
             document.getElementById('liftTime').textContent = state.tempo[2] + 's';
+            
+            // Validation modal
+            valTotalReps.textContent = state.totalReps;
+            document.getElementById('statsRepsTotal').textContent = state.totalReps;
+            document.getElementById('statsTempoTotal').textContent = state.totalReps;
+            
+            console.log('✅ Affichage initialisé');
         }
 
         function startTimer() {
@@ -867,6 +854,7 @@
             hideSetComplete();
             
             console.log('✅ Série sauvegardée:', {
+                exercise: state.exerciseName,
                 set: state.set,
                 reps: state.repsCompleted,
                 tempo: state.tempoRespected.filter(t => t).length + '/' + state.repsCompleted,
@@ -894,10 +882,58 @@
             currentSetDisplay.textContent = state.set;
 
             if (state.set > state.totalSets) {
-                alert('🎉 EXERCICE TERMINÉ !');
+                exerciseComplete();
                 return;
             }
 
+            startTimer();
+        }
+
+        function exerciseComplete() {
+            clearInterval(timerInterval);
+            
+            console.log('🏆 Exercice terminé:', state.exerciseName);
+            
+            // Passer à l'exercice suivant
+            state.currentExerciseIndex++;
+            
+            if (state.currentExerciseIndex >= state.totalExercises) {
+                // Tous les exercices terminés
+                alert('🎉 SÉANCE TERMINÉE ! Félicitations !');
+                // TODO: Rediriger vers la page de résumé
+                return;
+            }
+            
+            // Charger l'exercice suivant
+            loadNextExercise();
+        }
+
+        function loadNextExercise() {
+            const nextExercise = exercises[state.currentExerciseIndex];
+            
+            // Mettre à jour le state
+            state.exerciseName = nextExercise.name;
+            state.weight = nextExercise.weight || 0;
+            state.totalReps = nextExercise.reps || 8;
+            state.totalSets = nextExercise.sets || 5;
+            state.tempo = parseTempo(nextExercise.tempo);
+            state.restTime = nextExercise.rest || 90;
+            state.set = 1;
+            state.rep = 1;
+            state.repsCompleted = 0;
+            state.tempoRespected = [];
+            state.phase = 0;
+            state.timeRemaining = state.tempo[0];
+            
+            // Réinitialiser l'affichage
+            initDisplay();
+            
+            console.log('➡️ Exercice suivant:', nextExercise.name);
+            
+            // Afficher une notification
+            alert(`Exercice suivant : ${nextExercise.name}`);
+            
+            // Redémarrer le timer
             startTimer();
         }
 
@@ -931,7 +967,10 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Event Listeners
+        // ========================================
+        // 🎮 EVENT LISTENERS
+        // ========================================
+
         document.getElementById('btnYes').addEventListener('click', () => {
             continueToNextRep(true);
         });
@@ -969,8 +1008,7 @@
 
         document.getElementById('skipBtn').addEventListener('click', () => {
             if (confirm('Passer à l\'exercice suivant ?')) {
-                clearInterval(timerInterval);
-                alert('🎯 Passage à l\'exercice suivant');
+                exerciseComplete();
             }
         });
 
@@ -981,9 +1019,14 @@
             }
         }, 100);
 
-        // Initialize
+        // ========================================
+        // 🚀 INITIALISATION
+        // ========================================
+
+        console.log('🚀 Initialisation du timer...');
         initDisplay();
         startTimer();
+        console.log('✅ Timer démarré !');
     </script>
 </body>
 </html>
