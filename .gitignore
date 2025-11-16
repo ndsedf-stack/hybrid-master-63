@@ -11,4 +11,19 @@ dist/
 
 # OS generated files
 .DS_Store
-Thumbs.db
+Thumbs.db# Backups
+*.backup
+*.backup2
+*.backup3
+*.backup-final
+*.old
+*.BACKUP
+*.github-version
+*.local-backup
+
+# Fichiers temporaires
+structure.txt
+structure_clean.txt
+src_structure.txt
+install-home.sh
+newtest/
