@@ -15,63 +15,93 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0A0A0A;
-            color: #FFFFFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            color: white;
             overflow: hidden;
+            position: relative;
             height: 100vh;
             width: 100vw;
         }
 
-        .header {
-            position: relative;
-            z-index: 100;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+        /* BACKGROUND ANIMATED */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 191, 255, 0.1) 0%, transparent 50%);
+            animation: backgroundPulse 8s ease-in-out infinite;
+            z-index: 0;
         }
 
-        .header-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: env(safe-area-inset-top) 20px 15px;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .week-tag {
-            background: rgba(0,217,255,0.15);
-            border: 1px solid rgba(0,217,255,0.3);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            color: #00D9FF;
+            letter-spacing: 1px;
+            color: #8a2be2;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
-        .streak {
+        .exercise-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exercise-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .exercise-details {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        .exercise-details span {
             display: flex;
             align-items: center;
-            gap: 5px;
-            background: rgba(255,51,102,0.15);
-            border: 1px solid rgba(255,51,102,0.3);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #FF3366;
+            gap: 4px;
         }
 
+        /* TIMER CONTAINER */
         .timer-container {
-            position: relative;
-            height: calc(100vh - 280px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
         }
 
-        .circular-timer {
+        /* CERCLES CONCENTRIQUES */
+        .circles {
             position: relative;
             width: 320px;
             height: 320px;
@@ -79,864 +109,866 @@
 
         .circle {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
-        .circle-session { width: 320px; height: 320px; border: 3px solid rgba(255,255,255,0.05); }
-        .circle-exercise { width: 270px; height: 270px; border: 3px solid rgba(0,255,136,0.1); }
-        .circle-set { width: 220px; height: 220px; border: 3px solid rgba(157,78,221,0.15); }
-        .circle-rep { width: 170px; height: 170px; }
+        .circle-outer {
+            width: 320px;
+            height: 320px;
+            top: 0;
+            left: 0;
+        }
 
-        .center-display {
+        .circle-middle {
+            width: 240px;
+            height: 240px;
+            top: 40px;
+            left: 40px;
+        }
+
+        .circle-inner {
+            width: 160px;
+            height: 160px;
+            top: 80px;
+            left: 80px;
+            background: rgba(138, 43, 226, 0.1);
+        }
+
+        /* TEMPO BAR */
+        .tempo-bar {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 160px;
+            background: linear-gradient(180deg, #8a2be2 0%, #00bfff 100%);
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(0deg);
+            transition: transform 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* TIMER DISPLAY */
+        .timer-display {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 20;
+        }
+
+        .timer-value {
+            font-size: 72px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+            line-height: 1;
+        }
+
+        .timer-phase {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* REP COUNTER */
+        .rep-counter {
+            position: fixed;
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
             z-index: 10;
         }
 
-        .time-display {
-            font-size: 64px;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #00D9FF 0%, #FF3366 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        .phase-display {
-            font-size: 18px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.7);
+        .rep-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
         }
 
-        .phase-icon {
-            font-size: 24px;
-            animation: pulse 1s ease-in-out infinite;
-        }
-
-        .validation-modal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(15,15,15,0.98);
-            border: 2px solid rgba(0,217,255,0.3);
-            border-radius: 24px;
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            z-index: 200;
-            backdrop-filter: blur(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .validation-modal.active { opacity: 1; pointer-events: all; }
-
-        .validation-title {
-            font-size: 20px;
+        .rep-value {
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: #00FF88;
+            color: white;
         }
 
-        .validation-subtitle {
+        .set-info {
             font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
         }
 
-        .validation-buttons {
+        /* CONTROLS */
+        .controls {
+            position: fixed;
+            bottom: env(safe-area-inset-bottom);
+            left: 0;
+            right: 0;
+            padding: 20px;
             display: flex;
-            gap: 12px;
+            justify-content: center;
+            gap: 15px;
+            z-index: 10;
         }
 
-        .val-btn {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .control-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-        }
-
-        .val-btn-yes {
-            background: linear-gradient(135deg, #00FF88 0%, #00D9FF 100%);
-            color: #000000;
-        }
-
-        .val-btn-no {
-            background: rgba(255,51,102,0.2);
-            border: 1px solid rgba(255,51,102,0.5);
-            color: #FF3366;
-        }
-
-        .val-btn:active { transform: scale(0.95); }
-
-        .set-complete-modal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(15,15,15,0.98);
-            border: 2px solid rgba(0,255,136,0.5);
-            border-radius: 24px;
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            z-index: 200;
-            backdrop-filter: blur(20px);
-            opacity: 0;
-            pointer-events: none;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
-        .set-complete-modal.active { opacity: 1; pointer-events: all; }
+        .control-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.2);
+        }
 
-        .set-complete-title { font-size: 48px; margin-bottom: 10px; }
-        .set-complete-text { font-size: 20px; font-weight: 700; color: #00FF88; margin-bottom: 20px; }
+        .control-btn span:first-child {
+            font-size: 20px;
+        }
 
-        .set-stats {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
+        /* MODAL */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            font-size: 64px;
             margin-bottom: 20px;
         }
 
-        .set-stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-            color: rgba(255,255,255,0.7);
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
         }
 
-        .set-stat-value { color: #00D9FF; font-weight: 600; }
+        .modal-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
 
-        .adjust-reps {
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #8a2be2 0%, #00bfff 100%);
+            color: white;
+        }
+
+        .modal-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* SET COMPLETE MODAL */
+        .set-stats {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        .stat-value {
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .adjust-controls {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             margin: 20px 0;
         }
 
         .adjust-btn {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .adjust-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .adjust-value {
-            font-size: 32px;
+            font-size: 48px;
             font-weight: 700;
-            color: #00D9FF;
-            min-width: 50px;
+            color: white;
+            min-width: 80px;
         }
 
-        .tempo-bar-container { padding: 0 20px 20px; }
-
-        .tempo-bar {
-            display: flex;
-            gap: 8px;
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .tempo-phase {
-            flex: 1;
-            text-align: center;
-            padding: 12px 8px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.03);
-            transition: all 0.3s ease;
-        }
-
-        .tempo-phase.active {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0,217,255,0.5);
-        }
-
-        .tempo-phase-icon { font-size: 20px; margin-bottom: 4px; }
-        .tempo-phase-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin: 8px 0; overflow: hidden; }
-        .tempo-phase-progress { height: 100%; width: 0%; border-radius: 2px; transition: width 0.1s linear; }
-        .tempo-phase-time { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); }
-
-        .tempo-phase.descent.active { background: rgba(0,217,255,0.15); border: 1px solid rgba(0,217,255,0.3); }
-        .tempo-phase.descent .tempo-phase-icon { color: #00D9FF; }
-        .tempo-phase.descent .tempo-phase-progress { background: #00D9FF; }
-
-        .tempo-phase.pause.active { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); }
-        .tempo-phase.pause .tempo-phase-icon { color: #FFD700; }
-        .tempo-phase.pause .tempo-phase-progress { background: #FFD700; }
-
-        .tempo-phase.lift.active { background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.3); }
-        .tempo-phase.lift .tempo-phase-icon { color: #FF3366; }
-        .tempo-phase.lift .tempo-phase-progress { background: #FF3366; }
-
-        .exercise-info {
-            padding: 20px;
-            text-align: center;
-            background: rgba(255,255,255,0.02);
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .exercise-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #FFFFFF; }
-        .exercise-details { font-size: 14px; color: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; gap: 15px; }
-
-        .actions { padding: 20px; display: flex; gap: 12px; }
-
-        .btn {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-pause { background: rgba(255,255,255,0.1); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-pause:active { transform: scale(0.95); }
-        .btn-skip { background: rgba(255,51,102,0.2); border: 1px solid rgba(255,51,102,0.5); color: #FF3366; }
-        .btn-skip:active { transform: scale(0.95); }
-
-        .progress-ring { transform: rotate(-90deg); }
-        .progress-ring-circle { transition: stroke-dashoffset 0.3s ease; }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        @keyframes glow {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(0,217,255,0.5)); }
-            50% { filter: drop-shadow(0 0 20px rgba(255,51,102,0.5)); }
-        }
-
+        /* PARTICLES */
         .particle {
-            position: absolute;
+            position: fixed;
             width: 8px;
             height: 8px;
-            background: #00D9FF;
+            background: linear-gradient(135deg, #8a2be2 0%, #00bfff 100%);
             border-radius: 50%;
             pointer-events: none;
-            animation: explode 1s ease-out forwards;
+            animation: particleFloat 1s ease-out forwards;
+            z-index: 9999;
         }
 
-        @keyframes explode {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
         }
 
-        .settings-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
+        /* ERROR SCREEN */
+        .error-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+            display: none;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            font-size: 20px;
+            z-index: 10000;
+            padding: 20px;
         }
 
-        .rest-mode .circle-rep { animation: breathe 4s ease-in-out infinite; }
-
-        @keyframes breathe {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
+        .error-screen.active {
+            display: flex;
         }
 
-        .rest-mode .time-display { color: #9D4EDD; }
-        .hidden { display: none !important; }
-
-        .error-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255,51,102,0.95);
-            padding: 30px;
-            border-radius: 20px;
+        .error-content {
             text-align: center;
-            z-index: 1000;
-            max-width: 90%;
+            max-width: 400px;
+        }
+
+        .error-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
         }
 
         .error-title {
-            font-size: 48px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff4444;
             margin-bottom: 15px;
         }
 
-        .error-text {
-            font-size: 18px;
+        .error-message {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
             margin-bottom: 10px;
         }
 
         .error-details {
-            font-size: 14px;
-            color: rgba(255,255,255,0.7);
-            margin-top: 15px;
-            font-family: monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
+    <div class="background"></div>
+
+    <!-- HEADER -->
     <div class="header">
-        <div class="header-info">
-            <div class="week-tag" id="weekTag">CHARGEMENT...</div>
-            <div class="streak">🔥 <span id="streakCount">0</span></div>
-        </div>
-        <div class="settings-btn">⚙️</div>
-    </div>
-
-    <div class="timer-container" id="timerContainer">
-        <div class="circular-timer">
-            <svg class="circle circle-session" viewBox="0 0 320 320">
-                <circle class="progress-ring-circle" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="transparent" r="157" cx="160" cy="160" id="sessionCircle" style="stroke-dasharray: 986; stroke-dashoffset: 493;" />
-            </svg>
-
-            <svg class="circle circle-exercise" viewBox="0 0 270 270">
-                <circle class="progress-ring-circle" stroke="#00FF88" stroke-width="4" fill="transparent" r="132" cx="135" cy="135" id="exerciseCircle" style="stroke-dasharray: 829; stroke-dashoffset: 207;" />
-            </svg>
-
-            <svg class="circle circle-set" viewBox="0 0 220 220">
-                <circle class="progress-ring-circle" stroke="#9D4EDD" stroke-width="5" fill="transparent" r="107" cx="110" cy="110" id="setCircle" style="stroke-dasharray: 672; stroke-dashoffset: 403;" />
-            </svg>
-
-            <svg class="circle circle-rep" viewBox="0 0 170 170">
-                <defs>
-                    <linearGradient id="tempoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#FFD700;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#FF3366;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <circle class="progress-ring-circle" stroke="url(#tempoGradient)" stroke-width="8" fill="transparent" r="78" cx="85" cy="85" id="tempoCircle" style="stroke-dasharray: 490; stroke-dashoffset: 0;" />
-            </svg>
-
-            <div class="center-display">
-                <div class="time-display" id="timeDisplay">0.0</div>
-                <div class="phase-display">
-                    <span class="phase-icon" id="phaseIcon">⏳</span>
-                    <span id="phaseText">CHARGEMENT</span>
+        <div class="week-tag" id="weekTag">SEMAINE 1 • DIMANCHE</div>
+        <div class="exercise-info">
+            <div>
+                <div class="exercise-name" id="exerciseName">Trap Bar Deadlift</div>
+                <div class="exercise-details">
+                    <span id="exerciseWeight">💪 120kg</span>
+                    <span id="exerciseReps">8 reps</span>
+                    <span id="exerciseTempo">Tempo 3-1-2</span>
                 </div>
-            </div>
-        </div>
-
-        <div class="validation-modal" id="validationModal">
-            <div class="validation-title">✓ REP <span id="valRepNumber">1</span>/<span id="valTotalReps">8</span></div>
-            <div class="validation-subtitle">Tempo respecté ?</div>
-            <div class="validation-buttons">
-                <button class="val-btn val-btn-yes" id="btnYes">
-                    <span style="font-size: 28px;">✓</span>
-                    <span>OUI</span>
-                </button>
-                <button class="val-btn val-btn-no" id="btnNo">
-                    <span style="font-size: 28px;">⚠️</span>
-                    <span>NON</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="set-complete-modal" id="setCompleteModal">
-            <div class="set-complete-title">🎉</div>
-            <div class="set-complete-text">SÉRIE TERMINÉE !</div>
-            
-            <div class="set-stats">
-                <div class="set-stat-row">
-                    <span>Reps complétées</span>
-                    <span class="set-stat-value"><span id="statsReps">0</span>/<span id="statsRepsTotal">0</span></span>
-                </div>
-                <div class="set-stat-row">
-                    <span>Tempo respecté</span>
-                    <span class="set-stat-value"><span id="statsTempo">0</span>/<span id="statsTempoTotal">0</span></span>
-                </div>
-                <div class="set-stat-row">
-                    <span>Time Under Tension</span>
-                    <span class="set-stat-value"><span id="statsTUT">0</span>s</span>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 15px; color: rgba(255,255,255,0.6); font-size: 14px;">
-                Ajuster les reps si nécessaire
-            </div>
-
-            <div class="adjust-reps">
-                <button class="adjust-btn" id="btnMinus">−</button>
-                <div class="adjust-value" id="adjustValue">0</div>
-                <button class="adjust-btn" id="btnPlus">+</button>
-            </div>
-
-            <div class="validation-buttons">
-                <button class="val-btn val-btn-yes" id="btnValidate">
-                    <span style="font-size: 28px;">✓</span>
-                    <span>VALIDER</span>
-                </button>
             </div>
         </div>
     </div>
 
-    <div class="tempo-bar-container">
-        <div class="tempo-bar">
-            <div class="tempo-phase descent active">
-                <div class="tempo-phase-icon">⬇️</div>
-                <div class="tempo-phase-bar">
-                    <div class="tempo-phase-progress" id="descentProgress" style="width: 0%"></div>
-                </div>
-                <div class="tempo-phase-time" id="descentTime">0s</div>
-            </div>
-            <div class="tempo-phase pause">
-                <div class="tempo-phase-icon">⏸️</div>
-                <div class="tempo-phase-bar">
-                    <div class="tempo-phase-progress" id="pauseProgress" style="width: 0%"></div>
-                </div>
-                <div class="tempo-phase-time" id="pauseTime">0s</div>
-            </div>
-            <div class="tempo-phase lift">
-                <div class="tempo-phase-icon">⬆️</div>
-                <div class="tempo-phase-bar">
-                    <div class="tempo-phase-progress" id="liftProgress" style="width: 0%"></div>
-                </div>
-                <div class="tempo-phase-time" id="liftTime">0s</div>
-            </div>
+    <!-- TIMER -->
+    <div class="timer-container">
+        <div class="circles">
+            <div class="circle circle-outer"></div>
+            <div class="circle circle-middle"></div>
+            <div class="circle circle-inner"></div>
+            <div class="tempo-bar" id="tempoBar"></div>
+        </div>
+        <div class="timer-display">
+            <div class="timer-value" id="timerValue">3.0</div>
+            <div class="timer-phase" id="timerPhase">DESCENT</div>
         </div>
     </div>
 
-    <div class="exercise-info">
-        <div class="exercise-name" id="exerciseName">CHARGEMENT...</div>
-        <div class="exercise-details">
-            <span id="exerciseWeight">💪 0kg</span>
-            <span>•</span>
-            <span>SET <span id="currentSet">0</span>/<span id="totalSets">0</span></span>
-            <span>•</span>
-            <span id="exerciseReps">0 reps</span>
-            <span>•</span>
-            <span id="exerciseTempo">Tempo 0-0-0</span>
+    <!-- REP COUNTER -->
+    <div class="rep-counter">
+        <div class="rep-label">RÉPÉTITION</div>
+        <div class="rep-value">
+            <span id="currentRep">1</span>/<span id="totalReps">8</span>
+        </div>
+        <div class="set-info">
+            Série <span id="currentSet">1</span>/<span id="totalSets">5</span>
         </div>
     </div>
 
-    <div class="actions">
-        <button class="btn btn-pause" id="pauseBtn">
+    <!-- CONTROLS -->
+    <div class="controls">
+        <button class="control-btn" id="pauseBtn">
             <span>⏸️</span>
             <span>PAUSE</span>
         </button>
-        <button class="btn btn-skip" id="skipBtn">
+        <button class="control-btn" id="skipBtn">
             <span>⏭️</span>
-            <span>SKIP</span>
+            <span>ABANDONNER</span>
         </button>
     </div>
 
-    <script type="module">
-        // ========================================
-        // 🔥 INTÉGRATION PROGRAM-DATA.JS
-        // ========================================
-        
-        // Import des données (assure-toi que le chemin est correct)
-        import { PROGRAM_DATA } from './scripts/program-data.js';
+    <!-- MODAL VALIDATION REP -->
+    <div class="modal" id="validationModal">
+        <div class="modal-content">
+            <div class="modal-icon">💪</div>
+            <div class="modal-title">Répétition terminée !</div>
+            <div class="modal-text">As-tu respecté le tempo complet ?</div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-primary" id="btnYes">✓ OUI</button>
+                <button class="modal-btn modal-btn-secondary" id="btnNo">⚠️ NON</button>
+            </div>
+        </div>
+    </div>
 
-        // Récupérer les paramètres URL
+    <!-- MODAL SET COMPLETE -->
+    <div class="modal" id="setCompleteModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎯</div>
+            <div class="modal-title">Série terminée !</div>
+            
+            <div class="set-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Reps réalisées</span>
+                    <span class="stat-value" id="statsReps">0/8</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Tempo respecté</span>
+                    <span class="stat-value" id="statsTempo">0/8</span>
+                </div>
+            </div>
+
+            <div class="modal-text">Ajuster le nombre de reps si nécessaire :</div>
+            
+            <div class="adjust-controls">
+                <button class="adjust-btn" id="btnMinus">−</button>
+                <div class="adjust-value" id="adjustValue">8</div>
+                <button class="adjust-btn" id="btnPlus">+</button>
+            </div>
+
+            <button class="modal-btn modal-btn-primary" id="btnValidate" style="width: 100%;">
+                VALIDER ET REPOS
+            </button>
+        </div>
+    </div>
+
+    <!-- ERROR SCREEN -->
+    <div class="error-screen" id="errorScreen">
+        <div class="error-content">
+            <div class="error-icon">❌</div>
+            <div class="error-title" id="errorTitle">Erreur</div>
+            <div class="error-message" id="errorMessage">Une erreur est survenue</div>
+            <div class="error-details" id="errorDetails"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // =================================================================
+        // IMPORTS
+        // =================================================================
+        import { PROGRAM_DATA } from './scripts/program-data.js';
+        import { WorkoutSessionManager } from './scripts/modules/session-storage.js';
+
+        // =================================================================
+        // RÉCUPÉRATION PARAMÈTRES URL
+        // =================================================================
         const urlParams = new URLSearchParams(window.location.search);
         const weekNumber = parseInt(urlParams.get('week')) || 1;
         const dayName = urlParams.get('day') || 'dimanche';
 
         console.log('📍 Chargement:', { week: weekNumber, day: dayName });
 
-        // Fonction pour afficher une erreur
-        function showError(title, message, details = '') {
-            document.body.innerHTML = `
-                <div class="error-message">
-                    <div class="error-title">${title}</div>
-                    <div class="error-text">${message}</div>
-                    ${details ? `<div class="error-details">${details}</div>` : ''}
-                </div>
-            `;
+        // =================================================================
+        // VALIDATION ET CHARGEMENT DONNÉES
+        // =================================================================
+        function showError(title, message, details) {
+            document.getElementById('errorTitle').textContent = title;
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorDetails').textContent = details;
+            document.getElementById('errorScreen').classList.add('active');
         }
 
-        // Vérifier que PROGRAM_DATA existe
-        if (!PROGRAM_DATA || !PROGRAM_DATA.weeks) {
-            showError('❌', 'Erreur: PROGRAM_DATA introuvable', 
-                'Vérifie que scripts/program-data.js existe et exporte correctement PROGRAM_DATA');
+        if (!PROGRAM_DATA) {
+            showError(
+                'Données introuvables',
+                'Le fichier program-data.js n\'a pas pu être chargé.',
+                'Vérifiez que le fichier existe dans scripts/program-data.js'
+            );
             throw new Error('PROGRAM_DATA non trouvé');
         }
 
-        // Trouver la semaine
         const weekData = PROGRAM_DATA.weeks.find(w => w.week_number === weekNumber);
         if (!weekData) {
-            showError('❌', `Semaine ${weekNumber} introuvable`, 
-                `Semaines disponibles: ${PROGRAM_DATA.weeks.map(w => w.week_number).join(', ')}`);
-            throw new Error(`Semaine ${weekNumber} non trouvée`);
+            showError(
+                'Semaine introuvable',
+                `La semaine ${weekNumber} n'existe pas dans les données.`,
+                `Semaines disponibles: ${PROGRAM_DATA.weeks.map(w => w.week_number).join(', ')}`
+            );
+            throw new Error(`Semaine ${weekNumber} introuvable`);
         }
 
-        // Trouver le jour
         const dayData = weekData.days[dayName];
         if (!dayData) {
-            showError('❌', `Jour "${dayName}" introuvable`, 
-                `Jours disponibles: ${Object.keys(weekData.days).join(', ')}`);
-            throw new Error(`Jour ${dayName} non trouvé`);
+            showError(
+                'Jour introuvable',
+                `Le jour "${dayName}" n'existe pas dans la semaine ${weekNumber}.`,
+                `Jours disponibles: ${Object.keys(weekData.days).join(', ')}`
+            );
+            throw new Error(`Jour ${dayName} introuvable`);
         }
 
-        // Récupérer les exercices
         const exercises = dayData.exercises;
         if (!exercises || exercises.length === 0) {
-            showError('❌', 'Aucun exercice trouvé', 
-                `La journée "${dayName}" de la semaine ${weekNumber} n'a pas d'exercices`);
-            throw new Error('Aucun exercice');
+            showError(
+                'Aucun exercice',
+                `Aucun exercice trouvé pour ${dayName} semaine ${weekNumber}.`,
+                'Vérifiez la structure de program-data.js'
+            );
+            throw new Error('Aucun exercice trouvé');
         }
 
-        // Exercice actuel (premier pour l'instant)
-        let currentExerciseIndex = 0;
-        const currentExercise = exercises[currentExerciseIndex];
-
-        console.log('✅ Données chargées:', {
-            week: weekData.week_number,
-            day: dayName,
-            exercise: currentExercise.name,
-            exercises: exercises.length
+        console.log('✅ Données chargées:', { 
+            week: weekNumber, 
+            day: dayName, 
+            exercise: exercises[0].name,
+            exercises: exercises.length 
         });
 
-        // Parser le tempo (ex: "3-1-2" → [3, 1, 2] ou "3010" → [3, 0, 1, 0])
-        function parseTempo(tempoStr) {
-            if (!tempoStr) return [3, 1, 2]; // Défaut
+        // =================================================================
+        // INITIALISATION SESSION
+        // =================================================================
+        const sessionManager = new WorkoutSessionManager();
+        sessionManager.startWorkout(weekNumber, dayName, exercises);
+
+        // =================================================================
+        // ÉTAT DU TIMER
+        // =================================================================
+        const state = {
+            currentExerciseIndex: 0,
+            totalExercises: exercises.length,
+            exerciseName: '',
+            weight: 0,
+            totalReps: 0,
+            totalSets: 0,
+            tempo: [3, 1, 2],
+            restTime: 90,
             
-            // Si format "3-1-2"
+            phase: 0,
+            rep: 1,
+            set: 1,
+            timeRemaining: 3,
+            isPaused: false,
+            isResting: false,
+            
+            repsCompleted: 0,
+            tempoRespected: []
+        };
+
+        let timerInterval = null;
+
+        // =================================================================
+        // PARSING TEMPO
+        // =================================================================
+        function parseTempo(tempoStr) {
+            if (!tempoStr) return [3, 1, 2];
+            
             if (tempoStr.includes('-')) {
                 return tempoStr.split('-').map(Number);
             }
             
-            // Si format "3010"
-            return tempoStr.split('').map(Number);
+            if (/^\d+$/.test(tempoStr)) {
+                return tempoStr.split('').map(Number);
+            }
+            
+            return [3, 1, 2];
         }
 
-        const tempo = parseTempo(currentExercise.tempo);
-        console.log('⏱️ Tempo parsé:', tempo, 'depuis', currentExercise.tempo);
-
-        // ========================================
-        // 🎯 STATE INITIALISÉ AVEC LES DONNÉES
-        // ========================================
-        
-        let state = {
-            phase: 0,
-            rep: 1,
-            set: 1,
-            totalReps: currentExercise.reps || 8,
-            totalSets: currentExercise.sets || 5,
-            tempo: tempo,
-            timeRemaining: tempo[0],
-            isPaused: false,
-            isResting: false,
-            restTime: currentExercise.rest || 90,
-            tempoRespected: [],
-            repsCompleted: 0,
-            exerciseName: currentExercise.name,
-            weight: currentExercise.weight || 0,
-            weekNumber: weekNumber,
-            dayName: dayName,
-            currentExerciseIndex: 0,
-            totalExercises: exercises.length
-        };
-
-        let timerInterval;
-
-        // Elements
-        const timeDisplay = document.getElementById('timeDisplay');
-        const phaseIcon = document.getElementById('phaseIcon');
-        const phaseText = document.getElementById('phaseText');
-        const tempoCircle = document.getElementById('tempoCircle');
-        const validationModal = document.getElementById('validationModal');
-        const setCompleteModal = document.getElementById('setCompleteModal');
-        const valRepNumber = document.getElementById('valRepNumber');
-        const valTotalReps = document.getElementById('valTotalReps');
-        const timerContainer = document.getElementById('timerContainer');
-        const currentSetDisplay = document.getElementById('currentSet');
-        const totalSetsDisplay = document.getElementById('totalSets');
-
-        const descentProgress = document.getElementById('descentProgress');
-        const pauseProgress = document.getElementById('pauseProgress');
-        const liftProgress = document.getElementById('liftProgress');
-        const tempoPhases = document.querySelectorAll('.tempo-phase');
-
-        const phases = [
-            { name: 'DESCENT', icon: '⬇️', color: '#00D9FF' },
-            { name: 'PAUSE', icon: '⏸️', color: '#FFD700' },
-            { name: 'LIFT', icon: '⬆️', color: '#FF3366' }
-        ];
-
-        // ========================================
-        // 🎨 INITIALISER L'AFFICHAGE
-        // ========================================
-        
-        function initDisplay() {
-            // Header
-            document.getElementById('weekTag').textContent = 
-                `SEMAINE ${state.weekNumber} • ${state.dayName.toUpperCase()}`;
+        // =================================================================
+        // CHARGEMENT EXERCICE
+        // =================================================================
+        function loadExercise() {
+            const currentExercise = exercises[state.currentExerciseIndex];
             
-            // Exercice info
+            state.exerciseName = currentExercise.name;
+            state.weight = currentExercise.weight || 0;
+            state.totalReps = currentExercise.reps;
+            state.totalSets = currentExercise.sets;
+            state.tempo = parseTempo(currentExercise.tempo);
+            state.restTime = currentExercise.rest || 90;
+            
+            state.phase = 0;
+            state.rep = 1;
+            state.set = 1;
+            state.timeRemaining = state.tempo[0];
+            state.repsCompleted = 0;
+            state.tempoRespected = [];
+
+            console.log('⏱️ Tempo parsé:', state.tempo, 'depuis', currentExercise.tempo);
+            
+            initDisplay();
+        }
+
+        function loadNextExercise() {
+            loadExercise();
+            startTimer();
+        }
+
+        // =================================================================
+        // INITIALISATION AFFICHAGE
+        // =================================================================
+        function initDisplay() {
+            document.getElementById('weekTag').textContent = 
+                `SEMAINE ${weekNumber} • ${dayName.toUpperCase()}`;
             document.getElementById('exerciseName').textContent = state.exerciseName;
             document.getElementById('exerciseWeight').textContent = `💪 ${state.weight}kg`;
             document.getElementById('exerciseReps').textContent = `${state.totalReps} reps`;
             document.getElementById('exerciseTempo').textContent = `Tempo ${state.tempo.join('-')}`;
             
-            // Set info
-            currentSetDisplay.textContent = state.set;
-            totalSetsDisplay.textContent = state.totalSets;
-            
-            // Tempo bar
-            document.getElementById('descentTime').textContent = state.tempo[0] + 's';
-            document.getElementById('pauseTime').textContent = state.tempo[1] + 's';
-            document.getElementById('liftTime').textContent = state.tempo[2] + 's';
-            
-            // Validation modal
-            valTotalReps.textContent = state.totalReps;
-            document.getElementById('statsRepsTotal').textContent = state.totalReps;
-            document.getElementById('statsTempoTotal').textContent = state.totalReps;
+            document.getElementById('totalReps').textContent = state.totalReps;
+            document.getElementById('totalSets').textContent = state.totalSets;
+            document.getElementById('currentRep').textContent = state.rep;
+            document.getElementById('currentSet').textContent = state.set;
             
             console.log('✅ Affichage initialisé');
         }
 
+        // =================================================================
+        // TIMER - DÉMARRAGE
+        // =================================================================
         function startTimer() {
+            console.log('🚀 Initialisation du timer...');
+            
+            state.timeRemaining = state.tempo[state.phase];
+            updateDisplay();
+            
             timerInterval = setInterval(updateTimer, 100);
+            console.log('✅ Timer démarré !');
         }
 
+        // =================================================================
+        // TIMER - MISE À JOUR
+        // =================================================================
         function updateTimer() {
-            if (state.isPaused) return;
+            if (state.isPaused || state.isResting) return;
 
             state.timeRemaining -= 0.1;
 
             if (state.timeRemaining <= 0) {
                 nextPhase();
+            } else {
+                updateDisplay();
             }
-
-            updateDisplay();
-            updateProgressBars();
         }
 
         function updateDisplay() {
-            if (state.isResting) {
-                timeDisplay.textContent = formatTime(state.timeRemaining);
-                phaseIcon.textContent = '🟣';
-                phaseText.textContent = 'REPOS';
-                timerContainer.classList.add('rest-mode');
-            } else {
-                timeDisplay.textContent = state.timeRemaining.toFixed(1);
-                phaseIcon.textContent = phases[state.phase].icon;
-                phaseText.textContent = phases[state.phase].name;
-                timerContainer.classList.remove('rest-mode');
-
-                const circumference = 490;
-                const progress = 1 - (state.timeRemaining / state.tempo[state.phase]);
-                const offset = circumference * (1 - progress);
-                tempoCircle.style.strokeDashoffset = offset;
-            }
-        }
-
-        function updateProgressBars() {
-            if (state.isResting) return;
-
-            const progress = ((state.tempo[state.phase] - state.timeRemaining) / state.tempo[state.phase]) * 100;
+            document.getElementById('timerValue').textContent = state.timeRemaining.toFixed(1);
             
-            descentProgress.style.width = '0%';
-            pauseProgress.style.width = '0%';
-            liftProgress.style.width = '0%';
-
-            if (state.phase === 0) descentProgress.style.width = progress + '%';
-            if (state.phase === 1) pauseProgress.style.width = progress + '%';
-            if (state.phase === 2) liftProgress.style.width = progress + '%';
-
-            tempoPhases.forEach((phase, i) => {
-                phase.classList.toggle('active', i === state.phase);
-            });
+            const phases = ['DESCENT', 'PAUSE BAS', 'LIFT', 'PAUSE HAUT'];
+            document.getElementById('timerPhase').textContent = phases[state.phase] || 'PHASE';
+            
+            document.getElementById('currentRep').textContent = state.rep;
+            document.getElementById('currentSet').textContent = state.set;
+            
+            const rotation = (state.timeRemaining / state.tempo[state.phase]) * 360;
+            document.getElementById('tempoBar').style.transform = 
+                `translateX(-50%) rotate(${rotation}deg)`;
         }
 
+        // =================================================================
+        // TIMER - PHASE SUIVANTE
+        // =================================================================
         function nextPhase() {
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-
             state.phase++;
 
-            if (state.phase >= 3) {
+            if (state.phase >= state.tempo.length) {
                 showValidation();
-                return;
+            } else {
+                state.timeRemaining = state.tempo[state.phase];
+                updateDisplay();
             }
-
-            state.timeRemaining = state.tempo[state.phase];
         }
 
+        // =================================================================
+        // VALIDATION REP
+        // =================================================================
         function showValidation() {
             clearInterval(timerInterval);
-            valRepNumber.textContent = state.rep;
-            validationModal.classList.add('active');
+            state.isPaused = true;
+            document.getElementById('validationModal').classList.add('active');
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
+            }
         }
 
         function hideValidation() {
-            validationModal.classList.remove('active');
+            document.getElementById('validationModal').classList.remove('active');
+            state.isPaused = false;
         }
 
-        function continueToNextRep(tempoOk) {
+        function continueToNextRep(tempoRespected) {
             hideValidation();
             
-            state.tempoRespected.push(tempoOk);
+            state.tempoRespected.push(tempoRespected);
             state.repsCompleted++;
-            state.rep++;
-            state.phase = 0;
-            state.timeRemaining = state.tempo[0];
+            
+            if (tempoRespected) {
+                createParticles();
+            }
 
-            if (state.rep > state.totalReps) {
+            if (state.rep >= state.totalReps) {
                 showSetComplete();
             } else {
-                createParticles();
+                state.rep++;
+                state.phase = 0;
+                state.timeRemaining = state.tempo[0];
                 startTimer();
             }
         }
 
+        // =================================================================
+        // FIN DE SÉRIE
+        // =================================================================
         function showSetComplete() {
+            clearInterval(timerInterval);
+            
             const tempoOk = state.tempoRespected.filter(t => t).length;
-            const tut = state.repsCompleted * state.tempo.reduce((a, b) => a + b, 0);
-
-            document.getElementById('statsReps').textContent = state.repsCompleted;
-            document.getElementById('statsTempo').textContent = tempoOk;
-            document.getElementById('statsTUT').textContent = tut;
+            document.getElementById('statsReps').textContent = 
+                `${state.repsCompleted}/${state.totalReps}`;
+            document.getElementById('statsTempo').textContent = 
+                `${tempoOk}/${state.repsCompleted}`;
             document.getElementById('adjustValue').textContent = state.repsCompleted;
-
-            setCompleteModal.classList.add('active');
-
+            
+            document.getElementById('setCompleteModal').classList.add('active');
+            
             if (navigator.vibrate) {
                 navigator.vibrate([100, 50, 100]);
             }
         }
 
         function hideSetComplete() {
-            setCompleteModal.classList.remove('active');
+            document.getElementById('setCompleteModal').classList.remove('active');
         }
 
         function validateSet() {
             hideSetComplete();
             
-            console.log('✅ Série sauvegardée:', {
-                exercise: state.exerciseName,
-                set: state.set,
-                reps: state.repsCompleted,
-                tempo: state.tempoRespected.filter(t => t).length + '/' + state.repsCompleted,
-                tut: state.repsCompleted * state.tempo.reduce((a, b) => a + b, 0)
+            sessionManager.saveSet(state.exerciseName, {
+                set_number: state.set,
+                reps_completed: state.repsCompleted,
+                reps_planned: state.totalReps,
+                tempo_respected_count: state.tempoRespected.filter(t => t).length,
+                tempo_respected_detail: state.tempoRespected,
+                time_under_tension: state.repsCompleted * state.tempo.reduce((a, b) => a + b, 0),
+                rest_time: state.restTime,
+                timestamp: new Date().toISOString()
             });
-
+            
             startRest();
         }
 
+        // =================================================================
+        // REPOS
+        // =================================================================
         function startRest() {
             state.isResting = true;
             state.timeRemaining = state.restTime;
-            startTimer();
+            
+            document.getElementById('timerPhase').textContent = 'REPOS';
+            
+            const restInterval = setInterval(() => {
+                if (!state.isPaused) {
+                    state.timeRemaining -= 1;
+                    document.getElementById('timerValue').textContent = 
+                        formatTime(state.timeRemaining);
+                    
+                    if (state.timeRemaining <= 0) {
+                        clearInterval(restInterval);
+                        endRest();
+                    }
+                }
+            }, 1000);
         }
 
         function endRest() {
             state.isResting = false;
-            state.set++;
             state.rep = 1;
             state.repsCompleted = 0;
             state.tempoRespected = [];
-            state.phase = 0;
-            state.timeRemaining = state.tempo[0];
-
-            currentSetDisplay.textContent = state.set;
+            state.set++;
+            
+            document.getElementById('currentSet').textContent = state.set;
 
             if (state.set > state.totalSets) {
                 exerciseComplete();
-                return;
+            } else {
+                state.phase = 0;
+                state.timeRemaining = state.tempo[0];
+                startTimer();
             }
-
-            startTimer();
         }
 
+        // =================================================================
+        // FIN D'EXERCICE
+        // =================================================================
         function exerciseComplete() {
-            clearInterval(timerInterval);
-            
             console.log('🏆 Exercice terminé:', state.exerciseName);
             
-            // Passer à l'exercice suivant
             state.currentExerciseIndex++;
             
             if (state.currentExerciseIndex >= state.totalExercises) {
-                // Tous les exercices terminés
-                alert('🎉 SÉANCE TERMINÉE ! Félicitations !');
-                // TODO: Rediriger vers la page de résumé
+                sessionManager.completeWorkout();
+                
+                const stats = sessionManager.getSessionStats();
+                alert(`🎉 SÉANCE TERMINÉE !
+
+📊 STATISTIQUES :
+• Exercices : ${stats.exercises}
+• Séries : ${stats.totalSets}
+• Reps : ${stats.totalReps}
+• Tempo respecté : ${stats.avgTempoRespect}%
+• Temps sous tension : ${stats.timeUnderTension}s
+• Durée : ${sessionManager.formatDuration(stats.duration)}`);
+                
+                window.location.href = 'home.html';
                 return;
             }
             
-            // Charger l'exercice suivant
+            console.log('➡️ Exercice suivant:', exercises[state.currentExerciseIndex].name);
             loadNextExercise();
         }
 
-        function loadNextExercise() {
-            const nextExercise = exercises[state.currentExerciseIndex];
-            
-            // Mettre à jour le state
-            state.exerciseName = nextExercise.name;
-            state.weight = nextExercise.weight || 0;
-            state.totalReps = nextExercise.reps || 8;
-            state.totalSets = nextExercise.sets || 5;
-            state.tempo = parseTempo(nextExercise.tempo);
-            state.restTime = nextExercise.rest || 90;
-            state.set = 1;
-            state.rep = 1;
-            state.repsCompleted = 0;
-            state.tempoRespected = [];
-            state.phase = 0;
-            state.timeRemaining = state.tempo[0];
-            
-            // Réinitialiser l'affichage
-            initDisplay();
-            
-            console.log('➡️ Exercice suivant:', nextExercise.name);
-            
-            // Afficher une notification
-            alert(`Exercice suivant : ${nextExercise.name}`);
-            
-            // Redémarrer le timer
-            startTimer();
-        }
-
+        // =================================================================
+        // ANIMATIONS
+        // =================================================================
         function createParticles() {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
@@ -967,10 +999,9 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // ========================================
-        // 🎮 EVENT LISTENERS
-        // ========================================
-
+        // =================================================================
+        // EVENT LISTENERS
+        // =================================================================
         document.getElementById('btnYes').addEventListener('click', () => {
             continueToNextRep(true);
         });
@@ -1007,26 +1038,18 @@
         });
 
         document.getElementById('skipBtn').addEventListener('click', () => {
-            if (confirm('Passer à l\'exercice suivant ?')) {
-                exerciseComplete();
+            if (confirm('⚠️ Abandonner la séance ?\n\nVos données seront sauvegardées.')) {
+                clearInterval(timerInterval);
+                sessionManager.abandonWorkout();
+                window.location.href = 'home.html';
             }
         });
 
-        // Check for rest mode end
-        setInterval(() => {
-            if (state.isResting && state.timeRemaining <= 0) {
-                endRest();
-            }
-        }, 100);
-
-        // ========================================
-        // 🚀 INITIALISATION
-        // ========================================
-
-        console.log('🚀 Initialisation du timer...');
-        initDisplay();
+        // =================================================================
+        // INITIALISATION
+        // =================================================================
+        loadExercise();
         startTimer();
-        console.log('✅ Timer démarré !');
     </script>
 </body>
 </html>
