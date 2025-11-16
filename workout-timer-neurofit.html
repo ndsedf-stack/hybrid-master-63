@@ -532,7 +532,6 @@
 
     <script type="module">
         import programData from './scripts/program-data.js';
-        import { WorkoutSessionManager } from './scripts/modules/session-storage.js';
 
         const urlParams = new URLSearchParams(window.location.search);
         const weekNumber = parseInt(urlParams.get('week')) || 1;
@@ -540,7 +539,6 @@
 
         console.log('📍 Chargement:', { week: weekNumber, day: dayName });
 
-        const sessionManager = new WorkoutSessionManager();
 
         function showError(title, message, details) {
             console.error('❌', title, message, details);
@@ -585,7 +583,6 @@
 
         console.log('✅ Données chargées:', { exercises: dayData.exercises.length });
 
-        sessionManager.startWorkout(weekNumber, dayName, dayData.exercises);
 
         let currentExerciseIndex = 0;
         let currentExercise = dayData.exercises[currentExerciseIndex];
@@ -697,17 +694,7 @@
             const adjustedReps = parseInt(document.getElementById('repsAdjustValue').textContent);
             const tempoRespected = parseInt(document.getElementById('tempoAdjustValue').textContent);
 
-            sessionManager.saveSet(currentExercise.name, {
                 set_number: currentSet,
-                reps_completed: adjustedReps,
-                reps_planned: repsTarget,
-                tempo_respected_count: tempoRespected,
-                tempo_respected_detail: Array(adjustedReps).fill(true).map((_, i) => i < tempoRespected),
-                time_under_tension: adjustedReps * totalCycleTime,
-                rest_time: currentExercise.rest,
-                timestamp: new Date().toISOString()
-            });
-
             document.getElementById('setModal').classList.remove('active');
 
             if (currentSet >= currentExercise.sets) {
@@ -752,11 +739,9 @@
         }
 
         function showFinalModal() {
-            const stats = sessionManager.getSessionStats();
             document.getElementById('finalSets').textContent = `${currentSet}/${currentExercise.sets}`;
             document.getElementById('finalReps').textContent = stats.totalReps;
             document.getElementById('finalTempo').textContent = `${stats.avgTempoRespect}%`;
-            document.getElementById('finalDuration').textContent = sessionManager.formatDuration(stats.duration);
             document.getElementById('finalModal').classList.add('active');
         }
 
@@ -765,7 +750,6 @@
             if (currentExerciseIndex < dayData.exercises.length) {
                 window.location.href = `workout-3d-full.html?week=${weekNumber}&day=${dayName}&exercise=${currentExerciseIndex}`;
             } else {
-                sessionManager.completeWorkout();
                 window.location.href = 'home.html';
             }
         });
@@ -777,7 +761,6 @@
 
         document.getElementById('abandonBtn').addEventListener('click', () => {
             if (confirm('Voulez-vous vraiment abandonner cette séance ?')) {
-                sessionManager.abandonWorkout();
                 window.location.href = 'home.html';
             }
         });

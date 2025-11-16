@@ -676,6 +676,32 @@
     .nav-btn:not(:disabled):hover {
       transform: translateY(-3px);
     }
+    .timer-button-container {
+      padding: 30px 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .timer-start-btn {
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 255, 136, 0.2));
+      border: 2px solid #00ff88;
+      border-radius: 50px;
+      padding: 20px 40px;
+      color: #00ff88;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+      transition: all 0.3s;
+    }
+    .timer-start-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 50px rgba(0, 255, 136, 0.6);
+    }
+    .timer-icon { font-size: 24px; }
   </style>
 </head>
 <body>
@@ -958,6 +984,12 @@
             </div>
           </div>
           
+          <div class="timer-button-container">
+            <button class="timer-start-btn" onclick="startTimerNeuroFit()">
+              <span class="timer-icon">🎯</span>
+              <span class="timer-text">DÉMARRER LE TIMER</span>
+            </button>
+          </div>
           <div class="trapbar-circles-container">
             ${renderCircle('green', `<div class="trapbar-circle-check">✓</div><div class="trapbar-circle-progress">${progress}%</div>`)}
             ${renderCircle('orange', `<div class="trapbar-circle-weight">${currentSerieWeight}</div><div class="trapbar-circle-unit">kg</div>`)}
@@ -1009,6 +1041,22 @@
               <div style="text-align: right;">
                 <div class="trapbar-footer-label">VOLUME</div>
                 <div class="trapbar-volume">${totalVolume.toLocaleString()} KG</div>
+
+    // Fonction pour démarrer le timer NeuroFit
+    window.startTimerNeuroFit = function() {
+      const params = new URLSearchParams(window.location.search);
+      const week = params.get("week") || 1;
+      const day = params.get("day") || "dimanche";
+      window.location.href = `workout-timer-neurofit.html?week=${week}&day=${day}`;
+    };
+
+    // Fonction pour démarrer le timer
+    window.startTimer = function() {
+      const params = new URLSearchParams(window.location.search);
+      const week = params.get("week") || 1;
+      const day = params.get("day") || "dimanche";
+      window.location.href = `workout-timer-neurofit.html?week=${week}&day=${day}`;
+    };
               </div>
             </div>
             <div>

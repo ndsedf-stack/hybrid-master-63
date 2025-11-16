@@ -4,7 +4,7 @@
  * Protection contre la perte de données
  */
 
-class WorkoutSessionManager {
+export class WorkoutSessionManager {
     constructor() {
         this.currentSession = null;
         this.autoSaveInterval = null;
