@@ -714,7 +714,7 @@
         ${buttons}
       `;
       
-      // 🔥 MODIFICATION : Redirection vers trapbar-react-three.html
+      // 🔥 MODIFICATION : Redirection vers workout-session.html
       if (index === 0) {
         const btnSecondary = card.querySelector('[data-action="restart"]');
         const btnPrimary = card.querySelector('[data-action="start"]');
@@ -722,18 +722,18 @@
         if (btnSecondary) {
           btnSecondary.onclick = (e) => {
             e.stopPropagation();
-            window.location.href = `trapbar-react-three.html?week=${weekNumber}&day=${dayKey}`;
+            window.location.href = `workout-session.html?week=${weekNumber}&day=${dayKey}`;
           };
         }
         if (btnPrimary) {
           btnPrimary.onclick = (e) => {
             e.stopPropagation();
-            window.location.href = `trapbar-react-three.html?week=${weekNumber}&day=${dayKey}`;
+            window.location.href = `workout-session.html?week=${weekNumber}&day=${dayKey}`;
           };
         }
       } else {
         card.onclick = () => {
-          window.location.href = `trapbar-react-three.html?week=${weekNumber}&day=${dayKey}`;
+          window.location.href = `workout-session.html?week=${weekNumber}&day=${dayKey}`;
         };
       }
       
