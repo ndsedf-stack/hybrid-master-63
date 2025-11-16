@@ -660,3 +660,34 @@
     </script>
 </body>
 </html>
+// Importer les données du programme
+import { PROGRAM_DATA } from './scripts/program-data.js';
+import { WorkoutSessionManager } from './scripts/modules/session-storage.js';
+
+// Initialiser le session manager
+const sessionManager = new WorkoutSessionManager();
+
+// Démarrer une session
+const session = sessionManager.startNewSession(7, 'dimanche');
+
+// Charger l'exercice actuel depuis program-data.js
+const weekData = PROGRAM_DATA.weeks[6]; // Semaine 7 (index 6)
+const dayData = weekData.days.find(d => d.name === 'dimanche');
+const exercise = dayData.exercises[0]; // Premier exercice
+
+// Parser le tempo (ex: "3010" → [3, 0, 1, 0])
+function parseTempo(tempoStr) {
+    return tempoStr.split('').map(Number);
+}
+
+const tempo = parseTempo(exercise.tempo); // [3, 0, 1, 0]
+
+// Démarrer l'exercice
+sessionManager.startExercise({
+    name: exercise.name,
+    tempo: tempo.join('-'),
+    sets: exercise.sets,
+    reps: exercise.reps,
+    weight: exercise.weight || 0,
+    rest: exercise.rest || 90
+});
