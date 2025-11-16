@@ -209,20 +209,17 @@ export class TrapBarRenderer {
       var circleClass = '';
       
       if (set.completed) {
-        // Série terminée - PLEIN CYAN BRILLANT
         circleClass = 'completed';
       } else if (i === firstUncompleted) {
-        // Série active - BORDURE CYAN ÉPAISSE
         circleClass = 'active';
       } else if (i === firstUncompleted + 1) {
-        // Prochaine série - BORDURE BLEUE
         circleClass = 'rest';
       } else {
-        // Séries futures - BORDURE GRISE
         circleClass = 'upcoming';
       }
       
-      html += '<div class="trapbar-serie-circle ' + circleClass + '" data-action="toggle" data-index="' + i + '">' +
+      html += '<div class="trapbar-serie-circle ' + circleClass + '" data-action="toggle" data-index="' + i + '" style="position: relative;">' +
+              '<div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-size: 11px; color: yellow; background: black; padding: 3px 8px; border-radius: 4px; font-weight: bold; white-space: nowrap;">' + circleClass + '</div>' +
               '<div class="trapbar-serie-circle-num">' + set.reps + '</div>' +
               '</div>';
     }
