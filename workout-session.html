@@ -1,0 +1,588 @@
+🔥 PARFAIT ! JE VAIS CRÉER UNE NOUVELLE PAGE QUI AFFICHE TOUTE LA SÉANCE
+Je vais créer workout-session.html qui :
+✅ Charge TOUS les exercices du jour
+✅ Affiche les détails complets (poids, séries, reps, techniques)
+✅ Interface moderne avec navigation entre exercices
+✅ Possibilité de voir le modèle 3D pour chaque exercice
+🚀 COMMANDE COMPLÈTE
+bash
+cd ~/Desktop/hybrid-master-63
+
+cat > workout-session.html << 'ENDOFFILE'
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Séance - Hybrid Master 63</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+
+    :root {
+      --primary: #3B82F6;
+      --primary-light: #60A5FA;
+      --secondary: #10B981;
+      --secondary-light: #34D399;
+      --accent: #8B5CF6;
+      --accent-light: #A78BFA;
+      --bg-dark: #0F172A;
+      --bg-darker: #020617;
+      --text-muted: #94A3B8;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-darker);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%; 
+      left: -50%; 
+      right: -50%; 
+      bottom: -50%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      animation: gentleFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+      50% { transform: translate(20px, 20px) scale(1.05); opacity: 0.8; }
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 20px 20px 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-top: 8px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--primary);
+      transform: translateX(-4px);
+    }
+
+    .workout-header {
+      flex: 1;
+    }
+
+    .workout-title {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .workout-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 10px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+
+    .exercise-card {
+      background: linear-gradient(135deg, 
+        rgba(30,41,59,0.6) 0%, 
+        rgba(15,23,42,0.8) 100%
+      );
+      backdrop-filter: blur(30px) saturate(150%);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    .exercise-card:nth-child(1) { animation-delay: 0.1s; }
+    .exercise-card:nth-child(2) { animation-delay: 0.15s; }
+    .exercise-card:nth-child(3) { animation-delay: 0.2s; }
+    .exercise-card:nth-child(4) { animation-delay: 0.25s; }
+    .exercise-card:nth-child(5) { animation-delay: 0.3s; }
+    .exercise-card:nth-child(6) { animation-delay: 0.35s; }
+    .exercise-card:nth-child(7) { animation-delay: 0.4s; }
+    .exercise-card:nth-child(8) { animation-delay: 0.45s; }
+
+    .exercise-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(59, 130, 246, 0.3);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .exercise-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+    }
+
+    .exercise-name {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .view-3d-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 20px;
+    }
+
+    .view-3d-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .exercise-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .detail-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px;
+      transition: all 0.3s;
+    }
+
+    .detail-box:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    .detail-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .detail-value {
+      font-size: 16px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .technique-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .technique-badge {
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+
+    .rest-badge {
+      background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+    }
+
+    .notes-section {
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 3px solid var(--primary);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .complete-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
+      margin-top: 12px;
+    }
+
+    .complete-btn:hover {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+      border-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .complete-btn.completed {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+      border-color: var(--secondary);
+    }
+
+    .fab {
+      position: fixed;
+      bottom: calc(100px + env(safe-area-inset-bottom));
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      animation: fabFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes fabFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .fab:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(16, 185, 129, 0.7);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(30px) saturate(180%);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 0 max(20px, env(safe-area-inset-bottom));
+      display: flex;
+      justify-content: space-around;
+      z-index: 99;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 24px;
+      border-radius: 14px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .nav-icon {
+      font-size: 24px;
+    }
+
+    @media (max-width: 400px) {
+      .container { padding: 16px 16px 120px; }
+      .exercise-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="home-final.html" class="back-btn">←</a>
+      <div class="workout-header">
+        <div class="workout-title" id="workoutTitle">Chargement...</div>
+        <div class="workout-meta" id="workoutMeta"></div>
+      </div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+
+    <div id="exercisesList"></div>
+  </div>
+
+  <button class="fab" id="completeFab">✓</button>
+
+  <div class="bottom-nav">
+    <a href="home-final.html" class="nav-item active">
+      <div class="nav-icon">🏠</div>
+      <div>Accueil</div>
+    </a>
+    <div class="nav-item">
+      <div class="nav-icon">📊</div>
+      <div>Stats</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <div>Profil</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import programData from './scripts/program-data.js';
+
+    // Récupération des paramètres URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const weekNumber = parseInt(urlParams.get('week')) || 1;
+    const dayKey = urlParams.get('day') || 'dimanche';
+
+    // Chargement des données
+    const weekData = programData.getWeek(weekNumber);
+    const workout = weekData[dayKey];
+
+    if (!workout) {
+      document.getElementById('workoutTitle').textContent = 'Séance introuvable';
+      throw new Error('Workout not found');
+    }
+
+    // Affichage du header
+    document.getElementById('workoutTitle').textContent = workout.name;
+    document.getElementById('workoutMeta').textContent = 
+      `${workout.exercises.length} exercices • ${workout.totalSets} séries • ${workout.duration} min`;
+
+    // Tracking de la progression
+    let completedExercises = 0;
+    const totalExercises = workout.exercises.length;
+
+    function updateProgress() {
+      const percentage = (completedExercises / totalExercises) * 100;
+      document.getElementById('progressFill').style.width = `${percentage}%`;
+    }
+
+    // Génération des cartes d'exercices
+    const exercisesList = document.getElementById('exercisesList');
+
+    workout.exercises.forEach((exercise, index) => {
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+
+      // Détermination des techniques
+      const techniques = [];
+      if (exercise.restPause) techniques.push({ label: 'Rest-Pause', class: 'technique-badge' });
+      if (exercise.dropSets) techniques.push({ label: `Drop-set ${exercise.dropSets}`, class: 'technique-badge' });
+      if (exercise.tempo) techniques.push({ label: `Tempo ${exercise.tempo}`, class: 'technique-badge' });
+      if (exercise.cluster) techniques.push({ label: 'Cluster Set', class: 'technique-badge' });
+
+      // Construction du HTML
+      card.innerHTML = `
+        <div class="exercise-header">
+          <div class="exercise-number">${index + 1}</div>
+          <div class="exercise-name">${exercise.name}</div>
+          <button class="view-3d-btn" onclick="window.open('trapbar-react-three.html?exercise=${encodeURIComponent(exercise.name)}', '_blank')">🎮</button>
+        </div>
+
+        <div class="exercise-details">
+          <div class="detail-box">
+            <div class="detail-label">Poids</div>
+            <div class="detail-value">${exercise.weight} kg</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-label">Séries × Reps</div>
+            <div class="detail-value">${exercise.sets} × ${exercise.reps}</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-label">RPE Cible</div>
+            <div class="detail-value">${exercise.rpe}</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-label">Repos</div>
+            <div class="detail-value">${exercise.rest}</div>
+          </div>
+        </div>
+
+        ${techniques.length > 0 ? `
+          <div class="technique-badges">
+            ${techniques.map(t => `<span class="${t.class}">${t.label}</span>`).join('')}
+            <span class="technique-badge rest-badge">⏱️ ${exercise.rest}</span>
+          </div>
+        ` : `
+          <div class="technique-badges">
+            <span class="technique-badge rest-badge">⏱️ ${exercise.rest}</span>
+          </div>
+        `}
+
+        ${exercise.notes ? `
+          <div class="notes-section">
+            💡 <strong>Notes :</strong> ${exercise.notes}
+          </div>
+        ` : ''}
+
+        <button class="complete-btn" data-index="${index}">
+          ✓ Marquer comme terminé
+        </button>
+      `;
+
+      exercisesList.appendChild(card);
+    });
+
+    // Gestion de la complétion des exercices
+    document.querySelectorAll('.complete-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (!this.classList.contains('completed')) {
+          this.classList.add('completed');
+          this.textContent = '✅ Exercice terminé !';
+          completedExercises++;
+          updateProgress();
+
+          // Si tous les exercices sont terminés
+          if (completedExercises === totalExercises) {
+            document.getElementById('completeFab').textContent = '🎉';
+            setTimeout(() => {
+              if (confirm('🎉 Séance terminée ! Retourner à l\'accueil ?')) {
+                window.location.href = 'home-final.html';
+              }
+            }, 500);
+          }
+        }
+      });
+    });
+
+    // FAB Button
+    document.getElementById('completeFab').addEventListener('click', () => {
+      if (completedExercises === totalExercises) {
+        window.location.href = 'home-final.html';
+      } else {
+        alert(`Il reste ${totalExercises - completedExercises} exercice(s) à terminer !`);
+      }
+    });
+  </script>
+</body>
+</html>
