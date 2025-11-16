@@ -3,15 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Trap Bar Deadlift</title>
+    <title>Trap Bar Deadlift - Pixel Perfect</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #000; }
+        body { 
+            overflow-x: hidden; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
+            background: #0b0f18;
+        }
         html, body { height: 100%; width: 100%; }
+        
+        @keyframes rotateBorder {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
     </style>
 </head>
 <body>
@@ -23,41 +42,52 @@
         function TrapBarThreeJS() {
           const containerRef = useRef(null);
           const [mounted, setMounted] = useState(false);
+          const [timer, setTimer] = useState(36);
 
           useEffect(() => {
             if (!containerRef.current) return;
 
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000000);
+            scene.background = new THREE.Color(0x0b0f18);
 
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 5;
 
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             containerRef.current.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
             scene.add(ambientLight);
 
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 200;
+            const particlesCount = 150;
             const positions = new Float32Array(particlesCount * 3);
             
-            for (let i = 0; i < particlesCount * 3; i += 3) {
-              positions[i] = (Math.random() - 0.5) * 10;
-              positions[i + 1] = (Math.random() - 0.5) * 10;
-              positions[i + 2] = (Math.random() - 0.5) * 5;
+            const circlePositions = [
+              { x: 0.25, y: 0.45 },
+              { x: 0.50, y: 0.45 },
+              { x: 0.75, y: 0.45 }
+            ];
+            
+            for (let i = 0; i < particlesCount; i++) {
+              const targetCircle = circlePositions[Math.floor(Math.random() * 3)];
+              const distance = Math.random() < 0.7 ? Math.random() * 3 : 3 + Math.random() * 2;
+              const angle = Math.random() * Math.PI * 2;
+              
+              positions[i * 3] = (targetCircle.x - 0.5) * 10 + Math.cos(angle) * distance;
+              positions[i * 3 + 1] = (0.5 - targetCircle.y) * 10 + Math.sin(angle) * distance;
+              positions[i * 3 + 2] = (Math.random() - 0.5) * 3;
             }
             
             particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             
             const particlesMaterial = new THREE.PointsMaterial({
               color: 0xFFD700,
-              size: 0.05,
+              size: 0.04,
               transparent: true,
-              opacity: 0.8,
+              opacity: 0.7,
               blending: THREE.AdditiveBlending
             });
             
@@ -67,15 +97,15 @@
             let time = 0;
             function animate() {
               requestAnimationFrame(animate);
-              time += 0.01;
+              time += 0.008;
 
               const positions = particles.geometry.attributes.position.array;
               for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += Math.sin(time + i) * 0.003;
-                positions[i] += Math.cos(time + i) * 0.002;
+                positions[i + 1] += Math.sin(time + i) * 0.002;
+                positions[i] += Math.cos(time + i) * 0.0015;
               }
               particles.geometry.attributes.position.needsUpdate = true;
-              particles.rotation.y = time * 0.05;
+              particles.rotation.y = time * 0.03;
 
               renderer.render(scene, camera);
             }
@@ -99,8 +129,64 @@
             };
           }, []);
 
+          useEffect(() => {
+            const interval = setInterval(() => {
+              setTimer(t => t + 1);
+            }, 1000);
+            return () => clearInterval(interval);
+          }, []);
+
+          const WeightIcon = () => (
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <rect x="5" y="26" width="8" height="12" rx="2" fill="url(#wg)"/>
+              <rect x="51" y="26" width="8" height="12" rx="2" fill="url(#wg)"/>
+              <rect x="13" y="29" width="38" height="6" rx="3" fill="url(#wg)"/>
+              <defs>
+                <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#b0b0b0"/>
+                  <stop offset="100%" stopColor="#707070"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          );
+
+          const SeriesIcon = () => (
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <rect x="16" y="18" width="32" height="8" rx="4" fill="#00D9FF" opacity="0.4"/>
+              <rect x="18" y="27" width="28" height="8" rx="4" fill="#00D9FF" opacity="0.7"/>
+              <rect x="20" y="36" width="24" height="8" rx="4" fill="#00D9FF"/>
+            </svg>
+          );
+
+          const TempoIcon = () => (
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <path d="M32 10L38 28L32 46L26 28L32 10Z" fill="url(#lg)"/>
+              <defs>
+                <linearGradient id="lg" x1="32" y1="10" x2="32" y2="46">
+                  <stop offset="0%" stopColor="#FFD700"/>
+                  <stop offset="100%" stopColor="#35FF8B"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          );
+
+          const RestIcon = () => (
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="16" fill="url(#rg)"/>
+              <defs>
+                <radialGradient id="rg">
+                  <stop offset="0%" stopColor="#ffffff"/>
+                  <stop offset="100%" stopColor="#b0b0b0"/>
+                </radialGradient>
+              </defs>
+            </svg>
+          );
+
+          const minutes = Math.floor(timer / 60);
+          const seconds = timer % 60;
+
           return (
-            <div style={{ position: 'relative', width: '100vw', minHeight: '100vh', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', width: '100vw', minHeight: '100vh', background: '#0b0f18' }}>
               <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }} />
               
               {mounted && (
@@ -115,26 +201,31 @@
                   overflowY: 'auto',
                   paddingBottom: '60px'
                 }}>
-                  {/* Header */}
+                  {/* HEADER - TROPHÉE 75x75px NOIR */}
                   <div style={{ textAlign: 'center', marginTop: '30px' }}>
                     <div style={{
-                      width: '50px',
-                      height: '50px',
-                      margin: '0 auto 12px',
-                      background: 'linear-gradient(135deg, #FFD700, #FFA500)',
-                      borderRadius: '10px',
+                      width: '75px',
+                      height: '75px',
+                      margin: '0 auto 16px',
+                      background: 'rgba(10, 10, 10, 0.8)',
+                      borderRadius: '18px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '28px',
-                      boxShadow: '0 0 40px rgba(255, 215, 0, 0.8)'
+                      fontSize: '42px',
+                      border: '1px solid rgba(255, 215, 0, 0.12)',
+                      backdropFilter: 'blur(15px)',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)'
                     }}>🏆</div>
-                    <h1 style={{ fontSize: '32px', fontWeight: '700', margin: '0 0 8px 0' }}>
+                    
+                    {/* TITRE - "Trap Bar" BLANC + "Deadlift" CYAN GLOW */}
+                    <h1 style={{ fontSize: '42px', fontWeight: '700', margin: '0 0 8px 0' }}>
                       <span style={{ color: 'white' }}>Trap Bar</span>{' '}
                       <span style={{
                         background: 'linear-gradient(135deg, #00E5FF 0%, #00FFD0 100%)',
                         WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent'
+                        WebkitTextFillColor: 'transparent',
+                        filter: 'drop-shadow(0 0 40px rgba(0, 229, 255, 0.9))'
                       }}>Deadlift</span>
                     </h1>
                     <div style={{ color: '#7a8090', fontSize: '11px', letterSpacing: '2.5px', fontWeight: '500' }}>
@@ -142,7 +233,7 @@
                     </div>
                   </div>
 
-                  {/* Métriques */}
+                  {/* MÉTRIQUES - SVG 64px + GLOW */}
                   <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(2, 1fr)',
@@ -151,10 +242,10 @@
                     maxWidth: '400px'
                   }}>
                     {[
-                      { icon: '🏋️', value: '100kg', label: 'POIDS', color: '#FF6D00' },
-                      { icon: '📊', value: '5x5', label: 'SÉRIES', color: '#00D9FF' },
-                      { icon: '⚡', value: '3-1-2', label: 'TEMPO', color: '#35FF8B' },
-                      { icon: '⏱️', value: '120s', label: 'REPOS', color: '#9D4EDD' }
+                      { Icon: WeightIcon, value: '100kg', label: 'POIDS', color: '#FF6D00' },
+                      { Icon: SeriesIcon, value: '5x5', label: 'SÉRIES', color: '#00D9FF' },
+                      { Icon: TempoIcon, value: '3-1-2', label: 'TEMPO', color: '#35FF8B' },
+                      { Icon: RestIcon, value: '120s', label: 'REPOS', color: '#9D4EDD' }
                     ].map((metric, i) => (
                       <div key={i} style={{
                         background: 'rgba(255,255,255,0.03)',
@@ -162,9 +253,16 @@
                         border: '1px solid rgba(255,255,255,0.06)',
                         borderRadius: '14px',
                         padding: '18px 12px',
-                        textAlign: 'center'
-                      }}>
-                        <div style={{ fontSize: '32px', marginBottom: '12px', opacity: '0.9' }}>{metric.icon}</div>
+                        textAlign: 'center',
+                        transition: 'transform 0.3s',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                      >
+                        <div style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 20px currentColor)' }}>
+                          <metric.Icon />
+                        </div>
                         <div style={{
                           fontSize: '26px',
                           fontWeight: '800',
@@ -179,7 +277,7 @@
                     ))}
                   </div>
 
-                  {/* Hero Circles */}
+                  {/* GRANDS CERCLES - SVG ROTATIF + 4 COUCHES HALOS */}
                   <div style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -188,30 +286,61 @@
                     flexWrap: 'wrap'
                   }}>
                     {[
-                      { content: '✓', label: 'check', color: '#35FF8B' },
-                      { content: '100', label: 'kg', color: '#FF6D00' },
-                      { content: '5', label: 'reps', color: '#00D9FF' }
+                      { content: '✓', label: 'check', color: '#35FF8B', gradient: ['#00d4ff', '#35FF8B', '#9D4EDD', '#00d4ff'] },
+                      { content: '100', label: 'kg', color: '#FF6D00', gradient: ['#FF6D00', '#FFB347', '#35FF8B', '#FF6D00'] },
+                      { content: '5', label: 'reps', color: '#00D9FF', gradient: ['#00D9FF', '#7c3aed', '#00D9FF'] }
                     ].map((circle, i) => (
-                      <div key={i} style={{ position: 'relative', width: '160px', height: '160px' }}>
+                      <div key={i} style={{ 
+                        position: 'relative', 
+                        width: '220px', 
+                        height: '220px',
+                        filter: `
+                          drop-shadow(0 0 60px ${circle.color}ff)
+                          drop-shadow(0 0 120px ${circle.color}e6)
+                          drop-shadow(0 0 200px ${circle.color}b3)
+                          drop-shadow(0 0 300px ${circle.color}80)
+                        `,
+                        animation: 'pulse 3s ease-in-out infinite'
+                      }}>
+                        <svg style={{
+                          position: 'absolute',
+                          inset: 0,
+                          width: '100%',
+                          height: '100%',
+                          animation: 'rotateBorder 8s linear infinite'
+                        }} viewBox="0 0 220 220">
+                          <defs>
+                            <linearGradient id={`grad${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                              {circle.gradient.map((color, idx) => (
+                                <stop key={idx} offset={`${idx * (100 / (circle.gradient.length - 1))}%`} stopColor={color} />
+                              ))}
+                            </linearGradient>
+                          </defs>
+                          <circle cx="110" cy="110" r="104" stroke={`url(#grad${i})`} strokeWidth="6" fill="none"/>
+                        </svg>
+                        
                         <div style={{
                           position: 'absolute',
-                          inset: '0',
+                          inset: '6px',
                           borderRadius: '50%',
-                          border: `5px solid ${circle.color}`,
                           background: 'radial-gradient(circle at 40% 40%, rgba(15,25,40,0.98), rgba(0,0,0,1))',
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          boxShadow: `inset 0 0 40px ${circle.color}66, 0 0 60px ${circle.color}99, 0 0 120px ${circle.color}66`
+                          boxShadow: `
+                            inset 0 0 40px ${circle.color}66,
+                            0 0 60px ${circle.color}99,
+                            0 0 120px ${circle.color}66
+                          `
                         }}>
                           <div style={{
-                            fontSize: '60px',
+                            fontSize: '76px',
                             fontWeight: '900',
                             color: circle.color,
-                            textShadow: `0 0 30px ${circle.color}cc, 0 0 60px ${circle.color}80`
+                            textShadow: `0 0 50px ${circle.color}ff, 0 0 100px ${circle.color}cc`
                           }}>{circle.content}</div>
-                          <div style={{ fontSize: '13px', color: '#7a8090', marginTop: '4px', fontWeight: '500' }}>
+                          <div style={{ fontSize: '24px', color: '#7a8090', marginTop: '4px', fontWeight: '600' }}>
                             {circle.label}
                           </div>
                         </div>
@@ -219,7 +348,7 @@
                     ))}
                   </div>
 
-                  {/* SÉRIES - 5 LIGNES COMPLÈTES */}
+                  {/* SÉRIES - EFFET 3D + GLOW */}
                   <div style={{ margin: '45px auto 30px', maxWidth: '500px' }}>
                     {[
                       { weight: 100, center: '100 kg', reps: '5 reps', state: 'completed' },
@@ -230,124 +359,154 @@
                     ].map((serie, i) => (
                       <div key={i} style={{
                         display: 'grid',
-                        gridTemplateColumns: '80px 1fr 100px 85px',
+                        gridTemplateColumns: '80px 1fr 100px 95px',
                         alignItems: 'center',
                         gap: '12px',
                         marginBottom: '14px',
                         padding: '10px 8px',
-                        background: 'rgba(255,255,255,0.015)',
-                        borderRadius: '14px'
+                        background: serie.state === 'completed' 
+                          ? 'linear-gradient(135deg, rgba(0,217,255,0.25), rgba(0,217,255,0.15))'
+                          : 'rgba(255,255,255,0.015)',
+                        borderRadius: '14px',
+                        boxShadow: serie.state === 'completed' 
+                          ? 'inset 0 0 80px rgba(0,217,255,0.3), 0 0 50px rgba(0,217,255,0.4)'
+                          : 'none',
+                        transition: 'all 0.3s'
                       }}>
-                        {/* Cercle poids gauche */}
+                        {/* CERCLE 3D ORANGE */}
                         <div style={{
-                          width: '75px',
-                          height: '75px',
+                          width: '80px',
+                          height: '80px',
                           borderRadius: '50%',
-                          border: '3px solid #FF6D00',
-                          background: 'radial-gradient(circle at 38% 35%, rgba(40,40,40,0.9), rgba(10,10,10,1))',
+                          border: '2px solid rgba(255,109,0,0.6)',
+                          background: 'radial-gradient(circle at 30% 35%, rgba(255,220,150,1) 0%, rgba(255,140,40,0.9) 30%, rgba(255,90,0,0.7) 50%, rgba(0,0,0,0.9) 100%)',
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          boxShadow: '0 0 25px rgba(255, 109, 0, 0.4)'
+                          boxShadow: `
+                            0 6px 20px rgba(255,109,0,0.6),
+                            inset -3px -3px 8px rgba(0,0,0,0.7),
+                            inset 2px 2px 6px rgba(255,179,71,0.4)
+                          `
                         }}>
-                          <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF6D00', textShadow: '0 0 15px rgba(255, 109, 0, 0.5)' }}>
+                          <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF6D00', textShadow: '0 0 15px rgba(255, 109, 0, 0.8)' }}>
                             {serie.weight}
                           </div>
-                          <div style={{ fontSize: '12px', color: '#FF6D00', marginTop: '-3px', fontWeight: '600' }}>kg</div>
+                          <div style={{ fontSize: '14px', color: '#FF6D00', marginTop: '-3px', fontWeight: '600' }}>kg</div>
                         </div>
 
-                        {/* Centre */}
                         <div style={{ textAlign: 'center' }}>
                           {serie.isButton ? (
                             <>
-                              <div style={{ fontSize: '10px', color: '#8a91ff', marginBottom: '5px', letterSpacing: '2px', fontWeight: '700' }}>
+                              <div style={{ fontSize: '11px', color: '#8a91ff', marginBottom: '7px', letterSpacing: '2.5px', fontWeight: '700' }}>
                                 {serie.buttonType === 'dropset' ? 'DROP' : 'REST'}
                               </div>
                               <button style={{
-                                padding: '12px 35px',
-                                borderRadius: '40px',
-                                fontSize: '16px',
+                                padding: '12px 28px',
+                                borderRadius: '18px',
+                                fontSize: '15px',
                                 fontWeight: '700',
-                                border: serie.buttonType === 'dropset' ? 'none' : '3px solid #93C5FD',
+                                border: serie.buttonType === 'dropset' ? 'none' : 'none',
                                 background: serie.buttonType === 'dropset' 
-                                  ? 'linear-gradient(135deg, #00E5FF, #00D9FF)'
-                                  : 'rgba(147, 197, 253, 0.08)',
-                                color: serie.buttonType === 'dropset' ? '#000' : '#93C5FD',
+                                  ? 'linear-gradient(180deg, #00E5FF 0%, #00D9FF 100%)'
+                                  : 'linear-gradient(180deg, #A855F7 0%, #7c3aed 100%)',
+                                color: serie.buttonType === 'dropset' ? '#000' : '#fff',
                                 cursor: 'pointer',
-                                letterSpacing: '2px',
+                                letterSpacing: '0.5px',
                                 boxShadow: serie.buttonType === 'dropset'
-                                  ? '0 0 40px rgba(0, 229, 255, 0.9)'
-                                  : '0 0 35px rgba(147, 197, 253, 0.6)',
-                                pointerEvents: 'auto'
+                                  ? '0 6px 25px rgba(0, 217, 255, 0.7), inset 0 2px 4px rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.3)'
+                                  : '0 6px 25px rgba(157, 78, 221, 0.7), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -3px 6px rgba(0,0,0,0.4)',
+                                pointerEvents: 'auto',
+                                animation: 'glowPulse 2s ease-in-out infinite'
                               }}>
                                 {serie.buttonType === 'dropset' ? 'SET' : 'PAUSE'}
                               </button>
                             </>
                           ) : (
-                            <div style={{ fontSize: '26px', fontWeight: '700', color: '#ffffff' }}>{serie.center}</div>
+                            <div style={{ fontSize: '26px', fontWeight: '700', color: '#ffffff', textShadow: '0 0 20px rgba(255,255,255,0.5)' }}>{serie.center}</div>
                           )}
                         </div>
 
-                        {/* Reps */}
-                        <div style={{ fontSize: '28px', fontWeight: '700', color: '#ffffff', textAlign: 'right' }}>
+                        <div style={{ fontSize: '26px', fontWeight: '700', color: '#00D9FF', textAlign: 'right', textShadow: '0 0 20px rgba(0,217,255,0.7)' }}>
                           {serie.reps}
                         </div>
 
-                        {/* Checkbox droite */}
                         <div style={{
-                          width: '85px',
-                          height: '85px',
+                          width: '95px',
+                          height: '95px',
                           borderRadius: '50%',
                           cursor: 'pointer',
                           pointerEvents: 'auto',
+                          transition: 'transform 0.4s',
                           ...(serie.state === 'completed' && {
-                            background: 'transparent',
-                            border: '4px solid #00D9FF',
-                            boxShadow: '0 0 50px rgba(0, 217, 255, 0.7)'
+                            background: 'linear-gradient(135deg, #00E5FF, #00D9FF)',
+                            boxShadow: `
+                              0 0 70px rgba(0,217,255,1.0),
+                              0 0 140px rgba(0,217,255,0.8),
+                              0 0 200px rgba(0,217,255,0.5),
+                              0 8px 24px rgba(0,0,0,0.6),
+                              inset 0 2px 8px rgba(255,255,255,0.6),
+                              inset 0 -2px 8px rgba(0,0,0,0.4)
+                            `
                           }),
                           ...(serie.state === 'active' && {
-                            background: 'radial-gradient(circle at 42% 38%, rgba(100, 255, 255, 1.0), rgba(0, 240, 255, 0.98))',
-                            border: '5px solid rgba(255, 255, 255, 0.95)',
-                            boxShadow: '0 0 80px rgba(0, 255, 255, 1.0)'
+                            background: 'rgba(0, 217, 255, 0.12)',
+                            border: '5px solid #00D9FF',
+                            boxShadow: `
+                              0 0 50px rgba(0, 217, 255, 0.9),
+                              0 0 100px rgba(0, 217, 255, 0.6),
+                              0 8px 24px rgba(0,0,0,0.5),
+                              inset 0 0 30px rgba(0,217,255,0.3)
+                            `
                           }),
                           ...(serie.state === 'rest' && {
-                            background: 'radial-gradient(circle at 42% 38%, rgba(170, 210, 255, 1.0), rgba(147, 197, 253, 0.9))',
-                            border: '3px solid rgba(147, 197, 253, 0.6)',
-                            boxShadow: '0 0 50px rgba(147, 197, 253, 0.7)'
+                            background: 'rgba(100,150,200,0.15)',
+                            border: '3px solid rgba(147,197,253,0.5)',
+                            boxShadow: '0 4px 16px rgba(0,0,0,0.4), inset 0 0 20px rgba(147,197,253,0.2)'
                           }),
                           ...(serie.state === 'upcoming' && {
-                            background: 'radial-gradient(circle at 42% 38%, rgba(235, 235, 225, 0.85), rgba(220, 220, 210, 0.65))',
-                            border: '2px solid rgba(200, 200, 200, 0.35)',
-                            boxShadow: '0 0 30px rgba(220, 220, 210, 0.4)',
-                            opacity: 0.7
+                            background: 'rgba(180,180,180,0.08)',
+                            border: '2px solid rgba(200,200,200,0.25)',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3), inset 0 0 15px rgba(200,200,200,0.1)'
                           })
-                        }} />
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        />
                       </div>
                     ))}
                   </div>
 
-                  {/* Footer */}
+                  {/* FOOTER - CHRONO ANIMÉ */}
                   <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    padding: '22px',
-                    background: 'rgba(20,25,35,0.35)',
-                    backdropFilter: 'blur(15px)',
-                    borderRadius: '18px',
+                    padding: '32px',
+                    background: 'linear-gradient(135deg, rgba(20,25,35,0.45), rgba(10,15,25,0.35))',
+                    backdropFilter: 'blur(30px)',
+                    borderRadius: '24px',
                     maxWidth: '500px',
-                    margin: '30px auto 0'
+                    margin: '30px auto 0',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)'
                   }}>
                     <div>
-                      <div style={{ color: '#7a8090', fontSize: '10px', letterSpacing: '2px', marginBottom: '8px', fontWeight: '700' }}>
+                      <div style={{ color: '#8a91a0', fontSize: '11px', letterSpacing: '1.5px', marginBottom: '10px', fontWeight: '600' }}>
                         CHRONO
                       </div>
-                      <div style={{ fontSize: '48px', fontWeight: '900', color: 'white', textShadow: '0 0 25px rgba(255, 255, 255, 0.3)' }}>
-                        0:36
+                      <div style={{ 
+                        fontSize: '58px', 
+                        fontWeight: '800', 
+                        color: 'white', 
+                        textShadow: '0 0 45px rgba(255,255,255,0.8)',
+                        animation: 'glowPulse 2s ease-in-out infinite'
+                      }}>
+                        {minutes}:{String(seconds).padStart(2, '0')}
                       </div>
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#8a91a0' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '700', color: '#9ca3af', textShadow: '0 0 30px rgba(156,163,175,0.7)' }}>
                       1,000/2,500 KG
                     </div>
                   </div>
