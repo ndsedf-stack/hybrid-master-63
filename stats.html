@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📊 Progress Tracker - Hybrid Master</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* Effet de fond animé */
         body::before {
             content: '';
             position: fixed;
@@ -44,7 +43,6 @@
             z-index: 1;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -62,6 +60,7 @@
             background: linear-gradient(135deg, #00d9ff 0%, #00ff88 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 5px;
             text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
         }
@@ -73,7 +72,6 @@
             letter-spacing: 2px;
         }
 
-        /* Stats cards */
         .stats-overview {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -129,7 +127,6 @@
             letter-spacing: 1px;
         }
 
-        /* Chart container */
         .chart-container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -157,7 +154,6 @@
             letter-spacing: 2px;
         }
 
-        /* Heat Map Calendar */
         .heatmap-container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -210,7 +206,6 @@
             box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
         }
 
-        /* Weekly Recap */
         .weekly-recap {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -277,7 +272,6 @@
             color: #ff4444;
         }
 
-        /* Exercise table */
         .exercise-table {
             width: 100%;
             border-collapse: collapse;
@@ -335,7 +329,6 @@
             text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
         }
 
-        /* Warning box */
         .warning-box {
             background: rgba(255, 170, 0, 0.1);
             border: 1px solid rgba(255, 170, 0, 0.3);
@@ -365,7 +358,6 @@
             margin-bottom: 5px;
         }
 
-        /* Navigation buttons */
         .nav-buttons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -400,7 +392,6 @@
             color: #00ff88;
         }
 
-        /* Last backup info */
         .backup-info {
             text-align: center;
             margin-top: 20px;
@@ -422,7 +413,6 @@
             font-weight: 600;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -436,21 +426,68 @@
             border-radius: 3px;
         }
 
-        /* Hide file input */
         #importFile {
             display: none;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.success {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88;
+        }
+
+        .toast.error {
+            background: rgba(255, 68, 68, 0.2);
+            border: 2px solid #ff4444;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>📊 PROGRESS TRACKER</h1>
             <div class="subtitle">Weekly Overview</div>
         </div>
 
-        <!-- Stats Overview -->
         <div class="stats-overview">
             <div class="stat-card">
                 <div class="stat-icon">📅</div>
@@ -474,42 +511,36 @@
             </div>
         </div>
 
-        <!-- Volume Chart -->
         <div class="chart-container">
             <div class="chart-title">Workout Volume</div>
             <div class="chart-subtitle">7 Last Days</div>
             <canvas id="volumeChart"></canvas>
         </div>
 
-        <!-- Heat Map Calendar -->
         <div class="heatmap-container">
             <div class="chart-title">Gym Sessions</div>
             <div class="chart-subtitle">Heatmap Calendar</div>
             <div class="heatmap-grid" id="heatmapGrid"></div>
         </div>
 
-        <!-- Muscle Distribution -->
         <div class="chart-container">
             <div class="chart-title">Muscle Distribution</div>
             <div class="chart-subtitle">Top 6 Exercises</div>
             <canvas id="muscleChart"></canvas>
         </div>
 
-        <!-- Radar Chart -->
         <div class="chart-container">
             <div class="chart-title">Muscle Balance</div>
             <div class="chart-subtitle">Volume by Group</div>
             <canvas id="radarChart"></canvas>
         </div>
 
-        <!-- Weekly Recap -->
         <div class="weekly-recap">
             <div class="chart-title">Récapitulatif par Semaine</div>
             <div class="chart-subtitle">Attendu vs Obtenu</div>
             <div id="weeklyRecapContent"></div>
         </div>
 
-        <!-- Navigation & Actions -->
         <div class="nav-buttons">
             <a href="home-final.html" class="btn">🏠 Accueil</a>
             <a href="workout-timer-neurofit.html?week=1&day=dimanche" class="btn">🎯 Timer</a>
@@ -519,7 +550,6 @@
 
         <input type="file" id="importFile" accept=".json" onchange="importData(event)">
 
-        <!-- Backup Info -->
         <div class="backup-info">
             <p>Dernière sauvegarde</p>
             <div class="backup-time" id="lastBackup">Jamais</div>
@@ -531,13 +561,24 @@
         
         const programData = new ProgramData();
         
-        // Load workout history
+        // Toast notification
+        function showNotification(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
         function loadWorkoutHistory() {
             const history = localStorage.getItem('workoutHistory');
             return history ? JSON.parse(history) : [];
         }
 
-        // Calculate stats
         function calculateStats() {
             const history = loadWorkoutHistory();
             
@@ -558,11 +599,9 @@
                         const volume = (set.weight || 0) * (set.reps || 0) / 1000;
                         stats.totalVolume += volume;
 
-                        // Muscle groups
                         const muscle = ex.muscle || 'Autre';
                         stats.muscleGroups[muscle] = (stats.muscleGroups[muscle] || 0) + volume;
 
-                        // Daily volume
                         const date = session.date.split('T')[0];
                         stats.dailyVolume[date] = (stats.dailyVolume[date] || 0) + volume;
                     });
@@ -572,7 +611,6 @@
             return stats;
         }
 
-        // Update overview
         function updateOverview() {
             const stats = calculateStats();
             
@@ -582,7 +620,6 @@
             document.getElementById('totalVolume').textContent = stats.totalVolume.toFixed(1);
         }
 
-        // Volume chart (7 days)
         function renderVolumeChart() {
             const stats = calculateStats();
             const today = new Date();
@@ -653,13 +690,11 @@
             });
         }
 
-        // Heat Map
         function renderHeatMap() {
             const grid = document.getElementById('heatmapGrid');
             const history = loadWorkoutHistory();
             const today = new Date();
             
-            // Last 35 days (5 weeks)
             for (let i = 34; i >= 0; i--) {
                 const date = new Date(today);
                 date.setDate(date.getDate() - i);
@@ -685,7 +720,6 @@
             }
         }
 
-        // Muscle Chart (Pie)
         function renderMuscleChart() {
             const stats = calculateStats();
             const muscles = Object.entries(stats.muscleGroups)
@@ -737,7 +771,6 @@
             });
         }
 
-        // Radar Chart
         function renderRadarChart() {
             const stats = calculateStats();
             const muscleGroups = ['Dos', 'Jambes', 'Pecs', 'Épaules', 'Bras'];
@@ -800,12 +833,10 @@
             });
         }
 
-        // Weekly Recap
         function renderWeeklyRecap() {
             const history = loadWorkoutHistory();
             const container = document.getElementById('weeklyRecapContent');
             
-            // Group by week
             const weekData = {};
             
             for (let weekNum = 1; weekNum <= 26; weekNum++) {
@@ -813,10 +844,7 @@
                     const weekInfo = programData.getWeek(weekNum);
                     if (!weekInfo) continue;
                     
-                    const weekSessions = history.filter(s => {
-                        const sessionWeek = parseInt(new URLSearchParams(new URL(s.url || '?week=1', window.location.href)).get('week'));
-                        return sessionWeek === weekNum;
-                    });
+                    const weekSessions = history.filter(s => s.week === weekNum);
                     
                     weekData[weekNum] = {
                         info: weekInfo,
@@ -828,12 +856,11 @@
                 }
             }
             
-            // Render only weeks with data or current week
             let html = '';
             const currentWeek = parseInt(new URLSearchParams(window.location.search).get('week')) || 1;
             
             Object.entries(weekData).slice(0, 5).forEach(([weekNum, data]) => {
-                const totalExpected = 3; // dimanche, mardi, jeudi
+                const totalExpected = 3;
                 const totalCompleted = data.sessions.length;
                 const completionRate = (totalCompleted / totalExpected * 100).toFixed(0);
                 
@@ -878,10 +905,7 @@
                 const dayData = data.info[dayName];
                 if (!dayData) return;
                 
-                const daySession = data.sessions.find(s => {
-                    const url = s.url || '';
-                    return url.includes(`day=${dayName}`);
-                });
+                const daySession = data.sessions.find(s => s.day === dayName);
                 
                 const expectedExercises = dayData.exercises?.length || 0;
                 const expectedSets = dayData.totalSets || 0;
@@ -904,7 +928,6 @@
                     
                     if (!setsMatch) hasErrors = true;
                     
-                    // Detail by exercise
                     dayData.exercises?.forEach(expectedEx => {
                         const actualEx = daySession.exercises?.find(e => e.name === expectedEx.name);
                         const expectedSetsEx = expectedEx.sets || 0;
@@ -952,7 +975,6 @@
             return html;
         }
 
-        // Export data
         function exportData() {
             const data = {
                 workoutHistory: JSON.parse(localStorage.getItem('workoutHistory') || '[]'),
@@ -971,10 +993,9 @@
             localStorage.setItem('lastBackup', new Date().toISOString());
             updateLastBackup();
             
-            alert('✅ Données exportées avec succès !');
+            showNotification('✅ Données exportées avec succès !', 'success');
         }
 
-        // Import data
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -984,20 +1005,17 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    if (confirm(`Importer ${data.workoutHistory?.length || 0} séances ?\n\nCela écrasera vos données actuelles !`)) {
-                        localStorage.setItem('workoutHistory', JSON.stringify(data.workoutHistory || []));
-                        localStorage.setItem('lastBackup', new Date().toISOString());
-                        alert('✅ Données importées avec succès !');
-                        location.reload();
-                    }
+                    localStorage.setItem('workoutHistory', JSON.stringify(data.workoutHistory || []));
+                    localStorage.setItem('lastBackup', new Date().toISOString());
+                    showNotification('✅ Données importées avec succès !', 'success');
+                    setTimeout(() => location.reload(), 1500);
                 } catch (error) {
-                    alert('❌ Erreur : Fichier invalide');
+                    showNotification('❌ Erreur : Fichier invalide', 'error');
                 }
             };
             reader.readAsText(file);
         }
 
-        // Auto-backup check
         function checkAutoBackup() {
             const lastBackup = localStorage.getItem('lastBackup');
             const now = new Date();
@@ -1042,11 +1060,9 @@
             }
         }
 
-        // Make functions global
         window.exportData = exportData;
         window.importData = importData;
 
-        // Initialize
         updateOverview();
         renderVolumeChart();
         renderHeatMap();
