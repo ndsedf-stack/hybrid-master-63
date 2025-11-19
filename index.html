@@ -13,19 +13,19 @@
         
         <!-- STATS -->
         <div class="stats">
-            <div class="stat">
+            <div class="stat glass">
                 <div class="stat-value">0</div>
                 <div class="stat-label">SÉANCES COMPLÉTÉES</div>
             </div>
-            <div class="stat">
+            <div class="stat glass">
                 <div class="stat-value">0kg</div>
                 <div class="stat-label">VOLUME TOTAL</div>
             </div>
-            <div class="stat">
+            <div class="stat glass">
                 <div class="stat-value">2</div>
                 <div class="stat-label">JOURS CONSÉCUTIFS</div>
             </div>
-            <div class="stat">
+            <div class="stat glass">
                 <div class="stat-value">+7%</div>
                 <div class="stat-label">PROGRESSION CE MOIS</div>
             </div>
@@ -34,128 +34,178 @@
         <!-- ACTIONS RAPIDES -->
         <div class="section-title">🎮 Actions rapides</div>
         <div class="actions">
-            <button class="action-btn grey">💾 Export</button>
-            <button class="action-btn grey">⚠️ Reset</button>
-            <button class="action-btn blue">🤖 Coach IA</button>
-            <button class="action-btn yellow">✏️ Tests</button>
+            <button class="action-btn glass">
+                <span class="btn-icon">💾</span>
+                <span class="btn-label">Export</span>
+            </button>
+            <button class="action-btn glass">
+                <span class="btn-icon">⚠️</span>
+                <span class="btn-label">Reset</span>
+            </button>
+            <button class="action-btn glass accent-blue">
+                <span class="btn-icon">🤖</span>
+                <span class="btn-label">Coach IA</span>
+            </button>
+            <button class="action-btn glass accent-yellow">
+                <span class="btn-icon">✏️</span>
+                <span class="btn-label">Tests</span>
+            </button>
         </div>
         
         <!-- NAVIGATION SEMAINE/BLOC -->
-        <div class="week-nav">
-            <button class="nav-arrow">←</button>
+        <div class="week-nav glass">
+            <button class="nav-arrow glass">←</button>
             <div class="week-title">Semaine 1</div>
-            <button class="nav-arrow">→</button>
-            <div class="bloc-badge">Bloc 1</div>
+            <button class="nav-arrow glass">→</button>
+            <div class="bloc-badge glass">Bloc 1</div>
         </div>
         
         <!-- TECHNIQUES DU BLOC -->
-        <div class="techniques">
+        <div class="techniques glass">
             <div class="section-title">🎯 Techniques du Bloc</div>
-            <div class="tech-item">
-                <span class="tech-icon">🎵</span>
-                <span class="tech-label">Tempo:</span> 3-1-2
+            <div class="tech-grid">
+                <div class="tech-item glass-light">
+                    <span class="tech-icon">🎵</span>
+                    <div>
+                        <div class="tech-label">Tempo</div>
+                        <div class="tech-value">3-1-2</div>
+                    </div>
+                </div>
+                <div class="tech-item glass-light">
+                    <span class="tech-icon">💪</span>
+                    <div>
+                        <div class="tech-label">RPE</div>
+                        <div class="tech-value">6-7</div>
+                    </div>
+                </div>
             </div>
-            <div class="tech-item">
-                <span class="tech-icon">💪</span>
-                <span class="tech-label">RPE:</span> 6-7
+            <div class="tech-desc">
+                <div class="tech-bullet">Pauses spécifiques sur tous les exercices d'isolation</div>
+                <div class="tech-bullet">Focus sur la maîtrise technique et la connexion neuromusculaire</div>
             </div>
-            <div class="tech-item">
-                <span class="tech-icon">⚡</span>
-                <span class="tech-label">Techniques:</span>
-            </div>
-            <ul class="tech-list">
-                <li>Pauses spécifiques sur tous les exercices d'isolation</li>
-                <li>Focus sur la maîtrise technique et la connexion neuromusculaire</li>
-            </ul>
         </div>
         
         <!-- OBJECTIF -->
-        <div class="objective">
-            🎯 <span class="obj-text">Objectif: Maîtriser la technique avec charges modérées</span>
+        <div class="objective glass glow-orange">
+            <span class="obj-icon">🎯</span>
+            <span class="obj-text">Maîtriser la technique avec charges modérées</span>
         </div>
         
         <!-- SÉANCES DE LA SEMAINE -->
         <div class="section-title">📅 Séances de la semaine</div>
         
-        <div class="day-card" onclick="toggle(this)">
+        <div class="day-card glass" onclick="toggle(this)">
             <div class="day-header">
                 <div>
-                    <div class="day-title">Dimanche - Dos + Jambes + Bras (68 min)</div>
-                    <div class="day-meta">8 exercices • 32 séries</div>
+                    <div class="day-title">Dimanche - Dos + Jambes + Bras</div>
+                    <div class="day-meta">
+                        <span class="meta-item">⏱️ 68 min</span>
+                        <span class="meta-item">💪 8 exercices</span>
+                        <span class="meta-item">🔄 32 séries</span>
+                    </div>
                 </div>
                 <span class="expand-icon">▼</span>
             </div>
             <div class="day-exercises">
-                <div class="exercise">
-                    <div class="ex-name">Trap Bar Deadlift</div>
+                <div class="exercise glass-light">
+                    <div class="ex-name">🏋️ Trap Bar Deadlift</div>
                     <div class="ex-details">5 × 6-8 • 75kg • 120s • RPE 6-8</div>
                 </div>
-                <div class="exercise">
-                    <div class="ex-name">Goblet Squat</div>
+                <div class="exercise glass-light">
+                    <div class="ex-name">🦵 Goblet Squat</div>
                     <div class="ex-details">4 × 10 • 25kg • 75s • Tempo 3-1-2</div>
                 </div>
-                <div class="exercise">
-                    <div class="ex-name">Leg Press</div>
+                <div class="exercise glass-light">
+                    <div class="ex-name">🦵 Leg Press</div>
                     <div class="ex-details">4 × 10 • 110kg • 75s • Drop-set</div>
                 </div>
-                <div class="exercise superset">
+                <div class="exercise glass-light superset">
                     <div class="superset-badge">🔄 SUPERSET</div>
-                    <div class="ex-name">Lat Pulldown (prise large)</div>
+                    <div class="ex-name">💪 Lat Pulldown (prise large)</div>
                     <div class="ex-details">4 × 10 • 60kg • 90s • Myo-reps</div>
                 </div>
-                <div class="exercise superset">
-                    <div class="ex-name">Landmine Press</div>
+                <div class="exercise glass-light superset">
+                    <div class="ex-name">🏋️ Landmine Press</div>
                     <div class="ex-details">4 × 10 • 35kg • 90s • Tempo 2-1-2</div>
                 </div>
-                <button class="btn-start-workout" onclick="event.stopPropagation(); go('dimanche')">Démarrer séance</button>
+                <button class="btn-start-workout glass glow-cyan" onclick="event.stopPropagation(); go('dimanche')">
+                    <span class="pulse"></span>
+                    Démarrer séance
+                </button>
             </div>
         </div>
         
-        <div class="day-card" onclick="toggle(this)">
+        <div class="day-card glass" onclick="toggle(this)">
             <div class="day-header">
                 <div>
-                    <div class="day-title">Mardi - Pecs + Épaules + Triceps (70 min)</div>
-                    <div class="day-meta">8 exercices • 35 séries</div>
+                    <div class="day-title">Mardi - Pecs + Épaules + Triceps</div>
+                    <div class="day-meta">
+                        <span class="meta-item">⏱️ 70 min</span>
+                        <span class="meta-item">💪 8 exercices</span>
+                        <span class="meta-item">🔄 35 séries</span>
+                    </div>
                 </div>
                 <span class="expand-icon">▼</span>
             </div>
             <div class="day-exercises">
-                <button class="btn-start-workout" onclick="event.stopPropagation(); go('mardi')">Démarrer séance</button>
+                <button class="btn-start-workout glass glow-cyan" onclick="event.stopPropagation(); go('mardi')">
+                    <span class="pulse"></span>
+                    Démarrer séance
+                </button>
             </div>
         </div>
         
-        <div class="day-card" onclick="toggle(this)">
+        <div class="day-card glass" onclick="toggle(this)">
             <div class="day-header">
                 <div>
-                    <div class="day-title">Vendredi - Dos + Jambes + Bras (73 min)</div>
-                    <div class="day-meta">9 exercices • 36 séries</div>
+                    <div class="day-title">Vendredi - Dos + Jambes + Bras</div>
+                    <div class="day-meta">
+                        <span class="meta-item">⏱️ 73 min</span>
+                        <span class="meta-item">💪 9 exercices</span>
+                        <span class="meta-item">🔄 36 séries</span>
+                    </div>
                 </div>
                 <span class="expand-icon">▼</span>
             </div>
             <div class="day-exercises">
-                <button class="btn-start-workout" onclick="event.stopPropagation(); go('vendredi')">Démarrer séance</button>
+                <button class="btn-start-workout glass glow-cyan" onclick="event.stopPropagation(); go('vendredi')">
+                    <span class="pulse"></span>
+                    Démarrer séance
+                </button>
             </div>
         </div>
         
-        <div class="day-card" onclick="toggle(this)">
+        <div class="day-card glass" onclick="toggle(this)">
             <div class="day-header">
                 <div>
                     <div class="day-title">Maison - Biceps (Mardi & Jeudi soir)</div>
-                    <div class="day-meta">1 exercices • 3 séries</div>
+                    <div class="day-meta">
+                        <span class="meta-item">⏱️ 15 min</span>
+                        <span class="meta-item">💪 1 exercices</span>
+                        <span class="meta-item">🔄 3 séries</span>
+                    </div>
                 </div>
                 <span class="expand-icon">▼</span>
             </div>
             <div class="day-exercises">
-                <button class="btn-start-workout" onclick="event.stopPropagation(); go('maison')">Démarrer séance</button>
+                <button class="btn-start-workout glass glow-cyan" onclick="event.stopPropagation(); go('maison')">
+                    <span class="pulse"></span>
+                    Démarrer séance
+                </button>
             </div>
         </div>
         
         <!-- CITATION -->
-        <p class="quote">The last threcor four reps is what makes the musus graw. This acrsof arer clindes a champley from someone who'ts not not a champion.</p>
+        <div class="quote glass">
+            <div class="quote-icon">💬</div>
+            <p class="quote-text">The last three or four reps is what makes the muscle grow. This area of pain divides a champion from someone who's not a champion.</p>
+        </div>
         
         <!-- BADGE PROGRESSION -->
-        <div class="progress">
-            <div class="circle">🏆</div>
+        <div class="progress glass glow-cyan">
+            <div class="circle glass">
+                <span class="trophy-icon">🏆</span>
+            </div>
             <div>
                 <div class="percent">60%</div>
                 <div class="label">SÉANCES CETTE SEMAINE</div>
