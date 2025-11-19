@@ -154,7 +154,7 @@ class HomePage {
 // Fonction globale pour démarrer un workout
 window.startWorkout = function(week, day) {
     localStorage.setItem(`workout-${week}-${day}-inprogress`, 'true');
-    window.location.href = `workout.html?week=${week}&day=${day}`;
+    window.location.href = `workout-3d-ultra.html?week=${week}&day=${day}`;
 };
 
 // Initialisation
