@@ -7,49 +7,153 @@
     <link rel="stylesheet" href="styles/10-home.css">
 </head>
 <body>
-    <div class="app-container">
+    <div class="app">
+        <!-- HEADER -->
         <h1 class="logo">HYBRID MASTER 63</h1>
         
+        <!-- STATS -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">0</div>
+                <div class="stat-label">SÉANCES COMPLÉTÉES</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">0kg</div>
+                <div class="stat-label">VOLUME TOTAL</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">2</div>
+                <div class="stat-label">JOURS CONSÉCUTIFS</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">+7%</div>
+                <div class="stat-label">PROGRESSION CE MOIS</div>
+            </div>
+        </div>
+        
+        <!-- ACTIONS RAPIDES -->
+        <div class="section-title">🎮 Actions rapides</div>
+        <div class="actions">
+            <button class="action-btn grey">💾 Export</button>
+            <button class="action-btn grey">⚠️ Reset</button>
+            <button class="action-btn blue">🤖 Coach IA</button>
+            <button class="action-btn yellow">✏️ Tests</button>
+        </div>
+        
+        <!-- NAVIGATION SEMAINE/BLOC -->
+        <div class="week-nav">
+            <button class="nav-arrow">←</button>
+            <div class="week-title">Semaine 1</div>
+            <button class="nav-arrow">→</button>
+            <div class="bloc-badge">Bloc 1</div>
+        </div>
+        
+        <!-- TECHNIQUES DU BLOC -->
+        <div class="techniques">
+            <div class="section-title">🎯 Techniques du Bloc</div>
+            <div class="tech-item">
+                <span class="tech-icon">🎵</span>
+                <span class="tech-label">Tempo:</span> 3-1-2
+            </div>
+            <div class="tech-item">
+                <span class="tech-icon">💪</span>
+                <span class="tech-label">RPE:</span> 6-7
+            </div>
+            <div class="tech-item">
+                <span class="tech-icon">⚡</span>
+                <span class="tech-label">Techniques:</span>
+            </div>
+            <ul class="tech-list">
+                <li>Pauses spécifiques sur tous les exercices d'isolation</li>
+                <li>Focus sur la maîtrise technique et la connexion neuromusculaire</li>
+            </ul>
+        </div>
+        
+        <!-- OBJECTIF -->
+        <div class="objective">
+            🎯 <span class="obj-text">Objectif: Maîtriser la technique avec charges modérées</span>
+        </div>
+        
+        <!-- SÉANCES DE LA SEMAINE -->
+        <div class="section-title">📅 Séances de la semaine</div>
+        
+        <div class="day-card" onclick="toggle(this)">
+            <div class="day-header">
+                <div>
+                    <div class="day-title">Dimanche - Dos + Jambes + Bras (68 min)</div>
+                    <div class="day-meta">8 exercices • 32 séries</div>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="day-exercises">
+                <div class="exercise">
+                    <div class="ex-name">Trap Bar Deadlift</div>
+                    <div class="ex-details">5 × 6-8 • 75kg • 120s • RPE 6-8</div>
+                </div>
+                <div class="exercise">
+                    <div class="ex-name">Goblet Squat</div>
+                    <div class="ex-details">4 × 10 • 25kg • 75s • Tempo 3-1-2</div>
+                </div>
+                <div class="exercise">
+                    <div class="ex-name">Leg Press</div>
+                    <div class="ex-details">4 × 10 • 110kg • 75s • Drop-set</div>
+                </div>
+                <div class="exercise superset">
+                    <div class="superset-badge">🔄 SUPERSET</div>
+                    <div class="ex-name">Lat Pulldown (prise large)</div>
+                    <div class="ex-details">4 × 10 • 60kg • 90s • Myo-reps</div>
+                </div>
+                <div class="exercise superset">
+                    <div class="ex-name">Landmine Press</div>
+                    <div class="ex-details">4 × 10 • 35kg • 90s • Tempo 2-1-2</div>
+                </div>
+                <button class="btn-start-workout" onclick="event.stopPropagation(); go('dimanche')">Démarrer séance</button>
+            </div>
+        </div>
+        
+        <div class="day-card" onclick="toggle(this)">
+            <div class="day-header">
+                <div>
+                    <div class="day-title">Mardi - Pecs + Épaules + Triceps (70 min)</div>
+                    <div class="day-meta">8 exercices • 35 séries</div>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="day-exercises">
+                <button class="btn-start-workout" onclick="event.stopPropagation(); go('mardi')">Démarrer séance</button>
+            </div>
+        </div>
+        
+        <div class="day-card" onclick="toggle(this)">
+            <div class="day-header">
+                <div>
+                    <div class="day-title">Vendredi - Dos + Jambes + Bras (73 min)</div>
+                    <div class="day-meta">9 exercices • 36 séries</div>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="day-exercises">
+                <button class="btn-start-workout" onclick="event.stopPropagation(); go('vendredi')">Démarrer séance</button>
+            </div>
+        </div>
+        
+        <div class="day-card" onclick="toggle(this)">
+            <div class="day-header">
+                <div>
+                    <div class="day-title">Maison - Biceps (Mardi & Jeudi soir)</div>
+                    <div class="day-meta">1 exercices • 3 séries</div>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="day-exercises">
+                <button class="btn-start-workout" onclick="event.stopPropagation(); go('maison')">Démarrer séance</button>
+            </div>
+        </div>
+        
+        <!-- CITATION -->
         <p class="quote">The last threcor four reps is what makes the musus graw. This acrsof arer clindes a champley from someone who'ts not not a champion.</p>
         
-        <button class="btn-start" onclick="go('dimanche')">Commencer seance</button>
-        
-        <div class="card" onclick="go('lundi')">
-            <div class="icon">💪</div>
-            <div class="info">
-                <div class="title">PUSH</div>
-                <div class="sub">ÉPAULE 'TR</div>
-            </div>
-            <div class="meta">
-                <div class="time">45...</div>
-                <div class="day">LUNDI</div>
-            </div>
-        </div>
-        
-        <div class="card" onclick="go('mardi')">
-            <div class="icon">🏋️</div>
-            <div class="info">
-                <div class="title">PULL</div>
-                <div class="sub">DOX 'BICEPS</div>
-            </div>
-            <div class="meta">
-                <div class="time">43...</div>
-                <div class="day">MARDI</div>
-            </div>
-        </div>
-        
-        <div class="card" onclick="go('vendredi')">
-            <div class="icon">🦵</div>
-            <div class="info">
-                <div class="title">MAISON</div>
-                <div class="sub">QUADRICEPS</div>
-            </div>
-            <div class="meta">
-                <div class="time">42...</div>
-                <div class="day">VENDREDI</div>
-            </div>
-        </div>
-        
+        <!-- BADGE PROGRESSION -->
         <div class="progress">
             <div class="circle">🏆</div>
             <div>
@@ -62,6 +166,10 @@
     <script>
         function go(day) {
             location.href = 'workout-3d-full.html?week=1&day=' + day;
+        }
+        
+        function toggle(card) {
+            card.classList.toggle('expanded');
         }
     </script>
 </body>
