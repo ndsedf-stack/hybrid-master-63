@@ -307,3 +307,32 @@ function calculateProgress(completed, total) {
 }
 
 console.log('✅ Scripts chargés - HYBRID MASTER 63');
+// ============================================
+// MOBILE: TOGGLE STATS PANEL
+// ============================================
+function toggleStatsPanel() {
+    const panel = document.querySelector('.panel-right');
+    const overlay = document.querySelector('.modal-overlay');
+    
+    panel.classList.toggle('active');
+    overlay.classList.toggle('active');
+    
+    // Bloquer le scroll du body quand le panel est ouvert
+    if (panel.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
+
+// Auto-collapse panneau gauche sur mobile
+if (window.innerWidth <= 430) {
+    const panelLeft = document.querySelector('.panel-left');
+    if (panelLeft) {
+        panelLeft.classList.add('collapsed');
+        
+        panelLeft.querySelector('.panel-header').addEventListener('click', () => {
+            panelLeft.classList.toggle('collapsed');
+        });
+    }
+}
