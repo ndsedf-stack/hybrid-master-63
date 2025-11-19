@@ -87,7 +87,7 @@ function changeWeek(direction) {
 }
 
 // ============================================
-// WORKOUT ACTIONS - CONNEXION VERS workout-3d-full.html
+// WORKOUT ACTIONS - CONNEXION VERS workout-3d-ultra.html
 // ============================================
 function startWorkout(day) {
     console.log(`🏋️ Starting workout: ${day}`);
@@ -98,7 +98,7 @@ function startWorkout(day) {
     localStorage.setItem('selectedDay', day);
     
     setTimeout(() => {
-        window.location.href = `workout-3d-full.html?week=${currentWeek}&day=${day}`;
+        window.location.href = `workout-3d-ultra.html?week=${currentWeek}&day=${day}`;
     }, 500);
 }
 
