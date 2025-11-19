@@ -1,232 +1,234 @@
 /**
- * HYBRID MASTER 63 - HOME INTERACTIONS
- * Gestion des interactions UI et navigation
+ * HYBRID MASTER 63 - MOBILE TABS NAVIGATION
+ * Gestion des onglets et interactions
  */
 
 // ============================================
 // VARIABLES GLOBALES
 // ============================================
 let currentWeek = 1;
-let currentCategory = 'all';
+let currentTab = 'home';
 
 // ============================================
 // INITIALISATION
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    initializeUI();
-    loadUserData();
-    startAnimations();
+    console.log('🚀 HYBRID MASTER 63 - App initialized');
+    loadUserPreferences();
+    animateOnLoad();
 });
 
 // ============================================
-// INITIALISATION UI
+// NAVIGATION TABS
 // ============================================
-function initializeUI() {
-    console.log('🚀 HYBRID MASTER 63 - Initialisation');
+function switchTab(tabName) {
+    // Cacher tous les contenus
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
     
-    // Animer les éléments au scroll
-    observeElements();
+    // Désactiver tous les boutons nav
+    document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('active');
+    });
     
-    // Charger les préférences utilisateur
-    loadPreferences();
+    // Activer le contenu sélectionné
+    const targetTab = document.getElementById(`tab-${tabName}`);
+    if (targetTab) {
+        targetTab.classList.add('active');
+    }
+    
+    // Activer le bouton nav
+    const targetBtn = document.querySelector(`.nav-tab[data-tab="${tabName}"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+    
+    // Sauvegarder
+    currentTab = tabName;
+    localStorage.setItem('currentTab', tabName);
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    console.log(`📍 Tab switched to: ${tabName}`);
 }
 
 // ============================================
-// NAVIGATION
+// WEEK NAVIGATION
 // ============================================
-
-/**
- * Démarrer un workout
- */
-function startWorkout(day) {
-    console.log(`🏋️ Démarrage workout: ${day}`);
-    
-    // Animation de feedback
-    showFeedback('Chargement de la séance...', 'loading');
-    
-    // Redirection avec délai pour l'animation
-    setTimeout(() => {
-        window.location.href = `workout-3d-full.html?week=${currentWeek}&day=${day}`;
-    }, 500);
-}
-
-/**
- * Quick workout (premier disponible)
- */
-function startQuickWorkout() {
-    console.log('⚡ Quick start');
-    startWorkout('dimanche');
-}
-
-/**
- * Changer de semaine
- */
 function changeWeek(direction) {
     const newWeek = currentWeek + direction;
     
     if (newWeek < 1 || newWeek > 8) {
-        showFeedback('Semaine non disponible', 'warning');
+        showToast('⚠️ Semaine non disponible', 'warning');
         return;
     }
     
     currentWeek = newWeek;
     
-    // Animation de transition
-    const weekTitle = document.querySelector('.week-title');
-    weekTitle.style.opacity = '0';
+    // Animation
+    const weekNumber = document.querySelector('.week-number');
+    if (weekNumber) {
+        weekNumber.style.opacity = '0';
+        weekNumber.style.transform = 'scale(0.8)';
+        
+        setTimeout(() => {
+            weekNumber.textContent = `SEMAINE ${currentWeek}`;
+            weekNumber.style.opacity = '1';
+            weekNumber.style.transform = 'scale(1)';
+        }, 200);
+    }
+    
+    localStorage.setItem('currentWeek', currentWeek);
+    console.log(`📅 Week changed to: ${currentWeek}`);
+}
+
+// ============================================
+// WORKOUT ACTIONS
+// ============================================
+function startWorkout(day) {
+    console.log(`🏋️ Starting workout: ${day}`);
+    showToast('⚡ Chargement de la séance...', 'loading');
     
     setTimeout(() => {
-        weekTitle.textContent = `SEMAINE ${currentWeek}`;
-        weekTitle.style.opacity = '1';
-    }, 200);
-    
-    // Sauvegarder
-    savePreferences();
-    
-    console.log(`📅 Semaine changée: ${currentWeek}`);
+        window.location.href = `workout-3d-full.html?week=${currentWeek}&day=${day}`;
+    }, 500);
 }
 
-/**
- * Filtrer par catégorie
- */
-function filterCategory(category) {
-    currentCategory = category;
+function startQuickWorkout() {
+    console.log('⚡ Quick start');
+    startWorkout('dimanche');
+}
+
+function toggleDetails(button) {
+    const workoutCard = button.closest('.workout-full');
+    const details = workoutCard.querySelector('.workout-details');
     
-    const cards = document.querySelectorAll('.workout-card');
-    
-    cards.forEach(card => {
-        const day = card.dataset.day;
+    if (details.classList.contains('expanded')) {
+        details.classList.remove('expanded');
+        button.innerHTML = '<span>📝 DÉTAILS</span>';
+    } else {
+        // Fermer tous les autres
+        document.querySelectorAll('.workout-details').forEach(d => {
+            d.classList.remove('expanded');
+        });
+        document.querySelectorAll('.workout-btn-secondary').forEach(b => {
+            b.innerHTML = '<span>📝 DÉTAILS</span>';
+        });
         
-        // Logique de filtrage (à adapter selon vos données)
-        if (category === 'all') {
-            card.style.display = 'block';
+        // Ouvrir celui-ci
+        details.classList.add('expanded');
+        button.innerHTML = '<span>✕ FERMER</span>';
+    }
+}
+
+function filterWorkouts(category) {
+    console.log(`🔍 Filter: ${category}`);
+    
+    const workouts = document.querySelectorAll('.workout-full');
+    
+    workouts.forEach(workout => {
+        const categories = workout.dataset.category;
+        
+        if (category === 'all' || categories.includes(category)) {
+            workout.style.display = 'block';
         } else {
-            // Exemple simple
-            card.style.display = 'block';
+            workout.style.display = 'none';
         }
     });
     
-    // Feedback visuel
-    document.querySelectorAll('.category-card').forEach(cat => {
-        cat.style.opacity = '0.5';
-    });
-    
-    event.currentTarget.style.opacity = '1';
-    
-    console.log(`🔍 Filtre: ${category}`);
+    showToast(`🏷️ Filtre: ${category.toUpperCase()}`, 'info');
 }
 
 // ============================================
-// TOGGLE WORKOUT DETAILS
+// PLUS TAB ACTIONS
 // ============================================
-function toggleWorkout(header) {
-    const card = header.closest('.workout-card');
-    const isExpanded = card.classList.contains('expanded');
-    
-    // Fermer tous les autres
-    document.querySelectorAll('.workout-card').forEach(c => {
-        if (c !== card) {
-            c.classList.remove('expanded');
-        }
-    });
-    
-    // Toggle actuel
-    card.classList.toggle('expanded');
-    
-    // Animation smooth
-    if (!isExpanded) {
-        const details = card.querySelector('.workout-details');
-        const height = details.scrollHeight;
-        details.style.maxHeight = `${height}px`;
-    }
-    
-    console.log(`📋 Toggle workout: ${card.dataset.day}`);
+function openCoach() {
+    showToast('🤖 Coach IA - Bientôt disponible', 'info');
 }
 
-// ============================================
-// DONNÉES UTILISATEUR
-// ============================================
-function loadUserData() {
-    // Charger depuis localStorage
-    const data = {
-        sessionsCompleted: localStorage.getItem('sessionsCompleted') || 0,
-        totalVolume: localStorage.getItem('totalVolume') || 0,
-        consecutiveDays: localStorage.getItem('consecutiveDays') || 2,
-        monthProgress: localStorage.getItem('monthProgress') || 7
-    };
-    
-    // Mettre à jour l'UI
-    updateStats(data);
+function openTests() {
+    showToast('✏️ Tests 1RM - Bientôt disponible', 'info');
 }
 
-function updateStats(data) {
-    // Stats header
-    const headerStats = document.querySelectorAll('.header-stats .stat-text');
-    if (headerStats[0]) headerStats[0].textContent = `${data.consecutiveDays} JOURS`;
-    if (headerStats[1]) headerStats[1].textContent = `+${data.monthProgress}%`;
-    
-    // Stats panneau droit
-    const statCards = document.querySelectorAll('.stat-card .stat-value');
-    if (statCards[0]) statCards[0].textContent = data.sessionsCompleted;
-    if (statCards[1]) statCards[1].textContent = `${data.totalVolume}kg`;
-    
-    console.log('📊 Stats mises à jour');
+function exportData() {
+    showToast('💾 Export - Bientôt disponible', 'info');
 }
 
-// ============================================
-// PRÉFÉRENCES
-// ============================================
-function loadPreferences() {
-    const savedWeek = localStorage.getItem('currentWeek');
-    if (savedWeek) {
-        currentWeek = parseInt(savedWeek);
-        document.querySelector('.week-title').textContent = `SEMAINE ${currentWeek}`;
+function confirmReset() {
+    if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser votre progression ?')) {
+        localStorage.clear();
+        showToast('✅ Progression réinitialisée', 'success');
+        setTimeout(() => location.reload(), 1500);
     }
 }
 
-function savePreferences() {
-    localStorage.setItem('currentWeek', currentWeek);
-}
-
 // ============================================
-// FEEDBACK VISUEL
+// TOAST NOTIFICATIONS
 // ============================================
-function showFeedback(message, type = 'info') {
-    // Créer toast notification
+function showToast(message, type = 'info') {
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type} glass`;
+    toast.className = `toast toast-${type}`;
     toast.textContent = message;
     
     toast.style.cssText = `
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 16px 24px;
-        border-radius: 16px;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 20px;
+        border-radius: 12px;
+        background: rgba(20, 25, 35, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 229, 255, 0.5);
+        color: #00e5ff;
         font-family: 'Orbitron', sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 700;
-        color: var(--text);
         z-index: 10000;
-        animation: slideInRight 0.3s ease-out;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        animation: toastSlide 0.4s ease-out;
     `;
     
     document.body.appendChild(toast);
     
-    // Supprimer après 3s
     setTimeout(() => {
-        toast.style.animation = 'slideOutRight 0.3s ease-out';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+        toast.style.animation = 'toastFade 0.4s ease-out forwards';
+        setTimeout(() => toast.remove(), 400);
+    }, 2500);
+}
+
+// ============================================
+// USER PREFERENCES
+// ============================================
+function loadUserPreferences() {
+    // Charger tab
+    const savedTab = localStorage.getItem('currentTab');
+    if (savedTab) {
+        switchTab(savedTab);
+    }
+    
+    // Charger semaine
+    const savedWeek = localStorage.getItem('currentWeek');
+    if (savedWeek) {
+        currentWeek = parseInt(savedWeek);
+        const weekNumber = document.querySelector('.week-number');
+        if (weekNumber) {
+            weekNumber.textContent = `SEMAINE ${currentWeek}`;
+        }
+    }
+    
+    console.log('💾 Preferences loaded');
 }
 
 // ============================================
 // ANIMATIONS
 // ============================================
-function startAnimations() {
-    // Animer les barres de progression au chargement
+function animateOnLoad() {
+    // Animer les barres de progression
     setTimeout(() => {
-        document.querySelectorAll('.progress-fill, .muscle-fill').forEach(bar => {
+        document.querySelectorAll('.progress-bar-fill, .muscle-fill').forEach(bar => {
             const width = bar.style.width;
             bar.style.width = '0';
             setTimeout(() => {
@@ -236,103 +238,29 @@ function startAnimations() {
     }, 500);
 }
 
-function observeElements() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-    
-    // Observer les cartes
-    document.querySelectorAll('.workout-card, .stat-card, .category-card').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'all 0.6s ease-out';
-        observer.observe(el);
-    });
-}
-
 // ============================================
 // ANIMATIONS CSS DYNAMIQUES
 // ============================================
 const style = document.createElement('style');
 style.textContent = `
-    @keyframes slideInRight {
+    @keyframes toastSlide {
         from {
             opacity: 0;
-            transform: translateX(100px);
+            transform: translate(-50%, -20px);
         }
         to {
             opacity: 1;
-            transform: translateX(0);
+            transform: translate(-50%, 0);
         }
     }
     
-    @keyframes slideOutRight {
-        from {
-            opacity: 1;
-            transform: translateX(0);
-        }
+    @keyframes toastFade {
         to {
             opacity: 0;
-            transform: translateX(100px);
+            transform: translate(-50%, -20px);
         }
     }
 `;
 document.head.appendChild(style);
 
-// ============================================
-// UTILITAIRES
-// ============================================
-
-/**
- * Formater la durée
- */
-function formatDuration(minutes) {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return h > 0 ? `${h}h${m}min` : `${m}min`;
-}
-
-/**
- * Calculer la progression
- */
-function calculateProgress(completed, total) {
-    return Math.round((completed / total) * 100);
-}
-
-console.log('✅ Scripts chargés - HYBRID MASTER 63');
-// ============================================
-// MOBILE: TOGGLE STATS PANEL
-// ============================================
-function toggleStatsPanel() {
-    const panel = document.querySelector('.panel-right');
-    const overlay = document.querySelector('.modal-overlay');
-    
-    panel.classList.toggle('active');
-    overlay.classList.toggle('active');
-    
-    // Bloquer le scroll du body quand le panel est ouvert
-    if (panel.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-}
-
-// Auto-collapse panneau gauche sur mobile
-if (window.innerWidth <= 430) {
-    const panelLeft = document.querySelector('.panel-left');
-    if (panelLeft) {
-        panelLeft.classList.add('collapsed');
-        
-        panelLeft.querySelector('.panel-header').addEventListener('click', () => {
-            panelLeft.classList.toggle('collapsed');
-        });
-    }
-}
+console.log('✅ Scripts loaded - HYBRID MASTER 63');
