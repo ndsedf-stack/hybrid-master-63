@@ -550,7 +550,7 @@ function initWorkoutDetails() {
     const days = ['dimanche', 'mardi', 'vendredi', 'maison'];
     
     days.forEach(day => {
-        const workoutCard = document.querySelector((`[data-day="${day}"]`);
+        const workoutCard = document.querySelector(`[data-day="${day}"]`);
         if (workoutCard) {
             const detailsContainer = workoutCard.querySelector('.workout-details');
             if (detailsContainer) {
