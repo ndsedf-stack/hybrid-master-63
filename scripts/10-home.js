@@ -70,7 +70,7 @@ function switchTab(tabName) {
 function changeWeek(direction) {
     const newWeek = currentWeek + direction;
     
-    if (newWeek < 1 || newWeek > 8) {
+    if (newWeek < 1 || newWeek > 26) {
         showToast('⚠️ Semaine non disponible', 'warning');
         return;
     }
