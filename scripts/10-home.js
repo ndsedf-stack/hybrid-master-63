@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     attachSearchListener();
     
     // Attendre que programData soit chargé
+    updateBlockDisplay(currentWeek);
     const checkProgramData = setInterval(() => {
         if (window.programData) {
             clearInterval(checkProgramData);
