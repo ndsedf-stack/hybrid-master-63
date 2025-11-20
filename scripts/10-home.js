@@ -17,9 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUserPreferences();
     animateOnLoad();
     attachSearchListener();
-    
     // Attendre que programData soit chargé
-    updateBlockDisplay(currentWeek);
     const checkProgramData = setInterval(() => {
         if (window.programData) {
             clearInterval(checkProgramData);
@@ -86,6 +84,7 @@ function changeWeek(direction) {
         
         setTimeout(() => {
             weekNumber.textContent = `SEMAINE ${currentWeek}`;
+        updateBlockDisplay(currentWeek);
             weekNumber.style.opacity = '1';
             weekNumber.style.transform = 'scale(1)';
         }, 200);
@@ -426,6 +425,7 @@ function loadUserPreferences() {
         const weekNumber = document.querySelector('.week-number');
         if (weekNumber) {
             weekNumber.textContent = `SEMAINE ${currentWeek}`;
+        updateBlockDisplay(currentWeek);
         }
     }
     
