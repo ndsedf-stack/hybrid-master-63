@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUserPreferences();
     animateOnLoad();
     attachSearchListener();
+    initWorkoutDetails();
 });
 
 // ============================================
@@ -479,3 +480,76 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log('✅ Scripts loaded - HYBRID MASTER 63 - ALL BUTTONS CONNECTED');
+// ====================================================================
+// GÉNÉRATION DYNAMIQUE DES LISTES D'EXERCICES
+// ====================================================================
+function generateExerciseList(day, weekNumber = 1) {
+    const weekData = programData.getWeek(weekNumber);
+    const workout = weekData[day];
+    
+    if (!workout || !workout.exercises) return '<p>Aucun exercice trouvé</p>';
+    
+    let html = '<div class="exercise-list">';
+    let i = 0;
+    
+    while (i < workout.exercises.length) {
+        const ex = workout.exercises[i];
+        
+        // Vérifie si c'est un superset
+        if (ex.isSuperset && i < workout.exercises.length - 1) {
+            const nextEx = workout.exercises[i + 1];
+            html += `
+                <div class="superset-group glass-light">
+                    <div class="superset-label">🔄 SUPERSET</div>
+                    <div class="exercise-item">
+                        <span class="exercise-emoji">💪</span>
+                        <div class="exercise-info">
+                            <div class="exercise-name">${ex.name.toUpperCase()}</div>
+                            <div class="exercise-specs">${ex.sets} × ${ex.reps} • ${ex.weight}kg • ${ex.rest}s</div>
+                        </div>
+                    </div>
+                    <div class="exercise-item">
+                        <span class="exercise-emoji">🏋️</span>
+                        <div class="exercise-info">
+                            <div class="exercise-name">${nextEx.name.toUpperCase()}</div>
+                            <div class="exercise-specs">${nextEx.sets} × ${nextEx.reps} • ${nextEx.weight}kg • ${nextEx.rest}s</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            i += 2; // Skip next exercise (déjà traité dans le superset)
+        } else {
+            const emoji = ex.category === 'compound' ? '🏋️' : '💪';
+            html += `
+                <div class="exercise-item glass-light">
+                    <span class="exercise-emoji">${emoji}</span>
+                    <div class="exercise-info">
+                        <div class="exercise-name">${ex.name.toUpperCase()}</div>
+                        <div class="exercise-specs">${ex.sets} × ${ex.reps} • ${ex.weight}kg • ${ex.rest}s</div>
+                    </div>
+                </div>
+            `;
+            i++;
+        }
+    }
+    
+    html += '</div>';
+    return html;
+}
+
+// Fonction pour initialiser toutes les listes d'exercices
+function initWorkoutDetails() {
+    const days = ['dimanche', 'mardi', 'vendredi', 'maison'];
+    
+    days.forEach(day => {
+        const workoutCard = document.querySelector(`[data-day="${day}"]`);
+        if (workoutCard) {
+            const detailsContainer = workoutCard.querySelector('.workout-details');
+            if (detailsContainer) {
+                detailsContainer.innerHTML = generateExerciseList(day, currentWeek);
+            }
+        }
+    });
+    
+    console.log('✅ Listes d\'exercices générées dynamiquement');
+}
