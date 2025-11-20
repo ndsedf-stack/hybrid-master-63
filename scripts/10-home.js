@@ -17,7 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUserPreferences();
     animateOnLoad();
     attachSearchListener();
-    initWorkoutDetails();
+    
+    // Attendre que programData soit chargé
+    const checkProgramData = setInterval(() => {
+        if (window.programData) {
+            clearInterval(checkProgramData);
+            initWorkoutDetails();
+            console.log('✅ programData chargé, listes générées');
+        }
+    }, 100);
 });
 
 // ============================================
