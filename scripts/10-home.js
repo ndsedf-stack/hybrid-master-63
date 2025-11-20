@@ -91,6 +91,7 @@ function changeWeek(direction) {
     }
     
     localStorage.setItem('currentWeek', currentWeek);
+    updateBlockDisplay(currentWeek);
     showToast(`📅 Semaine ${currentWeek} sélectionnée`, 'info');
     console.log(`📅 Week changed to: ${currentWeek}`);
 }
@@ -104,6 +105,7 @@ function startWorkout(day) {
     
     // Sauvegarder les params
     localStorage.setItem('selectedWeek', currentWeek);
+    updateBlockDisplay(currentWeek);
     localStorage.setItem('selectedDay', day);
     
     setTimeout(() => {
@@ -560,4 +562,17 @@ function initWorkoutDetails() {
     });
     
     console.log('✅ Listes d\'exercices générées dynamiquement');
+}
+
+function updateBlockDisplay(week) {
+    const blockLabel = document.getElementById('block-label');
+    if (!blockLabel) return;
+    
+    let blockNum = 1;
+    if (week >= 1 && week <= 6) blockNum = 1;
+    else if (week >= 7 && week <= 12) blockNum = 2;
+    else if (week >= 13 && week <= 18) blockNum = 3;
+    else if (week >= 19 && week <= 26) blockNum = 4;
+    
+    blockLabel.textContent = `BLOC ${blockNum}`;
 }
