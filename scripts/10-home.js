@@ -576,4 +576,32 @@ function updateBlockDisplay(week) {
     else if (week >= 19 && week <= 26) blockNum = 4;
     
     blockLabel.textContent = `BLOC ${blockNum}`;
+    updateBlockTechniques(week);
+}
+
+function updateBlockTechniques(week) {
+    const techniques = {
+        1: { tempo: "3-1-2", rpe: "6-7", technique: "DROP SET", objective: "MAÎTRISER LA TECHNIQUE AVEC CHARGES MODÉRÉES" },
+        2: { tempo: "4-0-1", rpe: "7-8", technique: "REST-PAUSE", objective: "AUGMENTER LA CHARGE ET L'INTENSITÉ" },
+        3: { tempo: "2-0-2", rpe: "8-9", technique: "SUPERSETS", objective: "MAXIMISER L'HYPERTROPHIE ET LA CONGESTION" },
+        4: { tempo: "3-0-3", rpe: "9-10", technique: "CLUSTERS", objective: "ATTEINDRE LA FORCE MAXIMALE" }
+    };
+    
+    let blockNum = 1;
+    if (week >= 1 && week <= 6) blockNum = 1;
+    else if (week >= 7 && week <= 12) blockNum = 2;
+    else if (week >= 13 && week <= 18) blockNum = 3;
+    else if (week >= 19 && week <= 26) blockNum = 4;
+    
+    const tech = techniques[blockNum];
+    
+    const tempoEl = document.getElementById('tech-tempo');
+    const rpeEl = document.getElementById('tech-rpe');
+    const techniqueEl = document.getElementById('tech-technique');
+    const objectiveEl = document.getElementById('tech-objective');
+    
+    if (tempoEl) tempoEl.textContent = tech.tempo;
+    if (rpeEl) rpeEl.textContent = tech.rpe;
+    if (techniqueEl) techniqueEl.textContent = tech.technique;
+    if (objectiveEl) objectiveEl.textContent = tech.objective;
 }

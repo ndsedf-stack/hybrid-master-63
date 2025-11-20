@@ -53,17 +53,17 @@
                     <div class="tech-box glass-light">
                         <div class="tech-emoji">🎵</div>
                         <div class="tech-label">TEMPO</div>
-                        <div class="tech-value">3-1-2</div>
+                        <div class="tech-value" id="tech-tempo">3-1-2</div>
                     </div>
                     <div class="tech-box glass-light">
                         <div class="tech-emoji">💪</div>
                         <div class="tech-label">RPE</div>
-                        <div class="tech-value">6-7</div>
+                        <div class="tech-value" id="tech-rpe">6-7</div>
                     </div>
                     <div class="tech-box glass-light">
                         <div class="tech-emoji">⚡</div>
                         <div class="tech-label">TECHNIQUE</div>
-                        <div class="tech-value">DROP SET</div>
+                        <div class="tech-value" id="tech-technique">DROP SET</div>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
             <!-- Objectif -->
             <div class="objective-card glass glow-orange">
                 <span class="objective-icon">🎯</span>
-                <span class="objective-text">MAÎTRISER LA TECHNIQUE AVEC CHARGES MODÉRÉES</span>
+                <span class="objective-text" id="tech-objective">MAÎTRISER LA TECHNIQUE AVEC CHARGES MODÉRÉES</span>
             </div>
 
             <!-- Action rapide -->
@@ -88,7 +88,7 @@
                     <span class="section-title">DERNIÈRES SÉANCES</span>
                 </div>
                 
-                <div class="workout-mini glass" data-status="completed">
+                <div class="workout-mini glass" data-status="completed" onclick="startWorkout('dimanche')">
                     <div class="workout-mini-header">
                         <div class="workout-mini-day">DIM</div>
                         <div class="workout-mini-info">
@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <div class="workout-mini glass" data-status="active">
+                <div class="workout-mini glass" data-status="active" onclick="startWorkout('mardi')">
                     <div class="workout-mini-header">
                         <div class="workout-mini-day">MAR</div>
                         <div class="workout-mini-info">
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="workout-mini glass" data-status="pending">
+                <div class="workout-mini glass" data-status="pending" onclick="startWorkout('vendredi')">
                     <div class="workout-mini-header">
                         <div class="workout-mini-day">VEN</div>
                         <div class="workout-mini-info">
