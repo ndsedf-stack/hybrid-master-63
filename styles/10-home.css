@@ -1600,3 +1600,268 @@ body {
                 inset 0 1px 0 rgba(255, 255, 255, 0.2),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
 }
+/* ============================================
+   ULTRA MODERN 3D EFFECTS - PROFESSIONAL APP
+   ============================================ */
+
+/* Cartes catégories - Effet 3D avec néon */
+.category-btn {
+    position: relative;
+    background: linear-gradient(145deg, rgba(20, 25, 35, 0.9), rgba(10, 15, 25, 0.95)) !important;
+    border: 2px solid transparent !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.5) !important;
+    transform: perspective(1000px) rotateX(0deg) translateZ(0);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.category-btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        transparent 30%,
+        rgba(0, 229, 255, 0.4) 50%,
+        transparent 70%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: -1;
+}
+
+.category-btn:hover {
+    transform: perspective(1000px) rotateX(5deg) translateY(-10px) translateZ(20px) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 229, 255, 0.4),
+        0 0 80px rgba(0, 229, 255, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(0, 229, 255, 0.8) !important;
+}
+
+.category-btn:hover::before {
+    opacity: 1;
+    animation: border-glow 2s linear infinite;
+}
+
+@keyframes border-glow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+.category-btn.glow-orange:hover {
+    box-shadow: 
+        0 20px 60px rgba(255, 107, 53, 0.5),
+        0 0 80px rgba(255, 107, 53, 0.4) !important;
+    border-color: rgba(255, 107, 53, 0.8) !important;
+}
+
+.category-btn.glow-cyan:hover {
+    box-shadow: 
+        0 20px 60px rgba(0, 229, 255, 0.5),
+        0 0 80px rgba(0, 229, 255, 0.4) !important;
+    border-color: rgba(0, 229, 255, 0.8) !important;
+}
+
+.category-btn.glow-violet:hover {
+    box-shadow: 
+        0 20px 60px rgba(155, 89, 255, 0.5),
+        0 0 80px rgba(155, 89, 255, 0.4) !important;
+    border-color: rgba(155, 89, 255, 0.8) !important;
+}
+
+.category-btn.glow-green:hover {
+    box-shadow: 
+        0 20px 60px rgba(0, 255, 159, 0.5),
+        0 0 80px rgba(0, 255, 159, 0.4) !important;
+    border-color: rgba(0, 255, 159, 0.8) !important;
+}
+
+/* Techniques du bloc - 3D néon cards */
+.tech-box {
+    position: relative;
+    background: linear-gradient(145deg, rgba(25, 30, 42, 0.8), rgba(15, 20, 32, 0.9)) !important;
+    border: 1px solid rgba(0, 229, 255, 0.2) !important;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
+    transform: perspective(1000px) translateZ(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden;
+}
+
+.tech-box::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tech-box:hover {
+    transform: perspective(1000px) translateY(-8px) translateZ(15px) rotateX(5deg) !important;
+    border-color: rgba(0, 229, 255, 0.6) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 229, 255, 0.3),
+        0 0 60px rgba(0, 229, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.tech-box:hover::after {
+    opacity: 1;
+    animation: pulse-inner 2s ease-in-out infinite;
+}
+
+@keyframes pulse-inner {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.5); opacity: 0.6; }
+}
+
+.tech-value {
+    text-shadow: 
+        0 0 20px currentColor,
+        0 0 40px currentColor,
+        0 0 60px currentColor !important;
+    font-weight: 900 !important;
+    animation: pulse-value 3s ease-in-out infinite;
+}
+
+@keyframes pulse-value {
+    0%, 100% { 
+        text-shadow: 
+            0 0 20px currentColor,
+            0 0 40px currentColor;
+    }
+    50% { 
+        text-shadow: 
+            0 0 30px currentColor,
+            0 0 60px currentColor,
+            0 0 90px currentColor;
+    }
+}
+
+/* Titres avec effet néon holographique */
+.section-title {
+    position: relative;
+    text-shadow: 
+        0 0 10px rgba(0, 229, 255, 1),
+        0 0 20px rgba(0, 229, 255, 0.8),
+        0 0 40px rgba(0, 229, 255, 0.6),
+        0 0 80px rgba(0, 229, 255, 0.4),
+        0 0 120px rgba(0, 229, 255, 0.2) !important;
+    animation: flicker-neon 4s linear infinite;
+}
+
+@keyframes flicker-neon {
+    0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+        text-shadow: 
+            0 0 10px rgba(0, 229, 255, 1),
+            0 0 20px rgba(0, 229, 255, 0.8),
+            0 0 40px rgba(0, 229, 255, 0.6),
+            0 0 80px rgba(0, 229, 255, 0.4),
+            0 0 120px rgba(0, 229, 255, 0.2);
+    }
+    20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+        text-shadow: none;
+    }
+}
+
+/* Glassmorphism ULTRA PRO */
+.glass {
+    background: linear-gradient(135deg, 
+        rgba(20, 25, 35, 0.85) 0%,
+        rgba(10, 15, 25, 0.9) 100%) !important;
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(0, 229, 255, 0.1) inset,
+        0 1px 0 0 rgba(255, 255, 255, 0.15) inset,
+        0 -1px 0 0 rgba(0, 0, 0, 0.5) inset !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent);
+    transition: left 0.5s;
+}
+
+.glass:hover::before {
+    left: 100%;
+}
+
+/* Workout cards - Effet carte holographique */
+.workout-mini,
+.workout-full {
+    position: relative;
+    background: linear-gradient(145deg, 
+        rgba(25, 30, 42, 0.85),
+        rgba(15, 20, 32, 0.9)) !important;
+    border: 1px solid rgba(0, 229, 255, 0.2) !important;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.5),
+        0 0 1px rgba(0, 229, 255, 0.3) inset !important;
+    transform: perspective(1000px) rotateY(0deg);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.workout-mini:hover,
+.workout-full:hover {
+    transform: perspective(1000px) rotateY(2deg) translateY(-5px) translateZ(10px) !important;
+    border-color: rgba(0, 229, 255, 0.6) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 229, 255, 0.3),
+        0 0 80px rgba(0, 229, 255, 0.2),
+        0 0 1px rgba(0, 229, 255, 0.5) inset !important;
+}
+
+/* Boutons avec effet de profondeur */
+.workout-btn-primary {
+    position: relative;
+    background: linear-gradient(135deg, 
+        rgba(0, 229, 255, 0.2),
+        rgba(155, 89, 255, 0.2)) !important;
+    border: 2px solid rgba(0, 229, 255, 0.5) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(0, 229, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateZ(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.workout-btn-primary:hover {
+    transform: translateY(-3px) translateZ(10px) !important;
+    box-shadow: 
+        0 8px 30px rgba(0, 229, 255, 0.5),
+        0 0 60px rgba(0, 229, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(0, 229, 255, 1) !important;
+}
+
+.workout-btn-primary:active {
+    transform: translateY(-1px) scale(0.98) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 229, 255, 0.4),
+        0 0 40px rgba(0, 229, 255, 0.6) !important;
+}
