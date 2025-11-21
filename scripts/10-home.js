@@ -17,6 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUserPreferences();
     animateOnLoad();
     attachSearchListener();
+
+// Attacher les event listeners aux boutons de navigation
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+            if (tab) {
+                switchTab(tab);
+            }
+        });
+    });
+
     // Attendre que programData soit chargé
     const checkProgramData = setInterval(() => {
         if (window.programData) {
