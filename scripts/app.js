@@ -2,6 +2,52 @@
 // APP.JS - VERSION COMPLÈTE CORRIGÉE
 // ==================================================================
 
+// ============================================
+// NAVIGATION ENTRE ONGLETS
+// ============================================
+function switchTab(tabName) {
+    // Masquer tous les onglets
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Désactiver tous les boutons nav
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Activer l'onglet demandé
+    const targetTab = document.getElementById('tab-' + tabName);
+    if (targetTab) {
+        targetTab.classList.add('active');
+    }
+    
+    // Activer le bouton nav correspondant
+    const targetBtn = document.querySelector('.nav-item[data-tab="' + tabName + '"]');
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+    
+    console.log('📱 Switched to tab:', tabName);
+}
+
+// Initialiser la navigation au chargement
+document.addEventListener('DOMContentLoaded', function() {
+    // Activer HOME par défaut
+    switchTab('home');
+    
+    // Ajouter les event listeners sur les boutons nav
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+            switchTab(tab);
+        });
+    });
+});
+
+// Exposer switchTab globalement
+window.switchTab = switchTab;
+
 import programData from './program-data.js';
 // Exposer programData globalement pour superset-injector
 window.programData = programData;
