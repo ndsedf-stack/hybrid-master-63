@@ -325,98 +325,271 @@
         <section id="tab-stats" class="tab-content">
             <!-- Stats principales -->
             <div class="stats-grid">
-                <div class="stat-box glass breathing-animation">
+                <div class="stat-box glass">
                     <div class="stat-emoji">🔥</div>
-                    <div class="stat-number neural-pulse" id="total-sessions">0</div>
+                    <div class="stat-number">0</div>
                     <div class="stat-label">SÉANCES</div>
                 </div>
                 <div class="stat-box glass">
                     <div class="stat-emoji">💪</div>
-                    <div class="stat-number neural-pulse" id="total-volume">0kg</div>
-                    <div class="stat-label">VOLUME TOTAL</div>
+                    <div class="stat-number">0kg</div>
+                    <div class="stat-label">VOLUME</div>
                 </div>
                 <div class="stat-box glass">
                     <div class="stat-emoji">⚡</div>
-                    <div class="stat-number neural-pulse" id="streak-days">0</div>
+                    <div class="stat-number">2</div>
                     <div class="stat-label">JOURS STREAK</div>
                 </div>
                 <div class="stat-box glass">
                     <div class="stat-emoji">📈</div>
-                    <div class="stat-number neural-pulse" id="month-progress">+0%</div>
+                    <div class="stat-number">+7%</div>
                     <div class="stat-label">CE MOIS</div>
                 </div>
             </div>
 
-            <!-- Graphique volume par muscle -->
-            <div class="chart-container holographic-scan">
-                <div class="chart-title neon-flicker">📊 VOLUME PAR MUSCLE</div>
-                <canvas id="volume-chart"></canvas>
-            </div>
-
-            <!-- Graphique progression -->
-            <div class="chart-container holographic-scan">
-                <div class="chart-title neon-flicker">📈 PROGRESSION HEBDOMADAIRE</div>
-                <canvas id="progression-chart"></canvas>
-            </div>
-
-            <!-- Zone d'intensité -->
-            <div class="chart-container holographic-scan">
-                <div class="chart-title neon-flicker">🎯 ZONES D'INTENSITÉ</div>
-                <canvas id="intensity-chart"></canvas>
-            </div>
-
-            <!-- Calculateurs -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 30px;">
-                <!-- Warm-up Calculator -->
-                <div class="calculator-container holographic-scan">
-                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🔥 WARM-UP</div>
-                    <div class="calculator-input-group">
-                        <label class="calculator-label">Poids de travail (kg)</label>
-                        <input type="number" class="calculator-input" id="warmup-weight" placeholder="100">
-                    </div>
-                    <button class="workout-btn workout-btn-primary" onclick="calculateWarmup()" style="width: 100%;">
-                        CALCULER
-                    </button>
-                    <div id="warmup-result" style="margin-top: 20px;"></div>
+            <!-- Progression semaine -->
+            <div class="progress-card glass">
+                <div class="card-title">
+                    <span class="title-icon">🔥</span>
+                    <span>CETTE SEMAINE</span>
                 </div>
+                <div class="progress-header">
+                    <span class="progress-label">PROGRESSION</span>
+                    <span class="progress-percent">60%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 60%"></div>
+                </div>
+                <div class="progress-footer">
+                    <span class="progress-detail">3/5 SÉANCES</span>
+                    <span class="progress-detail">0kg VOLUME</span>
+                </div>
+            </div>
 
-                <!-- Plate Calculator -->
-                <div class="calculator-container holographic-scan">
-                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🏋️ DISQUES</div>
-                    <div class="calculator-input-group">
-                        <label class="calculator-label">Poids cible (kg)</label>
-                        <input type="number" class="calculator-input" id="plate-weight" placeholder="100">
+            <!-- Calendrier -->
+            <div class="calendar-card glass">
+                <div class="card-title">
+                    <span class="title-icon">📅</span>
+                    <span>PLANNING 7 JOURS</span>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-cell completed">
+                        <div class="cell-num">19</div>
+                        <div class="cell-day">D</div>
+                        <div class="cell-icon">✅</div>
                     </div>
-                    <button class="workout-btn workout-btn-primary" onclick="calculatePlates()" style="width: 100%;">
-                        CALCULER
-                    </button>
-                    <div id="plate-result" style="margin-top: 20px;"></div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">20</div>
+                        <div class="cell-day">L</div>
+                        <div class="cell-icon">○</div>
+                    </div>
+                    <div class="calendar-cell active">
+                        <div class="cell-num">21</div>
+                        <div class="cell-day">M</div>
+                        <div class="cell-icon">→</div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">22</div>
+                        <div class="cell-day">M</div>
+                        <div class="cell-icon">○</div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">23</div>
+                        <div class="cell-day">J</div>
+                        <div class="cell-icon">○</div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">24</div>
+                        <div class="cell-day">V</div>
+                        <div class="cell-icon">○</div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">25</div>
+                        <div class="cell-day">S</div>
+                        <div class="cell-icon">○</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volume par groupe -->
+            <div class="muscle-card glass">
+                <div class="card-title">
+                    <span class="title-icon">💪</span>
+                    <span>VOLUME PAR GROUPE</span>
+                </div>
+                <div class="muscle-list">
+                    <div class="muscle-row">
+                        <span class="muscle-emoji">💪</span>
+                        <span class="muscle-name">PECS</span>
+                        <div class="muscle-bar">
+                            <div class="muscle-fill" style="width: 65%"></div>
+                        </div>
+                        <span class="muscle-percent">65%</span>
+                    </div>
+                    <div class="muscle-row">
+                        <span class="muscle-emoji">🏋️</span>
+                        <span class="muscle-name">DOS</span>
+                        <div class="muscle-bar">
+                            <div class="muscle-fill" style="width: 78%"></div>
+                        </div>
+                        <span class="muscle-percent">78%</span>
+                    </div>
+                    <div class="muscle-row">
+                        <span class="muscle-emoji">🦵</span>
+                        <span class="muscle-name">JAMBES</span>
+                        <div class="muscle-bar">
+                            <div class="muscle-fill" style="width: 52%"></div>
+                        </div>
+                        <span class="muscle-percent">52%</span>
+                    </div>
+                    <div class="muscle-row">
+                        <span class="muscle-emoji">💪</span>
+                        <span class="muscle-name">ÉPAULES</span>
+                        <div class="muscle-bar">
+                            <div class="muscle-fill" style="width: 60%"></div>
+                        </div>
+                        <span class="muscle-percent">60%</span>
+                    </div>
+                    <div class="muscle-row">
+                        <span class="muscle-emoji">💪</span>
+                        <span class="muscle-name">BRAS</span>
+                        <div class="muscle-bar">
+                            <div class="muscle-fill" style="width: 45%"></div>
+                        </div>
+                        <span class="muscle-percent">45%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badges -->
+            <div class="badges-card glass">
+                <div class="card-title">
+                    <span class="title-icon">🏆</span>
+                    <span>BADGES</span>
+                </div>
+                <div class="badges-grid">
+                    <div class="badge-box glass-light">
+                        <div class="badge-big-icon">🔥</div>
+                        <div class="badge-big-label">STREAK</div>
+                    </div>
+                    <div class="badge-box glass-light">
+                        <div class="badge-big-icon">💯</div>
+                        <div class="badge-big-label">PERFECT</div>
+                    </div>
+                    <div class="badge-box glass-light">
+                        <div class="badge-big-icon">⚡</div>
+                        <div class="badge-big-label">POWER</div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ONGLET PLUS -->
         <section id="tab-plus" class="tab-content">
-            <!-- Contenu PLUS ici -->
-        </section>
-    </div>
+            <!-- Actions rapides -->
+            <div class="menu-group glass">
+                <div class="card-title">
+                    <span class="title-icon">⚡</span>
+                    <span>ACTIONS RAPIDES</span>
+                </div>
+                <button class="menu-item" onclick="openCoach()">
+                    <span class="menu-icon">🤖</span>
+                    <span class="menu-label">Coach IA</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item" onclick="openTests()">
+                    <span class="menu-icon">✏️</span>
+                    <span class="menu-label">Tests 1RM</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item" onclick="exportData()">
+                    <span class="menu-icon">💾</span>
+                    <span class="menu-label">Exporter données</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item danger" onclick="confirmReset()">
+                    <span class="menu-icon">⚠️</span>
+                    <span class="menu-label">Reset progression</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+            </div>
 
-    <!-- Navigation -->
-    <nav class="bottom-nav glass">
-        <button class="nav-item" data-tab="home">
+            <!-- Ressources -->
+            <div class="menu-group glass">
+                <div class="card-title">
+                    <span class="title-icon">📚</span>
+                    <span>RESSOURCES</span>
+                </div>
+                <button class="menu-item">
+                    <span class="menu-icon">📖</span>
+                    <span class="menu-label">Guide du programme</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item">
+                    <span class="menu-icon">🎥</span>
+                    <span class="menu-label">Vidéos techniques</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item">
+                    <span class="menu-icon">💬</span>
+                    <span class="menu-label">Citation du jour</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+            </div>
+
+            <!-- Paramètres -->
+            <div class="menu-group glass">
+                <div class="card-title">
+                    <span class="title-icon">⚙️</span>
+                    <span>PARAMÈTRES</span>
+                </div>
+                <button class="menu-item">
+                    <span class="menu-icon">🔔</span>
+                    <span class="menu-label">Notifications</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item">
+                    <span class="menu-icon">🎨</span>
+                    <span class="menu-label">Thème</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item">
+                    <span class="menu-icon">📏</span>
+                    <span class="menu-label">Unités (kg/lbs)</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+                <button class="menu-item">
+                    <span class="menu-icon">🌐</span>
+                    <span class="menu-label">Langue</span>
+                    <span class="menu-arrow">→</span>
+                </button>
+            </div>
+
+            <!-- À propos -->
+            <div class="about-card glass">
+                <div class="about-logo">HYBRID MASTER 63</div>
+                <div class="about-version">Version 1.0.0</div>
+                <div class="about-copyright">© 2024 • Made with 💪</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- NAVIGATION BOTTOM -->
+    <nav class="bottom-nav">
+        <button class="nav-tab active" data-tab="home" onclick="switchTab('home')">
             <span class="nav-icon">🏠</span>
             <span class="nav-label">HOME</span>
         </button>
-        <button class="nav-item" data-tab="workout">
+        <button class="nav-tab" data-tab="workout" onclick="switchTab('workout')">
             <span class="nav-icon">💪</span>
             <span class="nav-label">WORKOUT</span>
         </button>
-        <button class="nav-item" data-tab="stats">
+        <button class="nav-tab" data-tab="stats" onclick="switchTab('stats')">
             <span class="nav-icon">📊</span>
             <span class="nav-label">STATS</span>
         </button>
-        <button class="nav-item" data-tab="plus">
-            <span class="nav-icon">➕</span>
+        <button class="nav-tab" data-tab="plus" onclick="switchTab('plus')">
+            <span class="nav-icon">⚙️</span>
             <span class="nav-label">PLUS</span>
         </button>
     </nav>
@@ -435,7 +608,6 @@
     <script src="scripts/modules/body-tracker.js"></script>
     <script src="scripts/modules/pr-detector.js"></script>
     <script src="scripts/modules/calculators.js"></script>
-    <script src="scripts/modules/stats-init.js"></script>
 
 </body>
 </html>
