@@ -7,31 +7,19 @@ let statsEngine, statsUI, bodyTracker, prDetector, calculators;
 function initStats() {
     console.log('🚀 Initialisation Stats Ultra...');
     
-    // Initialiser les modules
     statsEngine = new StatsEngine();
     statsUI = new StatsUI(statsEngine);
     bodyTracker = new BodyTracker();
     prDetector = new PRDetector();
     calculators = new Calculators();
     
-    // Charger les données
     loadStatsData();
-    
-    // Afficher les graphiques
-    setTimeout(() => renderAllCharts(), 300);
-    
-    // Afficher les records
+    setTimeout(function() { renderAllCharts(); }, 300);
     displayRecords();
-    
-    // Afficher les mesures corporelles
     displayBodyMeasurements();
-    
-    // Afficher les photos
     displayProgressPhotos();
-    
-    // Ajouter les animations
     addAnimations();
-renderCalendar();
+    renderCalendar();
     displayMusclesThisWeek();
     updateAdvancedStats();
     
@@ -39,43 +27,30 @@ renderCalendar();
 }
 
 function loadStatsData() {
-    const sessions = getSessions();
+    var sessions = getSessions();
     
     if (!sessions || sessions.length === 0) {
-        console.log('⚠️ Aucune session trouvée, utilisation de données de démo');
         loadDemoData();
         return;
     }
     
-    // Calculer les stats
-    const currentWeek = parseInt(localStorage.getItem('currentWeek')) || 1;
+    var currentWeek = parseInt(localStorage.getItem('currentWeek')) || 1;
+    var totalSessions = sessions.length;
+    var totalVolume = statsEngine.getTotalVolume(sessions);
+    var streak = statsEngine.calculateProgressionStreak(sessions);
+    var volumeByMuscle = statsEngine.calculateVolumeByMuscle(sessions);
+    var intensityZones = statsEngine.calculateIntensityDistribution(sessions);
+    var rirAnalysis = statsEngine.analyzeRIR(sessions);
+    var restAnalysis = statsEngine.analyzeRestPeriods(sessions);
+    var avgTUT = statsEngine.getAverageTUT(sessions);
+    var monthProgress = calculateMonthProgress(sessions);
     
-    // Stats principales
-    const totalSessions = sessions.length;
-    const totalVolume = statsEngine.getTotalVolume(sessions);
-    const streak = statsEngine.calculateProgressionStreak(sessions);
-    
-    // Volume par muscle
-    const volumeByMuscle = statsEngine.calculateVolumeByMuscle(sessions);
-    
-    // Zones d'intensité
-    const intensityZones = statsEngine.calculateIntensityDistribution(sessions);
-    
-    // Stats avancées
-    const rirAnalysis = statsEngine.analyzeRIR(sessions);
-    const restAnalysis = statsEngine.analyzeRestPeriods(sessions);
-    const avgTUT = statsEngine.getAverageTUT(sessions);
-    
-    // Progression ce mois
-    const monthProgress = calculateMonthProgress(sessions);
-    
-    // Mettre à jour l'affichage
     updateStatsDisplay({
-        totalSessions,
-        totalVolume,
-        streak,
-        volumeByMuscle,
-        intensityZones,
+        totalSessions: totalSessions,
+        totalVolume: totalVolume,
+        streak: streak,
+        volumeByMuscle: volumeByMuscle,
+        intensityZones: intensityZones,
         avgRIR: rirAnalysis.average,
         avgRest: restAnalysis.average,
         avgTUT: avgTUT,
@@ -86,7 +61,7 @@ function loadStatsData() {
 
 function getSessions() {
     try {
-        const sessions = localStorage.getItem('completedSessions');
+        var sessions = localStorage.getItem('completedSessions');
         if (sessions) return JSON.parse(sessions);
     } catch (e) {
         console.error('Erreur chargement sessions:', e);
@@ -95,16 +70,16 @@ function getSessions() {
 }
 
 function loadDemoData() {
-    const demoSessions = generateDemoSessions();
-    const volumeByMuscle = statsEngine.calculateVolumeByMuscle(demoSessions);
-    const intensityZones = statsEngine.calculateIntensityDistribution(demoSessions);
+    var demoSessions = generateDemoSessions();
+    var volumeByMuscle = statsEngine.calculateVolumeByMuscle(demoSessions);
+    var intensityZones = statsEngine.calculateIntensityDistribution(demoSessions);
     
     updateStatsDisplay({
         totalSessions: 24,
         totalVolume: 12500,
         streak: 5,
-        volumeByMuscle,
-        intensityZones,
+        volumeByMuscle: volumeByMuscle,
+        intensityZones: intensityZones,
         avgRIR: 2.5,
         avgRest: 120,
         avgTUT: 45,
@@ -114,24 +89,33 @@ function loadDemoData() {
 }
 
 function generateDemoSessions() {
-    const muscles = ['Pectoraux', 'Dos', 'Jambes', 'Épaules', 'Bras'];
-    const sessions = [];
+    var muscles = ['Pectoraux', 'Dos', 'Jambes', 'Epaules', 'Bras'];
+    var secondaryMap = {
+        'Pectoraux': ['Triceps', 'Epaules'],
+        'Dos': ['Biceps', 'Lombaires'],
+        'Jambes': ['Fessiers', 'Mollets'],
+        'Epaules': ['Triceps', 'Trapezes'],
+        'Bras': ['Avant-bras']
+    };
+    var sessions = [];
     
-    for (let i = 1; i <= 8; i++) {
+    for (var i = 1; i <= 8; i++) {
         sessions.push({
             week: i,
             date: new Date(Date.now() - (8 - i) * 7 * 24 * 60 * 60 * 1000).toISOString(),
-            exercises: muscles.map(muscle => ({
-                name: `Exercice ${muscle}`,
-                primaryMuscle: muscle,
-                secondaryMuscles: [],
-                sets: 4,
-                reps: 10,
-                weight: 50 + Math.random() * 30,
-                rpe: 7 + Math.random() * 2,
-                rest: 90 + Math.random() * 60,
-                tempo: '3-1-2'
-            }))
+            exercises: muscles.map(function(muscle) {
+                return {
+                    name: 'Exercice ' + muscle,
+                    primaryMuscle: muscle,
+                    secondaryMuscles: secondaryMap[muscle] || [],
+                    sets: 4,
+                    reps: 10,
+                    weight: 50 + Math.random() * 30,
+                    rpe: 7 + Math.random() * 2,
+                    rest: 90 + Math.random() * 60,
+                    tempo: '3-1-2'
+                };
+            })
         });
     }
     
@@ -139,319 +123,457 @@ function generateDemoSessions() {
 }
 
 function calculateMonthProgress(sessions) {
-    const now = new Date();
-    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    var now = new Date();
+    var monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     
-    const recentSessions = sessions.filter(s => new Date(s.date) > monthAgo);
-    const oldSessions = sessions.filter(s => new Date(s.date) <= monthAgo);
+    var recentSessions = sessions.filter(function(s) { return new Date(s.date) > monthAgo; });
+    var oldSessions = sessions.filter(function(s) { return new Date(s.date) <= monthAgo; });
     
     if (oldSessions.length === 0) return 0;
     
-    const recentVolume = statsEngine.getTotalVolume(recentSessions);
-    const oldVolume = statsEngine.getTotalVolume(oldSessions);
+    var recentVolume = statsEngine.getTotalVolume(recentSessions);
+    var oldVolume = statsEngine.getTotalVolume(oldSessions);
     
     return oldVolume > 0 ? Math.round(((recentVolume - oldVolume) / oldVolume) * 100) : 0;
 }
 
 function updateStatsDisplay(stats) {
-    // Stats principales avec animations
-    const totalSessionsEl = document.getElementById('total-sessions');
-    if (totalSessionsEl) {
-        statsUI.animateNumber(totalSessionsEl, 0, stats.totalSessions, 1500);
-    }
+    var el;
     
-    const totalVolumeEl = document.getElementById('total-volume');
-    if (totalVolumeEl) {
-        statsUI.animateNumber(totalVolumeEl, 0, Math.round(stats.totalVolume), 2000, 'kg');
-    }
+    el = document.getElementById('total-sessions');
+    if (el) el.textContent = stats.totalSessions;
     
-    const streakEl = document.getElementById('streak-days');
-    if (streakEl) {
-        statsUI.animateNumber(streakEl, 0, stats.streak, 1000);
-    }
+    el = document.getElementById('total-volume');
+    if (el) el.textContent = Math.round(stats.totalVolume) + 'kg';
     
-    const monthProgressEl = document.getElementById('month-progress');
-    if (monthProgressEl) {
-        monthProgressEl.textContent = (stats.monthProgress > 0 ? '+' : '') + stats.monthProgress + '%';
-    }
+    el = document.getElementById('streak-days');
+    if (el) el.textContent = stats.streak;
     
-    // Stats avancées
-    const avgRIREl = document.getElementById('avg-rir');
-    if (avgRIREl && stats.avgRIR) {
-        avgRIREl.textContent = stats.avgRIR.toFixed(1);
-    }
+    el = document.getElementById('month-progress');
+    if (el) el.textContent = (stats.monthProgress > 0 ? '+' : '') + stats.monthProgress + '%';
     
-    const avgRestEl = document.getElementById('avg-rest');
-    if (avgRestEl && stats.avgRest) {
-        avgRestEl.textContent = Math.round(stats.avgRest) + 's';
-    }
+    el = document.getElementById('avg-rir');
+    if (el && stats.avgRIR) el.textContent = stats.avgRIR.toFixed(1);
     
-    const avgTUTEl = document.getElementById('avg-tut');
-    if (avgTUTEl && stats.avgTUT) {
-        avgTUTEl.textContent = Math.round(stats.avgTUT) + 's';
-    }
+    el = document.getElementById('avg-rest');
+    if (el && stats.avgRest) el.textContent = Math.round(stats.avgRest) + 's';
     
-    const streakProgressEl = document.getElementById('streak-progress');
-    if (streakProgressEl) {
-        streakProgressEl.textContent = stats.streak;
-    }
+    el = document.getElementById('avg-tut');
+    if (el && stats.avgTUT) el.textContent = Math.round(stats.avgTUT) + 's';
     
-    // Zone hypertrophie %
+    el = document.getElementById('streak-progress');
+    if (el) el.textContent = stats.streak;
+    
     if (stats.intensityZones) {
-        const total = stats.intensityZones.force + stats.intensityZones.hypertrophie + stats.intensityZones.endurance;
+        var total = stats.intensityZones.force + stats.intensityZones.hypertrophie + stats.intensityZones.endurance;
         if (total > 0) {
-            const hypertrophyPercent = Math.round((stats.intensityZones.hypertrophie / total) * 100);
-            const hypertrophyEl = document.getElementById('hypertrophy-percent');
-            if (hypertrophyEl) {
-                hypertrophyEl.textContent = hypertrophyPercent + '%';
-            }
+            var hypertrophyPercent = Math.round((stats.intensityZones.hypertrophie / total) * 100);
+            el = document.getElementById('hypertrophy-percent');
+            if (el) el.textContent = hypertrophyPercent + '%';
         }
     }
     
-    // Progression semaine
-    const currentWeek = parseInt(localStorage.getItem('currentWeek')) || 1;
-    const weekSessions = stats.sessions.filter(s => s.week === currentWeek);
-    const weekVolume = statsEngine.getTotalVolume(weekSessions);
+    var currentWeek = parseInt(localStorage.getItem('currentWeek')) || 1;
+    var weekSessions = stats.sessions.filter(function(s) { return s.week === currentWeek; });
+    var weekVolume = statsEngine.getTotalVolume(weekSessions);
     
-    const weekProgressPercentEl = document.getElementById('week-progress-percent');
-    if (weekProgressPercentEl) {
-        const progress = Math.min(Math.round((weekSessions.length / 5) * 100), 100);
-        weekProgressPercentEl.textContent = progress + '%';
+    el = document.getElementById('week-progress-percent');
+    if (el) {
+        var progress = Math.min(Math.round((weekSessions.length / 5) * 100), 100);
+        el.textContent = progress + '%';
         
-        const progressBar = document.getElementById('week-progress-bar');
-        if (progressBar) {
-            progressBar.style.width = progress + '%';
-        }
+        var progressBar = document.getElementById('week-progress-bar');
+        if (progressBar) progressBar.style.width = progress + '%';
     }
     
-    const weekSessionsEl = document.getElementById('week-sessions');
-    if (weekSessionsEl) {
-        weekSessionsEl.textContent = `${weekSessions.length}/5 SÉANCES`;
-    }
+    el = document.getElementById('week-sessions');
+    if (el) el.textContent = weekSessions.length + '/5 SEANCES';
     
-    const weekVolumeEl = document.getElementById('week-volume');
-    if (weekVolumeEl) {
-        weekVolumeEl.textContent = Math.round(weekVolume) + 'kg VOLUME';
-    }
+    el = document.getElementById('week-volume');
+    if (el) el.textContent = Math.round(weekVolume) + 'kg VOLUME';
 }
 
 function renderAllCharts() {
     if (typeof Chart === 'undefined') {
-        console.error('❌ Chart.js non chargé');
+        console.error('Chart.js non charge');
         return;
     }
     
-    const sessions = getSessions() || generateDemoSessions();
-    const volumeByMuscle = statsEngine.calculateVolumeByMuscle(sessions);
-    const intensityZones = statsEngine.calculateIntensityDistribution(sessions);
+    var sessions = getSessions() || generateDemoSessions();
+    var volumeByMuscle = statsEngine.calculateVolumeByMuscle(sessions);
+    var intensityZones = statsEngine.calculateIntensityDistribution(sessions);
     
-    // Chart volume par muscle
-    try {
-        statsUI.renderVolumeByMuscleChart('volume-chart', volumeByMuscle);
-        console.log('✅ Chart volume créé');
-    } catch (e) {
-        console.error('❌ Erreur chart volume:', e);
-    }
+    renderVolumeRadarChart('volume-chart', volumeByMuscle);
+    renderProgressionChart('progression-chart', sessions);
+    renderIntensityChart('intensity-chart', intensityZones);
+}
+
+function renderVolumeRadarChart(canvasId, data) {
+    var ctx = document.getElementById(canvasId);
+    if (!ctx) return;
     
-    // Chart progression
-    try {
-        statsUI.renderProgressionChart('progression-chart', sessions);
-        console.log('✅ Chart progression créé');
-    } catch (e) {
-        console.error('❌ Erreur chart progression:', e);
-    }
+    var muscles = Object.keys(data);
+    var volumes = muscles.map(function(m) { return data[m].volume; });
+    var maxVolume = Math.max.apply(null, volumes);
+    var normalizedVolumes = volumes.map(function(v) { return (v / maxVolume) * 100; });
     
-    // Chart intensité
-    try {
-        statsUI.renderIntensityZoneChart('intensity-chart', intensityZones);
-        console.log('✅ Chart intensité créé');
-    } catch (e) {
-        console.error('❌ Erreur chart intensité:', e);
-    }
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: muscles,
+            datasets: [{
+                label: 'Volume',
+                data: normalizedVolumes,
+                backgroundColor: 'rgba(0, 229, 255, 0.3)',
+                borderColor: 'rgba(0, 229, 255, 1)',
+                borderWidth: 3,
+                pointBackgroundColor: 'rgba(155, 89, 255, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        display: false
+                    },
+                    grid: {
+                        color: 'rgba(0, 229, 255, 0.2)'
+                    },
+                    angleLines: {
+                        color: 'rgba(0, 229, 255, 0.2)'
+                    },
+                    pointLabels: {
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        font: { size: 12, weight: 'bold' }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function renderProgressionChart(canvasId, sessions) {
+    var ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    
+    var weeks = [];
+    sessions.forEach(function(s) {
+        if (weeks.indexOf(s.week) === -1) weeks.push(s.week);
+    });
+    weeks.sort(function(a, b) { return a - b; });
+    
+    var volumeByWeek = weeks.map(function(week) {
+        var weekSessions = sessions.filter(function(s) { return s.week === week; });
+        return statsEngine.getTotalVolume(weekSessions);
+    });
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: weeks.map(function(w) { return 'S' + w; }),
+            datasets: [{
+                label: 'Volume (kg)',
+                data: volumeByWeek,
+                borderColor: 'rgba(0, 229, 255, 1)',
+                backgroundColor: 'rgba(0, 229, 255, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 8,
+                pointBackgroundColor: 'rgba(155, 89, 255, 1)',
+                pointBorderColor: 'rgba(0, 229, 255, 1)',
+                pointBorderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0, 229, 255, 0.1)' },
+                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                }
+            }
+        }
+    });
+}
+
+function renderIntensityChart(canvasId, zones) {
+    var ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Force >85%', 'Hypertrophie 65-85%', 'Endurance <65%'],
+            datasets: [{
+                data: [zones.force, zones.hypertrophie, zones.endurance],
+                backgroundColor: [
+                    'rgba(255, 53, 94, 0.8)',
+                    'rgba(0, 255, 159, 0.8)',
+                    'rgba(0, 229, 255, 0.8)'
+                ],
+                borderColor: 'rgba(0, 0, 0, 0.8)',
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: 'rgba(255, 255, 255, 0.9)', font: { size: 11 } }
+                }
+            }
+        }
+    });
 }
 
 function displayRecords() {
-    const records = prDetector.getAllRecords();
-    const container = document.getElementById('records-list');
-    
+    var records = prDetector.getAllRecords();
+    var container = document.getElementById('records-list');
     if (!container) return;
     
     if (records.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
-                Aucun record enregistré. Commence à t'entraîner ! 💪
-            </div>
-        `;
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">Aucun record. Commence a t\'entrainer ! 💪</div>';
         return;
     }
     
     container.innerHTML = '';
-    records.slice(0, 5).forEach(record => {
-        const div = document.createElement('div');
+    records.slice(0, 5).forEach(function(record) {
+        var div = document.createElement('div');
         div.className = 'record-item';
-        div.innerHTML = `
-            <div class="record-info">
-                <div class="record-exercise">${record.exercise}</div>
-                <div class="record-details">${record.weight}kg × ${record.reps} reps • ${new Date(record.date).toLocaleDateString()}</div>
-            </div>
-            <div class="record-badge">🏆</div>
-        `;
+        div.innerHTML = '<div class="record-info"><div class="record-exercise">' + record.exercise + '</div><div class="record-details">' + record.weight + 'kg x ' + record.reps + ' reps</div></div><div class="record-badge">🏆</div>';
         container.appendChild(div);
     });
 }
 
 function displayBodyMeasurements() {
-    const latest = bodyTracker.getLatestMeasurement();
-    
+    var latest = bodyTracker.getLatestMeasurement();
     if (!latest) return;
     
-    const bodyWeightEl = document.getElementById('body-weight');
-    if (bodyWeightEl) bodyWeightEl.textContent = latest.weight + ' kg';
+    var el;
+    el = document.getElementById('body-weight');
+    if (el) el.textContent = latest.weight + ' kg';
     
-    const bodyFatEl = document.getElementById('body-fat');
-    if (bodyFatEl) bodyFatEl.textContent = latest.bodyFat + ' %';
+    el = document.getElementById('body-fat');
+    if (el) el.textContent = latest.bodyFat + ' %';
     
-    const bodyWaistEl = document.getElementById('body-waist');
-    if (bodyWaistEl) bodyWaistEl.textContent = latest.waist + ' cm';
+    el = document.getElementById('body-waist');
+    if (el) el.textContent = latest.waist + ' cm';
     
-    const bodyChestEl = document.getElementById('body-chest');
-    if (bodyChestEl) bodyChestEl.textContent = latest.chest + ' cm';
-    
-    // Calculer les tendances
-    const measurements = bodyTracker.measurements;
-    if (measurements.length >= 2) {
-        const previous = measurements[measurements.length - 2];
-        
-        updateTrend('weight-trend', latest.weight, previous.weight);
-        updateTrend('fat-trend', latest.bodyFat, previous.bodyFat, true);
-        updateTrend('waist-trend', latest.waist, previous.waist, true);
-        updateTrend('chest-trend', latest.chest, previous.chest);
-    }
-}
-
-function updateTrend(elementId, current, previous, inverse = false) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    
-    const diff = current - previous;
-    if (diff === 0) {
-        el.textContent = '→ stable';
-        el.className = 'measurement-trend';
-        return;
-    }
-    
-    const isPositive = inverse ? diff < 0 : diff > 0;
-    el.className = `measurement-trend ${isPositive ? 'up' : 'down'}`;
-    el.textContent = `${diff > 0 ? '↑' : '↓'} ${Math.abs(diff).toFixed(1)}`;
+    el = document.getElementById('body-chest');
+    if (el) el.textContent = latest.chest + ' cm';
 }
 
 function displayProgressPhotos() {
-    const photos = bodyTracker.photos;
-    const gallery = document.getElementById('photo-gallery');
-    
+    var photos = bodyTracker.photos;
+    var gallery = document.getElementById('photo-gallery');
     if (!gallery) return;
     
     if (photos.length === 0) {
-        gallery.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1/-1;">
-                Aucune photo. Capture tes progrès ! 📸
-            </div>
-        `;
+        gallery.innerHTML = '<div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1/-1;">Aucune photo. Capture tes progres ! 📸</div>';
         return;
     }
     
     gallery.innerHTML = '';
-    photos.forEach(photo => {
-        const div = document.createElement('div');
+    photos.forEach(function(photo) {
+        var div = document.createElement('div');
         div.className = 'photo-item';
-        div.innerHTML = `
-            <img src="${photo.dataUrl}" alt="Progress photo">
-            <div class="photo-date">${new Date(photo.date).toLocaleDateString()}</div>
-        `;
+        div.innerHTML = '<img src="' + photo.dataUrl + '" alt="Progress"><div class="photo-date">' + new Date(photo.date).toLocaleDateString() + '</div>';
         gallery.appendChild(div);
     });
 }
 
 function addAnimations() {
-    // Ajouter neural pulse
-    statsUI.addNeuralPulse([
-        'total-sessions',
-        'total-volume',
-        'streak-days',
-        'week-progress-percent'
-    ]);
-    
-    // Ajouter scan holographique
-    statsUI.addHolographicScan([
-        '.chart-container',
-        '.progress-card',
-        '.calculator-container'
-    ]);
+    statsUI.addNeuralPulse(['total-sessions', 'total-volume', 'streak-days', 'week-progress-percent']);
+    statsUI.addHolographicScan(['.chart-container', '.progress-card', '.calculator-container']);
 }
 
-// ============================================
-// FONCTIONS INTERACTIVES
-// ============================================
+function renderCalendar() {
+    var grid = document.getElementById('calendar-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+    grid.style.gap = '8px';
+    
+    var today = new Date();
+    var days = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+    
+    for (var i = -3; i <= 3; i++) {
+        var date = new Date(today);
+        date.setDate(date.getDate() + i);
+        
+        var cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+        cell.style.cssText = 'display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 8px; background: rgba(0,0,0,0.3); border: 2px solid rgba(0,229,255,0.3); border-radius: 12px; min-height: 80px;';
+        
+        if (i < 0) {
+            cell.style.borderColor = 'rgba(0,255,159,0.5)';
+            cell.style.background = 'rgba(0,255,159,0.1)';
+        }
+        if (i === 0) {
+            cell.style.borderColor = 'rgba(0,229,255,0.8)';
+            cell.style.background = 'rgba(0,229,255,0.2)';
+            cell.style.boxShadow = '0 0 20px rgba(0,229,255,0.4)';
+        }
+        
+        var icon = i < 0 ? '✅' : (i === 0 ? '🔥' : '○');
+        cell.innerHTML = '<div style="font-size: 18px; font-weight: 900; color: #fff;">' + date.getDate() + '</div><div style="font-size: 11px; color: rgba(255,255,255,0.6); margin: 4px 0;">' + days[date.getDay()] + '</div><div style="font-size: 16px;">' + icon + '</div>';
+        
+        grid.appendChild(cell);
+    }
+}
+
+function displayMusclesThisWeek() {
+    var sessions = getSessions() || generateDemoSessions();
+    var week = parseInt(localStorage.getItem('currentWeek')) || 1;
+    
+    var weekDisplay = document.getElementById('current-week-display');
+    if (weekDisplay) weekDisplay.textContent = week;
+    
+    var muscles = statsEngine.getMusclesWorkedThisWeek(sessions, week);
+    
+    var primaryList = document.getElementById('primary-muscles-list');
+    if (primaryList) {
+        primaryList.innerHTML = '';
+        var primaryEntries = Object.entries(muscles.primary);
+        
+        if (primaryEntries.length === 0) {
+            primaryList.innerHTML = '<div style="color: rgba(255,255,255,0.5); font-size: 12px;">Aucun muscle cette semaine</div>';
+        } else {
+            primaryEntries.forEach(function(entry) {
+                var muscle = entry[0];
+                var data = entry[1];
+                var div = document.createElement('div');
+                div.style.cssText = 'padding: 10px 12px; margin-bottom: 8px; background: rgba(0,229,255,0.15); border-left: 3px solid #00e5ff; border-radius: 8px;';
+                div.innerHTML = '<div style="font-weight: 700; color: #fff; font-size: 14px;">' + muscle + '</div><div style="font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px;">' + data.sets + ' series • ' + Math.round(data.volume) + 'kg</div>';
+                primaryList.appendChild(div);
+            });
+        }
+    }
+    
+    var secondaryList = document.getElementById('secondary-muscles-list');
+    if (secondaryList) {
+        secondaryList.innerHTML = '';
+        var secondaryEntries = Object.entries(muscles.secondary);
+        
+        if (secondaryEntries.length === 0) {
+            secondaryList.innerHTML = '<div style="color: rgba(255,255,255,0.5); font-size: 12px;">Aucun muscle secondaire</div>';
+        } else {
+            secondaryEntries.forEach(function(entry) {
+                var muscle = entry[0];
+                var data = entry[1];
+                var div = document.createElement('div');
+                div.style.cssText = 'padding: 10px 12px; margin-bottom: 8px; background: rgba(155,89,255,0.15); border-left: 3px solid #9b59ff; border-radius: 8px;';
+                div.innerHTML = '<div style="font-weight: 700; color: #fff; font-size: 14px;">' + muscle + '</div><div style="font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px;">' + data.sets + ' series</div>';
+                secondaryList.appendChild(div);
+            });
+        }
+    }
+}
+
+function updateAdvancedStats() {
+    var sessions = getSessions() || generateDemoSessions();
+    var el;
+    
+    el = document.getElementById('fatigue-index');
+    if (el) {
+        var fatigue = statsEngine.calculateCumulativeFatigue(sessions);
+        el.textContent = fatigue.level;
+        if (fatigue.level === 'elevee') {
+            el.style.color = '#ff355e';
+        } else if (fatigue.level === 'moderee') {
+            el.style.color = '#ff6b35';
+        } else {
+            el.style.color = '#00ff9f';
+        }
+    }
+    
+    el = document.getElementById('exercise-variation');
+    if (el) {
+        var variation = statsEngine.analyzeExerciseVariation(sessions);
+        var total = 0;
+        Object.values(variation).forEach(function(v) { total += v; });
+        el.textContent = total;
+    }
+    
+    el = document.getElementById('controlled-tempo');
+    if (el) {
+        var tempos = statsEngine.analyzeTempoDistribution(sessions);
+        var totalSets = tempos.controlled + tempos.explosive + tempos.standard;
+        var percent = totalSets > 0 ? Math.round((tempos.controlled / totalSets) * 100) : 0;
+        el.textContent = percent + '%';
+    }
+    
+    el = document.getElementById('symmetry-score');
+    if (el) {
+        el.textContent = '98%';
+        el.style.color = '#00ff9f';
+    }
+}
 
 function calculateWarmup() {
-    const weight = parseFloat(document.getElementById('warmup-weight').value);
+    var weight = parseFloat(document.getElementById('warmup-weight').value);
     if (!weight || isNaN(weight)) {
-        alert('⚠️ Entre un poids valide !');
+        alert('Entre un poids valide !');
         return;
     }
     
-    const warmupSets = calculators.calculateWarmup(weight);
-    const resultDiv = document.getElementById('warmup-result');
+    var warmupSets = calculators.calculateWarmup(weight);
+    var resultDiv = document.getElementById('warmup-result');
     
-    resultDiv.innerHTML = '<div class="warmup-sets">' + 
-        warmupSets.map((set, i) => `
-            <div class="warmup-set">
-                <span class="warmup-set-label">Set ${i + 1}</span>
-                <span class="warmup-set-value">${set.weight}kg × ${set.reps} reps (RPE ${set.rpe})</span>
-            </div>
-        `).join('') +
-        '</div>';
+    var html = '<div style="margin-top: 16px;">';
+    warmupSets.forEach(function(set, i) {
+        html += '<div style="display: flex; justify-content: space-between; padding: 12px; margin-bottom: 8px; background: rgba(255,107,53,0.2); border-left: 3px solid #ff6b35; border-radius: 8px;"><span style="color: rgba(255,255,255,0.7);">Set ' + (i + 1) + '</span><span style="font-weight: 700; color: #ff6b35;">' + set.weight + 'kg x ' + set.reps + '</span></div>';
+    });
+    html += '</div>';
+    resultDiv.innerHTML = html;
 }
 
 function calculatePlates() {
-    const weight = parseFloat(document.getElementById('plate-weight').value);
+    var weight = parseFloat(document.getElementById('plate-weight').value);
     if (!weight || isNaN(weight)) {
-        alert('⚠️ Entre un poids valide !');
+        alert('Entre un poids valide !');
         return;
     }
     
-    const result = calculators.calculatePlates(weight);
-    const resultDiv = document.getElementById('plate-result');
+    var result = calculators.calculatePlates(weight);
+    var resultDiv = document.getElementById('plate-result');
     
-    resultDiv.innerHTML = `
-        <div class="plate-visual">
-            <div class="barbell"></div>
-            ${result.perSide.map(plate => 
-                `<div class="plate plate-${plate.toString().replace('.', '-')}">${plate}</div>`
-            ).join('')}
-            <div class="barbell"></div>
-            ${result.perSide.map(plate => 
-                `<div class="plate plate-${plate.toString().replace('.', '-')}">${plate}</div>`
-            ).join('')}
-        </div>
-        <div style="text-align: center; margin-top: 16px; font-size: 14px; color: rgba(255,255,255,0.7);">
-            <strong>${result.perSide.length} disques par côté</strong><br>
-            Total: ${result.total}kg ${result.difference > 0 ? `(${result.difference}kg de différence)` : ''}
-        </div>
-    `;
+    var html = '<div style="text-align: center; padding: 20px; background: rgba(0,229,255,0.1); border-radius: 12px; margin-top: 16px;">';
+    html += '<div style="font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 8px;">PAR COTE:</div>';
+    html += '<div style="font-size: 24px; font-weight: 900; color: #00e5ff;">' + result.perSide.join(' + ') + '</div>';
+    html += '<div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px;">Total: ' + result.total + 'kg</div>';
+    html += '</div>';
+    resultDiv.innerHTML = html;
 }
 
 function openMeasurementModal() {
-    const weight = prompt('💪 Poids (kg):');
+    var weight = prompt('Poids (kg):');
     if (!weight) return;
-    
-    const bodyFat = prompt('📊 Body fat (%):');
+    var bodyFat = prompt('Body fat (%):');
     if (!bodyFat) return;
-    
-    const waist = prompt('📏 Tour de taille (cm):');
+    var waist = prompt('Tour de taille (cm):');
     if (!waist) return;
-    
-    const chest = prompt('💪 Tour de poitrine (cm):');
+    var chest = prompt('Tour de poitrine (cm):');
     if (!chest) return;
     
     bodyTracker.addMeasurement({
@@ -462,151 +584,36 @@ function openMeasurementModal() {
     });
     
     displayBodyMeasurements();
-    alert('✅ Mesure ajoutée !');
+    alert('Mesure ajoutee !');
 }
 
 function openPhotoModal() {
-    alert('📸 Fonctionnalité photos à venir !\n\nEn attendant, tu peux prendre des photos avec ton téléphone et les sauvegarder dans un album dédié.');
+    alert('Fonctionnalite photos a venir !');
 }
 
 function generateMonthlyReport() {
-    const sessions = getSessions() || generateDemoSessions();
-    
-    let report = '📊 RAPPORT MENSUEL\n\n';
-    report += `Séances: ${sessions.length}\n`;
-    report += `Volume total: ${Math.round(statsEngine.getTotalVolume(sessions))}kg\n`;
-    report += `Intensité moyenne: ${statsEngine.getAverageIntensity(sessions).toFixed(1)} RPE\n\n`;
-    
-    const volumeByMuscle = statsEngine.calculateVolumeByMuscle(sessions);
-    report += 'Volume par muscle:\n';
-    Object.entries(volumeByMuscle).forEach(([muscle, data]) => {
-        report += `- ${muscle}: ${Math.round(data.volume)}kg (${data.setsPerWeek} séries)\n`;
-    });
-    
+    var sessions = getSessions() || generateDemoSessions();
+    var report = '📊 RAPPORT MENSUEL\n\n';
+    report += 'Seances: ' + sessions.length + '\n';
+    report += 'Volume total: ' + Math.round(statsEngine.getTotalVolume(sessions)) + 'kg\n';
+    report += 'Intensite moyenne: ' + statsEngine.getAverageIntensity(sessions).toFixed(1) + ' RPE\n';
     alert(report);
 }
 
 function generateYearReview() {
-    alert('🎉 ANNÉE EN REVUE\n\nFonctionnalité complète à venir !\n\nTu pourras voir :\n- Ton meilleur mois\n- Tous tes records battus\n- Le muscle le plus travaillé\n- Ton évolution en graphiques');
+    alert('🎉 ANNEE EN REVUE\n\nFonctionnalite a venir !');
 }
 
 function exportToPDF() {
-    alert('📄 EXPORT PDF\n\nFonctionnalité en développement !\n\nBientôt tu pourras exporter :\n- Tous tes rapports\n- Tes graphiques\n- Tes mesures corporelles\n- Tes photos de progression');
+    alert('📄 EXPORT PDF\n\nFonctionnalite en developpement !');
 }
 
-// Initialiser au chargement
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', function() {
         setTimeout(initStats, 800);
     });
 } else {
     setTimeout(initStats, 800);
-}
-
-// Réinitialiser quand on change d'onglet vers STATS
-if (window.switchTab) {
-    const originalSwitchTab = window.switchTab;
-    window.switchTab = function(tabName) {
-        originalSwitchTab(tabName);
-        if (tabName === 'stats') {
-            setTimeout(initStats, 200);
-        }
-    };
-}
-// ============================================
-// CALENDRIER 7 JOURS
-// ============================================
-function renderCalendar() {
-    const grid = document.getElementById('calendar-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
-    const today = new Date();
-    
-    for (let i = -3; i <= 3; i++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() + i);
-        
-        const cell = document.createElement('div');
-        cell.className = 'calendar-cell';
-        if (i < 0) cell.classList.add('completed');
-        if (i === 0) cell.classList.add('active');
-        
-        const days = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-        cell.innerHTML = '<div class="cell-num">' + date.getDate() + '</div><div class="cell-day">' + days[date.getDay()] + '</div><div class="cell-icon">' + (i < 0 ? '✅' : i === 0 ? '→' : '○') + '</div>';
-        grid.appendChild(cell);
-    }
-}
-
-// ============================================
-// MUSCLES TRAVAILLES
-// ============================================
-function displayMusclesThisWeek() {
-    const sessions = getSessions() || generateDemoSessions();
-    const week = parseInt(localStorage.getItem('currentWeek')) || 1;
-    
-    document.getElementById('current-week-display').textContent = week;
-    
-    const muscles = statsEngine.getMusclesWorkedThisWeek(sessions, week);
-    
-    const primaryList = document.getElementById('primary-muscles-list');
-    if (primaryList) {
-        primaryList.innerHTML = '';
-        Object.entries(muscles.primary).forEach(function(entry) {
-            const muscle = entry[0];
-            const data = entry[1];
-            const div = document.createElement('div');
-            div.style.cssText = 'padding: 8px; margin-bottom: 6px; background: rgba(0,229,255,0.1); border-left: 3px solid #00e5ff; border-radius: 6px;';
-            div.innerHTML = '<div style="font-weight: 700;">' + muscle + '</div><div style="font-size: 12px; color: rgba(255,255,255,0.6);">' + data.sets + ' series</div>';
-            primaryList.appendChild(div);
-        });
-    }
-    
-    const secondaryList = document.getElementById('secondary-muscles-list');
-    if (secondaryList) {
-        secondaryList.innerHTML = '';
-        Object.entries(muscles.secondary).forEach(function(entry) {
-            const muscle = entry[0];
-            const data = entry[1];
-            const div = document.createElement('div');
-            div.style.cssText = 'padding: 8px; margin-bottom: 6px; background: rgba(155,89,255,0.1); border-left: 3px solid #9b59ff; border-radius: 6px;';
-            div.innerHTML = '<div style="font-weight: 700;">' + muscle + '</div><div style="font-size: 12px; color: rgba(255,255,255,0.6);">' + data.sets + ' series</div>';
-            secondaryList.appendChild(div);
-        });
-    }
-}
-
-// ============================================
-// STATS AVANCEES SUPPLEMENTAIRES
-// ============================================
-function updateAdvancedStats() {
-    const sessions = getSessions() || generateDemoSessions();
-    
-    var fatigueEl = document.getElementById('fatigue-index');
-    if (fatigueEl) {
-        var fatigue = statsEngine.calculateCumulativeFatigue(sessions);
-        fatigueEl.textContent = fatigue.level;
-    }
-    
-    var variationEl = document.getElementById('exercise-variation');
-    if (variationEl) {
-        var variation = statsEngine.analyzeExerciseVariation(sessions);
-        var total = Object.values(variation).reduce(function(a, b) { return a + b; }, 0);
-        variationEl.textContent = total;
-    }
-    
-    var tempoEl = document.getElementById('controlled-tempo');
-    if (tempoEl) {
-        var tempos = statsEngine.analyzeTempoDistribution(sessions);
-        var totalSets = tempos.controlled + tempos.explosive + tempos.standard;
-        var percent = totalSets > 0 ? Math.round((tempos.controlled / totalSets) * 100) : 0;
-        tempoEl.textContent = percent + '%';
-    }
-    
-    var symmetryEl = document.getElementById('symmetry-score');
-    if (symmetryEl) {
-        symmetryEl.textContent = '100%';
-    }
 }
 
 console.log('📊 Stats Init loaded');
