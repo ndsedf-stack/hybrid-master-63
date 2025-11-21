@@ -37,7 +37,7 @@ function switchTab(tabName) {
     });
     
     // Désactiver tous les boutons nav
-    document.querySelectorAll('.nav-tab').forEach(btn => {
+    document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
     });
     
@@ -48,7 +48,7 @@ function switchTab(tabName) {
     }
     
     // Activer le bouton nav
-    const targetBtn = document.querySelector(`.nav-tab[data-tab="${tabName}"]`);
+    const targetBtn = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
     if (targetBtn) {
         targetBtn.classList.add('active');
     }
