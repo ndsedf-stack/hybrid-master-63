@@ -347,8 +347,75 @@
                 </div>
             </div>
 
+            <!-- Progression semaine -->
+            <div class="progress-card glass holographic-scan">
+                <div class="card-title">
+                    <span class="title-icon">🔥</span>
+                    <span class="neon-flicker">CETTE SEMAINE</span>
+                </div>
+                <div class="progress-header">
+                    <span class="progress-label">PROGRESSION</span>
+                    <span class="progress-percent neural-pulse" id="week-progress-percent">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="week-progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="progress-footer">
+                    <span class="progress-detail" id="week-sessions">0/5 SÉANCES</span>
+                    <span class="progress-detail" id="week-volume">0kg VOLUME</span>
+                </div>
+            </div>
+
             <!-- Graphique volume par muscle -->
             <div class="chart-container holographic-scan">
+<!-- Calendrier 7 jours -->
+            <div class="calendar-card glass holographic-scan">
+                <div class="card-title">
+                    <span class="title-icon">📅</span>
+                    <span class="neon-flicker">PLANNING 7 JOURS</span>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+            <!-- Muscles travailles cette semaine -->
+            <div class="progress-card glass holographic-scan">
+                <div class="card-title">
+                    <span class="title-icon">💪</span>
+                    <span class="neon-flicker">MUSCLES - SEMAINE <span id="current-week-display">1</span></span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div>
+                        <h4 style="color: #00e5ff; font-size: 14px; margin-bottom: 12px;">PRIMAIRES</h4>
+                        <div id="primary-muscles-list"></div>
+                    </div>
+                    <div>
+                        <h4 style="color: #9b59ff; font-size: 14px; margin-bottom: 12px;">SECONDAIRES</h4>
+                        <div id="secondary-muscles-list"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Stats avancees -->
+            <div class="stats-grid">
+                <div class="stat-box glass">
+                    <div class="stat-emoji">😤</div>
+                    <div class="stat-number" id="fatigue-index">0</div>
+                    <div class="stat-label">FATIGUE</div>
+                </div>
+                <div class="stat-box glass">
+                    <div class="stat-emoji">🎭</div>
+                    <div class="stat-number" id="exercise-variation">0</div>
+                    <div class="stat-label">VARIATION</div>
+                </div>
+                <div class="stat-box glass">
+                    <div class="stat-emoji">🐢</div>
+                    <div class="stat-number" id="controlled-tempo">0%</div>
+                    <div class="stat-label">TEMPO</div>
+                </div>
+                <div class="stat-box glass">
+                    <div class="stat-emoji">⚖️</div>
+                    <div class="stat-number" id="symmetry-score">100%</div>
+                    <div class="stat-label">SYMETRIE</div>
+                </div>
+            </div>
                 <div class="chart-title neon-flicker">📊 VOLUME PAR MUSCLE</div>
                 <canvas id="volume-chart"></canvas>
             </div>
@@ -363,34 +430,132 @@
             <div class="chart-container holographic-scan">
                 <div class="chart-title neon-flicker">🎯 ZONES D'INTENSITÉ</div>
                 <canvas id="intensity-chart"></canvas>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="display: inline-block; padding: 12px 24px; background: rgba(0,255,159,0.2); border: 2px solid rgba(0,255,159,0.5); border-radius: 12px;">
+                        <span style="font-size: 14px; color: rgba(255,255,255,0.7);">ZONE OPTIMALE HYPERTROPHIE:</span>
+                        <span style="font-size: 24px; font-weight: 900; color: #00ff9f; margin-left: 12px;" id="hypertrophy-percent">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats avancées -->
+            <div class="stats-grid">
+                <div class="stat-box glass">
+                    <div class="stat-emoji">⏱️</div>
+                    <div class="stat-number" id="avg-tut">0s</div>
+                    <div class="stat-label">TUT MOYEN</div>
+                </div>
+                <div class="stat-box glass">
+                    <div class="stat-emoji">🎯</div>
+                    <div class="stat-number" id="avg-rir">0</div>
+                    <div class="stat-label">RIR MOYEN</div>
+                </div>
+                <div class="stat-box glass">
+                    <div class="stat-emoji">💤</div>
+                    <div class="stat-number" id="avg-rest">0s</div>
+                    <div class="stat-label">REPOS MOYEN</div>
+                </div>
+                <div class="stat-box glass">
+                    <div class="stat-emoji">🔄</div>
+                    <div class="stat-number" id="streak-progress">0</div>
+                    <div class="stat-label">SEMAINES +</div>
+                </div>
+            </div>
+
+            <!-- Records personnels -->
+            <div class="progress-card glass holographic-scan">
+                <div class="card-title">
+                    <span class="title-icon">🏆</span>
+                    <span class="neon-flicker">RECORDS PERSONNELS</span>
+                </div>
+                <div class="records-list" id="records-list">
+                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
+                        Aucun record enregistré. Commence à t'entraîner ! 💪
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body Measurements -->
+            <div class="progress-card glass holographic-scan">
+                <div class="card-title">
+                    <span class="title-icon">📏</span>
+                    <span class="neon-flicker">MESURES CORPORELLES</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                    <div class="measurement-card">
+                        <div class="measurement-label">POIDS</div>
+                        <div class="measurement-value" id="body-weight">--</div>
+                        <div class="measurement-trend" id="weight-trend"></div>
+                    </div>
+                    <div class="measurement-card">
+                        <div class="measurement-label">BODY FAT</div>
+                        <div class="measurement-value" id="body-fat">--</div>
+                        <div class="measurement-trend" id="fat-trend"></div>
+                    </div>
+                    <div class="measurement-card">
+                        <div class="measurement-label">TAILLE</div>
+                        <div class="measurement-value" id="body-waist">--</div>
+                        <div class="measurement-trend" id="waist-trend"></div>
+                    </div>
+                    <div class="measurement-card">
+                        <div class="measurement-label">PECTORAUX</div>
+                        <div class="measurement-value" id="body-chest">--</div>
+                        <div class="measurement-trend" id="chest-trend"></div>
+                    </div>
+                </div>
+                <button class="workout-btn workout-btn-primary" onclick="openMeasurementModal()" style="width: 100%;">
+                    📏 AJOUTER UNE MESURE
+                </button>
+            </div>
+
+            <!-- Progress Photos -->
+            <div class="progress-card glass holographic-scan">
+                <div class="card-title">
+                    <span class="title-icon">📸</span>
+                    <span class="neon-flicker">PHOTOS DE PROGRESSION</span>
+                </div>
+                <div class="photo-gallery" id="photo-gallery">
+                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1/-1;">
+                        Aucune photo. Capture tes progrès ! 📸
+                    </div>
+                </div>
+                <button class="workout-btn workout-btn-primary" onclick="openPhotoModal()" style="width: 100%; margin-top: 20px;">
+                    📸 AJOUTER UNE PHOTO
+                </button>
             </div>
 
             <!-- Calculateurs -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 30px;">
-                <!-- Warm-up Calculator -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 30px;">
                 <div class="calculator-container holographic-scan">
-                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🔥 WARM-UP</div>
+                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🔥 WARM-UP CALCULATOR</div>
                     <div class="calculator-input-group">
                         <label class="calculator-label">Poids de travail (kg)</label>
                         <input type="number" class="calculator-input" id="warmup-weight" placeholder="100">
                     </div>
-                    <button class="workout-btn workout-btn-primary" onclick="calculateWarmup()" style="width: 100%;">
-                        CALCULER
-                    </button>
+                    <button class="workout-btn workout-btn-primary" onclick="calculateWarmup()" style="width: 100%;">CALCULER</button>
                     <div id="warmup-result" style="margin-top: 20px;"></div>
                 </div>
-
-                <!-- Plate Calculator -->
                 <div class="calculator-container holographic-scan">
-                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🏋️ DISQUES</div>
+                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🏋️ PLATE CALCULATOR</div>
                     <div class="calculator-input-group">
                         <label class="calculator-label">Poids cible (kg)</label>
                         <input type="number" class="calculator-input" id="plate-weight" placeholder="100">
                     </div>
-                    <button class="workout-btn workout-btn-primary" onclick="calculatePlates()" style="width: 100%;">
-                        CALCULER
-                    </button>
+                    <button class="workout-btn workout-btn-primary" onclick="calculatePlates()" style="width: 100%;">CALCULER</button>
                     <div id="plate-result" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Export & Reports -->
+            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
+                <div class="card-title">
+                    <span class="title-icon">📄</span>
+                    <span class="neon-flicker">RAPPORTS</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+                    <button class="workout-btn workout-btn-primary" onclick="generateMonthlyReport()">📊 MENSUEL</button>
+                    <button class="workout-btn workout-btn-primary" onclick="generateYearReview()">🎉 ANNÉE</button>
+                    <button class="workout-btn workout-btn-secondary" onclick="exportToPDF()">📄 PDF</button>
                 </div>
             </div>
         </section>

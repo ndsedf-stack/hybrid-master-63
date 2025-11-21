@@ -16,9 +16,13 @@ class StatsUI {
         const ctx = document.getElementById(canvasId);
         if (!ctx) return;
         
+        // Détruire ancien chart si existe
+        if (this.charts[canvasId]) {
+            this.charts[canvasId].destroy();
+        }
+        
         const muscles = Object.keys(data);
         const volumes = muscles.map(m => data[m].volume);
-        const sets = muscles.map(m => data[m].setsPerWeek);
         
         this.charts[canvasId] = new Chart(ctx, {
             type: 'bar',
@@ -40,6 +44,7 @@ class StatsUI {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
                     legend: { display: false },
                     tooltip: {
@@ -51,18 +56,20 @@ class StatsUI {
                         },
                         backgroundColor: 'rgba(0, 0, 0, 0.9)',
                         borderColor: 'rgba(0, 229, 255, 0.8)',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        titleColor: '#00e5ff',
+                        bodyColor: '#fff'
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
                         grid: { color: 'rgba(0, 229, 255, 0.1)' },
-                        ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } }
                     },
                     x: {
                         grid: { display: false },
-                        ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } }
                     }
                 }
             }
@@ -72,6 +79,10 @@ class StatsUI {
     renderProgressionChart(canvasId, sessions) {
         const ctx = document.getElementById(canvasId);
         if (!ctx) return;
+        
+        if (this.charts[canvasId]) {
+            this.charts[canvasId].destroy();
+        }
         
         const weeks = [...new Set(sessions.map(s => s.week))].sort((a, b) => a - b);
         const volumeByWeek = weeks.map(week => {
@@ -101,18 +112,26 @@ class StatsUI {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
-                    legend: { display: false }
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        borderColor: 'rgba(0, 229, 255, 0.8)',
+                        borderWidth: 2,
+                        titleColor: '#00e5ff',
+                        bodyColor: '#fff'
+                    }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
                         grid: { color: 'rgba(0, 229, 255, 0.1)' },
-                        ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } }
                     },
                     x: {
                         grid: { display: false },
-                        ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } }
                     }
                 }
             }
@@ -122,6 +141,10 @@ class StatsUI {
     renderIntensityZoneChart(canvasId, zones) {
         const ctx = document.getElementById(canvasId);
         if (!ctx) return;
+        
+        if (this.charts[canvasId]) {
+            this.charts[canvasId].destroy();
+        }
         
         this.charts[canvasId] = new Chart(ctx, {
             type: 'doughnut',
@@ -140,10 +163,22 @@ class StatsUI {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
                     legend: {
                         position: 'bottom',
-                        labels: { color: 'rgba(255, 255, 255, 0.9)' }
+                        labels: { 
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            font: { size: 12 },
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        borderColor: 'rgba(0, 229, 255, 0.8)',
+                        borderWidth: 2,
+                        titleColor: '#00e5ff',
+                        bodyColor: '#fff'
                     }
                 }
             }
@@ -151,13 +186,12 @@ class StatsUI {
     }
 
     // ============================================
-    // ANIMATIONS FUTURISTES
+    // ANIMATIONS
     // ============================================
     
     startBreathingAnimation(elementId) {
         const el = document.getElementById(elementId);
         if (!el) return;
-        
         el.classList.add('breathing-animation');
     }
     
@@ -202,30 +236,6 @@ class StatsUI {
         }, 5000);
     }
 
-    // ============================================
-    // MISE À JOUR DOM
-    // ============================================
-    
-    updateStatsDisplay(stats) {
-        // Volume total
-        const volumeEl = document.querySelector('.stat-box .stat-number');
-        if (volumeEl) {
-            this.animateNumber(volumeEl, 0, stats.totalVolume, 2000, 'kg');
-        }
-        
-        // Séances
-        const sessionsEl = document.querySelectorAll('.stat-box .stat-number')[0];
-        if (sessionsEl) {
-            this.animateNumber(sessionsEl, 0, stats.totalSessions, 1500);
-        }
-        
-        // Streak
-        const streakEl = document.querySelectorAll('.stat-box')[2]?.querySelector('.stat-number');
-        if (streakEl) {
-            this.animateNumber(streakEl, 0, stats.streak, 1000);
-        }
-    }
-    
     animateNumber(element, start, end, duration, suffix = '') {
         const startTime = performance.now();
         
@@ -249,5 +259,4 @@ class StatsUI {
     }
 }
 
-// Export
 window.StatsUI = StatsUI;
