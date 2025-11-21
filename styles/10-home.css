@@ -1425,3 +1425,178 @@ body {
     transform: scale(0.95);
     box-shadow: 0 0 50px rgba(0, 229, 255, 1) !important;
 }
+
+/* ============================================
+   EFFETS RENFORCÉS - VERSION INTENSE
+   ============================================ */
+
+/* Glow ULTRA VISIBLE sur titres */
+.section-title {
+    text-shadow: 0 0 20px rgba(0, 229, 255, 1),
+                 0 0 40px rgba(0, 229, 255, 0.8),
+                 0 0 60px rgba(0, 229, 255, 0.6),
+                 0 0 80px rgba(0, 229, 255, 0.4) !important;
+    font-weight: 900 !important;
+}
+
+.week-number {
+    text-shadow: 0 0 30px rgba(155, 89, 255, 1),
+                 0 0 60px rgba(155, 89, 255, 0.8) !important;
+    animation: pulse-text 2s infinite;
+}
+
+@keyframes pulse-text {
+    0%, 100% { 
+        text-shadow: 0 0 30px rgba(155, 89, 255, 1),
+                     0 0 60px rgba(155, 89, 255, 0.8);
+    }
+    50% { 
+        text-shadow: 0 0 50px rgba(155, 89, 255, 1),
+                     0 0 100px rgba(155, 89, 255, 1);
+    }
+}
+
+/* Hover ULTRA visible */
+.workout-full-status:hover {
+    transform: scale(1.3) !important;
+    box-shadow: 0 0 40px rgba(0, 229, 255, 1) !important;
+}
+
+.workout-btn-primary:hover {
+    transform: scale(1.05) translateY(-5px) !important;
+    box-shadow: 0 0 60px rgba(0, 229, 255, 1),
+                0 20px 40px rgba(0, 229, 255, 0.5) !important;
+}
+
+/* XP BAR - À ajouter dans le HTML */
+.xp-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin: 10px 0;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00e5ff, #9b59ff);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.8),
+                inset 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: fill-xp 2s ease-out forwards;
+    position: relative;
+}
+
+.xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.5) 50%, 
+        transparent 100%);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes fill-xp {
+    from { width: 0%; }
+    to { width: var(--xp-progress, 75%); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+}
+
+/* STREAK VISUEL - Cercle SVG */
+.streak-circle {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+}
+
+.streak-circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 8;
+}
+
+.streak-circle-progress {
+    fill: none;
+    stroke: url(#streak-gradient);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 251.2;
+    stroke-dashoffset: 251.2;
+    animation: fill-streak 2s ease-out forwards;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.8));
+}
+
+@keyframes fill-streak {
+    to {
+        stroke-dashoffset: calc(251.2 - (251.2 * var(--streak-progress, 70) / 100));
+    }
+}
+
+/* CHALLENGE MODE - Halo rouge INTENSE */
+.challenge-mode-active {
+    border: 3px solid rgba(255, 53, 94, 1) !important;
+    animation: pulse-challenge-intense 1s infinite !important;
+}
+
+@keyframes pulse-challenge-intense {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(255, 53, 94, 1),
+                    0 0 60px rgba(255, 53, 94, 0.8),
+                    0 0 90px rgba(255, 53, 94, 0.6),
+                    inset 0 0 30px rgba(255, 53, 94, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 53, 94, 1),
+                    0 0 100px rgba(255, 53, 94, 1),
+                    0 0 150px rgba(255, 53, 94, 0.8),
+                    inset 0 0 50px rgba(255, 53, 94, 0.5);
+        transform: scale(1.02);
+    }
+}
+
+/* Micro-interaction - Vibration + Flash */
+.action-success {
+    animation: success-flash 0.6s ease-out;
+}
+
+@keyframes success-flash {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 159, 0);
+        transform: scale(1);
+    }
+    25% {
+        box-shadow: 0 0 60px 20px rgba(0, 255, 159, 1);
+        transform: scale(1.1);
+    }
+    50% {
+        box-shadow: 0 0 100px 30px rgba(0, 255, 159, 0.8);
+        transform: scale(0.95);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 159, 0);
+        transform: scale(1);
+    }
+}
+
+/* Glassmorphism ULTRA */
+.glass {
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(200%) brightness(1.2) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) brightness(1.2) !important;
+    border: 2px solid rgba(0, 229, 255, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 229, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
+}
