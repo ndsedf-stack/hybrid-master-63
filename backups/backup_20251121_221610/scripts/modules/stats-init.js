@@ -216,65 +216,6 @@ function renderAllCharts() {
         var exerciseData2 = sessions.flatMap(function(s) { return s.exercises || []; });
         renderTempoDistributionChart(exerciseData2);
     }
-    
-    // GRAPHIQUES PREMIUM
-    if (typeof renderSunburstChart === 'function') {
-        var muscleData = Object.keys(volumeByMuscle).map(function(name) {
-            return { name: name.toUpperCase(), volume: volumeByMuscle[name].volume, primary: true };
-        });
-        renderSunburstChart(muscleData);
-    }
-    if (typeof renderForceGauge === 'function') {
-        var totalVol = sessions.reduce(function(sum, s) { return sum + (s.totalVolume || 0); }, 0);
-        var forceScore = Math.min(totalVol / 100, 300);
-        renderForceGauge(forceScore);
-    }
-    if (typeof renderBatteryChart === 'function') {
-        var recoveryData = Object.keys(volumeByMuscle).map(function(name) {
-            var daysSince = volumeByMuscle[name].lastWorked || 3;
-            var recovery = Math.min(daysSince * 30, 100);
-            return { name: name.toUpperCase(), recovery: recovery };
-        });
-        renderBatteryChart(recoveryData);
-    }
-    if (typeof renderStackedAreaChart === 'function') {
-        var weekData = [];
-        for (var i = 0; i < 7; i++) {
-            var dayData = { pecs: 0, dos: 0, epaules: 0 };
-            sessions.forEach(function(s) {
-                var sessionDay = new Date(s.date).getDay();
-                if (sessionDay === i) {
-                    (s.exercises || []).forEach(function(ex) {
-                        var muscle = (ex.muscle || 'pecs').toLowerCase();
-                        if (dayData[muscle] !== undefined) {
-                            dayData[muscle] += ex.volume || 0;
-                        }
-                    });
-                }
-            });
-            weekData.push(dayData);
-        }
-        renderStackedAreaChart(weekData);
-    }
-    
-    // GRAPHIQUES PREMIUM - PARTIE 2
-    if (typeof renderSpiralProgress === 'function') {
-        var completedSessions = sessions.filter(function(s) { return s.completed; }).length;
-        var progress = completedSessions / 5;
-        renderSpiralProgress(progress);
-    }
-    if (typeof renderPolarArea === 'function') {
-        var polarMuscles = Object.keys(volumeByMuscle).map(function(name, i) {
-            var colors = ['#00e5ff', '#00ff9f', '#9b59ff', '#ff6b35', '#ffd93d', '#ff006e'];
-            return { name: name.toUpperCase(), volume: volumeByMuscle[name].volume, color: colors[i % colors.length] };
-        });
-        renderPolarArea(polarMuscles);
-    }
-    if (typeof renderBurstAnimation === 'function') {
-        renderBurstAnimation();
-
-
-    }
 }
 
 function renderVolumeRadarChart(canvasId, data) {
