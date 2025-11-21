@@ -1865,3 +1865,280 @@ body {
         0 4px 15px rgba(0, 229, 255, 0.4),
         0 0 40px rgba(0, 229, 255, 0.6) !important;
 }
+
+/* ============================================
+   REDESIGN ULTRA MODERNE - STATS & EXERCICES
+   ============================================ */
+
+/* Meta tags - Badges modernes avec icônes */
+.workout-full-meta,
+.workout-mini-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, 
+        rgba(0, 229, 255, 0.15),
+        rgba(155, 89, 255, 0.15)) !important;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 229, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.meta-tag:hover {
+    transform: translateY(-2px) scale(1.05);
+    border-color: rgba(0, 229, 255, 0.6);
+    box-shadow: 
+        0 6px 25px rgba(0, 229, 255, 0.4),
+        0 0 40px rgba(0, 229, 255, 0.3);
+}
+
+/* Exercices - Cards ultra modernes */
+.exercise-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    margin: 12px 0;
+    background: linear-gradient(135deg,
+        rgba(25, 30, 42, 0.9),
+        rgba(15, 20, 32, 0.95)) !important;
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 1px rgba(0, 229, 255, 0.3) inset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #00e5ff, #9b59ff);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.exercise-item:hover {
+    transform: translateX(8px);
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 
+        0 12px 40px rgba(0, 229, 255, 0.3),
+        0 0 60px rgba(0, 229, 255, 0.2);
+}
+
+.exercise-item:hover::before {
+    opacity: 1;
+}
+
+.exercise-emoji {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, 
+        rgba(0, 229, 255, 0.2),
+        rgba(155, 89, 255, 0.2));
+    border-radius: 12px;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.exercise-info {
+    flex: 1;
+}
+
+.exercise-name {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.exercise-specs {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Specs individuelles - Style badge moderne */
+.exercise-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+/* Réécriture complète des specs en badges séparés */
+.exercise-item .exercise-specs::after {
+    content: '';
+    display: none;
+}
+
+/* Superset - Design ultra pro */
+.superset-group {
+    position: relative;
+    padding: 24px;
+    margin: 16px 0;
+    background: linear-gradient(135deg,
+        rgba(155, 89, 255, 0.15),
+        rgba(255, 53, 94, 0.15)) !important;
+    border: 2px solid rgba(155, 89, 255, 0.4);
+    border-radius: 20px;
+    box-shadow: 
+        0 12px 40px rgba(155, 89, 255, 0.3),
+        0 0 60px rgba(155, 89, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.superset-group::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: linear-gradient(180deg, #9b59ff, #ff355e);
+    border-radius: 20px 0 0 20px;
+    box-shadow: 0 0 20px rgba(155, 89, 255, 0.6);
+}
+
+.superset-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, 
+        rgba(155, 89, 255, 0.3),
+        rgba(255, 53, 94, 0.3));
+    border: 1px solid rgba(155, 89, 255, 0.5);
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 
+        0 4px 20px rgba(155, 89, 255, 0.4),
+        0 0 30px rgba(155, 89, 255, 0.3);
+    text-shadow: 0 0 15px rgba(155, 89, 255, 1);
+    animation: pulse-superset 2s ease-in-out infinite;
+}
+
+@keyframes pulse-superset {
+    0%, 100% {
+        box-shadow: 
+            0 4px 20px rgba(155, 89, 255, 0.4),
+            0 0 30px rgba(155, 89, 255, 0.3);
+    }
+    50% {
+        box-shadow: 
+            0 6px 30px rgba(155, 89, 255, 0.6),
+            0 0 50px rgba(155, 89, 255, 0.5);
+    }
+}
+
+.superset-group .exercise-item {
+    background: linear-gradient(135deg,
+        rgba(155, 89, 255, 0.1),
+        rgba(255, 53, 94, 0.1)) !important;
+    border-color: rgba(155, 89, 255, 0.3);
+}
+
+.superset-group .exercise-item::before {
+    background: linear-gradient(180deg, #9b59ff, #ff355e);
+}
+
+/* Status icons - Plus grands et plus visibles */
+.workout-full-status {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 24px !important;
+    border-width: 3px !important;
+}
+
+.workout-full-status.completed {
+    background: linear-gradient(135deg, 
+        rgba(0, 255, 159, 0.3),
+        rgba(0, 229, 255, 0.3)) !important;
+    border-color: rgba(0, 255, 159, 0.8) !important;
+    box-shadow: 
+        0 0 30px rgba(0, 255, 159, 0.6),
+        inset 0 0 20px rgba(0, 255, 159, 0.3) !important;
+}
+
+.workout-full-status.active {
+    background: linear-gradient(135deg, 
+        rgba(0, 229, 255, 0.3),
+        rgba(155, 89, 255, 0.3)) !important;
+    border-color: rgba(0, 229, 255, 0.8) !important;
+    box-shadow: 
+        0 0 30px rgba(0, 229, 255, 0.6),
+        inset 0 0 20px rgba(0, 229, 255, 0.3) !important;
+    animation: pulse-active 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-active {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 
+            0 0 30px rgba(0, 229, 255, 0.6),
+            inset 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 
+            0 0 50px rgba(0, 229, 255, 0.9),
+            inset 0 0 30px rgba(0, 229, 255, 0.5);
+    }
+}
+
+/* Titres d'exercices - Plus gros et plus visibles */
+.workout-full-title {
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.5px !important;
+}
+
+/* Day badges - Plus modernes */
+.workout-full-day,
+.workout-mini-day {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg, 
+        rgba(0, 229, 255, 0.25),
+        rgba(155, 89, 255, 0.25)) !important;
+    border: 2px solid rgba(0, 229, 255, 0.5) !important;
+    box-shadow: 
+        0 0 30px rgba(0, 229, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
