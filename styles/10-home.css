@@ -376,7 +376,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     background: linear-gradient(135deg, var(--cyan) 0%, var(--green) 100%);
-    color: #000;
+    color: #fff;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -735,7 +735,7 @@ body {
 
 .workout-btn-primary {
     background: linear-gradient(135deg, var(--cyan) 0%, var(--green) 100%);
-    color: #000;
+    color: #fff;
 }
 
 .workout-btn-secondary {
