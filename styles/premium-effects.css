@@ -143,3 +143,82 @@ body {
 .stats-cards-grid {
     perspective: 1000px !important;
 }
+
+/* === LISERET NÉON ANIMÉ QUI TOURNE === */
+@keyframes border-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.stats-card {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.stats-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(90deg, #00e5ff, #9b59ff, #00ff9f, #ff6b35, #00e5ff) !important;
+    background-size: 300% 300% !important;
+    border-radius: 22px !important;
+    z-index: -1 !important;
+    -webkit-animation: border-rotate 3s linear infinite !important;
+    animation: border-rotate 3s linear infinite !important;
+}
+
+.stats-card::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(20, 28, 40, 0.95) !important;
+    border-radius: 20px !important;
+    z-index: -1 !important;
+}
+
+/* Nav items aussi */
+.nav-item {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.nav-item::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(90deg, #00e5ff, #9b59ff, #00e5ff) !important;
+    background-size: 200% 200% !important;
+    border-radius: 16px !important;
+    z-index: -1 !important;
+    opacity: 0 !important;
+    -webkit-animation: border-rotate 2s linear infinite !important;
+    animation: border-rotate 2s linear infinite !important;
+    -webkit-transition: opacity 0.3s ease !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.nav-item.active::before {
+    opacity: 1 !important;
+}
+
+.nav-item::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(20, 28, 40, 0.95) !important;
+    border-radius: 14px !important;
+    z-index: -1 !important;
+}
