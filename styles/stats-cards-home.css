@@ -73,3 +73,43 @@
 .stats-card-icon { font-size: 40px; }
 .stats-card-title { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 1px; }
 .stats-card-desc { color: rgba(255, 255, 255, 0.5); font-size: 11px; text-align: center; }
+
+/* EFFETS PERMANENTS - HALOS ET GLOW */
+.stats-card {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.performance {
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.recovery {
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.analysis {
+    box-shadow: 0 0 20px rgba(155, 89, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.records {
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Titres avec glow */
+.stats-card-title {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* Icônes avec glow */
+.stats-card-icon {
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Nav items glow */
+.nav-item.active {
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.4) !important;
+}
+
+.nav-item.active .nav-icon {
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
+}
