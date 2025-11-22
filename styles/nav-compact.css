@@ -1,0 +1,50 @@
+/* NAV MÊME STYLE QUE LES BLOCS */
+nav.bottom-nav,
+.bottom-nav,
+.bottom-nav.glass {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    right: 20px !important;
+    transform: none !important;
+    display: flex !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    background: rgba(30, 40, 55, 0.9) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 20px !important;
+    border: 2px solid rgba(0, 229, 255, 0.4) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.nav-item {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 16px 12px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.nav-item:hover {
+    background: rgba(0, 229, 255, 0.1) !important;
+    border-color: rgba(0, 229, 255, 0.4) !important;
+    transform: translateY(-3px) !important;
+}
+
+.nav-item.active {
+    background: rgba(0, 229, 255, 0.15) !important;
+    border-color: rgba(0, 229, 255, 0.5) !important;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3) !important;
+}
+
+.nav-icon { font-size: 26px !important; }
+.nav-label { font-size: 11px !important; font-weight: 700 !important; color: rgba(255,255,255,0.6) !important; }
+.nav-item:hover .nav-label, .nav-item.active .nav-label { color: #00e5ff !important; }
+
+body { padding-bottom: 130px !important; }

@@ -12,6 +12,8 @@
 
     <link rel="stylesheet" href="styles/nav-fix.css">
     <link rel="stylesheet" href="styles/mobile-final.css">
+    <link rel="stylesheet" href="styles/nav-compact.css">
+    <link rel="stylesheet" href="styles/stats-cards-home.css">
 </head>
 <body>
     <!-- HEADER FIXE -->
@@ -134,6 +136,34 @@
                     <p class="quote-author">— Arnold Schwarzenegger</p>
                 </div>
             </div>
+        
+        <!-- STATISTIQUES CARDS -->
+        <div class="stats-section-home">
+            <h2 class="stats-section-title">📊 STATISTIQUES</h2>
+            <div class="stats-cards-grid">
+                <a href="stats-performance.html" class="stats-card performance">
+                    <span class="stats-card-icon">📈</span>
+                    <span class="stats-card-title">PERFORMANCE</span>
+                    <span class="stats-card-desc">Volume, progression, tendances</span>
+                </a>
+                <a href="stats-recovery.html" class="stats-card recovery">
+                    <span class="stats-card-icon">🔋</span>
+                    <span class="stats-card-title">RÉCUPÉRATION</span>
+                    <span class="stats-card-desc">Repos, fatigue, équilibre</span>
+                </a>
+                <a href="stats-analyse.html" class="stats-card analysis">
+                    <span class="stats-card-icon">🎯</span>
+                    <span class="stats-card-title">ANALYSE</span>
+                    <span class="stats-card-desc">Répartition, patterns</span>
+                </a>
+                <a href="stats-records.html" class="stats-card records">
+                    <span class="stats-card-icon">🏆</span>
+                    <span class="stats-card-title">RECORDS</span>
+                    <span class="stats-card-desc">PRs, achievements</span>
+                </a>
+            </div>
+        </div>
+
         </section>
 
         <!-- ONGLET WORKOUT -->
@@ -324,384 +354,6 @@
         </section>
 
         <!-- ONGLET STATS -->
-        <section id="tab-stats" class="tab-content">
-            <div style="display:flex;gap:12px;padding:20px;margin-bottom:30px;background:rgba(10,15,25,0.6);border:1px solid rgba(0,229,255,0.2);border-radius:20px">
-                <a href="stats-performance.html" style="flex:1;padding:16px;background:linear-gradient(135deg,rgba(0,229,255,0.2),rgba(155,89,255,0.15));border:1px solid #00e5ff;border-radius:12px;color:#00e5ff;font-weight:bold;text-decoration:none;display:block;text-align:center">📈 PERFORMANCE</a>
-                <a href="stats-recovery.html" style="flex:1;padding:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:rgba(255,255,255,0.6);font-weight:bold;text-decoration:none;display:block;text-align:center">🔋 RÉCUPÉRATION</a>
-                <a href="stats-analyse.html" style="flex:1;padding:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:rgba(255,255,255,0.6);font-weight:bold;text-decoration:none;display:block;text-align:center">🎯 ANALYSE</a>
-                <a href="stats-records.html" style="flex:1;padding:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:rgba(255,255,255,0.6);font-weight:bold;text-decoration:none;display:block;text-align:center">🏆 PR</a>
-            </div>
-            <!-- Stats principales -->
-            <div class="stats-grid">
-                <div class="stat-box glass breathing-animation">
-                    <div class="stat-emoji">🔥</div>
-                    <div class="stat-number neural-pulse" id="total-sessions">0</div>
-                    <div class="stat-label">SÉANCES</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">💪</div>
-                    <div class="stat-number neural-pulse" id="total-volume">0kg</div>
-                    <div class="stat-label">VOLUME TOTAL</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">⚡</div>
-                    <div class="stat-number neural-pulse" id="streak-days">0</div>
-                    <div class="stat-label">JOURS STREAK</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">📈</div>
-                    <div class="stat-number neural-pulse" id="month-progress">+0%</div>
-                    <div class="stat-label">CE MOIS</div>
-                </div>
-            </div>
-
-            <!-- Progression semaine -->
-            <div class="progress-card glass holographic-scan">
-                <div class="card-title">
-                    <span class="title-icon">🔥</span>
-                    <span class="neon-flicker">CETTE SEMAINE</span>
-                </div>
-                <div class="progress-header">
-                    <span class="progress-label">PROGRESSION</span>
-                    <span class="progress-percent neural-pulse" id="week-progress-percent">0%</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" id="week-progress-bar" style="width: 0%;"></div>
-                </div>
-                <div class="progress-footer">
-                    <span class="progress-detail" id="week-sessions">0/5 SÉANCES</span>
-                    <span class="progress-detail" id="week-volume">0kg VOLUME</span>
-                </div>
-            </div>
-
-            <!-- Graphique volume par muscle -->
-            <div class="chart-container holographic-scan">
-<!-- Calendrier 7 jours -->
-            <div class="calendar-card glass holographic-scan">
-                <div class="card-title">
-                    <span class="title-icon">📅</span>
-                    <span class="neon-flicker">PLANNING 7 JOURS</span>
-                </div>
-                <div class="calendar-grid" id="calendar-grid"></div>
-            </div>
-            <!-- Muscles travailles cette semaine -->
-            <div class="progress-card glass holographic-scan">
-                <div class="card-title">
-                    <span class="title-icon">💪</span>
-                    <span class="neon-flicker">MUSCLES - SEMAINE <span id="current-week-display">1</span></span>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                    <div>
-                        <h4 style="color: #00e5ff; font-size: 14px; margin-bottom: 12px;">PRIMAIRES</h4>
-                        <div id="primary-muscles-list"></div>
-                    </div>
-                    <div>
-                        <h4 style="color: #9b59ff; font-size: 14px; margin-bottom: 12px;">SECONDAIRES</h4>
-                        <div id="secondary-muscles-list"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Stats avancees -->
-            <div class="stats-grid">
-                <div class="stat-box glass">
-                    <div class="stat-emoji">😤</div>
-                    <div class="stat-number" id="fatigue-index">0</div>
-                    <div class="stat-label">FATIGUE</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">🎭</div>
-                    <div class="stat-number" id="exercise-variation">0</div>
-                    <div class="stat-label">VARIATION</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">🐢</div>
-                    <div class="stat-number" id="controlled-tempo">0%</div>
-                    <div class="stat-label">TEMPO</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">⚖️</div>
-                    <div class="stat-number" id="symmetry-score">100%</div>
-                    <div class="stat-label">SYMETRIE</div>
-                </div>
-            </div>
-                <div class="chart-title neon-flicker">📊 VOLUME PAR MUSCLE</div>
-                <canvas id="volume-chart"></canvas>
-            </div>
-
-            <!-- Graphique progression -->
-            <div class="chart-container holographic-scan">
-                <div class="chart-title neon-flicker">📈 PROGRESSION HEBDOMADAIRE</div>
-                <canvas id="progression-chart"></canvas>
-            </div>
-
-            <!-- Zone d'intensité -->
-            <div class="chart-container holographic-scan">
-                <div class="chart-title neon-flicker">🎯 ZONES D'INTENSITÉ</div>
-                <canvas id="intensity-chart"></canvas>
-                <div style="text-align: center; margin-top: 20px;">
-                    <div style="display: inline-block; padding: 12px 24px; background: rgba(0,255,159,0.2); border: 2px solid rgba(0,255,159,0.5); border-radius: 12px;">
-                        <span style="font-size: 14px; color: rgba(255,255,255,0.7);">ZONE OPTIMALE HYPERTROPHIE:</span>
-                        <span style="font-size: 24px; font-weight: 900; color: #00ff9f; margin-left: 12px;" id="hypertrophy-percent">0%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats avancées -->
-            <div class="stats-grid">
-                <div class="stat-box glass">
-                    <div class="stat-emoji">⏱️</div>
-                    <div class="stat-number" id="avg-tut">0s</div>
-                    <div class="stat-label">TUT MOYEN</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">🎯</div>
-                    <div class="stat-number" id="avg-rir">0</div>
-                    <div class="stat-label">RIR MOYEN</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">💤</div>
-                    <div class="stat-number" id="avg-rest">0s</div>
-                    <div class="stat-label">REPOS MOYEN</div>
-                </div>
-                <div class="stat-box glass">
-                    <div class="stat-emoji">🔄</div>
-                    <div class="stat-number" id="streak-progress">0</div>
-                    <div class="stat-label">SEMAINES +</div>
-                </div>
-            </div>
-
-            <!-- Records personnels -->
-            <div class="progress-card glass holographic-scan">
-                <div class="card-title">
-                    <span class="title-icon">🏆</span>
-                    <span class="neon-flicker">RECORDS PERSONNELS</span>
-                </div>
-                <div class="records-list" id="records-list">
-                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
-                        Aucun record enregistré. Commence à t'entraîner ! 💪
-                    </div>
-                </div>
-            </div>
-
-            <!-- Body Measurements -->
-            <div class="progress-card glass holographic-scan">
-                <div class="card-title">
-                    <span class="title-icon">📏</span>
-                    <span class="neon-flicker">MESURES CORPORELLES</span>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                    <div class="measurement-card">
-                        <div class="measurement-label">POIDS</div>
-                        <div class="measurement-value" id="body-weight">--</div>
-                        <div class="measurement-trend" id="weight-trend"></div>
-                    </div>
-                    <div class="measurement-card">
-                        <div class="measurement-label">BODY FAT</div>
-                        <div class="measurement-value" id="body-fat">--</div>
-                        <div class="measurement-trend" id="fat-trend"></div>
-                    </div>
-                    <div class="measurement-card">
-                        <div class="measurement-label">TAILLE</div>
-                        <div class="measurement-value" id="body-waist">--</div>
-                        <div class="measurement-trend" id="waist-trend"></div>
-                    </div>
-                    <div class="measurement-card">
-                        <div class="measurement-label">PECTORAUX</div>
-                        <div class="measurement-value" id="body-chest">--</div>
-                        <div class="measurement-trend" id="chest-trend"></div>
-                    </div>
-                </div>
-                <button class="workout-btn workout-btn-primary" onclick="openMeasurementModal()" style="width: 100%;">
-                    📏 AJOUTER UNE MESURE
-                </button>
-            </div>
-
-            <!-- Progress Photos -->
-            <div class="progress-card glass holographic-scan">
-                <div class="card-title">
-                    <span class="title-icon">📸</span>
-                    <span class="neon-flicker">PHOTOS DE PROGRESSION</span>
-                </div>
-                <div class="photo-gallery" id="photo-gallery">
-                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1/-1;">
-                        Aucune photo. Capture tes progrès ! 📸
-                    </div>
-                </div>
-                <button class="workout-btn workout-btn-primary" onclick="openPhotoModal()" style="width: 100%; margin-top: 20px;">
-                    📸 AJOUTER UNE PHOTO
-                </button>
-            </div>
-
-            <!-- Calculateurs -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 30px;">
-                <div class="calculator-container holographic-scan">
-                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🔥 WARM-UP CALCULATOR</div>
-                    <div class="calculator-input-group">
-                        <label class="calculator-label">Poids de travail (kg)</label>
-                        <input type="number" class="calculator-input" id="warmup-weight" placeholder="100">
-                    </div>
-                    <button class="workout-btn workout-btn-primary" onclick="calculateWarmup()" style="width: 100%;">CALCULER</button>
-                    <div id="warmup-result" style="margin-top: 20px;"></div>
-                </div>
-                <div class="calculator-container holographic-scan">
-                    <div class="chart-title neon-flicker" style="margin-bottom: 24px;">🏋️ PLATE CALCULATOR</div>
-                    <div class="calculator-input-group">
-                        <label class="calculator-label">Poids cible (kg)</label>
-                        <input type="number" class="calculator-input" id="plate-weight" placeholder="100">
-                    </div>
-                    <button class="workout-btn workout-btn-primary" onclick="calculatePlates()" style="width: 100%;">CALCULER</button>
-                    <div id="plate-result" style="margin-top: 20px;"></div>
-
-            <!-- SUPERSETS TRACKING -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🔄</span>
-                    <span class="neon-flicker">SUPERSETS TRACKING</span>
-                </div>
-                
-                <div class="stats-grid" style="margin-bottom: 16px;">
-                    <div class="stat-box glass-light">
-                        <span class="stat-emoji">🔥</span>
-                        <div class="stat-number" id="supersets-total">0</div>
-                        <div class="stat-label">CETTE SEMAINE</div>
-                    </div>
-                    
-                    <div class="stat-box glass-light">
-                        <span class="stat-emoji">💪</span>
-                        <div class="stat-number" id="supersets-sets">0</div>
-                        <div class="stat-label">SÉRIES TOTALES</div>
-                    </div>
-                </div>
-                
-                <!-- Most common superset -->
-                <div id="superset-most-common" class="glass-light" style="padding: 16px; margin-top: 12px; display: none;">
-                    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 700;">⭐ SUPERSET LE PLUS FRÉQUENT</div>
-                    <div style="font-size: 13px; font-weight: 700; color: var(--cyan); margin-bottom: 4px;" id="superset-combo"></div>
-                    <div style="font-size: 10px; color: var(--text-secondary);" id="superset-count"></div>
-                </div>
-                
-                <!-- Graphique évolution -->
-                <div style="margin-top: 16px;">
-                    <canvas id="supersets-chart" height="200"></canvas>
-                </div>
-            </div>
-
-
-            <!-- TUT PAR EXERCICE -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">⏱️</span>
-                    <span class="neon-flicker">TUT PAR EXERCICE</span>
-                </div>
-                <div style="margin-top: 16px;">
-                    <canvas id="tut-by-exercise-chart" height="300"></canvas>
-                </div>
-            </div>
-
-            <!-- TEMPO DISTRIBUTION -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🎭</span>
-                    <span class="neon-flicker">DISTRIBUTION DES TEMPOS</span>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top: 16px;">
-                    <canvas id="tempo-distribution-chart" width="250" height="250"></canvas>
-                </div>
-                <div id="tempo-legend" style="display: flex; justify-content: center; gap: 20px; margin-top: 16px; flex-wrap: wrap;"></div>
-            </div>
-
-            <!-- SUNBURST - Répartition Muscles -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🌐</span>
-                    <span class="neon-flicker">RÉPARTITION MUSCLES</span>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top: 16px;">
-                    <canvas id="sunburst-chart" width="350" height="350"></canvas>
-                </div>
-            </div>
-
-            <!-- GAUGE - Score de Force -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🏋️</span>
-                    <span class="neon-flicker">SCORE DE FORCE</span>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top: 16px;">
-                    <canvas id="force-gauge-chart" width="350" height="280"></canvas>
-                </div>
-            </div>
-
-            <!-- BATTERY - Récupération -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🔋</span>
-                    <span class="neon-flicker">RÉCUPÉRATION MUSCULAIRE</span>
-                </div>
-                <div style="margin-top: 16px;">
-                    <canvas id="recovery-battery-chart" width="400" height="300"></canvas>
-                </div>
-            </div>
-
-            <!-- STACKED AREA - Charge Hebdo -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">📈</span>
-                    <span class="neon-flicker">CHARGE HEBDOMADAIRE</span>
-                </div>
-                <div style="margin-top: 16px;">
-                    <canvas id="stacked-area-chart" width="400" height="250"></canvas>
-                </div>
-            </div>
-                </div>
-
-            <!-- SPIRAL PROGRESS - Progression Globale -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🌀</span>
-                    <span class="neon-flicker">PROGRESSION GLOBALE</span>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top: 16px;">
-                    <canvas id="spiral-progress-chart" width="350" height="350"></canvas>
-                </div>
-            </div>
-
-            <!-- POLAR AREA - Volume Muscles -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">🎯</span>
-                    <span class="neon-flicker">VOLUME PAR MUSCLE</span>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top: 16px;">
-                    <canvas id="polar-area-chart" width="400" height="400"></canvas>
-                </div>
-            </div>
-
-            <!-- BURST ANIMATION - Records PR -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">💥</span>
-                    <span class="neon-flicker">RECORDS & PR</span>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top: 16px;">
-                    <canvas id="burst-animation-chart" width="350" height="350"></canvas>
-                </div>
-            </div>
-            </div>
-
-            <!-- Export & Reports -->
-            <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
-                <div class="card-title">
-                    <span class="title-icon">📄</span>
-                    <span class="neon-flicker">RAPPORTS</span>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
-                    <button class="workout-btn workout-btn-primary" onclick="generateMonthlyReport()">📊 MENSUEL</button>
-                    <button class="workout-btn workout-btn-primary" onclick="generateYearReview()">🎉 ANNÉE</button>
-                    <button class="workout-btn workout-btn-secondary" onclick="exportToPDF()">📄 PDF</button>
-                </div>
-            </div>
-        </section>
 
         <!-- ONGLET PLUS -->
         <section id="tab-plus" class="tab-content">
@@ -718,10 +370,6 @@
         <button class="nav-item" data-tab="workout">
             <span class="nav-icon">💪</span>
             <span class="nav-label">WORKOUT</span>
-        </button>
-        <button class="nav-item" data-tab="stats">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">STATS</span>
         </button>
         <button class="nav-item" data-tab="plus">
             <span class="nav-icon">➕</span>

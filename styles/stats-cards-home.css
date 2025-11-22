@@ -1,0 +1,87 @@
+/* CARTES STATS PAGE ACCUEIL */
+.stats-section-home {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.stats-section-title {
+    text-align: center;
+    color: #00e5ff;
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.stats-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stats-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 25px 15px;
+    background: rgba(30, 40, 55, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.stats-card.performance { border-color: rgba(0, 229, 255, 0.4); }
+.stats-card.recovery { border-color: rgba(76, 175, 80, 0.4); }
+.stats-card.analysis { border-color: rgba(155, 89, 255, 0.4); }
+.stats-card.records { border-color: rgba(255, 193, 7, 0.4); }
+
+.stats-card:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+.stats-card.performance:hover {
+    border-color: #00e5ff;
+    box-shadow: 0 15px 40px rgba(0, 229, 255, 0.3);
+}
+
+.stats-card.recovery:hover {
+    border-color: #4caf50;
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
+}
+
+.stats-card.analysis:hover {
+    border-color: #9b59ff;
+    box-shadow: 0 15px 40px rgba(155, 89, 255, 0.3);
+}
+
+.stats-card.records:hover {
+    border-color: #ffc107;
+    box-shadow: 0 15px 40px rgba(255, 193, 7, 0.3);
+}
+
+.stats-card:active {
+    transform: scale(0.97);
+}
+
+.stats-card-icon {
+    font-size: 40px;
+    transition: transform 0.3s ease;
+}
+
+.stats-card:hover .stats-card-icon {
+    transform: scale(1.15);
+}
+
+.stats-card-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.stats-card-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    text-align: center;
+}
