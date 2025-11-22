@@ -74,78 +74,71 @@ export class VolumeLoadGauge {
     return (deg * Math.PI) / 180;
   }
 
-  updateStats(val) {
-    const weeklyVolume = Math.floor(val);
-    const estimatedSets = Math.floor(weeklyVolume / 1000);
-    const tutTotal = Math.floor(estimatedSets * 45);
-    const inOptimalZone = val > this.ZONE_OPTIMAL_START && val < this.ZONE_OPTIMAL_END;
-
-    this.stats = {
-      currentLoad: weeklyVolume,
-      weeklyVolume: weeklyVolume,
-      tutTotal: tutTotal,
-      setsCompleted: estimatedSets,
-      optimalZone: inOptimalZone
-    };
-
-    // Mettre à jour le DOM si le container existe
-    if (this.statsContainer) {
-      this.statsContainer.innerHTML = `
-        <div class="stat-card">
-          <div class="stat-label">Sets</div>
-          <div class="stat-value">${this.stats.setsCompleted}</div>
-          <div class="stat-sub">Cette semaine</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">TUT Total</div>
-          <div class="stat-value stat-cyan">${this.stats.tutTotal}s</div>
-          <div class="stat-sub">~${Math.floor(this.stats.tutTotal / 60)} min</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">Volume Load</div>
-          <div class="stat-value">${(this.stats.weeklyVolume / 1000).toFixed(1)}k</div>
-          <div class="stat-sub">kg levés</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">Status</div>
-          <div class="stat-value ${this.stats.optimalZone ? 'stat-success' : 'stat-warning'}">
-            ${this.stats.optimalZone ? '✓ OPTIMAL' : '⚠ AJUSTER'}
-          </div>
-          <div class="stat-sub">
-            ${this.stats.optimalZone ? 'Zone hypertrophie' : 'Hors zone cible'}
-          </div>
-        </div>
-      `;
-    }
-  }
-
   render() {
     const carbonPattern = this.createCarbonPattern();
 
+    // Calcule le Volume Load RÉEL depuis localStorage
+    const calculator = new window.VolumeLoadCalculator();
+    const weekStats = calculator.getCurrentWeekVolumeLoad();
+    
+    // Valeur FIXE basée sur les vraies données
+    this.targetVal = weekStats.totalVolume;
+    this.currentVal = weekStats.totalVolume;
+    
+    console.log('📊 Volume Load calculé:', {
+      week: weekStats.weekNumber,
+      volume: weekStats.totalVolume,
+      sets: weekStats.totalSets,
+      tut: weekStats.totalTUT,
+      sessions: weekStats.sessionsCount
+    });
+
     const animate = (timestamp) => {
-      const dt = (timestamp - this.lastTime) / 1000;
-      this.lastTime = timestamp;
-      this.phase += dt;
-
-      // Animation organique du volume
-      const breathe = Math.sin(this.phase * 0.5) * 500;
-      const workoutProgress = Math.sin(this.phase * 0.15) > 0.3 
-        ? (Math.sin(this.phase * 2) * 3000 + 12000) 
-        : 0;
-      
-      this.targetVal = 2000 + breathe + workoutProgress + (Math.random() * 200);
-      
-      const diff = this.targetVal - this.currentVal;
-      this.currentVal += diff * 3 * dt;
-
+      // Pas d'animation, valeur fixe
       const val = Math.max(0, Math.min(this.MAX_WEEKLY_VOLUME, this.currentVal));
       const percent = val / this.MAX_WEEKLY_VOLUME;
 
-      // Mise à jour des stats
-      this.updateStats(val);
+      // Mise à jour des stats RÉELLES
+      this.stats = {
+        currentLoad: weekStats.totalVolume,
+        weeklyVolume: weekStats.totalVolume,
+        tutTotal: weekStats.totalTUT,
+        setsCompleted: weekStats.totalSets,
+        optimalZone: weekStats.inOptimalZone
+      };
+
+      // Mettre à jour le DOM
+      if (this.statsContainer) {
+        this.statsContainer.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">Sets</div>
+            <div class="stat-value">${this.stats.setsCompleted}</div>
+            <div class="stat-sub">Cette semaine</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">TUT Total</div>
+            <div class="stat-value stat-cyan">${this.stats.tutTotal}s</div>
+            <div class="stat-sub">~${Math.floor(this.stats.tutTotal / 60)} min</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Volume Load</div>
+            <div class="stat-value">${(this.stats.weeklyVolume / 1000).toFixed(1)}k</div>
+            <div class="stat-sub">kg levés</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Status</div>
+            <div class="stat-value ${this.stats.optimalZone ? 'stat-success' : 'stat-warning'}">
+              ${this.stats.optimalZone ? '✓ OPTIMAL' : '⚠ AJUSTER'}
+            </div>
+            <div class="stat-sub">
+              ${this.stats.optimalZone ? 'Zone hypertrophie' : 'Hors zone cible'}
+            </div>
+          </div>
+        `;
+      }
 
       // Couleurs dynamiques selon la zone
       let hue = 30, sat = 100, light = 60; // Orange par défaut
@@ -190,10 +183,11 @@ export class VolumeLoadGauge {
       // ===== 7. VERRE SAPHIR =====
       this.drawGlass(cx, cy, r);
 
-      this.animationFrameId = requestAnimationFrame(animate);
+      // Pas de boucle - rendu unique avec les données réelles
     };
 
-    this.animationFrameId = requestAnimationFrame(animate);
+    // Rendu initial unique
+    requestAnimationFrame(animate);
   }
 
   drawChassis(cx, cy, r) {
