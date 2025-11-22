@@ -17,8 +17,46 @@ body { padding: 15px !important; max-width: 428px; margin: 0 auto; }
     <link rel="stylesheet" href="styles/global-effects.css">
     <link rel="stylesheet" href="styles/stats-ultra.css">
     <link rel="stylesheet" href="styles/premium-effects.css">
+    <link rel="stylesheet" href="styles/volume-load.css">
 </head><body style="padding:20px;background:#0a0e1a">
 <h1 style="color:#00e5ff;margin-bottom:30px">📈 PERFORMANCE</h1>
+
+<!-- SECTION VOLUME LOAD -->
+<div class="volume-load-section" style="margin-bottom: 40px;">
+    <div class="volume-load-header">
+        <h2 class="volume-load-title">💪 VOLUME LOAD</h2>
+    </div>
+    
+    <div class="gauge-container">
+        <canvas id="volumeGaugeCanvas"></canvas>
+        
+        <div class="halo halo-1"></div>
+        <div class="halo halo-2"></div>
+        <div class="halo halo-3"></div>
+        <div class="halo halo-4"></div>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">SETS</div>
+            <div class="stat-value" id="setsValue">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">TUT</div>
+            <div class="stat-value" id="tutValue">0:00</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">VOLUME</div>
+            <div class="stat-value" id="volumeValue">0 kg</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">STATUS</div>
+            <div class="stat-value" id="statusValue">-</div>
+        </div>
+    </div>
+</div>
+<!-- FIN SECTION VOLUME LOAD -->
+
 <div class="progress-card glass holographic-scan">
                 <div class="card-title">
                     <span class="title-icon">💪</span>
@@ -82,4 +120,20 @@ body { padding: 15px !important; max-width: 428px; margin: 0 auto; }
 <script src="scripts/modules/advanced-charts-premium.js"></script>
 <script src="scripts/modules/stats-init.js"></script>
     <script src="scripts/touch-effects.js"></script>
+
+<!-- VOLUME LOAD GAUGE SCRIPT -->
+<script type="module">
+    import { VolumeLoadGauge } from './scripts/modules/volume-load-gauge.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            console.log('🎯 Initialisation Volume Load Gauge...');
+            const gauge = new VolumeLoadGauge('volumeGaugeCanvas');
+            console.log('✅ Volume Load Gauge initialisée !');
+        } catch (error) {
+            console.error('❌ Erreur initialisation jauge:', error);
+        }
+    });
+</script>
+
 </body></html>
