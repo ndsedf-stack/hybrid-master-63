@@ -64,14 +64,14 @@
         </div>
     </div>
 
-    <!-- Import du module -->
+    <!-- Import du module unique (calculator intégré) -->
     <script type="module">
         import { VolumeLoadGauge } from './scripts/modules/volume-load-gauge.js';
 
         // Initialisation quand le DOM est prêt
         document.addEventListener('DOMContentLoaded', () => {
             const gauge = new VolumeLoadGauge('volumeGaugeCanvas', 'statsContainer');
-            console.log('✅ Volume Load Gauge initialisée');
+            console.log('✅ Volume Load Gauge initialisée avec données réelles');
         });
     </script>
 </body>

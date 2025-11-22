@@ -1,7 +1,75 @@
 // ==================================================================
 // VOLUME LOAD GAUGE MODULE - HYBRID MASTER 63
 // Jauge professionnelle style montre luxe avec Canvas
+// Avec calcul intégré des données réelles depuis localStorage
 // ==================================================================
+
+// Classe interne pour calculer le Volume Load
+class VolumeLoadCalculator {
+  constructor() {
+    this.history = this.loadHistory();
+  }
+
+  loadHistory() {
+    try {
+      const data = localStorage.getItem('workout_history');
+      return data ? JSON.parse(data) : [];
+    } catch (error) {
+      console.error('❌ Erreur lecture historique:', error);
+      return [];
+    }
+  }
+
+  getCurrentWeekNumber() {
+    if (this.history.length === 0) return 1;
+    const sortedHistory = [...this.history].sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+    return sortedHistory[0].week || 1;
+  }
+
+  getCurrentWeekVolumeLoad() {
+    const currentWeek = this.getCurrentWeekNumber();
+    return this.getWeekVolumeLoad(currentWeek);
+  }
+
+  getWeekVolumeLoad(weekNumber) {
+    const weekSessions = this.history.filter(session => {
+      return session.week === weekNumber && session.completed;
+    });
+
+    let totalVolume = 0;
+    let totalSets = 0;
+    let totalTUT = 0;
+
+    weekSessions.forEach(session => {
+      if (session.stats && session.stats.total_volume) {
+        totalVolume += session.stats.total_volume;
+      }
+
+      if (session.exercises) {
+        session.exercises.forEach(exercise => {
+          if (exercise.sets_data && exercise.sets_data.length > 0) {
+            totalSets += exercise.sets_data.length;
+          }
+        });
+      }
+
+      if (session.stats && session.stats.total_time_under_tension) {
+        totalTUT += session.stats.total_time_under_tension;
+      }
+    });
+
+    return {
+      weekNumber: weekNumber,
+      totalVolume: totalVolume,
+      totalSets: totalSets,
+      totalTUT: totalTUT,
+      sessionsCount: weekSessions.length,
+      inOptimalZone: totalVolume >= 15000 && totalVolume <= 22000
+    };
+  }
+}
 
 export class VolumeLoadGauge {
   constructor(canvasId, statsContainerId) {
@@ -78,7 +146,7 @@ export class VolumeLoadGauge {
     const carbonPattern = this.createCarbonPattern();
 
     // Calcule le Volume Load RÉEL depuis localStorage
-    const calculator = new window.VolumeLoadCalculator();
+    const calculator = new VolumeLoadCalculator();
     const weekStats = calculator.getCurrentWeekVolumeLoad();
     
     // Valeur FIXE basée sur les vraies données
