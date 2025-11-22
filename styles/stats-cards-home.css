@@ -1,4 +1,4 @@
-/* CARTES STATS PAGE ACCUEIL */
+/* CARTES STATS - FORCE iOS */
 .stats-section-home {
     padding: 20px;
     margin-top: 20px;
@@ -13,14 +13,21 @@
 }
 
 .stats-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
     gap: 15px;
 }
 
 .stats-card {
+    -webkit-flex: 1 1 calc(50% - 8px);
+    flex: 1 1 calc(50% - 8px);
+    display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: column;
     flex-direction: column;
+    -webkit-align-items: center;
     align-items: center;
     gap: 10px;
     padding: 25px 15px;
@@ -28,6 +35,7 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     text-decoration: none;
+    -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
     -webkit-tap-highlight-color: transparent;
 }
@@ -37,56 +45,31 @@
 .stats-card.analysis { border-color: rgba(155, 89, 255, 0.4); }
 .stats-card.records { border-color: rgba(255, 193, 7, 0.4); }
 
-/* EFFETS TACTILES IPHONE */
 .stats-card:active {
+    -webkit-transform: scale(0.95) !important;
     transform: scale(0.95) !important;
-    opacity: 0.8;
 }
 
 .stats-card.performance:active {
     border-color: #00e5ff !important;
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.4) !important;
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.5) !important;
 }
 
 .stats-card.recovery:active {
     border-color: #4caf50 !important;
-    box-shadow: 0 0 30px rgba(76, 175, 80, 0.4) !important;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.5) !important;
 }
 
 .stats-card.analysis:active {
     border-color: #9b59ff !important;
-    box-shadow: 0 0 30px rgba(155, 89, 255, 0.4) !important;
+    box-shadow: 0 0 30px rgba(155, 89, 255, 0.5) !important;
 }
 
 .stats-card.records:active {
     border-color: #ffc107 !important;
-    box-shadow: 0 0 30px rgba(255, 193, 7, 0.4) !important;
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.5) !important;
 }
 
-/* HOVER POUR DESKTOP */
-@media (hover: hover) {
-    .stats-card:hover {
-        transform: translateY(-5px) scale(1.02);
-    }
-    .stats-card.performance:hover { border-color: #00e5ff; box-shadow: 0 15px 40px rgba(0, 229, 255, 0.3); }
-    .stats-card.recovery:hover { border-color: #4caf50; box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3); }
-    .stats-card.analysis:hover { border-color: #9b59ff; box-shadow: 0 15px 40px rgba(155, 89, 255, 0.3); }
-    .stats-card.records:hover { border-color: #ffc107; box-shadow: 0 15px 40px rgba(255, 193, 7, 0.3); }
-}
-
-.stats-card-icon {
-    font-size: 40px;
-}
-
-.stats-card-title {
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.stats-card-desc {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
-    text-align: center;
-}
+.stats-card-icon { font-size: 40px; }
+.stats-card-title { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+.stats-card-desc { color: rgba(255, 255, 255, 0.5); font-size: 11px; text-align: center; }
