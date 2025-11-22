@@ -284,3 +284,65 @@ window.addEventListener('scroll', () => {
     }
     lastScroll = currentScroll;
 });
+
+// EFFETS TACTILES iOS
+document.addEventListener('DOMContentLoaded', () => {
+    // Cartes stats
+    document.querySelectorAll('.stats-card').forEach(card => {
+        card.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+            this.style.boxShadow = '0 0 30px ' + getGlowColor(this);
+        }, {passive: true});
+        
+        card.addEventListener('touchend', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+        }, {passive: true});
+    });
+    
+    // Nav items
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+            this.style.background = 'rgba(0, 229, 255, 0.2)';
+        }, {passive: true});
+        
+        btn.addEventListener('touchend', function() {
+            this.style.transform = '';
+            this.style.background = '';
+        }, {passive: true});
+    });
+});
+
+function getGlowColor(card) {
+    if (card.classList.contains('performance')) return 'rgba(0, 229, 255, 0.5)';
+    if (card.classList.contains('recovery')) return 'rgba(76, 175, 80, 0.5)';
+    if (card.classList.contains('analysis')) return 'rgba(155, 89, 255, 0.5)';
+    if (card.classList.contains('records')) return 'rgba(255, 193, 7, 0.5)';
+    return 'rgba(0, 229, 255, 0.5)';
+}
+
+// HEADER SCROLL iOS
+let lastScrollY = 0;
+let header = null;
+
+window.addEventListener('load', () => {
+    header = document.querySelector('.app-header');
+});
+
+window.addEventListener('scroll', () => {
+    if (!header) header = document.querySelector('.app-header');
+    if (!header) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        header.style.transform = 'translateY(-100%)';
+        header.style.opacity = '0';
+    } else {
+        header.style.transform = 'translateY(0)';
+        header.style.opacity = '1';
+    }
+    
+    lastScrollY = currentScrollY;
+}, {passive: true});
