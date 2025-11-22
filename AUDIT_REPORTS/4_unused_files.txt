@@ -1,0 +1,220 @@
+
+==========================================
+ANALYSE DES FICHIERS NON UTILISÉS
+==========================================
+
+🎨 FICHIERS CSS :
+---
+❌ NON UTILISÉ : ./styles.backup_working_tabs/11-responsive-modern.css
+✅ UTILISÉ (2 références) : ./styles.backup_working_tabs/06-workout-mode.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/24-timer-ultra-pro.css
+✅ UTILISÉ (2 références) : ./styles.backup_working_tabs/03-base.css
+✅ UTILISÉ (2 références) : ./styles.backup_working_tabs/04-layout.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/09-statistics.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/13-workout-premium-design.css
+✅ UTILISÉ (10 références) : ./styles.backup_working_tabs/10-home.css
+✅ UTILISÉ (2 références) : ./styles.backup_working_tabs/08-responsive.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/10-iphone15-fix.css
+✅ UTILISÉ (3 références) : ./styles.backup_working_tabs/trapbar-screen.css
+✅ UTILISÉ (3 références) : ./styles.backup_working_tabs/01-reset.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/99-theme-modern.css
+✅ UTILISÉ (3 références) : ./styles.backup_working_tabs/02-variables.css
+✅ UTILISÉ (2 références) : ./styles.backup_working_tabs/05-components.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/11-improvements.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/23-superset-enhancement.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/98-theme-switcher.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/14-ios18-premium-dark.css
+✅ UTILISÉ (10 références) : ./styles.backup_working_tabs/stats-ultra.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/12-workout-series-modern.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/07-timer.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/09-home.css
+❌ NON UTILISÉ : ./styles.backup_working_tabs/16-timer-widget-premium.css
+❌ NON UTILISÉ : ./styles.backup_working_tabs/15-hybrid-master-premium.css
+✅ UTILISÉ (1 références) : ./styles.backup_working_tabs/06-series.css
+✅ UTILISÉ (1 références) : ./styles/header-scroll.css
+❌ NON UTILISÉ : ./styles/11-responsive-modern.css
+✅ UTILISÉ (2 références) : ./styles/06-workout-mode.css
+✅ UTILISÉ (1 références) : ./styles/24-timer-ultra-pro.css
+✅ UTILISÉ (2 références) : ./styles/03-base.css
+✅ UTILISÉ (4 références) : ./styles/mobile-fix.css
+✅ UTILISÉ (2 références) : ./styles/04-layout.css
+✅ UTILISÉ (1 références) : ./styles/09-statistics.css
+✅ UTILISÉ (1 références) : ./styles/13-workout-premium-design.css
+❌ NON UTILISÉ : ./styles/nav-fix.css
+✅ UTILISÉ (10 références) : ./styles/10-home.css
+✅ UTILISÉ (8 références) : ./styles/nav-compact.css
+✅ UTILISÉ (2 références) : ./styles/08-responsive.css
+❌ NON UTILISÉ : ./styles/mobile-final.css
+✅ UTILISÉ (1 références) : ./styles/10-iphone15-fix.css
+✅ UTILISÉ (3 références) : ./styles/trapbar-screen.css
+✅ UTILISÉ (3 références) : ./styles/01-reset.css
+✅ UTILISÉ (1 références) : ./styles/99-theme-modern.css
+✅ UTILISÉ (3 références) : ./styles/02-variables.css
+✅ UTILISÉ (2 références) : ./styles/05-components.css
+✅ UTILISÉ (1 références) : ./styles/volume-load.css
+✅ UTILISÉ (1 références) : ./styles/11-improvements.css
+✅ UTILISÉ (1 références) : ./styles/23-superset-enhancement.css
+✅ UTILISÉ (1 références) : ./styles/98-theme-switcher.css
+✅ UTILISÉ (1 références) : ./styles/14-ios18-premium-dark.css
+✅ UTILISÉ (10 références) : ./styles/stats-ultra.css
+✅ UTILISÉ (1 références) : ./styles/12-workout-series-modern.css
+✅ UTILISÉ (1 références) : ./styles/07-timer.css
+✅ UTILISÉ (8 références) : ./styles/global-effects.css
+✅ UTILISÉ (5 références) : ./styles/stats-cards-home.css
+✅ UTILISÉ (1 références) : ./styles/09-home.css
+❌ NON UTILISÉ : ./styles/16-timer-widget-premium.css
+✅ UTILISÉ (8 références) : ./styles/premium-effects.css
+❌ NON UTILISÉ : ./styles/15-hybrid-master-premium.css
+✅ UTILISÉ (1 références) : ./styles/06-series.css
+
+⚙️ FICHIERS JAVASCRIPT :
+---
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/ui/statistics-ui.js
+✅ UTILISÉ (5 références) : ./scripts.backup_working_tabs/ui/navigation-ui.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/ui/theme-switcher.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/ui/workout-renderer-backup.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/ui/modal-manager.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/ui/home-page.js
+✅ UTILISÉ (7 références) : ./scripts.backup_working_tabs/ui/trapbar-renderer.js
+✅ UTILISÉ (8 références) : ./scripts.backup_working_tabs/ui/workout-renderer.js
+✅ UTILISÉ (1 références) : ./scripts.backup_working_tabs/core/validation-engine.js
+✅ UTILISÉ (3 références) : ./scripts.backup_working_tabs/core/progression-engine.js
+✅ UTILISÉ (1 références) : ./scripts.backup_working_tabs/superset-injector.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/utils/error-handler.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/utils/accessibility.js
+✅ UTILISÉ (1 références) : ./scripts.backup_working_tabs/utils/helpers.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/utils/dom-helpers.js
+✅ UTILISÉ (3 références) : ./scripts.backup_working_tabs/storage/google-drive.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/storage/export-import.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/storage/session-storage.js
+✅ UTILISÉ (11 références) : ./scripts.backup_working_tabs/storage/local-storage.js
+✅ UTILISÉ (3 références) : ./scripts.backup_working_tabs/10-home.js
+✅ UTILISÉ (35 références) : ./scripts.backup_working_tabs/program-data.js
+✅ UTILISÉ (5 références) : ./scripts.backup_working_tabs/modules/statistics-engine.js
+✅ UTILISÉ (7 références) : ./scripts.backup_working_tabs/modules/body-tracker.js
+✅ UTILISÉ (6 références) : ./scripts.backup_working_tabs/modules/stats-init.js
+✅ UTILISÉ (6 références) : ./scripts.backup_working_tabs/modules/advanced-charts.js
+❌ NON UTILISÉ : ./scripts.backup_working_tabs/modules/session-storage.js
+✅ UTILISÉ (3 références) : ./scripts.backup_working_tabs/modules/workout-session.js
+✅ UTILISÉ (7 références) : ./scripts.backup_working_tabs/modules/stats-ui.js
+✅ UTILISÉ (7 références) : ./scripts.backup_working_tabs/modules/calculators.js
+✅ UTILISÉ (6 références) : ./scripts.backup_working_tabs/modules/superset-tracker.js
+✅ UTILISÉ (7 références) : ./scripts.backup_working_tabs/modules/stats-engine.js
+✅ UTILISÉ (7 références) : ./scripts.backup_working_tabs/modules/pr-detector.js
+✅ UTILISÉ (10 références) : ./scripts.backup_working_tabs/modules/local-storage.js
+✅ UTILISÉ (8 références) : ./scripts.backup_working_tabs/modules/timer-manager.js
+✅ UTILISÉ (5 références) : ./scripts.backup_working_tabs/modules/home-renderer.js
+✅ UTILISÉ (5 références) : ./scripts.backup_working_tabs/modules/advanced-charts-premium.js
+✅ UTILISÉ (6 références) : ./scripts.backup_working_tabs/app.js
+❌ NON UTILISÉ : ./js/workout-interactive.js
+❌ NON UTILISÉ : ./tests/final-validation.js
+❌ NON UTILISÉ : ./scripts/ui/statistics-ui.js
+✅ UTILISÉ (5 références) : ./scripts/ui/navigation-ui.js
+❌ NON UTILISÉ : ./scripts/ui/theme-switcher.js
+❌ NON UTILISÉ : ./scripts/ui/workout-renderer-backup.js
+❌ NON UTILISÉ : ./scripts/ui/modal-manager.js
+❌ NON UTILISÉ : ./scripts/ui/home-page.js
+✅ UTILISÉ (7 références) : ./scripts/ui/trapbar-renderer.js
+✅ UTILISÉ (8 références) : ./scripts/ui/workout-renderer.js
+✅ UTILISÉ (5 références) : ./scripts/touch-effects.js
+✅ UTILISÉ (1 références) : ./scripts/core/validation-engine.js
+✅ UTILISÉ (3 références) : ./scripts/core/progression-engine.js
+✅ UTILISÉ (1 références) : ./scripts/superset-injector.js
+❌ NON UTILISÉ : ./scripts/utils/error-handler.js
+❌ NON UTILISÉ : ./scripts/utils/accessibility.js
+✅ UTILISÉ (1 références) : ./scripts/utils/helpers.js
+❌ NON UTILISÉ : ./scripts/utils/dom-helpers.js
+✅ UTILISÉ (3 références) : ./scripts/storage/google-drive.js
+❌ NON UTILISÉ : ./scripts/storage/export-import.js
+❌ NON UTILISÉ : ./scripts/storage/session-storage.js
+✅ UTILISÉ (11 références) : ./scripts/storage/local-storage.js
+✅ UTILISÉ (3 références) : ./scripts/10-home.js
+✅ UTILISÉ (35 références) : ./scripts/program-data.js
+✅ UTILISÉ (1 références) : ./scripts/modules/volume-load-gauge.js
+✅ UTILISÉ (5 références) : ./scripts/modules/statistics-engine.js
+✅ UTILISÉ (7 références) : ./scripts/modules/body-tracker.js
+❌ NON UTILISÉ : ./scripts/modules/volume-load-calculator.js
+✅ UTILISÉ (6 références) : ./scripts/modules/stats-init.js
+✅ UTILISÉ (6 références) : ./scripts/modules/advanced-charts.js
+❌ NON UTILISÉ : ./scripts/modules/session-storage.js
+✅ UTILISÉ (3 références) : ./scripts/modules/workout-session.js
+✅ UTILISÉ (7 références) : ./scripts/modules/stats-ui.js
+✅ UTILISÉ (7 références) : ./scripts/modules/calculators.js
+✅ UTILISÉ (6 références) : ./scripts/modules/superset-tracker.js
+✅ UTILISÉ (7 références) : ./scripts/modules/stats-engine.js
+✅ UTILISÉ (7 références) : ./scripts/modules/pr-detector.js
+✅ UTILISÉ (10 références) : ./scripts/modules/local-storage.js
+✅ UTILISÉ (8 références) : ./scripts/modules/timer-manager.js
+✅ UTILISÉ (5 références) : ./scripts/modules/home-renderer.js
+✅ UTILISÉ (5 références) : ./scripts/modules/advanced-charts-premium.js
+✅ UTILISÉ (6 références) : ./scripts/app.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/ui/statistics-ui.js
+✅ UTILISÉ (5 références) : ./backups/backup_20251121_221610/scripts/ui/navigation-ui.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/ui/theme-switcher.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/ui/workout-renderer-backup.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/ui/modal-manager.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/ui/home-page.js
+✅ UTILISÉ (7 références) : ./backups/backup_20251121_221610/scripts/ui/trapbar-renderer.js
+✅ UTILISÉ (8 références) : ./backups/backup_20251121_221610/scripts/ui/workout-renderer.js
+✅ UTILISÉ (1 références) : ./backups/backup_20251121_221610/scripts/core/validation-engine.js
+✅ UTILISÉ (3 références) : ./backups/backup_20251121_221610/scripts/core/progression-engine.js
+✅ UTILISÉ (1 références) : ./backups/backup_20251121_221610/scripts/superset-injector.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/utils/error-handler.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/utils/accessibility.js
+✅ UTILISÉ (1 références) : ./backups/backup_20251121_221610/scripts/utils/helpers.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/utils/dom-helpers.js
+✅ UTILISÉ (3 références) : ./backups/backup_20251121_221610/scripts/storage/google-drive.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/storage/export-import.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/storage/session-storage.js
+✅ UTILISÉ (11 références) : ./backups/backup_20251121_221610/scripts/storage/local-storage.js
+✅ UTILISÉ (3 références) : ./backups/backup_20251121_221610/scripts/10-home.js
+✅ UTILISÉ (35 références) : ./backups/backup_20251121_221610/scripts/program-data.js
+✅ UTILISÉ (5 références) : ./backups/backup_20251121_221610/scripts/modules/statistics-engine.js
+✅ UTILISÉ (7 références) : ./backups/backup_20251121_221610/scripts/modules/body-tracker.js
+✅ UTILISÉ (6 références) : ./backups/backup_20251121_221610/scripts/modules/stats-init.js
+✅ UTILISÉ (6 références) : ./backups/backup_20251121_221610/scripts/modules/advanced-charts.js
+❌ NON UTILISÉ : ./backups/backup_20251121_221610/scripts/modules/session-storage.js
+✅ UTILISÉ (3 références) : ./backups/backup_20251121_221610/scripts/modules/workout-session.js
+✅ UTILISÉ (7 références) : ./backups/backup_20251121_221610/scripts/modules/stats-ui.js
+✅ UTILISÉ (7 références) : ./backups/backup_20251121_221610/scripts/modules/calculators.js
+✅ UTILISÉ (6 références) : ./backups/backup_20251121_221610/scripts/modules/superset-tracker.js
+✅ UTILISÉ (7 références) : ./backups/backup_20251121_221610/scripts/modules/stats-engine.js
+✅ UTILISÉ (7 références) : ./backups/backup_20251121_221610/scripts/modules/pr-detector.js
+✅ UTILISÉ (10 références) : ./backups/backup_20251121_221610/scripts/modules/local-storage.js
+✅ UTILISÉ (8 références) : ./backups/backup_20251121_221610/scripts/modules/timer-manager.js
+✅ UTILISÉ (5 références) : ./backups/backup_20251121_221610/scripts/modules/home-renderer.js
+✅ UTILISÉ (6 références) : ./backups/backup_20251121_221610/scripts/app.js
+❌ NON UTILISÉ : ./temp.js
+
+🖼️ IMAGES :
+---
+✅ UTILISÉ (9 références) : ./assets/gifs/default.svg
+
+📄 PAGES HTML ORPHELINES :
+---
+✅ LIÉE (1 liens) : ./stats.html
+✅ LIÉE (19 liens) : ./index.html
+⚠️ AUCUN LIEN VERS : ./home.html
+⚠️ AUCUN LIEN VERS : ./stats-volume-load.html
+✅ LIÉE (1 liens) : ./stats-analyse.html
+✅ LIÉE (1 liens) : ./stats-records.html
+⚠️ AUCUN LIEN VERS : ./diagnostic.html
+⚠️ AUCUN LIEN VERS : ./workout-session.html
+⚠️ AUCUN LIEN VERS : ./trapbar-test.html
+⚠️ AUCUN LIEN VERS : ./workout-3d-full-old.html
+✅ LIÉE (1 liens) : ./stats-recovery.html
+⚠️ AUCUN LIEN VERS : ./trapbar-test2.html
+✅ LIÉE (2 liens) : ./workout-timer-neurofit.html
+✅ LIÉE (6 liens) : ./test.html
+✅ LIÉE (9 liens) : ./workout-3d-ultra.html
+⚠️ AUCUN LIEN VERS : ./home-v2.html
+⚠️ AUCUN LIEN VERS : ./debug.html
+⚠️ AUCUN LIEN VERS : ./index-backup-before-stats.html
+⚠️ AUCUN LIEN VERS : ./trapbar-test3.html
+⚠️ AUCUN LIEN VERS : ./workout-3d-session.html
+✅ LIÉE (9 liens) : ./home-final.html
+✅ LIÉE (19 liens) : ./backups/backup_20251121_221610/index.html
+✅ LIÉE (1 liens) : ./trapbar-react-three.html
+⚠️ AUCUN LIEN VERS : ./index-old.html
+✅ LIÉE (1 liens) : ./stats-performance.html
+⚠️ AUCUN LIEN VERS : ./ultra-test.html

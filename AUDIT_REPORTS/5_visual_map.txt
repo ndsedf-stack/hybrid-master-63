@@ -1,0 +1,302 @@
+
+==========================================
+CARTE VISUELLE DU PROJET
+==========================================
+
+Structure avec dépendances :
+
+📄 index.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/stats-ultra.css
+├─ ⚙️ JavaScript:
+│  ├─ scripts/10-home.js
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ scripts/modules/stats-init.js
+│  ├─ scripts/modules/superset-tracker.js
+│  ├─ scripts/modules/advanced-charts.js
+│  ├─ (import) ./scripts/program-data.js
+
+📄 debug.html
+│
+
+📄 diagnostic.html
+│
+
+📄 home-final.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js
+
+📄 home-v2.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js
+
+📄 home.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js
+
+📄 index-backup-before-stats.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/stats-ultra.css
+├─ ⚙️ JavaScript:
+│  ├─ scripts/10-home.js
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ (import) ./scripts/program-data.js
+
+📄 index-old.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/01-reset.css
+│  ├─ styles/02-variables.css
+│  ├─ styles/03-base.css
+│  ├─ styles/04-layout.css
+│  ├─ styles/05-components.css
+│  ├─ styles/06-series.css
+│  ├─ styles/06-workout-mode.css
+│  ├─ styles/07-timer.css
+│  ├─ styles/08-responsive.css
+│  ├─ styles/09-home.css
+│  ├─ styles/09-statistics.css
+│  ├─ styles/98-theme-switcher.css
+│  ├─ styles/99-theme-modern.css
+│  ├─ styles/10-iphone15-fix.css
+│  ├─ styles/11-improvements.css
+│  ├─ styles/12-workout-series-modern.css
+│  ├─ styles/13-workout-premium-design.css
+│  ├─ styles/14-ios18-premium-dark.css
+│  ├─ styles/23-superset-enhancement.css
+│  ├─ styles/24-timer-ultra-pro.css
+├─ ⚙️ JavaScript:
+│  ├─ scripts/app.js
+│  ├─ scripts/superset-injector.js
+
+📄 index.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/stats-cards-home.css
+│  ├─ styles/header-scroll.css
+│  ├─ styles/global-effects.css
+│  ├─ styles/premium-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ scripts/10-home.js
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ scripts/modules/advanced-charts-premium.js
+│  ├─ scripts/modules/stats-init.js
+│  ├─ scripts/modules/superset-tracker.js
+│  ├─ scripts/modules/advanced-charts.js
+│  ├─ scripts/app.js
+│  ├─ scripts/touch-effects.js
+│  ├─ (import) ./scripts/program-data.js
+
+📄 stats-analyse.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/mobile-fix.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/stats-cards-home.css
+│  ├─ styles/global-effects.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/premium-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ scripts/modules/superset-tracker.js
+│  ├─ scripts/modules/advanced-charts.js
+│  ├─ scripts/modules/advanced-charts-premium.js
+│  ├─ scripts/modules/stats-init.js
+│  ├─ scripts/touch-effects.js
+
+📄 stats-performance.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/mobile-fix.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/stats-cards-home.css
+│  ├─ styles/global-effects.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/premium-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ scripts/modules/superset-tracker.js
+│  ├─ scripts/modules/advanced-charts.js
+│  ├─ scripts/modules/advanced-charts-premium.js
+│  ├─ scripts/modules/stats-init.js
+│  ├─ scripts/touch-effects.js
+
+📄 stats-records.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/mobile-fix.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/stats-cards-home.css
+│  ├─ styles/global-effects.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/premium-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ scripts/modules/superset-tracker.js
+│  ├─ scripts/modules/advanced-charts.js
+│  ├─ scripts/modules/advanced-charts-premium.js
+│  ├─ scripts/modules/stats-init.js
+│  ├─ scripts/touch-effects.js
+
+📄 stats-recovery.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/mobile-fix.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/stats-cards-home.css
+│  ├─ styles/global-effects.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/premium-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+│  ├─ scripts/modules/stats-engine.js
+│  ├─ scripts/modules/stats-ui.js
+│  ├─ scripts/modules/body-tracker.js
+│  ├─ scripts/modules/pr-detector.js
+│  ├─ scripts/modules/calculators.js
+│  ├─ scripts/modules/superset-tracker.js
+│  ├─ scripts/modules/advanced-charts.js
+│  ├─ scripts/modules/advanced-charts-premium.js
+│  ├─ scripts/modules/stats-init.js
+│  ├─ scripts/touch-effects.js
+
+📄 stats-volume-load.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/01-reset.css
+│  ├─ styles/02-variables.css
+│  ├─ styles/volume-load.css
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/modules/volume-load-gauge.js
+
+📄 stats.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
+│  ├─ (import) ./scripts/program-data.js
+
+📄 test.html
+│
+
+📄 trapbar-react-three.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ https://unpkg.com/react@18/umd/react.production.min.js
+│  ├─ https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
+│  ├─ https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+│  ├─ https://unpkg.com/@babel/standalone/babel.min.js
+
+📄 trapbar-test.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/trapbar-screen.css
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/ui/trapbar-renderer.js
+
+📄 trapbar-test2.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/trapbar-screen.css?v=20251116-003
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/ui/trapbar-renderer.js?v=20251116-003
+
+📄 trapbar-test3.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/trapbar-screen.css?v=20251116-004
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/ui/trapbar-renderer.js?v=20251116-004
+
+📄 ultra-test.html
+│
+
+📄 workout-3d-full-old.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js?v=20251116-014
+
+📄 workout-3d-session.html
+│
+├─ ⚙️ JavaScript:
+│  ├─ https://unpkg.com/react@18/umd/react.production.min.js
+│  ├─ https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
+│  ├─ https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+│  ├─ https://unpkg.com/@babel/standalone/babel.min.js
+
+📄 workout-3d-ultra.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/premium-effects.css
+│  ├─ styles/global-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js
+
+📄 workout-session.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/premium-effects.css
+│  ├─ styles/global-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js
+
+📄 workout-timer-neurofit.html
+│
+├─ 🎨 CSS:
+│  ├─ styles/10-home.css
+│  ├─ styles/stats-ultra.css
+│  ├─ styles/nav-compact.css
+│  ├─ styles/premium-effects.css
+│  ├─ styles/global-effects.css
+├─ ⚙️ JavaScript:
+│  ├─ (import) ./scripts/program-data.js
+

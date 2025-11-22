@@ -1,0 +1,471 @@
+
+==========================================
+DÉPENDANCES DANS LES FICHIERS HTML
+==========================================
+
+📄 FICHIER : ./stats.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
+
+  Imports ES6 modules :
+    ✓ import { ProgramData } from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./index.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/nav-compact.css
+    ✓ styles/stats-cards-home.css
+    ✓ styles/header-scroll.css
+    ✓ styles/global-effects.css
+    ✓ styles/premium-effects.css
+
+  JavaScript référencés :
+    ✓ scripts/10-home.js
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+    ✓ scripts/modules/advanced-charts-premium.js
+    ✓ scripts/modules/stats-init.js
+    ✓ scripts/modules/superset-tracker.js
+    ✓ scripts/modules/advanced-charts.js
+    ✓ scripts/app.js
+    ✓ scripts/touch-effects.js
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./home.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./stats-volume-load.html
+---
+  CSS référencés :
+    ✓ styles/01-reset.css
+    ✓ styles/02-variables.css
+    ✓ styles/volume-load.css
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import { VolumeLoadGauge } from './scripts/modules/volume-load-gauge.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./stats-analyse.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/mobile-fix.css
+    ✓ styles/nav-compact.css
+    ✓ styles/stats-cards-home.css
+    ✓ styles/global-effects.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/premium-effects.css
+
+  JavaScript référencés :
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+    ✓ scripts/modules/superset-tracker.js
+    ✓ scripts/modules/advanced-charts.js
+    ✓ scripts/modules/advanced-charts-premium.js
+    ✓ scripts/modules/stats-init.js
+    ✓ scripts/touch-effects.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./stats-records.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/mobile-fix.css
+    ✓ styles/nav-compact.css
+    ✓ styles/stats-cards-home.css
+    ✓ styles/global-effects.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/premium-effects.css
+
+  JavaScript référencés :
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+    ✓ scripts/modules/superset-tracker.js
+    ✓ scripts/modules/advanced-charts.js
+    ✓ scripts/modules/advanced-charts-premium.js
+    ✓ scripts/modules/stats-init.js
+    ✓ scripts/touch-effects.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./diagnostic.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./workout-session.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/nav-compact.css
+    ✓ styles/premium-effects.css
+    ✓ styles/global-effects.css
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./trapbar-test.html
+---
+  CSS référencés :
+    ✓ styles/trapbar-screen.css
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./workout-3d-full-old.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js?v=20251116-014'
+
+  Images référencées :
+
+
+📄 FICHIER : ./stats-recovery.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/mobile-fix.css
+    ✓ styles/nav-compact.css
+    ✓ styles/stats-cards-home.css
+    ✓ styles/global-effects.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/premium-effects.css
+
+  JavaScript référencés :
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+    ✓ scripts/modules/superset-tracker.js
+    ✓ scripts/modules/advanced-charts.js
+    ✓ scripts/modules/advanced-charts-premium.js
+    ✓ scripts/modules/stats-init.js
+    ✓ scripts/touch-effects.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./trapbar-test2.html
+---
+  CSS référencés :
+    ✓ styles/trapbar-screen.css?v=20251116-003
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js?v=20251116-003'
+
+  Images référencées :
+
+
+📄 FICHIER : ./workout-timer-neurofit.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/nav-compact.css
+    ✓ styles/premium-effects.css
+    ✓ styles/global-effects.css
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import { ProgramData } from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./test.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./workout-3d-ultra.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/nav-compact.css
+    ✓ styles/premium-effects.css
+    ✓ styles/global-effects.css
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./home-v2.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./debug.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./index-backup-before-stats.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/stats-ultra.css
+
+  JavaScript référencés :
+    ✓ scripts/10-home.js
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./trapbar-test3.html
+---
+  CSS référencés :
+    ✓ styles/trapbar-screen.css?v=20251116-004
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js?v=20251116-004'
+
+  Images référencées :
+
+
+📄 FICHIER : ./workout-3d-session.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+    ✓ https://unpkg.com/react@18/umd/react.production.min.js
+    ✓ https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
+    ✓ https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+    ✓ https://unpkg.com/@babel/standalone/babel.min.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./home-final.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./backups/backup_20251121_221610/index.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/stats-ultra.css
+
+  JavaScript référencés :
+    ✓ scripts/10-home.js
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+    ✓ scripts/modules/stats-init.js
+    ✓ scripts/modules/superset-tracker.js
+    ✓ scripts/modules/advanced-charts.js
+
+  Imports ES6 modules :
+    ✓ import programData from './scripts/program-data.js'
+
+  Images référencées :
+
+
+📄 FICHIER : ./trapbar-react-three.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+    ✓ https://unpkg.com/react@18/umd/react.production.min.js
+    ✓ https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
+    ✓ https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+    ✓ https://unpkg.com/@babel/standalone/babel.min.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./index-old.html
+---
+  CSS référencés :
+    ✓ styles/01-reset.css
+    ✓ styles/02-variables.css
+    ✓ styles/03-base.css
+    ✓ styles/04-layout.css
+    ✓ styles/05-components.css
+    ✓ styles/06-series.css
+    ✓ styles/06-workout-mode.css
+    ✓ styles/07-timer.css
+    ✓ styles/08-responsive.css
+    ✓ styles/09-home.css
+    ✓ styles/09-statistics.css
+    ✓ styles/98-theme-switcher.css
+    ✓ styles/99-theme-modern.css
+    ✓ styles/10-iphone15-fix.css
+    ✓ styles/11-improvements.css
+    ✓ styles/12-workout-series-modern.css
+    ✓ styles/13-workout-premium-design.css
+    ✓ styles/14-ios18-premium-dark.css
+    ✓ styles/23-superset-enhancement.css
+    ✓ styles/24-timer-ultra-pro.css
+
+  JavaScript référencés :
+    ✓ scripts/app.js
+    ✓ scripts/superset-injector.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./stats-performance.html
+---
+  CSS référencés :
+    ✓ styles/10-home.css
+    ✓ styles/mobile-fix.css
+    ✓ styles/nav-compact.css
+    ✓ styles/stats-cards-home.css
+    ✓ styles/global-effects.css
+    ✓ styles/stats-ultra.css
+    ✓ styles/premium-effects.css
+
+  JavaScript référencés :
+    ✓ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js
+    ✓ scripts/modules/stats-engine.js
+    ✓ scripts/modules/stats-ui.js
+    ✓ scripts/modules/body-tracker.js
+    ✓ scripts/modules/pr-detector.js
+    ✓ scripts/modules/calculators.js
+    ✓ scripts/modules/superset-tracker.js
+    ✓ scripts/modules/advanced-charts.js
+    ✓ scripts/modules/advanced-charts-premium.js
+    ✓ scripts/modules/stats-init.js
+    ✓ scripts/touch-effects.js
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+
+📄 FICHIER : ./ultra-test.html
+---
+  CSS référencés :
+
+  JavaScript référencés :
+
+  Imports ES6 modules :
+
+  Images référencées :
+
+

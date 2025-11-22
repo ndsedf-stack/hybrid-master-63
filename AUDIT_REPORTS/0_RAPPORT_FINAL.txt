@@ -1,0 +1,47 @@
+╔════════════════════════════════════════════════════════╗
+║   RAPPORT FINAL - AUDIT HYBRID MASTER 63               ║
+║   Généré le : sam. 22 nov. 2025 23:28:02 CET                      ║
+╚════════════════════════════════════════════════════════╝
+
+📊 STATISTIQUES GLOBALES
+========================
+
+Total fichiers      :      239
+Pages HTML          :       26
+Fichiers CSS        :       61
+Fichiers JavaScript :      116
+Images              :        1
+
+⚠️ FICHIERS À VÉRIFIER
+======================
+
+Fichiers CSS potentiellement non utilisés :
+  → 8
+
+Fichiers JS potentiellement non utilisés :
+  → 37
+
+Images potentiellement non utilisées :
+  → 0
+
+Pages HTML orphelines :
+  → 14
+
+📁 RAPPORTS DÉTAILLÉS GÉNÉRÉS
+==============================
+
+total 160
+-rw-r--r--  1 nicolasdistefano  staff   1,0K 22 nov.  23:28 0_RAPPORT_FINAL.txt
+-rw-r--r--  1 nicolasdistefano  staff    19K 22 nov.  23:27 1_structure.txt
+-rw-r--r--  1 nicolasdistefano  staff    11K 22 nov.  23:27 2_html_dependencies.txt
+-rw-r--r--  1 nicolasdistefano  staff    12K 22 nov.  23:27 3_js_dependencies.txt
+-rw-r--r--  1 nicolasdistefano  staff    14K 22 nov.  23:27 4_unused_files.txt
+-rw-r--r--  1 nicolasdistefano  staff   9,3K 22 nov.  23:27 5_visual_map.txt
+
+✅ POUR CONSULTER LES RAPPORTS :
+  → cat AUDIT_REPORTS/1_structure.txt
+  → cat AUDIT_REPORTS/2_html_dependencies.txt
+  → cat AUDIT_REPORTS/3_js_dependencies.txt
+  → cat AUDIT_REPORTS/4_unused_files.txt
+  → cat AUDIT_REPORTS/5_visual_map.txt
+
