@@ -113,3 +113,38 @@
 .nav-item.active .nav-icon {
     filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
 }
+
+/* SECTION STATS - MÊME STYLE QUE TECHNIQUES DU BLOC */
+.stats-section-home {
+    background: rgba(28, 28, 30, 0.85) !important;
+    backdrop-filter: blur(40px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    margin: 20px !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 229, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.stats-section-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    color: #00e5ff !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 15px !important;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2) !important;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.5) !important;
+}
+
+.stats-cards-grid {
+    gap: 12px !important;
+    padding: 0 !important;
+}
