@@ -1,0 +1,165 @@
+/* ✅ Patch iPhone 15 Pro portrait */
+@media screen and (max-width: 430px) and (orientation: portrait) {
+  html, body {
+    height: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    background-color: #000;
+  }
+  
+  .workout-page {
+    padding-bottom: 120px;
+  }
+  
+  .series-list {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .workout-actions {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 20px);
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 999;
+  }
+  
+  .btn-primary {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+  
+  /* ✅ Force overflow visible pour tous les éléments de série */
+  .serie-item,
+  .serie-item.completed,
+  .card,
+  .progress-bar,
+  .progress-fill {
+    overflow: visible !important;
+  }
+  
+  /* 🔥 CORRECTION CRITIQUE : Force la taille des boutons de validation */
+  .serie-check,
+  button.serie-check,
+  .serie-item .serie-check,
+  .serie-item button.serie-check {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex: 0 0 36px !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+  }
+  
+  .serie-check.checked,
+  button.serie-check.checked {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 36px !important;
+  }
+  
+  /* 🔥 Force la structure flex des cartes de série */
+  .serie-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    max-width: calc(100vw - 2rem) !important;
+  }
+  
+  /* 🔥 Empêche les éléments de prendre toute la largeur */
+  .serie-number {
+    flex: 0 0 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+  }
+  
+  .serie-info {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  
+  .serie-rest {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* 🔥 RÈGLES GLOBALES (appliquées partout, pas juste iPhone) */
+.serie-check,
+button.serie-check {
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: 0 0 40px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  border: 2px solid rgba(16, 185, 129, 0.3) !important;
+  border-radius: 10px !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: var(--primary, #10b981) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.serie-check.checked,
+button.serie-check.checked {
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  background: var(--primary, #10b981) !important;
+  border-color: var(--primary, #10b981) !important;
+  color: white !important;
+}
+
+/* 🔥 Force la taille de l'icône check */
+.check-icon {
+  font-size: 1.1rem !important;
+  line-height: 1 !important;
+  display: block !important;
+}
+
+/* 🔥 Empêche tout autre style de s'appliquer aux boutons */
+button[class*="serie"] {
+  box-sizing: border-box !important;
+}
+
+/* 🔥 Sécurité supplémentaire pour la structure des séries */
+.serie-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+.serie-number {
+  flex: 0 0 32px !important;
+}
+
+.serie-info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.serie-rest {
+  flex: 0 0 auto !important;
+}

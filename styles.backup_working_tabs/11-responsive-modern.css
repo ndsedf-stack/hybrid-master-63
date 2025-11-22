@@ -1,0 +1,204 @@
+/* ============================================
+   11-RESPONSIVE-MODERN.CSS
+   Améliorations responsive avec clamp()
+   ============================================ */
+
+/* TYPOGRAPHIE FLUIDE */
+:root {
+    --font-xs: clamp(10px, 2vw, 12px);
+    --font-sm: clamp(12px, 2.5vw, 14px);
+    --font-base: clamp(14px, 3vw, 16px);
+    --font-md: clamp(16px, 3.5vw, 18px);
+    --font-lg: clamp(18px, 4vw, 22px);
+    --font-xl: clamp(20px, 4.5vw, 28px);
+    
+    --spacing-xs: clamp(4px, 1vw, 8px);
+    --spacing-sm: clamp(8px, 1.5vw, 12px);
+    --spacing-md: clamp(12px, 2vw, 16px);
+    --spacing-lg: clamp(16px, 3vw, 24px);
+    --spacing-xl: clamp(24px, 4vw, 32px);
+}
+
+/* APP CONTAINER */
+.app-container {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* HEADER */
+.home-header {
+    padding: var(--spacing-lg);
+    gap: var(--spacing-md);
+}
+
+.logo {
+    font-size: var(--font-xl);
+    letter-spacing: clamp(1px, 0.5vw, 3px);
+}
+
+.icon-btn {
+    width: clamp(40px, 10vw, 48px);
+    height: clamp(40px, 10vw, 48px);
+    font-size: var(--font-lg);
+    min-width: 44px;
+    min-height: 44px;
+}
+
+/* MAIN CONTENT */
+.home-main {
+    padding: var(--spacing-lg);
+    gap: var(--spacing-xl);
+    padding-bottom: clamp(80px, 15vw, 120px);
+}
+
+/* WORKOUT CARDS */
+.workouts-section {
+    gap: var(--spacing-lg);
+}
+
+.workout-card {
+    padding: var(--spacing-lg);
+    border-radius: clamp(16px, 3vw, 24px);
+}
+
+.workout-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.workout-badge {
+    font-size: var(--font-sm);
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2.5vw, 16px);
+    border-radius: clamp(8px, 2vw, 12px);
+}
+
+.workout-title {
+    font-size: var(--font-xl);
+    margin-top: var(--spacing-sm);
+}
+
+.workout-stats {
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.stat-item {
+    font-size: var(--font-sm);
+    gap: var(--spacing-xs);
+}
+
+/* BUTTONS */
+.workout-btn,
+.btn-start,
+.btn-completed {
+    padding: clamp(12px, 2.5vw, 16px) clamp(20px, 4vw, 28px);
+    font-size: var(--font-base);
+    border-radius: clamp(10px, 2vw, 14px);
+    min-height: 44px;
+}
+
+/* QUOTE SECTION */
+.quote-section {
+    padding: var(--spacing-lg);
+    border-radius: clamp(16px, 3vw, 20px);
+    margin-top: var(--spacing-xl);
+}
+
+.quote-text {
+    font-size: var(--font-md);
+    line-height: 1.6;
+}
+
+.quote-author {
+    font-size: var(--font-sm);
+    margin-top: var(--spacing-sm);
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    padding: clamp(12px, 2vw, 16px) var(--spacing-lg);
+    gap: var(--spacing-sm);
+    padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+}
+
+.nav-item {
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
+    gap: var(--spacing-xs);
+    border-radius: clamp(10px, 2vw, 14px);
+    min-height: 44px;
+}
+
+.nav-icon {
+    font-size: var(--font-lg);
+}
+
+.nav-label {
+    font-size: var(--font-xs);
+}
+
+/* FAB */
+.fab {
+    width: clamp(56px, 12vw, 64px);
+    height: clamp(56px, 12vw, 64px);
+    font-size: clamp(24px, 5vw, 32px);
+    bottom: clamp(80px, 15vw, 100px);
+    right: var(--spacing-lg);
+}
+
+/* TOUCH FEEDBACK */
+.workout-btn:active,
+.btn-start:active,
+.btn-completed:active,
+.icon-btn:active,
+.nav-item:active,
+.fab:active {
+    transform: scale(0.95);
+}
+
+/* LANDSCAPE MODE */
+@media (orientation: landscape) and (max-height: 600px) {
+    .home-main {
+        padding-top: var(--spacing-md);
+        padding-bottom: clamp(60px, 12vw, 80px);
+    }
+    
+    .workout-card {
+        padding: var(--spacing-md);
+    }
+    
+    .fab {
+        bottom: clamp(60px, 12vw, 80px);
+    }
+}
+
+/* LARGE SCREENS (iPhone 15 Pro Max, etc.) */
+@media (min-width: 430px) {
+    .app-container {
+        max-width: 430px;
+        margin: 0 auto;
+    }
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* PERFORMANCE OPTIMIZATION */
+.workout-card,
+.nav-item,
+.fab,
+.icon-btn {
+    will-change: transform;
+}
+
+.workout-card:hover,
+.nav-item:hover {
+    will-change: auto;
+}

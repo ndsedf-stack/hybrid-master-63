@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Analyse</title>
+    <link rel="stylesheet" href="styles/10-home.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
+<body style="padding:20px;background:#0a0e1a">
+    <h1 style="color:#00e5ff;margin-bottom:30px">🎯 ANALYSE</h1>
+    
+    <div style="background:rgba(255,255,255,0.05);padding:20px;border-radius:15px;margin-bottom:20px">
+        <h3 style="color:#00e5ff;margin-bottom:15px">📊 CHARGE HEBDOMADAIRE</h3>
+        <canvas id="chart1"></canvas>
+    </div>
+    
+    <div style="background:rgba(255,255,255,0.05);padding:20px;border-radius:15px;margin-bottom:20px">
+        <h3 style="color:#00e5ff;margin-bottom:15px">🌐 RÉPARTITION MUSCLES</h3>
+        <canvas id="chart2"></canvas>
+    </div>
+    
+    <a href="index.html" style="display:block;padding:15px;background:rgba(0,229,255,0.2);border:1px solid #00e5ff;border-radius:12px;color:#00e5ff;text-align:center;text-decoration:none;margin-top:20px">← Retour</a>
+    
+    <script>
+        new Chart(document.getElementById('chart1'), {
+            type: 'line',
+            data: {
+                labels: ['S1','S2','S3','S4','S5'],
+                datasets: [{label: 'Charge', data: [1000,1200,1400,1300,1500], borderColor: '#00e5ff', fill: true, backgroundColor: 'rgba(0,229,255,0.1)'}]
+            }
+        });
+        new Chart(document.getElementById('chart2'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Pecs','Dos','Jambes','Épaules'],
+                datasets: [{data: [25,30,25,20], backgroundColor: ['#00e5ff','#9b59ff','#ff6b35','#00ff9f']}]
+            }
+        });
+    </script>
+</body>
+</html>
