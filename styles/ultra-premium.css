@@ -1,0 +1,214 @@
+/* ========================================
+   HYBRID MASTER 63 - ULTRA PREMIUM EFFECTS
+   ======================================== */
+
+/* === FOND TEXTURÉ HOLOGRAPHIQUE === */
+body {
+    background: 
+        radial-gradient(ellipse at 20% 80%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(155, 89, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 229, 255, 0.03) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0f1a 0%, #0d1520 50%, #0a0f1a 100%) !important;
+    background-attachment: fixed !important;
+}
+
+/* === KEYFRAMES ANIMATIONS === */
+@keyframes halo-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), 0 0 40px rgba(0, 229, 255, 0.1); }
+    50% { box-shadow: 0 0 30px rgba(0, 229, 255, 0.5), 0 0 60px rgba(0, 229, 255, 0.2); }
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes flicker-neon {
+    0%, 100% { opacity: 1; text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor; }
+    92% { opacity: 1; }
+    93% { opacity: 0.8; }
+    94% { opacity: 1; }
+    96% { opacity: 0.9; }
+    97% { opacity: 1; }
+}
+
+@keyframes gradient-border {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+    50% { filter: drop-shadow(0 0 15px currentColor); }
+}
+
+/* === GLASSMORPHISM GLOBAL === */
+.glass, .card, [class*="card"], .week-selector, .exercise-card, .set-row, .stats-card {
+    background: rgba(15, 25, 40, 0.6) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* === TITRES FLICKER NÉON === */
+h1, h2, .app-title, .stats-section-title {
+    color: #00e5ff !important;
+    animation: flicker-neon 5s infinite !important;
+    text-shadow: 
+        0 0 10px rgba(0, 229, 255, 0.8),
+        0 0 20px rgba(0, 229, 255, 0.5),
+        0 0 40px rgba(0, 229, 255, 0.3) !important;
+}
+
+h3, h4, .section-title {
+    color: #9b59ff !important;
+    text-shadow: 
+        0 0 10px rgba(155, 89, 255, 0.6),
+        0 0 20px rgba(155, 89, 255, 0.3) !important;
+}
+
+/* === STATS CLÉS GLOW === */
+.stat-value, .xp-value, .tut-value, .rir-value, [class*="value"] {
+    color: #00e5ff !important;
+    text-shadow: 
+        0 0 10px rgba(0, 229, 255, 0.8),
+        0 0 20px rgba(0, 229, 255, 0.4) !important;
+    animation: breathe 3s ease-in-out infinite !important;
+}
+
+/* === BOUTONS HALO PULSÉ === */
+button, .btn, [class*="btn"], .nav-item {
+    position: relative !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+button:hover, .btn:hover, [class*="btn"]:hover, .nav-item:hover {
+    animation: halo-pulse 2s ease-in-out infinite !important;
+    transform: translateY(-3px) !important;
+}
+
+button:active, .btn:active, [class*="btn"]:active, .nav-item:active {
+    transform: scale(0.95) translateY(0) !important;
+    box-shadow: 
+        0 0 30px rgba(0, 229, 255, 0.6),
+        0 0 60px rgba(0, 229, 255, 0.3),
+        inset 0 0 20px rgba(0, 229, 255, 0.2) !important;
+}
+
+/* === CARTES STATS PREMIUM === */
+.stats-card {
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.stats-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(45deg, #00e5ff, #9b59ff, #00e5ff, #9b59ff) !important;
+    background-size: 400% 400% !important;
+    border-radius: 22px !important;
+    z-index: -1 !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    animation: gradient-border 3s ease infinite !important;
+}
+
+.stats-card:hover::before, .stats-card:active::before {
+    opacity: 1 !important;
+}
+
+.stats-card:hover, .stats-card:active {
+    transform: translateY(-8px) scale(1.02) rotateX(5deg) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 229, 255, 0.3),
+        0 0 40px rgba(0, 229, 255, 0.2) !important;
+}
+
+.stats-card.performance:hover, .stats-card.performance:active {
+    box-shadow: 0 20px 60px rgba(0, 229, 255, 0.4) !important;
+}
+
+.stats-card.recovery:hover, .stats-card.recovery:active {
+    box-shadow: 0 20px 60px rgba(76, 175, 80, 0.4) !important;
+}
+
+.stats-card.analysis:hover, .stats-card.analysis:active {
+    box-shadow: 0 20px 60px rgba(155, 89, 255, 0.4) !important;
+}
+
+.stats-card.records:hover, .stats-card.records:active {
+    box-shadow: 0 20px 60px rgba(255, 193, 7, 0.4) !important;
+}
+
+/* === NAV PREMIUM === */
+.bottom-nav {
+    background: rgba(10, 20, 35, 0.8) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    backdrop-filter: blur(30px) !important;
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+    box-shadow: 
+        0 -10px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 229, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(155, 89, 255, 0.15)) !important;
+    box-shadow: 
+        0 0 25px rgba(0, 229, 255, 0.4),
+        inset 0 0 15px rgba(0, 229, 255, 0.1) !important;
+    animation: halo-pulse 3s ease-in-out infinite !important;
+}
+
+/* === ICÔNES GLOW === */
+.nav-icon, .stats-card-icon, [class*="icon"] {
+    animation: glow-pulse 2s ease-in-out infinite !important;
+}
+
+/* === INPUTS PREMIUM === */
+input, select, textarea {
+    background: rgba(15, 25, 40, 0.8) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #00e5ff !important;
+    box-shadow: 
+        0 0 20px rgba(0, 229, 255, 0.4),
+        0 0 40px rgba(0, 229, 255, 0.2),
+        inset 0 0 10px rgba(0, 229, 255, 0.1) !important;
+}
+
+/* === SCROLLBAR CUSTOM === */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00e5ff, #9b59ff);
+    border-radius: 3px;
+}
+
+/* === PERSPECTIVE 3D === */
+.stats-cards-grid, .week-selector, .exercise-list {
+    perspective: 1000px !important;
+}
