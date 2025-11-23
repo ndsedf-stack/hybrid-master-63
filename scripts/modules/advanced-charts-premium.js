@@ -892,66 +892,66 @@ if(!container){console.error('❌ Container introuvable');return;}
 container.innerHTML='';
 
 var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-svg.setAttribute('width','380');
-svg.setAttribute('height','380');
-svg.setAttribute('viewBox','-10 -10 400 400');
+svg.setAttribute('width','320');
+svg.setAttribute('height','320');
+svg.setAttribute('viewBox','-5 -5 330 330');
 svg.style.position='absolute';
 svg.style.inset='0';
 
 // CERCLE 1 COMPLET (fond bleu)
 var c1bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
-c1bg.setAttribute('cx','190');c1bg.setAttribute('cy','190');c1bg.setAttribute('r','150');
+c1bg.setAttribute('cx','160');c1bg.setAttribute('cy','160');c1bg.setAttribute('r','130');
 c1bg.setAttribute('fill','none');c1bg.setAttribute('stroke','rgba(59,130,246,0.6)');
 c1bg.setAttribute('stroke-width','14');
 svg.appendChild(c1bg);
 
 // CERCLE 1 PROGRESSION (bleu)
 var c1=document.createElementNS('http://www.w3.org/2000/svg','circle');
-c1.setAttribute('cx','190');c1.setAttribute('cy','190');c1.setAttribute('r','150');
+c1.setAttribute('cx','160');c1.setAttribute('cy','160');c1.setAttribute('r','130');
 c1.setAttribute('fill','none');c1.setAttribute('stroke','#3b82f6');
 c1.setAttribute('stroke-width','14');c1.setAttribute('stroke-linecap','round');
-var circ1=2*Math.PI*150;
+var circ1=2*Math.PI*130;
 c1.setAttribute('stroke-dasharray',circ1);
 c1.setAttribute('stroke-dashoffset',circ1);
-c1.setAttribute('transform','rotate(-90 190 190)');
+c1.setAttribute('transform','rotate(-90 160 160)');
 c1.style.transition='stroke-dashoffset 1.5s ease';
 svg.appendChild(c1);
 
 // CERCLE 2 COMPLET (fond rose)
 var c2bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
-c2bg.setAttribute('cx','190');c2bg.setAttribute('cy','190');c2bg.setAttribute('r','115');
+c2bg.setAttribute('cx','160');c2bg.setAttribute('cy','160');c2bg.setAttribute('r','100');
 c2bg.setAttribute('fill','none');c2bg.setAttribute('stroke','rgba(236,72,153,0.6)');
 c2bg.setAttribute('stroke-width','12');
 svg.appendChild(c2bg);
 
 // CERCLE 2 PROGRESSION (rose)
 var c2=document.createElementNS('http://www.w3.org/2000/svg','circle');
-c2.setAttribute('cx','190');c2.setAttribute('cy','190');c2.setAttribute('r','115');
+c2.setAttribute('cx','160');c2.setAttribute('cy','160');c2.setAttribute('r','100');
 c2.setAttribute('fill','none');c2.setAttribute('stroke','#ec4899');
 c2.setAttribute('stroke-width','12');c2.setAttribute('stroke-linecap','round');
-var circ2=2*Math.PI*115;
+var circ2=2*Math.PI*100;
 c2.setAttribute('stroke-dasharray',circ2);
 c2.setAttribute('stroke-dashoffset',circ2);
-c2.setAttribute('transform','rotate(-90 190 190)');
+c2.setAttribute('transform','rotate(-90 160 160)');
 c2.style.transition='stroke-dashoffset 1.5s ease';
 svg.appendChild(c2);
 
 // CERCLE 3 COMPLET (fond cyan/jaune)
 var c3bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
-c3bg.setAttribute('cx','190');c3bg.setAttribute('cy','190');c3bg.setAttribute('r','80');
+c3bg.setAttribute('cx','160');c3bg.setAttribute('cy','160');c3bg.setAttribute('r','70');
 c3bg.setAttribute('fill','none');c3bg.setAttribute('stroke','rgba(255,255,255,0.4)');
 c3bg.setAttribute('stroke-width','10');
 svg.appendChild(c3bg);
 
 // CERCLE 3 PROGRESSION (cyan ou jaune selon score)
 var c3=document.createElementNS('http://www.w3.org/2000/svg','circle');
-c3.setAttribute('cx','190');c3.setAttribute('cy','190');c3.setAttribute('r','80');
+c3.setAttribute('cx','160');c3.setAttribute('cy','160');c3.setAttribute('r','70');
 c3.setAttribute('fill','none');c3.setAttribute('stroke',isOptimal?'#fbbf24':'#22d3ee');
 c3.setAttribute('stroke-width','10');c3.setAttribute('stroke-linecap','round');
-var circ3=2*Math.PI*80;
+var circ3=2*Math.PI*70;
 c3.setAttribute('stroke-dasharray',circ3);
 c3.setAttribute('stroke-dashoffset',circ3);
-c3.setAttribute('transform','rotate(-90 190 190)');
+c3.setAttribute('transform','rotate(-90 160 160)');
 c3.style.transition='stroke-dashoffset 1.5s ease';
 svg.appendChild(c3);
 
