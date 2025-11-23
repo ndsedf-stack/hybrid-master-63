@@ -688,6 +688,7 @@ if (document.readyState === 'loading') {
 console.log('📊 Stats Init loaded');
 
 // 🌀 NEON TRACKER 3D
+var sessions=JSON.parse(localStorage.getItem("completedSessions")||"[]");
 if(typeof initNeonTracker3D==="function"){
 var completedCount=sessions.filter(function(s){return s.completed;}).length;
 var totalSets=sessions.reduce(function(sum,s){return sum+(s.exercises||[]).reduce(function(ex,e){return ex+e.sets.length;},0);},0);
