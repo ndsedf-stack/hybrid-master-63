@@ -894,14 +894,14 @@ container.innerHTML='';
 var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
 svg.setAttribute('width','380');
 svg.setAttribute('height','380');
-svg.setAttribute('viewBox','0 0 380 380');
+svg.setAttribute('viewBox','-10 -10 400 400');
 svg.style.position='absolute';
 svg.style.inset='0';
 
 // CERCLE 1 COMPLET (fond bleu)
 var c1bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
 c1bg.setAttribute('cx','190');c1bg.setAttribute('cy','190');c1bg.setAttribute('r','150');
-c1bg.setAttribute('fill','none');c1bg.setAttribute('stroke','rgba(59,130,246,0.15)');
+c1bg.setAttribute('fill','none');c1bg.setAttribute('stroke','rgba(59,130,246,0.4)');
 c1bg.setAttribute('stroke-width','14');
 svg.appendChild(c1bg);
 
@@ -920,7 +920,7 @@ svg.appendChild(c1);
 // CERCLE 2 COMPLET (fond rose)
 var c2bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
 c2bg.setAttribute('cx','190');c2bg.setAttribute('cy','190');c2bg.setAttribute('r','115');
-c2bg.setAttribute('fill','none');c2bg.setAttribute('stroke','rgba(236,72,153,0.15)');
+c2bg.setAttribute('fill','none');c2bg.setAttribute('stroke','rgba(236,72,153,0.4)');
 c2bg.setAttribute('stroke-width','12');
 svg.appendChild(c2bg);
 
@@ -939,7 +939,7 @@ svg.appendChild(c2);
 // CERCLE 3 COMPLET (fond cyan/jaune)
 var c3bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
 c3bg.setAttribute('cx','190');c3bg.setAttribute('cy','190');c3bg.setAttribute('r','80');
-c3bg.setAttribute('fill','none');c3bg.setAttribute('stroke','rgba(255,255,255,0.1)');
+c3bg.setAttribute('fill','none');c3bg.setAttribute('stroke','rgba(255,255,255,0.25)');
 c3bg.setAttribute('stroke-width','10');
 svg.appendChild(c3bg);
 
