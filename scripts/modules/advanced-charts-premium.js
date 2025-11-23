@@ -868,59 +868,99 @@ progress.setAttribute('stroke-dashoffset',offset);
 function initNeonTracker3D(data){
 var score=data.score||60;
 var sessions=data.sessions||{current:3,max:5};
-var sets=data.sets||{current:164,max:200};
+var sets=data.sets||{current:164,max:60};
 var isOptimal=score>=80;
+
 document.getElementById('scoreValue').textContent=Math.round(score);
-document.getElementById('scoreValue').className='score-value'+(isOptimal?' optimal':'');
-document.getElementById('statusBadge').textContent=isOptimal?'Optimized':'Warning';
-document.getElementById('statusBadge').className='status-badge'+(isOptimal?' optimal':'');
-document.getElementById('glassLens').className='glass-lens'+(isOptimal?' optimal':'');
-document.getElementById('globalGlow').className='global-glow'+(isOptimal?' optimal':'');
+if(isOptimal){
+document.getElementById('scoreValue').style.color='#fbbf24';
+document.getElementById('scoreValue').style.filter='drop-shadow(0 0 12px rgba(251,191,36,0.8))';
+document.getElementById('statusBadge').style.color='#fbbf24';
+document.getElementById('statusBadge').style.borderColor='rgba(251,191,36,0.5)';
+document.getElementById('statusBadge').textContent='OPTIMIZED';
+document.getElementById('glassLens').style.boxShadow='0 0 25px rgba(251,191,36,0.2),inset 0 0 15px rgba(0,0,0,1)';
+document.getElementById('globalGlow').style.background='rgba(251,191,36,0.25)';
+}
+
 document.getElementById('sessionsValue').textContent=sessions.current;
 document.getElementById('sessionsMax').textContent=sessions.max;
 document.getElementById('setsValue').textContent=sets.current;
 document.getElementById('setsMax').textContent=sets.max;
+
 var container=document.getElementById('ringsContainer');
+if(!container){console.error('❌ Container introuvable');return;}
 container.innerHTML='';
-var ring1=createCircularRing(container,{
-radius:230,
-strokeWidth:18,
-colorStart:'#3b82f6',
-colorEnd:'#60a5fa',
-variant:'solid',
-cut:90,
-trackColor:'rgba(59,130,246,0.1)',
-glow:true,
-zIndex:10
-});
-var ring2=createCircularRing(container,{
-radius:190,
-strokeWidth:10,
-colorStart:'#ec4899',
-colorEnd:'#f43f5e',
-variant:'dashed',
-cut:120,
-trackColor:'rgba(236,72,153,0.1)',
-zIndex:20
-});
-var ring3=createCircularRing(container,{
-radius:140,
-strokeWidth:4,
-colorStart:isOptimal?'#f59e0b':'#22d3ee',
-colorEnd:isOptimal?'#fbbf24':'#06b6d4',
-variant:'dots',
-trackColor:'rgba(255,255,255,0.05)',
-rotate:true,
-zIndex:30
-});
-setTimeout(function(){
-ring1.update((sessions.current/sessions.max)*100);
-},100);
-setTimeout(function(){
-ring2.update((sets.current/sets.max)*100);
-},200);
-setTimeout(function(){
-ring3.update(score);
-},300);
+
+var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+svg.setAttribute('width','380');
+svg.setAttribute('height','380');
+svg.setAttribute('viewBox','0 0 380 380');
+svg.style.position='absolute';
+svg.style.inset='0';
+
+// CERCLE 1 COMPLET (fond bleu)
+var c1bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
+c1bg.setAttribute('cx','190');c1bg.setAttribute('cy','190');c1bg.setAttribute('r','150');
+c1bg.setAttribute('fill','none');c1bg.setAttribute('stroke','rgba(59,130,246,0.15)');
+c1bg.setAttribute('stroke-width','14');
+svg.appendChild(c1bg);
+
+// CERCLE 1 PROGRESSION (bleu)
+var c1=document.createElementNS('http://www.w3.org/2000/svg','circle');
+c1.setAttribute('cx','190');c1.setAttribute('cy','190');c1.setAttribute('r','150');
+c1.setAttribute('fill','none');c1.setAttribute('stroke','#3b82f6');
+c1.setAttribute('stroke-width','14');c1.setAttribute('stroke-linecap','round');
+var circ1=2*Math.PI*150;
+c1.setAttribute('stroke-dasharray',circ1);
+c1.setAttribute('stroke-dashoffset',circ1);
+c1.setAttribute('transform','rotate(-90 190 190)');
+c1.style.transition='stroke-dashoffset 1.5s ease';
+svg.appendChild(c1);
+
+// CERCLE 2 COMPLET (fond rose)
+var c2bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
+c2bg.setAttribute('cx','190');c2bg.setAttribute('cy','190');c2bg.setAttribute('r','115');
+c2bg.setAttribute('fill','none');c2bg.setAttribute('stroke','rgba(236,72,153,0.15)');
+c2bg.setAttribute('stroke-width','12');
+svg.appendChild(c2bg);
+
+// CERCLE 2 PROGRESSION (rose)
+var c2=document.createElementNS('http://www.w3.org/2000/svg','circle');
+c2.setAttribute('cx','190');c2.setAttribute('cy','190');c2.setAttribute('r','115');
+c2.setAttribute('fill','none');c2.setAttribute('stroke','#ec4899');
+c2.setAttribute('stroke-width','12');c2.setAttribute('stroke-linecap','round');
+var circ2=2*Math.PI*115;
+c2.setAttribute('stroke-dasharray',circ2);
+c2.setAttribute('stroke-dashoffset',circ2);
+c2.setAttribute('transform','rotate(-90 190 190)');
+c2.style.transition='stroke-dashoffset 1.5s ease';
+svg.appendChild(c2);
+
+// CERCLE 3 COMPLET (fond cyan/jaune)
+var c3bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
+c3bg.setAttribute('cx','190');c3bg.setAttribute('cy','190');c3bg.setAttribute('r','80');
+c3bg.setAttribute('fill','none');c3bg.setAttribute('stroke','rgba(255,255,255,0.1)');
+c3bg.setAttribute('stroke-width','10');
+svg.appendChild(c3bg);
+
+// CERCLE 3 PROGRESSION (cyan ou jaune selon score)
+var c3=document.createElementNS('http://www.w3.org/2000/svg','circle');
+c3.setAttribute('cx','190');c3.setAttribute('cy','190');c3.setAttribute('r','80');
+c3.setAttribute('fill','none');c3.setAttribute('stroke',isOptimal?'#fbbf24':'#22d3ee');
+c3.setAttribute('stroke-width','10');c3.setAttribute('stroke-linecap','round');
+var circ3=2*Math.PI*80;
+c3.setAttribute('stroke-dasharray',circ3);
+c3.setAttribute('stroke-dashoffset',circ3);
+c3.setAttribute('transform','rotate(-90 190 190)');
+c3.style.transition='stroke-dashoffset 1.5s ease';
+svg.appendChild(c3);
+
+container.appendChild(svg);
+
+setTimeout(function(){c1.setAttribute('stroke-dashoffset',circ1-(circ1*(sessions.current/sessions.max)));},100);
+setTimeout(function(){c2.setAttribute('stroke-dashoffset',circ2-(circ2*(sets.current/sets.max)));},200);
+setTimeout(function(){c3.setAttribute('stroke-dashoffset',circ3-(circ3*(score/100)));},300);
+
+console.log('✅ 3 cercles complets créés');
 }
 window.initNeonTracker3D=initNeonTracker3D;
