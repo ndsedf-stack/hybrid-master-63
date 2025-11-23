@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simulation Propre</title>
+    <style>
+        body {
+            background: #0a0e1a;
+            color: white;
+            padding: 40px;
+            font-family: 'Rajdhani', sans-serif;
+            text-align: center;
+        }
+        button {
+            padding: 30px 60px;
+            background: linear-gradient(135deg, #00e5ff, #9b59ff);
+            border: none;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 SIMULATION 4 SEMAINES</h1>
+    
+    <button onclick="simuler()">📅 SIMULER</button>
+    <button onclick="voirStats()">📊 VOIR STATS</button>
+    
+    <div id="result" style="margin-top: 30px; padding: 20px; background: rgba(0,229,255,0.1); border: 2px solid #00e5ff; border-radius: 12px; display: none;"></div>
+
+    <script>
+        function simuler() {
+            const sessions = [];
+            const now = new Date();
+            
+            for (let week = 1; week <= 4; week++) {
+                for (let day = 0; day < 3; day++) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - (28 - week * 7 - day * 2));
+                    
+                    const exercises = [
+                        { name: 'Squat', primaryMuscle: 'Quadriceps', sets: 4, reps: 10, weight: 100, rpe: 7, rest: 90, tempo: '3-1-2' },
+                        { name: 'Bench Press', primaryMuscle: 'Pectoraux', sets: 4, reps: 8, weight: 80, rpe: 7, rest: 90, tempo: '3-1-2' }
+                    ];
+                    
+                    sessions.push({
+                        week: week,
+                        date: date.toISOString(),
+                        completed: true,
+                        exercises: exercises,
+                        stats: {
+                            total_volume: exercises.reduce((sum, e) => sum + (e.weight * e.reps * e.sets), 0),
+                            total_sets: exercises.reduce((sum, e) => sum + e.sets, 0),
+                            total_time_under_tension: exercises.reduce((sum, e) => sum + (e.sets * 30), 0)
+                        }
+                    });
+                }
+            }
+            
+            localStorage.setItem('completedSessions', JSON.stringify(sessions));
+            localStorage.setItem('currentWeek', '4');
+            localStorage.setItem('workout_history', JSON.stringify(sessions));
+            
+            let totalVol = 0;
+            sessions.forEach(s => totalVol += s.stats.total_volume);
+            
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').innerHTML = `
+                ✅ 4 SEMAINES SIMULÉES !<br><br>
+                📊 ${sessions.length} sessions<br>
+                💪 Volume: ${totalVol.toLocaleString()} kg<br><br>
+                ➡️ Clique sur "VOIR STATS"
+            `;
+        }
+        
+        function voirStats() {
+            window.location.href = 'stats-performance.html';
+        }
+    </script>
+</body>
+</html>

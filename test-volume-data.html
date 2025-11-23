@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Volume Load - Hybrid Master</title>
+    <style>
+        body {
+            background: #0a0e1a;
+            color: white;
+            padding: 40px;
+            font-family: 'Rajdhani', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00e5ff;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+        .button-group {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 20px;
+            background: linear-gradient(135deg, #00e5ff, #9b59ff);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4);
+        }
+        .danger {
+            background: linear-gradient(135deg, #ff4444, #cc0000) !important;
+        }
+        .success {
+            background: linear-gradient(135deg, #00ff9f, #00cc7f) !important;
+        }
+        .info {
+            background: rgba(0, 229, 255, 0.1);
+            border: 2px solid #00e5ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .status {
+            background: rgba(155, 89, 255, 0.1);
+            border: 2px solid #9b59ff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 SIMULATEUR VOLUME LOAD</h1>
+    
+    <div class="button-group">
+        <button onclick="simulateWeek1()">
+            📅 SEMAINE 1 (Tempo 3-1-2)
+        </button>
+        
+        <button onclick="simulateWeek8()">
+            🔥 SEMAINE 8 (Rest-Pause)
+        </button>
+        
+        <button onclick="simulateWeek15()">
+            💥 SEMAINE 15 (Drop-sets + Myo-reps)
+        </button>
+        
+        <button onclick="simulateWeek22()">
+            ⚡ SEMAINE 22 (Clusters)
+        </button>
+        
+        <button onclick="simulateFullMonth()">
+            📆 MOIS COMPLET (4 semaines)
+        </button>
+        
+        <button class="success" onclick="goToStats()">
+            📊 VOIR LES STATS
+        </button>
+        
+        <button class="danger" onclick="clearData()">
+            🗑️ EFFACER TOUT
+        </button>
+    </div>
+    
+    <div class="info">
+        <strong>📍 Comment ça marche :</strong>
+        <ol>
+            <li>Clique sur un bouton pour simuler une semaine</li>
+            <li>Les données utilisent <strong>TES VRAIS EXERCICES</strong> de program-data.js</li>
+            <li>Clique sur "VOIR LES STATS" pour voir la jauge s'animer !</li>
+        </ol>
+    </div>
+    
+    <div id="status" class="status" style="display: none;"></div>
+
+    <script type="module">
+        import programData from './scripts/program-data.js';
+
+        function getCurrentWeekMonday() {
+            const today = new Date();
+            const day = today.getDay();
+            const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(today.setDate(diff));
+            return monday.toISOString().split('T')[0];
+        }
+
+        function addDays(dateStr, days) {
+            const date = new Date(dateStr);
+            date.setDate(date.getDate() + days);
+            return date.toISOString().split('T')[0];
+        }
+
+        function showStatus(message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = message;
+        }
+
+        // Simule une semaine complète depuis program-data.js
+        function simulateWeekFromProgram(weekNumber) {
+            try {
+                const monday = getCurrentWeekMonday();
+                const week = programData.getWeek(weekNumber);
+                
+                console.log('📦 Semaine chargée:', week);
+                
+                const workouts = [];
+                let totalVolume = 0;
+                let totalSets = 0;
+                let totalTUT = 0;
+
+                // Dimanche (jour 0)
+                const dimancheData = {
+                    date: monday,
+                    exercises: []
+                };
+                
+                week.dimanche.exercises.forEach(ex => {
+                    const sets = [];
+                    const numSets = ex.sets;
+                    const reps = typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps.split('-')[0]) : ex.reps;
+                    
+                    for (let s = 0; s < numSets; s++) {
+                        const tut = 28 + Math.floor(Math.random() * 8); // 28-35s
+                        sets.push({
+                            weight: ex.weight,
+                            reps: reps,
+                            tut: tut,
+                            rir: 2
+                        });
+                        
+                        totalVolume += ex.weight * reps;
+                        totalSets++;
+                        totalTUT += tut;
+                    }
+                    
+                    dimancheData.exercises.push({
+                        name: ex.name,
+                        muscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                        sets: sets
+                    });
+                });
+                
+                workouts.push(dimancheData);
+
+                // Mardi (jour 2)
+                const mardiData = {
+                    date: addDays(monday, 2),
+                    exercises: []
+                };
+                
+                week.mardi.exercises.forEach(ex => {
+                    const sets = [];
+                    const numSets = ex.sets;
+                    const reps = typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps.split('-')[0]) : ex.reps;
+                    
+                    for (let s = 0; s < numSets; s++) {
+                        const tut = 28 + Math.floor(Math.random() * 8);
+                        sets.push({
+                            weight: ex.weight,
+                            reps: reps,
+                            tut: tut,
+                            rir: 2
+                        });
+                        
+                        totalVolume += ex.weight * reps;
+                        totalSets++;
+                        totalTUT += tut;
+                    }
+                    
+                    mardiData.exercises.push({
+                        name: ex.name,
+                        muscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                        sets: sets
+                    });
+                });
+                
+                workouts.push(mardiData);
+
+                // Vendredi (jour 5)
+                const vendrediData = {
+                    date: addDays(monday, 5),
+                    exercises: []
+                };
+                
+                week.vendredi.exercises.forEach(ex => {
+                    const sets = [];
+                    const numSets = ex.sets;
+                    const reps = typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps.split('-')[0]) : ex.reps;
+                    
+                    for (let s = 0; s < numSets; s++) {
+                        const tut = 28 + Math.floor(Math.random() * 8);
+                        sets.push({
+                            weight: ex.weight,
+                            reps: reps,
+                            tut: tut,
+                            rir: 2
+                        });
+                        
+                        totalVolume += ex.weight * reps;
+                        totalSets++;
+                        totalTUT += tut;
+                    }
+                    
+                    vendrediData.exercises.push({
+                        name: ex.name,
+                        muscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                        sets: sets
+                    });
+                });
+                
+                workouts.push(vendrediData);
+
+                // Sauvegarde dans localStorage
+                localStorage.setItem('workout_history', JSON.stringify(workouts));
+
+                const tutMinutes = Math.floor(totalTUT / 60);
+                const tutSeconds = totalTUT % 60;
+
+                showStatus(`
+                    ✅ SEMAINE ${weekNumber} SIMULÉE !<br><br>
+                    <strong>📊 Statistiques :</strong><br>
+                    - Bloc : ${week.block} (${week.technique})<br>
+                    - Workouts : ${workouts.length}<br>
+                    - Sets totaux : ${totalSets}<br>
+                    - Volume : ${Math.round(totalVolume).toLocaleString()} kg<br>
+                    - TUT : ${tutMinutes}:${tutSeconds.toString().padStart(2, '0')}<br>
+                    - RPE cible : ${week.rpeTarget}<br><br>
+                    <strong>➡️ Clique sur "VOIR LES STATS" !</strong>
+                `);
+
+                return {
+                    totalVolume: Math.round(totalVolume),
+                    totalSets,
+                    totalTUT
+                };
+
+            } catch (error) {
+                console.error('❌ Erreur simulation:', error);
+                showStatus(`❌ ERREUR : ${error.message}`);
+            }
+        }
+
+        // Simule un mois complet
+        window.simulateFullMonth = function() {
+            const monday = getCurrentWeekMonday();
+            const allWorkouts = [];
+            let grandTotalVolume = 0;
+            let grandTotalSets = 0;
+            
+            // Semaines 1, 2, 3, 4
+            for (let weekOffset = 0; weekOffset < 4; weekOffset++) {
+                const week = programData.getWeek(1 + weekOffset);
+                const weekMonday = addDays(monday, weekOffset * 7);
+                
+                // Dimanche, Mardi, Vendredi
+                [0, 2, 5].forEach((dayOffset, index) => {
+                    const dayName = ['dimanche', 'mardi', 'vendredi'][index];
+                    const workout = {
+                        date: addDays(weekMonday, dayOffset),
+                        exercises: []
+                    };
+                    
+                    week[dayName].exercises.forEach(ex => {
+                        const sets = [];
+                        const numSets = ex.sets;
+                        const reps = typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps.split('-')[0]) : ex.reps;
+                        
+                        for (let s = 0; s < numSets; s++) {
+                            const tut = 28 + Math.floor(Math.random() * 8);
+                            sets.push({
+                                weight: ex.weight,
+                                reps: reps,
+                                tut: tut,
+                                rir: 2
+                            });
+                            
+                            grandTotalVolume += ex.weight * reps;
+                            grandTotalSets++;
+                        }
+                        
+                        workout.exercises.push({
+                            name: ex.name,
+                            muscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                            sets: sets
+                        });
+                    });
+                    
+                    allWorkouts.push(workout);
+                });
+            }
+            
+            localStorage.setItem('workout_history', JSON.stringify(allWorkouts));
+            
+            showStatus(`
+                ✅ MOIS COMPLET SIMULÉ !<br><br>
+                <strong>📊 Statistiques :</strong><br>
+                - 4 semaines complètes<br>
+                - ${allWorkouts.length} workouts<br>
+                - ${grandTotalSets} sets totaux<br>
+                - ${Math.round(grandTotalVolume).toLocaleString()} kg de volume<br><br>
+                <strong>➡️ Clique sur "VOIR LES STATS" !</strong>
+            `);
+        };
+
+        // Export des fonctions
+        window.simulateWeek1 = () => simulateWeekFromProgram(1);
+        window.simulateWeek8 = () => simulateWeekFromProgram(8);
+        window.simulateWeek15 = () => simulateWeekFromProgram(15);
+        window.simulateWeek22 = () => simulateWeekFromProgram(22);
+
+        window.clearData = function() {
+            if (confirm('⚠️ Effacer TOUTES les données ?')) {
+                localStorage.removeItem('workout_history');
+                showStatus('✅ Données effacées !');
+                setTimeout(() => {
+                    document.getElementById('status').style.display = 'none';
+                }, 2000);
+            }
+        };
+
+        window.goToStats = function() {
+            window.location.href = 'stats-performance.html';
+        };
+    </script>
+</body>
+</html>
+
+<script src="fix-simulator.js"></script>
+<script>
+// Override des fonctions de simulation
+const originalSimulate = window.simulateWeekFromProgram;
+
+// Wrapper pour convertir le format
+function wrapSimulation(weekNum) {
+    const result = originalSimulate(weekNum);
+    
+    // Convertit le format
+    const oldData = JSON.parse(localStorage.getItem('workout_history') || '[]');
+    const newData = convertWorkoutFormat(oldData);
+    localStorage.setItem('workout_history', JSON.stringify(newData));
+    
+    console.log('✅ Données converties au format attendu');
+    return result;
+}
+</script>

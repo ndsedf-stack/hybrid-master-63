@@ -185,6 +185,15 @@ body { padding: 15px !important; max-width: 428px; margin: 0 auto; }
                 </div>
             </div>
 
+<div class="progress-card glass holographic-scan" style="margin-top: 30px;">
+                <div class="card-title">
+                    <span class="title-icon">🏋️</span>
+                    <span class="neon-flicker">SCORE DE FORCE</span>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 16px;">
+                    <canvas id="force-gauge-chart" width="350" height="280"></canvas>
+                </div>
+            </div>
 
 <div class="progress-card glass holographic-scan" style="margin-top: 30px;">
                 <div class="card-title">

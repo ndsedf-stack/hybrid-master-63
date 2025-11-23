@@ -49,8 +49,8 @@ class VolumeLoadCalculator {
 
       if (session.exercises) {
         session.exercises.forEach(exercise => {
-          if (exercise.sets) {
-            totalSets += exercise.sets || 0;
+          if (exercise.sets_data && exercise.sets_data.length > 0) {
+            totalSets += exercise.sets_data.length;
           }
         });
       }
@@ -176,20 +176,37 @@ export class VolumeLoadGauge {
       };
 
       // Mettre à jour le DOM
-      // Mettre à jour les cartes individuellement par ID
-      const setsEl = document.getElementById('setsValue');
-      const tutEl = document.getElementById('tutValue');
-      const volumeEl = document.getElementById('volumeValue');
-      const statusEl = document.getElementById('statusValue');
-      
-      if (setsEl) setsEl.textContent = this.stats.setsCompleted;
-      if (tutEl) {
-        const minutes = Math.floor(this.stats.tutTotal / 60);
-        const seconds = this.stats.tutTotal % 60;
-        tutEl.textContent = minutes + ':' + String(seconds).padStart(2, '0');
+      if (this.statsContainer) {
+        this.statsContainer.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">Sets</div>
+            <div class="stat-value">${this.stats.setsCompleted}</div>
+            <div class="stat-sub">Cette semaine</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">TUT Total</div>
+            <div class="stat-value stat-cyan">${this.stats.tutTotal}s</div>
+            <div class="stat-sub">~${Math.floor(this.stats.tutTotal / 60)} min</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Volume Load</div>
+            <div class="stat-value">${(this.stats.weeklyVolume / 1000).toFixed(1)}k</div>
+            <div class="stat-sub">kg levés</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Status</div>
+            <div class="stat-value ${this.stats.optimalZone ? 'stat-success' : 'stat-warning'}">
+              ${this.stats.optimalZone ? '✓ OPTIMAL' : '⚠ AJUSTER'}
+            </div>
+            <div class="stat-sub">
+              ${this.stats.optimalZone ? 'Zone hypertrophie' : 'Hors zone cible'}
+            </div>
+          </div>
+        `;
       }
-      if (volumeEl) volumeEl.textContent = (this.stats.weeklyVolume / 1000).toFixed(1) + 'k kg';
-      if (statusEl) statusEl.textContent = this.stats.optimalZone ? '✅ OPTIMAL' : '⚠️ AJUSTER';
 
       // Couleurs dynamiques selon la zone
       let hue = 30, sat = 100, light = 60; // Orange par défaut
@@ -457,7 +474,7 @@ export class VolumeLoadGauge {
     const needleGrad = ctx.createLinearGradient(-needleW * 2, 0, needleLen, 0);
     needleGrad.addColorStop(0, '#fff');
     needleGrad.addColorStop(0.2, themeColor);
-    needleGrad.addColorStop(1, themeColor);
+    needleGrad.addColorStop(0.6, 'transparent');
     
     ctx.fillStyle = needleGrad;
     ctx.fill();

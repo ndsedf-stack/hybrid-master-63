@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Générer Données Test</title>
+    <style>
+        body {
+            background: #0a0e1a;
+            color: white;
+            padding: 40px;
+            font-family: 'Rajdhani', sans-serif;
+            text-align: center;
+        }
+        button {
+            padding: 30px 60px;
+            background: linear-gradient(135deg, #00e5ff, #9b59ff);
+            border: none;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        #status {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 2px solid #00e5ff;
+            border-radius: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 GÉNÉRATEUR DE DONNÉES TEST</h1>
+    <p>Format compatible: graphiques + jauge Volume Load</p>
+    
+    <button onclick="generate4Weeks()">📅 GÉNÉRER 4 SEMAINES</button>
+    <button onclick="clearAndGo()">🗑️ EFFACER & VOIR STATS</button>
+    
+    <div id="status"></div>
+
+    <script type="module">
+        import programData from './scripts/program-data.js';
+
+        function showStatus(msg) {
+            const div = document.getElementById('status');
+            div.style.display = 'block';
+            div.innerHTML = msg;
+        }
+
+        window.generate4Weeks = function() {
+            const sessions = [];
+            const now = new Date();
+            
+            // Génère 4 semaines de données
+            for (let week = 1; week <= 4; week++) {
+                const weekData = programData.getWeek(week);
+                
+                // Dimanche (jour 0)
+                const dimancheDate = new Date(now);
+                dimancheDate.setDate(now.getDate() - now.getDay() - (4 - week) * 7);
+                
+                sessions.push({
+                    week: week,
+                    date: dimancheDate.toISOString(),
+                    exercises: weekData.dimanche.exercises.map(ex => ({
+                        name: ex.name,
+                        primaryMuscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                        secondaryMuscles: Array.isArray(ex.muscle) ? ex.muscle.slice(1) : [],
+                        sets: ex.sets,
+                        reps: typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps) : ex.reps,
+                        weight: ex.weight,
+                        rpe: parseFloat(weekData.rpeTarget.split('-')[0]),
+                        rest: ex.rest,
+                        tempo: ex.tempo
+                    }))
+                });
+                
+                // Mardi (jour 2)
+                const mardiDate = new Date(dimancheDate);
+                mardiDate.setDate(dimancheDate.getDate() + 2);
+                
+                sessions.push({
+                    week: week,
+                    date: mardiDate.toISOString(),
+                    exercises: weekData.mardi.exercises.map(ex => ({
+                        name: ex.name,
+                        primaryMuscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                        secondaryMuscles: Array.isArray(ex.muscle) ? ex.muscle.slice(1) : [],
+                        sets: ex.sets,
+                        reps: typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps) : ex.reps,
+                        weight: ex.weight,
+                        rpe: parseFloat(weekData.rpeTarget.split('-')[0]),
+                        rest: ex.rest,
+                        tempo: ex.tempo
+                    }))
+                });
+                
+                // Vendredi (jour 5)
+                const vendrediDate = new Date(dimancheDate);
+                vendrediDate.setDate(dimancheDate.getDate() + 5);
+                
+                sessions.push({
+                    week: week,
+                    date: vendrediDate.toISOString(),
+                    exercises: weekData.vendredi.exercises.map(ex => ({
+                        name: ex.name,
+                        primaryMuscle: Array.isArray(ex.muscle) ? ex.muscle[0] : ex.muscle,
+                        secondaryMuscles: Array.isArray(ex.muscle) ? ex.muscle.slice(1) : [],
+                        sets: ex.sets,
+                        reps: typeof ex.reps === 'string' ? parseInt(ex.reps.split('-')[1] || ex.reps) : ex.reps,
+                        weight: ex.weight,
+                        rpe: parseFloat(weekData.rpeTarget.split('-')[0]),
+                        rest: ex.rest,
+                        tempo: ex.tempo
+                    }))
+                });
+            }
+            
+            // Sauvegarde pour les graphiques
+            localStorage.setItem('completedSessions', JSON.stringify(sessions));
+            localStorage.setItem('currentWeek', '4');
+            
+            // Sauvegarde pour la jauge Volume Load (format simple)
+            const workoutHistory = sessions.map(session => ({
+                date: session.date.split('T')[0],
+                exercises: session.exercises.map(ex => ({
+                    name: ex.name,
+                    muscle: ex.primaryMuscle,
+                    sets: Array(ex.sets).fill(null).map(() => ({
+                        weight: ex.weight,
+                        reps: ex.reps,
+                        tut: 30,
+                        rir: 2
+                    }))
+                }))
+            }));
+            
+            localStorage.setItem('workout_history', JSON.stringify(workoutHistory));
+            
+            // Calcule les stats
+            let totalVolume = 0;
+            let totalSets = 0;
+            sessions.forEach(s => {
+                s.exercises.forEach(ex => {
+                    totalVolume += ex.weight * ex.reps * ex.sets;
+                    totalSets += ex.sets;
+                });
+            });
+            
+            showStatus(`
+                ✅ 4 SEMAINES GÉNÉRÉES !<br><br>
+                📊 ${sessions.length} sessions<br>
+                💪 ${totalSets} sets totaux<br>
+                🏋️ ${Math.round(totalVolume).toLocaleString()} kg de volume<br><br>
+                ➡️ <a href="stats-performance.html" style="color: #00e5ff;">VOIR LES STATS</a>
+            `);
+        };
+
+        window.clearAndGo = function() {
+            localStorage.clear();
+            window.location.href = 'stats-performance.html';
+        };
+    </script>
+</body>
+</html>
