@@ -1,0 +1,5 @@
+<!-- ZONES INTENSITÉ -->
+<div class="chart-container holographic-scan" style="margin-top:20px;">
+    <div class="chart-title neon-flicker">🎯 ZONES INTENSITÉ</div>
+    <canvas id="intensity-chart"></canvas>
+</div>

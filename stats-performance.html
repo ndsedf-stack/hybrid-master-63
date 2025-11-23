@@ -217,18 +217,41 @@ body { padding: 15px !important; max-width: 428px; margin: 0 auto; }
                 <canvas id="progression-chart"></canvas>
             </div>
 
-<!-- HIDDEN <div class="chart-container holographic-scan"> -->
-<!-- HIDDEN                 <div class="chart-title neon-flicker">🎯 ZONES D'INTENSITÉ</div> -->
-<!-- HIDDEN                 <canvas id="intensity-chart"></canvas> -->
-<!-- HIDDEN                 <div style="text-align: center; margin-top: 20px;"> -->
-<!-- HIDDEN                     <div style="display: inline-block; padding: 12px 24px; background: rgba(0,255,159,0.2); border: 2px solid rgba(0,255,159,0.5); border-radius: 12px;"> -->
-<!-- HIDDEN                         <span style="font-size: 14px; color: rgba(255,255,255,0.7);">ZONE OPTIMALE HYPERTROPHIE:</span> -->
-<!-- HIDDEN                         <span style="font-size: 24px; font-weight: 900; color: #00ff9f; margin-left: 12px;" id="hypertrophy-percent">0%</span> -->
-<!-- HIDDEN                     </div> -->
-<!-- HIDDEN                 </div> -->
-<!-- HIDDEN             </div> -->
-<!-- HIDDEN                 </div> -->
-<!-- HIDDEN             </div> -->
+
+<div class="chart-container holographic-scan" style="margin-top:20px;">
+    <div class="chart-title neon-flicker">🎯 ZONES INTENSITÉ</div>
+    <canvas id="intensity-chart"></canvas>
+</div>
+
+<div class="progress-card glass holographic-scan" style="margin-top:20px;">
+    <div class="card-title">
+        <span class="title-icon">🌀</span>
+        <span class="neon-flicker">PROGRESSION GLOBALE</span>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:16px;">
+        <canvas id="spiral-progress-chart" width="300" height="300"></canvas>
+    </div>
+</div>
+
+
+
+<div class="progress-card glass holographic-scan" style="margin-top:20px;">
+    <div class="card-title">
+        <span class="title-icon">💪</span>
+        <span class="neon-flicker">MUSCLES TRAVAILLÉS</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px;">
+        <div>
+            <h4 style="color:#00e5ff;font-size:12px;margin-bottom:8px;">PRIMAIRES</h4>
+            <div id="primary-muscles-list"></div>
+        </div>
+        <div>
+            <h4 style="color:#9b59ff;font-size:12px;margin-bottom:8px;">SECONDAIRES</h4>
+            <div id="secondary-muscles-list"></div>
+        </div>
+    </div>
+</div>
+
 <a href="index.html" style="display:block;padding:15px;background:rgba(0,229,255,0.2);border:1px solid #00e5ff;border-radius:12px;color:#00e5ff;text-align:center;text-decoration:none;margin-top:20px;font-weight:bold">← RETOUR</a>
 <script src="scripts/modules/stats-engine.js"></script>
 <script src="scripts/modules/stats-ui.js"></script>
