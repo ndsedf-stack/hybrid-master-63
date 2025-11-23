@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PERFORMANCE</title>
+<link rel="stylesheet" href="styles/10-home.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+<style>
+/* FORCE TOUT EN COLONNE */
+.progress-card, .chart-container, .premium-chart-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    float: none !important;
+}
+
+
+.chart-container, .progress-card { max-width: 100%; padding: 15px; margin-bottom: 15px; }
+canvas { max-width: 100% !important; height: auto !important; max-height: 300px !important; }
+h1 { font-size: 22px !important; }
+body { padding: 15px !important; max-width: 428px; margin: 0 auto; }
+
+/* VOLUME LOAD - STYLE AGRANDI */
+.volume-load-section {
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.volume-load-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.volume-load-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00e5ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.gauge-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    padding: 20px;
+}
+
+#volumeGaugeCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-card {
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00e5ff;
+}
+
+.halo {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.halo-1 {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0,229,255,0.15) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.halo-2 {
+    width: 90%;
+    height: 90%;
+    background: radial-gradient(circle, rgba(0,229,255,0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* MOBILE OPTIMISÉ - 6 BARRES SUR iPhone 15 Pro Max */
+@media (max-width: 428px) {
+    .premium-chart-section { padding: 8px !important; }
+    #premiumVolumeContainer { 
+        height: 260px !important; 
+        min-height: 260px !important;
+        padding: 0 !important;
+    }
+    .premium-volume-chart {
+        gap: 1px !important;
+        padding: 4px !important;
+        justify-content: space-between !important;
+    }
+    .premium-volume-chart .bar-container {
+        max-width: 50px !important;
+        min-width: 50px !important;
+        flex: 0 0 50px !important;
+    }
+    .premium-volume-chart .percentage-label {
+        font-size: 15px !important;
+        margin-bottom: 2px !important;
+    }
+    .premium-volume-chart .volume-label {
+        font-size: 8px !important;
+        margin-bottom: 4px !important;
+    }
+    .premium-volume-chart .bar-structure {
+        height: 55% !important;
+    }
+    .premium-volume-chart .muscle-name {
+        font-size: 10px !important;
+        letter-spacing: 0.5px !important;
+    }
+    .premium-volume-chart .muscle-label {
+        display: none !important;
+    }
+    .premium-volume-chart .text-labels {
+        margin-top: 8px !important;
+    }
+}
+
+</style>
+    <link rel="stylesheet" href="styles/mobile-fix.css">
+    <link rel="stylesheet" href="styles/nav-compact.css">
+    <link rel="stylesheet" href="styles/stats-cards-home.css">
+    <link rel="stylesheet" href="styles/global-effects.css">
+    <link rel="stylesheet" href="styles/stats-ultra.css">
+    <link rel="stylesheet" href="styles/premium-effects.css">
+    <link rel="stylesheet" href="styles/volume-load.css">
+</head><body style="padding:20px;background:#0a0e1a">
+<h1 style="color:#00e5ff;margin-bottom:30px">📈 PERFORMANCE</h1>
+
+<!-- SECTION VOLUME LOAD -->
+<div class="volume-load-section" style="margin-bottom: 40px;">
+    <div class="volume-load-header">
+        <h2 class="volume-load-title">💪 VOLUME LOAD</h2>
+    </div>
+    
+    <div class="gauge-container">
+        <canvas id="volumeGaugeCanvas"></canvas>
+        
+        <div class="halo halo-1"></div>
+        <div class="halo halo-2"></div>
+        <div class="halo halo-3"></div>
+        <div class="halo halo-4"></div>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">SETS</div>
+            <div class="stat-value" id="setsValue">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">TUT</div>
+            <div class="stat-value" id="tutValue">0:00</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">VOLUME</div>
+            <div class="stat-value" id="volumeValue">0 kg</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">STATUS</div>
+            <div class="stat-value" id="statusValue">-</div>
+        </div>
+    </div>
+</div>
+<!-- FIN SECTION VOLUME LOAD -->
+
+
+<!-- ⭐ NOUVEAU : PREMIUM VOLUME CHART -->
+<div class="premium-chart-section" style="margin-bottom:30px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,229,255,0.3);border-radius:16px;padding:20px;">
+    <div class="premium-chart-title" style="text-align:center;font-size:20px;font-weight:900;color:#00e5ff;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;">VOLUME MUSCULAIRE</div>
+    <div id="premiumVolumeContainer" style="width:100%;height:400px;min-height:400px;"></div>
+</div>
+
+<!--                     <span class="neon-flicker">MUSCLES - SEMAINE <span id="current-week-display">1</span></span> -->
+<!--                 </div> -->
+
+<div class="chart-container holographic-scan">
+                <div class="chart-title neon-flicker">📈 PROGRESSION HEBDOMADAIRE</div>
+                <canvas id="progression-chart"></canvas>
+            </div>
+
+<!-- HIDDEN <div class="chart-container holographic-scan"> -->
+<!-- HIDDEN                 <div class="chart-title neon-flicker">🎯 ZONES D'INTENSITÉ</div> -->
+<!-- HIDDEN                 <canvas id="intensity-chart"></canvas> -->
+<!-- HIDDEN                 <div style="text-align: center; margin-top: 20px;"> -->
+<!-- HIDDEN                     <div style="display: inline-block; padding: 12px 24px; background: rgba(0,255,159,0.2); border: 2px solid rgba(0,255,159,0.5); border-radius: 12px;"> -->
+<!-- HIDDEN                         <span style="font-size: 14px; color: rgba(255,255,255,0.7);">ZONE OPTIMALE HYPERTROPHIE:</span> -->
+<!-- HIDDEN                         <span style="font-size: 24px; font-weight: 900; color: #00ff9f; margin-left: 12px;" id="hypertrophy-percent">0%</span> -->
+<!-- HIDDEN                     </div> -->
+<!-- HIDDEN                 </div> -->
+<!-- HIDDEN             </div> -->
+<!-- HIDDEN                 </div> -->
+<!-- HIDDEN             </div> -->
+<a href="index.html" style="display:block;padding:15px;background:rgba(0,229,255,0.2);border:1px solid #00e5ff;border-radius:12px;color:#00e5ff;text-align:center;text-decoration:none;margin-top:20px;font-weight:bold">← RETOUR</a>
+<script src="scripts/modules/stats-engine.js"></script>
+<script src="scripts/modules/stats-ui.js"></script>
+<script src="scripts/modules/body-tracker.js"></script>
+<script src="scripts/modules/pr-detector.js"></script>
+<script src="scripts/modules/calculators.js"></script>
+<script src="scripts/modules/superset-tracker.js"></script>
+<script src="scripts/modules/advanced-charts.js"></script>
+<script src="scripts/modules/advanced-charts-premium.js"></script>
+<script src="scripts/modules/stats-init.js"></script>
+    <script src="scripts/touch-effects.js"></script>
+
+<!-- VOLUME LOAD GAUGE SCRIPT -->
+<script type="module">
+    import { VolumeLoadGauge } from './scripts/modules/volume-load-gauge.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            console.log('🎯 Initialisation Volume Load Gauge...');
+            const gauge = new VolumeLoadGauge('volumeGaugeCanvas');
+            console.log('✅ Volume Load Gauge initialisée !');
+        } catch (error) {
+            console.error('❌ Erreur initialisation jauge:', error);
+        }
+    });
+</script>
+
+<!-- ⭐ PREMIUM VOLUME CHART SCRIPT -->
+<script type="module">
+    import { PremiumVolumeChart } from './scripts/modules/premium-volume-chart.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            try {
+                console.log('💎 Initialisation Premium Volume Chart...');
+                const premiumChart = new PremiumVolumeChart('premiumVolumeContainer');
+                console.log('✅ Premium Volume Chart initialisé !');
+            } catch (error) {
+                console.error('❌ Erreur Premium Chart:', error);
+            }
+        }, 500);
+    });
+</script>
+
+</body></html>

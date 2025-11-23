@@ -1,0 +1,269 @@
+/* ========================================
+   SÉRIES - Styles modernes inspirés Hevy
+   ======================================== */
+
+.series-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Carte de série compacte */
+.serie-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--card-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+  /* ✅ CORRECTION CRITIQUE */
+  overflow: visible; /* Permet au ruban de s'afficher */
+  max-width: 100%; /* Empêche le débordement de la carte elle-même */
+}
+
+.serie-item:hover {
+  background: var(--card-bg-hover, rgba(255, 255, 255, 0.08));
+  border-color: var(--primary, #10b981);
+}
+
+/* ✅ CORRECTION DU RUBAN VERT */
+.serie-item.completed::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px; /* ✅ Positionné exactement au bord droit */
+  width: 4px; /* ✅ Réduit de 6px à 4px */
+  height: 100%;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+  z-index: 1; /* ✅ Au-dessus de la carte */
+  /* ✅ Empêche tout débordement */
+  max-height: 100%;
+}
+
+/* Numéro de série */
+.serie-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  background: var(--primary, #10b981);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* Informations de la série */
+.serie-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0; /* ✅ Permet le text-overflow */
+}
+
+.serie-reps {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.serie-weight {
+  font-size: 0.85rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Zone de repos */
+.serie-rest {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.rest-icon {
+  font-size: 1rem;
+}
+
+.rest-time {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--blue, #3b82f6);
+  white-space: nowrap;
+}
+
+/* Bouton de validation */
+.serie-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px !important; /* ✅ Force la largeur */
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  background: rgba(16, 185, 129, 0.1);
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-radius: 10px;
+  color: var(--primary, #10b981);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0; /* ✅ Pas de padding */
+  margin: 0; /* ✅ Pas de margin */
+}
+
+.serie-check:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--primary, #10b981);
+  transform: scale(1.05);
+}
+
+.serie-check:active {
+  transform: scale(0.95);
+}
+
+.serie-check.checked {
+  background: var(--primary, #10b981);
+  border-color: var(--primary, #10b981);
+  color: white;
+}
+
+.check-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* État complété avec animation */
+.serie-item.completed {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: var(--primary, #10b981);
+  /* ✅ IMPORTANT */
+  overflow: visible;
+}
+
+.serie-item.completed .serie-number {
+  background: var(--primary-dark, #059669);
+  animation: pulseGreen 0.5s ease;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* ========================================
+   RESPONSIVE MOBILE
+   ======================================== */
+
+@media (max-width: 480px) {
+  .serie-item {
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    /* ✅ Assure qu'on ne dépasse jamais */
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .serie-number {
+    min-width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+  
+  .serie-reps {
+    font-size: 0.9rem;
+  }
+  
+  .serie-weight {
+    font-size: 0.8rem;
+  }
+  
+  .serie-rest {
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .rest-time {
+    font-size: 0.85rem;
+  }
+  
+  .serie-check {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .check-icon {
+    font-size: 1.1rem;
+  }
+  
+  /* ✅ CORRECTION MOBILE CRITIQUE */
+  .serie-item.completed::after {
+    width: 3px; /* Encore plus fin sur mobile */
+    right: 0;
+  }
+}
+
+/* ========================================
+   TRÈS PETIT ÉCRAN (iPhone SE, etc.)
+   ======================================== */
+
+@media (max-width: 375px) {
+  .serie-item {
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+  }
+  
+  .serie-info {
+    gap: 0.15rem;
+  }
+  
+  .serie-reps {
+    font-size: 0.85rem;
+  }
+  
+  .serie-weight {
+    font-size: 0.75rem;
+  }
+  
+  .serie-rest {
+    padding: 0.35rem 0.5rem;
+  }
+  
+  .rest-time {
+    font-size: 0.8rem;
+  }
+}
+
+/* ========================================
+   IMPRESSION (pour export PDF)
+   ======================================== */
+
+@media print {
+  .serie-item {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+  }
+  
+  .serie-check {
+    border: 1px solid #ccc;
+  }
+  
+  .serie-item.completed::after {
+    display: none; /* Pas de ruban vert en impression */
+  }
+}

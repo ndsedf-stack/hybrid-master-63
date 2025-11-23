@@ -1,0 +1,175 @@
+
+/* PERFORMANCE TAB */
+.performance-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(138, 43, 226, 0.1));
+    border-radius: 15px;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.performance-header h1 {
+    color: #00e5ff;
+    font-size: 32px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.performance-header .subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    margin: 0;
+}
+
+/* ORBIT RINGS - CARTES SEMAINES EN BAS */
+.orbit-rings-section .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 100%;
+    margin: 20px auto 0;
+    padding: 0 10px;
+}
+
+.orbit-rings-section .stat-card {
+    background: rgba(15, 20, 30, 0.95);
+    padding: 16px 12px;
+    border-radius: 12px;
+    border: 2px solid rgba(0, 229, 255, 0.4);
+    text-align: center;
+    transition: all 0.3s ease;
+    min-width: 0; /* Important pour éviter le débordement */
+}
+
+.orbit-rings-section .stat-card:hover {
+    border-color: #00e5ff;
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+.orbit-rings-section .stat-label {
+    color: #00e5ff;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.orbit-rings-section .stat-value {
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.orbit-rings-section .stat-sublabel,
+.orbit-rings-section .stat-unit {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+}
+
+/* RESPONSIVE - 2 colonnes sur mobile */
+@media (max-width: 768px) {
+    .orbit-rings-section .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+/* ORBIT RINGS SECTION - FULL WIDTH */
+.orbit-rings-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 10px !important;
+    margin: 30px 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+.orbit-rings-section .gauge-container {
+    width: 100% !important;
+    max-width: 600px !important;
+    margin: 0 auto 20px !important;
+    padding: 0 !important;
+}
+
+/* GRID 4 COLONNES - FORCER */
+.orbit-rings-section .orbit-stats-grid,
+.orbit-rings-section .stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 5px !important;
+    margin: 20px 0 0 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* CARTES - RÉDUIRE PADDING POUR TOUT FAIRE TENIR */
+.orbit-rings-section .stat-card {
+    background: rgba(15, 20, 30, 0.95) !important;
+    border: 2px solid rgba(0, 229, 255, 0.4) !important;
+    border-radius: 10px !important;
+    padding: 12px 8px !important;
+    text-align: center !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+.orbit-rings-section .stat-label {
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin-bottom: 6px !important;
+}
+
+.orbit-rings-section .stat-value {
+    font-size: 20px !important;
+    color: #00e5ff !important;
+    font-weight: bold !important;
+    margin-bottom: 4px !important;
+}
+
+.orbit-rings-section .stat-unit,
+.orbit-rings-section .stat-sublabel {
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+@media (max-width: 768px) {
+    .orbit-rings-section .orbit-stats-grid,
+    .orbit-rings-section .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* ORBIT RINGS - EFFETS HOVER SUR CARTES */
+.orbit-rings-section .stat-card,
+.premium-chart-section .stat-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.orbit-rings-section .stat-card:hover,
+.premium-chart-section .stat-card:hover {
+    transform: translateY(-5px);
+    border-color: #00e5ff !important;
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4);
+    background: rgba(0, 229, 255, 0.15) !important;
+}
+
+/* ORBIT RINGS - FORCER HOVER SUR CARTES INLINE */
+.premium-chart-section .stat-card:hover {
+    transform: translateY(-5px) !important;
+    border: 2px solid #00e5ff !important;
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4) !important;
+    background: rgba(0, 229, 255, 0.15) !important;
+}
+
+.premium-chart-section .stat-card:active {
+    transform: translateY(-2px) !important;
+}

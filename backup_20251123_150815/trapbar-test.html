@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trap Bar Deadlift Test</title>
+    <link rel="stylesheet" href="styles/trapbar-screen.css">
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script type="module">
+        import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js';
+        
+        const renderer = new TrapBarRenderer('app');
+        renderer.load().init().render();
+        renderer.startTimer();
+    </script>
+</body>
+</html>

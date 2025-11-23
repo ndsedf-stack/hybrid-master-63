@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANALYSE</title>
+<link rel="stylesheet" href="styles/10-home.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+<style>
+.chart-container, .progress-card { max-width: 100%; padding: 15px; margin-bottom: 15px; }
+canvas { max-width: 100% !important; height: auto !important; max-height: 300px !important; }
+h1 { font-size: 22px !important; }
+body { padding: 15px !important; max-width: 428px; margin: 0 auto; }
+</style>
+    <link rel="stylesheet" href="styles/mobile-fix.css">
+    <link rel="stylesheet" href="styles/nav-compact.css">
+    <link rel="stylesheet" href="styles/stats-cards-home.css">
+    <link rel="stylesheet" href="styles/global-effects.css">
+    <link rel="stylesheet" href="styles/stats-ultra.css">
+    <link rel="stylesheet" href="styles/premium-effects.css">
+</head><body style="padding:20px;background:#0a0e1a">
+<h1 style="color:#00e5ff;margin-bottom:30px">🎯 ANALYSE</h1>
+<div class="progress-card glass holographic-scan" style="margin-top: 30px;">
+                <div class="card-title">
+                    <span class="title-icon">📈</span>
+                    <span class="neon-flicker">CHARGE HEBDOMADAIRE</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    <canvas id="stacked-area-chart" width="400" height="250"></canvas>
+                </div>
+            </div>
+
+<div class="progress-card glass holographic-scan" style="margin-top: 30px;">
+                <div class="card-title">
+                    <span class="title-icon">🌐</span>
+                    <span class="neon-flicker">RÉPARTITION MUSCLES</span>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 16px;">
+                    <canvas id="sunburst-chart" width="350" height="350"></canvas>
+                </div>
+            </div>
+
+<div class="progress-card glass holographic-scan" style="margin-top: 30px;">
+                <div class="card-title">
+                    <span class="title-icon">🎯</span>
+                    <span class="neon-flicker">VOLUME PAR MUSCLE</span>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 16px;">
+                    <canvas id="polar-area-chart" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+<div class="progress-card glass holographic-scan" style="margin-top: 30px;">
+                <div class="card-title">
+                    <span class="title-icon">🔄</span>
+                    <span class="neon-flicker">SUPERSETS TRACKING</span>
+                </div>
+                
+                <div class="stats-grid" style="margin-bottom: 16px;">
+                    <div class="stat-box glass-light">
+                        <span class="stat-emoji">🔥</span>
+                        <div class="stat-number" id="supersets-total">0</div>
+                        <div class="stat-label">CETTE SEMAINE</div>
+                    </div>
+                    
+                    <div class="stat-box glass-light">
+                        <span class="stat-emoji">💪</span>
+                        <div class="stat-number" id="supersets-sets">0</div>
+                        <div class="stat-label">SÉRIES TOTALES</div>
+                    </div>
+                </div>
+                
+                <!-- Most common superset -->
+                <div id="superset-most-common" class="glass-light" style="padding: 16px; margin-top: 12px; display: none;">
+                    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 700;">⭐ SUPERSET LE PLUS FRÉQUENT</div>
+                    <div style="font-size: 13px; font-weight: 700; color: var(--cyan); margin-bottom: 4px;" id="superset-combo"></div>
+                    <div style="font-size: 10px; color: var(--text-secondary);" id="superset-count"></div>
+                </div>
+                
+                <!-- Graphique évolution -->
+                <div style="margin-top: 16px;">
+                    <canvas id="supersets-chart" height="200"></canvas>
+                </div>
+            </div>
+<a href="index.html" style="display:block;padding:15px;background:rgba(0,229,255,0.2);border:1px solid #00e5ff;border-radius:12px;color:#00e5ff;text-align:center;text-decoration:none;margin-top:20px;font-weight:bold">← RETOUR</a>
+<script src="scripts/modules/stats-engine.js"></script>
+<script src="scripts/modules/stats-ui.js"></script>
+<script src="scripts/modules/body-tracker.js"></script>
+<script src="scripts/modules/pr-detector.js"></script>
+<script src="scripts/modules/calculators.js"></script>
+<script src="scripts/modules/superset-tracker.js"></script>
+<script src="scripts/modules/advanced-charts.js"></script>
+<script src="scripts/modules/advanced-charts-premium.js"></script>
+<script src="scripts/modules/stats-init.js"></script>
+    <script src="scripts/touch-effects.js"></script>
+</body></html>

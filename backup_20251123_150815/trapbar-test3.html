@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Trap Bar Deadlift Test</title>
+  
+  <link rel="stylesheet" href="styles/trapbar-screen.css?v=20251116-004" />
+  <style>
+    .reset-btn {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: red;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      z-index: 1000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; overflow-x: hidden;">
+  <div class="reset-btn" onclick="localStorage.clear(); location.reload();">RESET</div>
+  <div id="app"></div>
+  
+  <script type="module">
+    import { TrapBarRenderer } from './scripts/ui/trapbar-renderer.js?v=20251116-004';
+    
+    // EFFACE localStorage pour ce test
+    localStorage.removeItem('trapbar_workout');
+    
+    const trapbar = new TrapBarRenderer('app');
+    trapbar.render();
+    trapbar.startTimer();
+  </script>
+</body>
+</html>
