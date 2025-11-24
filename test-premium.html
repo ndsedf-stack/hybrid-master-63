@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST PREMIUM - Effets Cockpit</title>
+    
+    <link rel="stylesheet" href="stats-charts.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 15px;
+            background: linear-gradient(to bottom, #0f172a, #020617);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #22d3ee;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔥 Premium Cockpit HUD</h1>
+        
+        <!-- RADAR CHART -->
+        <div id="example1"></div>
+        
+        <!-- PROGRESS RINGS -->
+        <div id="example2"></div>
+        
+        <!-- SCORE GLOBAL -->
+        <div id="example3"></div>
+    </div>
+
+    <script type="module">
+        import { ChartWrapper, createStatsCard } from './chart-wrapper.js';
+        import { getMuscleData, getWeeklyProgress, getGlobalScore } from './stats-data-manager.js';
+        import { ChartEffects, addBadge, addVortexEffect } from './chart-effects.js';
+        
+        // CHARGER LES DONNÉES
+        const muscleData = getMuscleData({ topN: 6 });
+        const weeklyData = getWeeklyProgress({ weeks: 4 });
+        const scoreData = getGlobalScore();
+        
+        // =============================================
+        // EXEMPLE 1: RADAR CHART AVEC EFFETS
+        // =============================================
+        
+        const chart1 = createStatsCard({
+            containerId: 'example1',
+            title: 'Muscle Radar',
+            icon: '💪',
+            chartType: 'canvas',
+            chartId: 'radarCanvas',
+            footerHTML: `
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Volume Total</div>
+                    <div class="chart-stat-value">${(muscleData.muscles.reduce((sum, m) => sum + m.volume, 0) / 1000).toFixed(1)}k</div>
+                </div>
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Sessions</div>
+                    <div class="chart-stat-value">${muscleData.sessionCount}</div>
+                </div>
+            `,
+            onRender: (canvas, ctx, size) => {
+                ctx.clearRect(0, 0, size.width, size.height);
+                
+                // Utiliser 90% de l'espace disponible
+                const center = size.width / 2;
+                const radius = Math.min(size.width, size.height) * 0.42;
+                
+                const muscles = muscleData.muscles.map(m => ({
+                    name: m.name,
+                    value: m.normalized,
+                    color: m.color
+                }));
+                
+                const angleStep = (Math.PI * 2) / muscles.length;
+                
+                // Grille de fond
+                ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 4; i++) {
+                    ctx.beginPath();
+                    ctx.arc(center, center, radius * (i + 1) / 4, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+                
+                // Axes
+                muscles.forEach((_, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const x = center + Math.cos(angle) * radius;
+                    const y = center + Math.sin(angle) * radius;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(center, center);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                });
+                
+                // Polygone de données
+                ctx.beginPath();
+                muscles.forEach((muscle, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = radius * muscle.value;
+                    const x = center + Math.cos(angle) * r;
+                    const y = center + Math.sin(angle) * r;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                ctx.closePath();
+                
+                // Fill avec gradient
+                const gradient = ctx.createRadialGradient(center, center, 0, center, center, radius);
+                gradient.addColorStop(0, 'rgba(6, 182, 212, 0.5)');
+                gradient.addColorStop(1, 'rgba(6, 182, 212, 0.05)');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Stroke
+                ctx.strokeStyle = '#06b6d4';
+                ctx.lineWidth = 4;
+                ctx.shadowColor = 'rgba(6, 182, 212, 0.8)';
+                ctx.shadowBlur = 15;
+                ctx.stroke();
+                
+                // Points
+                muscles.forEach((muscle, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = radius * muscle.value;
+                    const x = center + Math.cos(angle) * r;
+                    const y = center + Math.sin(angle) * r;
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = muscle.color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 3;
+                    ctx.shadowColor = muscle.color;
+                    ctx.shadowBlur = 10;
+                    ctx.stroke();
+                    
+                    // Labels
+                    const labelX = center + Math.cos(angle) * (radius + 35);
+                    const labelY = center + Math.sin(angle) * (radius + 35);
+                    ctx.fillStyle = '#22d3ee';
+                    ctx.font = 'bold 13px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.shadowBlur = 5;
+                    ctx.fillText(muscle.name, labelX, labelY);
+                });
+            }
+        });
+        
+        // AJOUTER EFFETS AU GRAPHIQUE 1
+        setTimeout(() => {
+            const card1 = document.querySelector('#example1 .stats-chart-card');
+            if (card1) {
+                new ChartEffects(card1, {
+                    halo: true,
+                    scanlines: true,
+                    particles: true,
+                    glow: true
+                });
+                
+                // Badge si PR détecté
+                const hasPR = muscleData.muscles.some(m => m.isPR);
+                if (hasPR) {
+                    const header = card1.querySelector('.chart-header');
+                    addBadge(header, 'record', 'PERSONAL RECORD');
+                }
+            }
+        }, 100);
+        
+        // =============================================
+        // EXEMPLE 2: PROGRESS RINGS AGRANDI
+        // =============================================
+        
+        const chart2 = createStatsCard({
+            containerId: 'example2',
+            title: 'Progress Hebdo',
+            icon: '🎯',
+            chartType: 'svg',
+            chartId: 'svgChart',
+            footerHTML: `
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Cette semaine</div>
+                    <div class="chart-stat-value">${(weeklyData[weeklyData.length - 1].volume / 1000).toFixed(1)}k</div>
+                </div>
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Intensité</div>
+                    <div class="chart-stat-value">${weeklyData[weeklyData.length - 1].intensity}%</div>
+                </div>
+            `,
+            onRender: (svg, _, size) => {
+                const center = size.width / 2;
+                
+                // Utiliser 90% de l'espace
+                const maxVolume = Math.max(...weeklyData.map(w => w.volume));
+                const rings = weeklyData.map((week, i) => ({
+                    radius: (size.width * 0.42) - (i * (size.width * 0.08)),
+                    progress: week.volume / maxVolume,
+                    color: ['#06b6d4', '#fb923c', '#a855f7', '#22c55e'][i],
+                    label: `S${week.week}: ${(week.volume / 1000).toFixed(1)}k`
+                }));
+                
+                svg.innerHTML = '';
+                
+                rings.forEach((ring, i) => {
+                    const circumference = 2 * Math.PI * ring.radius;
+                    const offset = circumference * (1 - ring.progress);
+                    
+                    // Background circle
+                    const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    bgCircle.setAttribute('cx', center);
+                    bgCircle.setAttribute('cy', center);
+                    bgCircle.setAttribute('r', ring.radius);
+                    bgCircle.setAttribute('fill', 'none');
+                    bgCircle.setAttribute('stroke', 'rgba(100, 116, 139, 0.2)');
+                    bgCircle.setAttribute('stroke-width', '16');
+                    svg.appendChild(bgCircle);
+                    
+                    // Progress circle
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', center);
+                    circle.setAttribute('cy', center);
+                    circle.setAttribute('r', ring.radius);
+                    circle.setAttribute('fill', 'none');
+                    circle.setAttribute('stroke', ring.color);
+                    circle.setAttribute('stroke-width', '16');
+                    circle.setAttribute('stroke-linecap', 'round');
+                    circle.setAttribute('stroke-dasharray', circumference);
+                    circle.setAttribute('stroke-dashoffset', offset);
+                    circle.setAttribute('transform', `rotate(-90 ${center} ${center})`);
+                    circle.style.filter = `drop-shadow(0 0 10px ${ring.color})`;
+                    svg.appendChild(circle);
+                    
+                    // Label
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', center);
+                    text.setAttribute('y', center + (i - 1.5) * 22);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', ring.color);
+                    text.setAttribute('font-size', '13');
+                    text.setAttribute('font-weight', 'bold');
+                    text.textContent = ring.label;
+                    svg.appendChild(text);
+                });
+            }
+        });
+        
+        // AJOUTER EFFETS AU GRAPHIQUE 2
+        setTimeout(() => {
+            const card2 = document.querySelector('#example2 .stats-chart-card');
+            if (card2) {
+                new ChartEffects(card2, {
+                    halo: true,
+                    scanlines: true,
+                    particles: true,
+                    glow: true
+                });
+                
+                // Badge consistent
+                addBadge(card2.querySelector('.chart-header'), 'consistent', 'CONSISTENT');
+            }
+        }, 100);
+        
+        // =============================================
+        // EXEMPLE 3: SCORE GLOBAL AGRANDI
+        // =============================================
+        
+        document.getElementById('example3').innerHTML = `
+            <div class="stats-chart-card green">
+                <div class="chart-header">
+                    <span class="chart-icon">⚡</span>
+                    <h3 class="chart-title">Score Global</h3>
+                </div>
+                <div class="chart-body" id="example3-inner"></div>
+                <div class="chart-footer">
+                    <div class="chart-stat">
+                        <div class="chart-stat-label">Sessions</div>
+                        <div class="chart-stat-value">${scoreData.sessions}</div>
+                    </div>
+                    <div class="chart-stat">
+                        <div class="chart-stat-label">Volume Total</div>
+                        <div class="chart-stat-value">${(scoreData.totalVolume / 1000).toFixed(1)}k</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const chart3 = new ChartWrapper('example3-inner', {
+            type: 'html',
+            aspectRatio: 1,
+            onRender: (container) => {
+                const score = scoreData.score;
+                const icon = score >= 80 ? '💎' : score >= 60 ? '⭐' : score >= 40 ? '🔥' : '💪';
+                const color = score >= 80 ? '#22c55e' : score >= 60 ? '#eab308' : score >= 40 ? '#fb923c' : '#06b6d4';
+                
+                container.innerHTML = `
+                    <div style="
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        padding: 10px;
+                    ">
+                        <div style="font-size: 90px; filter: drop-shadow(0 0 30px ${color});">${icon}</div>
+                        <div style="font-size: 72px; font-weight: 900; color: ${color}; text-shadow: 0 0 30px ${color};">${score}</div>
+                        <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(148, 163, 184, 0.8);">Score Global</div>
+                        <div style="width: 85%; height: 10px; background: rgba(100, 116, 139, 0.2); border-radius: 5px; overflow: hidden;">
+                            <div style="width: ${score}%; height: 100%; background: linear-gradient(90deg, ${color}, ${color}); box-shadow: 0 0 15px ${color};"></div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 95%; margin-top: 8px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; color: rgba(148, 163, 184, 0.6); text-transform: uppercase;">Consist.</div>
+                                <div style="font-size: 20px; font-weight: bold; color: ${color};">${scoreData.breakdown.consistency}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; color: rgba(148, 163, 184, 0.6); text-transform: uppercase;">Volume</div>
+                                <div style="font-size: 20px; font-weight: bold; color: ${color};">${scoreData.breakdown.volume}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; color: rgba(148, 163, 184, 0.6); text-transform: uppercase;">Intensité</div>
+                                <div style="font-size: 20px; font-weight: bold; color: ${color};">${scoreData.breakdown.intensity}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; color: rgba(148, 163, 184, 0.6); text-transform: uppercase;">Recovery</div>
+                                <div style="font-size: 20px; font-weight: bold; color: ${color};">${scoreData.breakdown.recovery}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        // AJOUTER EFFETS AU GRAPHIQUE 3
+        setTimeout(() => {
+            const card3 = document.querySelector('#example3 .stats-chart-card');
+            if (card3) {
+                new ChartEffects(card3, {
+                    halo: true,
+                    scanlines: true,
+                    particles: true,
+                    glow: true,
+                    pulse: true
+                });
+                
+                // Badge optimal
+                if (scoreData.score >= 80) {
+                    addBadge(card3.querySelector('.chart-header'), 'optimal', 'OPTIMAL');
+                }
+                
+                // Vortex effect
+                addVortexEffect(card3.querySelector('.chart-body'));
+            }
+        }, 100);
+        
+        console.log('✅ Premium Cockpit HUD chargé !');
+        console.log('🔥 Effets activés: Halos, Scanlines, Particules, Glow, Badges');
+        console.log('📊 Graphiques agrandis pour utiliser 90% de l'espace');
+    </script>
+
+</body>
+</html>
