@@ -1,6 +1,8 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
-export function createStatsCard(containerOrId, options = {}) {
+export function createStatsCard(containerOrId, options) {
+    options = options || {}; // ✅ fallback si undefined
+
     // ✅ accepte soit un ID string, soit un élément DOM
     const container =
         typeof containerOrId === "string"
@@ -146,11 +148,11 @@ function drawRingsChart(ctx, data) {
     ctx.font = 'bold 32px Orbitron';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(data.current, centerX, centerY - 10);
+    ctx.fillText(data.current || 0, centerX, centerY - 10);
 
     ctx.font = '14px Rajdhani';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText(`/ ${data.target}`, centerX, centerY + 15);
+    ctx.fillText(`/ ${data.target || 1}`, centerX, centerY + 15);
 }
 
 function drawZonesChart(ctx, data) {
@@ -187,7 +189,7 @@ function drawVolumeChart(ctx, data) {
     const bottomY = 160;
 
     data.datasets.forEach((dataset, i) => {
-        const height = (dataset.value / maxValue) * 120;
+        const height = ((dataset.value || 0) / maxValue) * 120;
         const x = startX + i * (barWidth + gap);
         const y = bottomY - height;
 
@@ -225,10 +227,14 @@ function drawScoreChart(ctx, data) {
 }
 
 function applyPremiumEffects(container) {
-    container.querySelector('.stats-card').classList.add('glow-effect', 'has-particles');
+    const card = container.querySelector('.stats-card');
+    if (!card) return;
+
+    card.classList.add('glow-effect', 'has-particles');
 
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'particles-container';
+
     for (let i = 0; i < 10; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
@@ -238,5 +244,6 @@ function applyPremiumEffects(container) {
         particle.style.animationDuration = 2 + Math.random() * 3 + 's';
         particlesContainer.appendChild(particle);
     }
-    container.querySelector('.stats-card').appendChild(particlesContainer);
+
+    card.appendChild(particlesContainer);
 }
