@@ -1,75 +1,211 @@
-/* stats-charts-ultra.css - STYLES ULTRA PREMIUM */
+/* ============================================
+   STATS CHARTS ULTRA - COCKPIT PREMIUM
+   ============================================ */
+
+:root {
+    --chart-bg: rgba(15, 23, 42, 0.6);
+    --chart-border: rgba(0, 212, 255, 0.3);
+    --chart-primary: #06b6d4;
+    --chart-secondary: #8a2be2;
+    --chart-accent: #f97316;
+    --chart-text: #e2e8f0;
+}
+
+/* ============================================
+   CARTE PRINCIPALE
+   ============================================ */
 
 .stats-card {
-    background: linear-gradient(135deg, rgba(10, 15, 35, 0.8), rgba(26, 31, 58, 0.8));
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    border-radius: 16px;
-    padding: 20px;
-    backdrop-filter: blur(10px);
+    background: var(--chart-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--chart-border);
+    border-radius: 20px;
+    padding: 0;
+    margin: 20px 0;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
-.stats-card:hover {
-    border-color: rgba(0, 212, 255, 0.6);
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-    transform: translateY(-2px);
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 212, 255, 0.05) 0%,
+        transparent 50%,
+        rgba(138, 43, 226, 0.05) 100%
+    );
+    pointer-events: none;
 }
+
+/* ============================================
+   HEADER
+   ============================================ */
 
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
 }
 
 .card-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
-    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--chart-primary);
     margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .period-indicator {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .period-dot {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .period-dot.active {
-    background: linear-gradient(135deg, #00d4ff, #0099ff);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    background: var(--chart-primary);
+    border-color: var(--chart-primary);
+    color: #0a0e27;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
 }
 
+/* ============================================
+   BODY - CANVAS CONTAINER
+   ============================================ */
+
 .card-body {
-    position: relative;
-    min-height: 200px;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 300px;
+    position: relative;
 }
 
+.card-body canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* ============================================
+   FOOTER - STATS
+   ============================================ */
+
 .card-footer {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    padding: 0;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.footer-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.stat-item {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--chart-primary);
+}
+
+/* ============================================
+   EFFETS PREMIUM
+   ============================================ */
+
+/* Halo pulsant */
+.stats-card.has-halo {
+    animation: halo-pulse 3s ease-in-out infinite;
+}
+
+@keyframes halo-pulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(0, 212, 255, 0.3),
+            0 0 40px rgba(0, 212, 255, 0.2),
+            0 0 60px rgba(0, 212, 255, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(0, 212, 255, 0.4),
+            0 0 60px rgba(0, 212, 255, 0.3),
+            0 0 90px rgba(0, 212, 255, 0.2);
+    }
+}
+
+/* Scanlines */
+.scanlines-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 212, 255, 0.03) 0px,
+        transparent 1px,
+        transparent 2px,
+        rgba(0, 212, 255, 0.03) 3px
+    );
+    pointer-events: none;
+    animation: scanlines-move 10s linear infinite;
+}
+
+@keyframes scanlines-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(10px); }
+}
+
+/* Glow */
+.stats-card.has-glow {
+    box-shadow: 
+        0 0 30px rgba(0, 212, 255, 0.4),
+        inset 0 0 30px rgba(0, 212, 255, 0.1);
 }
 
 /* Particules */
@@ -77,51 +213,73 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     pointer-events: none;
+    overflow: hidden;
 }
 
 .particle {
     position: absolute;
     width: 2px;
     height: 2px;
-    background: #00d4ff;
+    background: var(--chart-primary);
     border-radius: 50%;
-    animation: float 3s infinite ease-in-out;
+    animation: particle-float 4s ease-in-out infinite;
+    opacity: 0.6;
+    box-shadow: 0 0 5px var(--chart-primary);
 }
 
-@keyframes float {
+@keyframes particle-float {
     0%, 100% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
     }
     50% {
-        transform: translateY(-20px) scale(1.5);
+        transform: translate(var(--tx, 20px), var(--ty, -20px)) scale(1.5);
         opacity: 1;
     }
 }
 
-/* Glow effect */
-.glow-effect::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #00d4ff, #cc00ff);
-    border-radius: 16px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
+/* ============================================
+   RESPONSIVE IPHONE 15 PRO MAX
+   ============================================ */
 
-.glow-effect:hover::before {
-    opacity: 0.3;
-}
-
-/* Night mode */
-body.night-mode .stats-card {
-    background: linear-gradient(135deg, rgba(5, 8, 18, 0.95), rgba(13, 16, 29, 0.95));
+@media (max-width: 430px) {
+    .stats-card {
+        margin: 15px 0;
+        border-radius: 16px;
+    }
+    
+    .card-header {
+        padding: 15px;
+    }
+    
+    .card-title {
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+    
+    .period-dot {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+    
+    .card-body {
+        padding: 15px;
+        min-height: 250px;
+    }
+    
+    .stat-item {
+        padding: 12px 8px;
+    }
+    
+    .stat-label {
+        font-size: 10px;
+    }
+    
+    .stat-value {
+        font-size: 14px;
+    }
 }

@@ -1,31 +1,24 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
 export function createStatsCard(config) {
-    console.log("🔍 DEBUG createStatsCard - config reçu:", config);
-    
-    // ✅ Extraire containerId proprement
     const containerId = config.containerId;
-    
-    console.log("🔍 DEBUG containerId extrait:", containerId);
     
     if (!containerId) {
         console.error("containerId is required in config");
         return;
     }
     
-    // ✅ Récupère le container
     const container = document.getElementById(containerId);
-
     if (!container) {
         console.error("Container not found:", containerId);
         return;
     }
 
-    // Structure HTML de base
+    // Structure HTML de base avec canvas PLEINE HAUTEUR
     container.innerHTML = `
         <div class="stats-card premium-card">
             <div class="card-header">
-                <h3 class="card-title">${config.title || 'Stats'}</h3>
+                <h3 class="card-title">${config.icon || '📊'} ${config.title || 'Stats'}</h3>
                 <div class="period-indicator">
                     <span class="period-dot active" data-period="week">S</span>
                     <span class="period-dot" data-period="month">M</span>
@@ -36,254 +29,142 @@ export function createStatsCard(config) {
                 <canvas id="${containerId}-canvas"></canvas>
             </div>
             <div class="card-footer">
-                <span class="card-stat">${config.icon || '📊'} ${config.period || 'Month'}</span>
+                <div class="footer-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">SETS</span>
+                        <span class="stat-value" id="${containerId}-sets">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">TUT</span>
+                        <span class="stat-value" id="${containerId}-tut">0:00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">VOLUME</span>
+                        <span class="stat-value" id="${containerId}-volume">0 kg</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">STATUS</span>
+                        <span class="stat-value" id="${containerId}-status">-</span>
+                    </div>
+                </div>
             </div>
         </div>
     `;
 
-    console.log("🔍 DEBUG canvas ID créé:", `${containerId}-canvas`);
-
-    // Initialiser le canvas
+    // Initialiser le canvas avec taille responsive
     const canvas = document.getElementById(`${containerId}-canvas`);
     if (!canvas) {
         console.error("Canvas not found:", `${containerId}-canvas`);
         return;
     }
     
+    // Taille du canvas = largeur du container
+    const cardBody = canvas.parentElement;
+    const size = Math.min(cardBody.offsetWidth, 400); // Max 400px
+    canvas.width = size;
+    canvas.height = size;
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+    
     const ctx = canvas.getContext('2d');
     
-    // Si onRender est fourni, l'utiliser
+    // Obtenir les données
+    const data = config.dataSource ? config.dataSource() : config.data || {};
+    
+    // Appeler le rendu personnalisé
     if (config.onRender && typeof config.onRender === 'function') {
-        // Obtenir les données
-        const data = config.dataSource ? config.dataSource() : config.data || {};
-        
-        // Définir la taille du canvas
-        const size = 300;
-        canvas.width = size;
-        canvas.height = size;
-        
-        // Appeler le rendu personnalisé
         config.onRender(canvas, ctx, size, data);
-        
-        // Appliquer les effets si demandés
-        if (config.effects) {
-            applyPremiumEffects(container, config.effects);
-        }
-        
-        return;
     }
-
-    // Sinon utiliser l'ancien système (pour compatibilité)
-    const type = config.type || config.chartType;
-    const data = config.data || {};
-
-    switch (type) {
-        case 'radar':
-            drawRadarChart(ctx, data);
-            break;
-        case 'rings':
-            drawRingsChart(ctx, data);
-            break;
-        case 'zones':
-            drawZonesChart(ctx, data);
-            break;
-        case 'volume':
-            drawVolumeChart(ctx, data);
-            break;
-        case 'score':
-            drawScoreChart(ctx, data);
-            break;
+    
+    // Mettre à jour les stats du footer
+    updateFooterStats(containerId, data);
+    
+    // Appliquer les effets premium
+    if (config.effects) {
+        applyPremiumEffects(container, config.effects);
     }
-
-    applyPremiumEffects(container);
-}
-
-// === CHARTS (anciennes fonctions pour compatibilité) ===
-
-function drawRadarChart(ctx, data) {
-    const canvas = ctx.canvas;
-    canvas.width = 300;
-    canvas.height = 300;
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const radius = 100;
-    const numPoints = (data.labels || []).length;
-
-    ctx.strokeStyle = 'rgba(0, 212, 255, 0.2)';
-    ctx.lineWidth = 1;
-
-    for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        const r = radius * (i + 1) / 5;
-        for (let j = 0; j <= numPoints; j++) {
-            const angle = (Math.PI * 2 * j / numPoints) - Math.PI / 2;
-            const x = centerX + Math.cos(angle) * r;
-            const y = centerY + Math.sin(angle) * r;
-            if (j === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.stroke();
-    }
-
-    ctx.fillStyle = 'rgba(0, 212, 255, 0.3)';
-    ctx.strokeStyle = '#00d4ff';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-
-    for (let i = 0; i <= numPoints; i++) {
-        const angle = (Math.PI * 2 * i / numPoints) - Math.PI / 2;
-        const value = ((data.values || [])[i % numPoints] || 0) / 100;
-        const x = centerX + Math.cos(angle) * radius * value;
-        const y = centerY + Math.sin(angle) * radius * value;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-    }
-
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.fillStyle = '#fff';
-    ctx.font = '12px Rajdhani';
-    ctx.textAlign = 'center';
-
-    (data.labels || []).forEach((label, i) => {
-        const angle = (Math.PI * 2 * i / numPoints) - Math.PI / 2;
-        const x = centerX + Math.cos(angle) * (radius + 30);
-        const y = centerY + Math.sin(angle) * (radius + 30);
-        ctx.fillText(label, x, y);
+    
+    // Resize handler
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const newSize = Math.min(cardBody.offsetWidth, 400);
+            canvas.width = newSize;
+            canvas.height = newSize;
+            canvas.style.width = newSize + 'px';
+            canvas.style.height = newSize + 'px';
+            
+            if (config.onRender) {
+                config.onRender(canvas, ctx, newSize, data);
+            }
+        }, 300);
     });
 }
 
-function drawRingsChart(ctx, data) {
-    const canvas = ctx.canvas;
-    canvas.width = 300;
-    canvas.height = 300;
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const radius = 80;
-
-    const progress = data.target ? data.current / data.target : 0;
-
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 20;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.strokeStyle = '#00d4ff';
-    ctx.lineWidth = 20;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * progress));
-    ctx.stroke();
-
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 32px Orbitron';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(data.current || 0, centerX, centerY - 10);
-
-    ctx.font = '14px Rajdhani';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText(`/ ${data.target || 1}`, centerX, centerY + 15);
-}
-
-function drawZonesChart(ctx, data) {
-    const canvas = ctx.canvas;
-    canvas.width = 300;
-    canvas.height = 200;
-
-    const barHeight = 40;
-    const startY = 80;
-
-    (data || []).forEach((zone, i) => {
-        const barWidth = (canvas.width - 60) * ((zone.percentage || 0) / 100);
-        const y = startY + i * (barHeight + 10);
-
-        ctx.fillStyle = zone.color || '#00d4ff';
-        ctx.fillRect(30, y, barWidth, barHeight);
-
-        ctx.fillStyle = '#fff';
-        ctx.font = '14px Rajdhani';
-        ctx.textAlign = 'left';
-        ctx.fillText(`${zone.zone || ''} - ${zone.percentage || 0}%`, 35, y + 25);
-    });
-}
-
-function drawVolumeChart(ctx, data) {
-    const canvas = ctx.canvas;
-    canvas.width = 300;
-    canvas.height = 200;
-
-    const barWidth = 50;
-    const gap = 20;
-    const datasets = data.datasets || [];
-    const maxValue = Math.max(...datasets.map(d => d.value || 0), 1);
-    const startX = 40;
-    const bottomY = 160;
-
-    datasets.forEach((dataset, i) => {
-        const height = ((dataset.value || 0) / maxValue) * 120;
-        const x = startX + i * (barWidth + gap);
-        const y = bottomY - height;
-
-        ctx.fillStyle = dataset.color || '#00d4ff';
-        ctx.fillRect(x, y, barWidth, height);
-
-        ctx.fillStyle = '#fff';
-        ctx.font = '12px Rajdhani';
-        ctx.textAlign = 'center';
-        ctx.fillText(Math.round((dataset.value || 0) / 1000) + 'K', x + barWidth / 2, y - 10);
-    });
-}
-
-function drawScoreChart(ctx, data) {
-    const canvas = ctx.canvas;
-    canvas.width = 300;
-    canvas.height = 200;
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    ctx.fillStyle = '#00d4ff';
-    ctx.font = 'bold 48px Orbitron';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText((data.score || 0).toFixed(1), centerX, centerY - 20);
-
-    ctx.font = '18px Rajdhani';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText(`/ ${data.maxScore || 100}`, centerX, centerY + 20);
-
-    const stars = '⭐'.repeat(Math.floor(data.stars || 0));
-    ctx.font = '24px Arial';
-    ctx.fillText(stars, centerX, centerY + 50);
+function updateFooterStats(containerId, data) {
+    // Mettre à jour les stats du footer avec les vraies données
+    const setsEl = document.getElementById(`${containerId}-sets`);
+    const tutEl = document.getElementById(`${containerId}-tut`);
+    const volumeEl = document.getElementById(`${containerId}-volume`);
+    const statusEl = document.getElementById(`${containerId}-status`);
+    
+    if (setsEl && data.totalSets) {
+        setsEl.textContent = data.totalSets;
+    }
+    
+    if (tutEl && data.totalTime) {
+        const minutes = Math.floor(data.totalTime / 60);
+        const seconds = data.totalTime % 60;
+        tutEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    if (volumeEl && data.totalVolume) {
+        volumeEl.textContent = Math.round(data.totalVolume / 1000) + 'K kg';
+    }
+    
+    if (statusEl && data.status) {
+        statusEl.textContent = data.status;
+    }
 }
 
 function applyPremiumEffects(container, effects) {
     const card = container.querySelector('.stats-card');
     if (!card) return;
 
-    card.classList.add('glow-effect', 'has-particles');
-
-    const particlesContainer = document.createElement('div');
-    particlesContainer.className = 'particles-container';
-
-    const numParticles = effects && effects.particles ? effects.particles : 10;
-    
-    for (let i = 0; i < numParticles; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 3 + 's';
-        particle.style.animationDuration = 2 + Math.random() * 3 + 's';
-        particlesContainer.appendChild(particle);
+    // Ajouter les classes d'effets
+    if (effects.halo) {
+        card.classList.add('has-halo');
     }
+    
+    if (effects.scanlines) {
+        card.classList.add('has-scanlines');
+        
+        // Créer l'overlay scanlines
+        const scanlines = document.createElement('div');
+        scanlines.className = 'scanlines-overlay';
+        card.appendChild(scanlines);
+    }
+    
+    if (effects.glow) {
+        card.classList.add('has-glow');
+    }
+    
+    // Créer les particules
+    if (effects.particles && effects.particles > 0) {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles-container';
 
-    card.appendChild(particlesContainer);
+        for (let i = 0; i < effects.particles; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 3 + 's';
+            particle.style.animationDuration = 2 + Math.random() * 3 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        card.appendChild(particlesContainer);
+    }
 }
