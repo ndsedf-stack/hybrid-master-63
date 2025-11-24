@@ -1,3 +1,5 @@
+import * as effects from './chart-effects-advanced.js';
+
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
 export function createStatsCard(config) {
