@@ -63,9 +63,8 @@ export function createStatsCard(config) {
     
     // FORCER taille carrée
     function resizeCanvas() {
-        const width = cardBody.offsetWidth;
-        const height = cardBody.offsetHeight;
-        const size = Math.min(width, height);
+        // ✅ SIMPLE : Prend la largeur du wrapper (déjà carré avec aspect-ratio)
+        const size = canvasWrapper.offsetWidth;
         
         canvas.width = size;
         canvas.height = size;
