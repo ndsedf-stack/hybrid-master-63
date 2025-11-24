@@ -18,20 +18,7 @@ body {
    CARTE PRINCIPALE
    ============================================ */
 
-.stats-card {
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(0, 212, 255, 0.4);
-    border-radius: 20px;
-    margin: 20px 10px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 
-        0 0 30px rgba(0, 212, 255, 0.3),
-        0 0 60px rgba(138, 43, 226, 0.2),
-        inset 0 0 40px rgba(0, 212, 255, 0.05);
-    animation: card-glow 3s ease-in-out infinite;
-}
+
 
 @keyframes card-glow {
     0%, 100% {
@@ -52,14 +39,7 @@ body {
    HEADER
    ============================================ */
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
-    background: rgba(0, 212, 255, 0.05);
-}
+
 
 .card-title {
     font-family: 'Orbitron', sans-serif;
@@ -105,7 +85,8 @@ body {
     padding: 0;
     width: 100%;
     position: relative;
-}
+
+    overflow: hidden;}
 
 .canvas-wrapper {
     width: 100%;
@@ -130,14 +111,7 @@ body {
    FOOTER - STATS EN GRID 2×2
    ============================================ */
 
-.card-footer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 12px;
-    padding: 20px;
-    background: rgba(10, 14, 39, 0.4);
-}
+
 
 .stat-box {
     padding: 20px;
@@ -178,14 +152,9 @@ body {
    ============================================ */
 
 @media (max-width: 430px) {
-    .stats-card {
-        margin: 15px 5px;
-        border-radius: 16px;
-    }
     
-    .card-header {
-        padding: 15px;
-    }
+    
+    
     
     .card-title {
         font-size: 16px;
@@ -198,10 +167,7 @@ body {
         font-size: 12px;
     }
     
-    .card-footer {
-        gap: 10px;
-        padding: 15px;
-    }
+    
     
     .stat-box {
         padding: 15px 10px;
@@ -234,18 +200,11 @@ body {
     z-index: 1;
 }
 
-.card-body, .card-header, .card-footer {
-    position: relative;
-    z-index: 2;
-}
+.card-body, .card-header, 
 
 
 
-.stats-card {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-}
+
 
 @media (max-width: 430px) {
     
@@ -260,12 +219,7 @@ body {
 /* Force TOUTES les cartes à avoir la même largeur */
 
 
-.stats-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-}
+
 
 /* Responsive pour iPhone */
 @media (max-width: 768px) {
@@ -285,12 +239,7 @@ body {
 /* Force TOUTES les cartes à avoir la même largeur */
 
 
-.stats-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-}
+
 
 /* Responsive pour iPhone */
 @media (max-width: 768px) {
@@ -317,23 +266,69 @@ body {
    GRILLE - UNE SEULE DEFINITION
    ============================================ */
 
+
+
+@media (max-width: 767px) {
+}
+
+/* ============================================
+   GRILLE UNIQUE
+   ============================================ */
+
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
     padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
 }
 
 .stats-grid > * {
     width: 100%;
 }
 
-@media (max-width: 767px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        padding: 10px;
-    }
+/* ============================================
+   STRUCTURE DES CARTES - PROPRE
+   ============================================ */
+
+.stats-card {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(0, 212, 255, 0.4);
+    border-radius: 20px;
+    margin: 20px 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 
+        0 0 30px rgba(0, 212, 255, 0.3),
+        0 0 60px rgba(138, 43, 226, 0.2),
+        inset 0 0 40px rgba(0, 212, 255, 0.05);
+    animation: card-glow 3s ease-in-out infinite;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.05);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.card-footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    padding: 20px;
+    background: rgba(10, 14, 39, 0.4);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    overflow: hidden;
+}
+
+.card-body, .card-header, .card-footer {
+    position: relative;
+    z-index: 2;
 }
