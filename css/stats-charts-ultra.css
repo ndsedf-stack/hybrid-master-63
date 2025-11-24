@@ -360,3 +360,24 @@ body {
         gap: 15px !important;
     }
 }
+
+/* ============================================
+   FIX FOOTER BOXES - HAUTEUR GARANTIE
+   ============================================ */
+
+.stat-box {
+    min-height: 70px;  /* ✅ Hauteur minimum pour éviter coupure */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-footer {
+    overflow: visible !important;  /* ✅ Pas de coupure */
+}
+
+.stats-card {
+    overflow: visible !important;  /* ✅ Laisse le footer respirer */
+    margin-bottom: 30px;  /* ✅ Espace entre les cartes */
+}
