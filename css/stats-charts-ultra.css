@@ -25,6 +25,7 @@ body {
     border-radius: 20px;
     margin: 20px 10px;
     overflow: hidden;
+    padding-bottom: 0;  /* Pas de padding, le footer gère */
     position: relative;
     box-shadow: 
         0 0 30px rgba(0, 212, 255, 0.3),
@@ -136,7 +137,9 @@ body {
     grid-template-rows: repeat(2, 1fr);
     gap: 12px;
     padding: 20px;
+    padding-bottom: 24px;  /* ✅ PADDING EXTRA EN BAS */
     background: rgba(10, 14, 39, 0.4);
+    min-height: 160px;  /* ✅ HAUTEUR MINIMUM GARANTIE */
 }
 
 .stat-box {
@@ -199,9 +202,15 @@ body {
     }
     
     .card-footer {
-        gap: 10px;
-        padding: 15px;
-    }
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    padding: 20px;
+    padding-bottom: 24px;  /* ✅ PADDING EXTRA EN BAS */
+    background: rgba(10, 14, 39, 0.4);
+    min-height: 160px;  /* ✅ HAUTEUR MINIMUM GARANTIE */
+}
     
     .stat-box {
         padding: 15px 10px;
@@ -235,8 +244,14 @@ body {
 }
 
 .card-body, .card-header, .card-footer {
-    position: relative;
-    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    padding: 20px;
+    padding-bottom: 24px;  /* ✅ PADDING EXTRA EN BAS */
+    background: rgba(10, 14, 39, 0.4);
+    min-height: 160px;  /* ✅ HAUTEUR MINIMUM GARANTIE */
 }
 
 .stats-grid {
