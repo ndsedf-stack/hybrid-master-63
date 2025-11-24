@@ -25,10 +25,10 @@ export function createStatsCard(containerId, options) {
                 <span class="card-stat">📊 ${options.period || 'Month'}</span>
             </div>
         </div>
-    `;
+    const canvas = document.getElementById(`${containerId}-canvas`);
     
     // Initialiser le canvas
-    const canvas = document.getElementById(`${containerId}-canvas`);
+    const canvas = document.getElementById(`${containerId}-canvas");
     const ctx = canvas.getContext('2d');
     
     // Adapter selon le type
