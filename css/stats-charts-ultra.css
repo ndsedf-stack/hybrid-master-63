@@ -116,8 +116,6 @@ body {
     align-items: center;
     justify-content: center;
     background: rgba(10, 14, 39, 0.6);
-    padding: 0;
-    margin: 0;
 }
 
 .canvas-wrapper canvas {
@@ -408,7 +406,13 @@ body {
 }
 
 .canvas-wrapper {
-    height: 100% !important;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 14, 39, 0.6);
 }
 
 @media (max-width: 768px) {
