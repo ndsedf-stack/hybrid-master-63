@@ -102,30 +102,11 @@ body {
    BODY - CANVAS CONTAINER (ASPECT 1:1 FORCÉ)
    ============================================ */
 
-.card-body {
-    padding: 0 !important;
-    width: 100%;
-    position: relative;
-}
 
-.canvas-wrapper {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(10, 14, 39, 0.6);
-}
 
-.canvas-wrapper canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    object-fit: contain;
-}
+
+
+
 
 /* ============================================
    FOOTER - STATS EN GRID 2×2
@@ -393,17 +374,32 @@ body {
    FIX CANVAS SIZE - FORCE REMPLISSAGE
    ============================================ */
 
-.stats-card {
-    max-height: 600px;  /* Limite la hauteur des cartes */
-    display: flex;
-    flex-direction: column;
+
+
+
+
+
+
+@media (max-width: 768px) {
+    
+    
+    
 }
 
+
+/* ============================================
+   CARD BODY - SIMPLE
+   ============================================ */
+
 .card-body {
-    flex: 1;  /* Prend tout l'espace disponible */
-    min-height: 300px;
-    max-height: 400px;
+    padding: 0;
+    width: 100%;
+    position: relative;
 }
+
+/* ============================================
+   CANVAS WRAPPER - ASPECT RATIO UNIQUEMENT
+   ============================================ */
 
 .canvas-wrapper {
     width: 100%;
@@ -415,13 +411,11 @@ body {
     background: rgba(10, 14, 39, 0.6);
 }
 
-@media (max-width: 768px) {
-    .stats-card {
-        max-height: 500px;
-    }
-    
-    .card-body {
-        min-height: 250px;
-        max-height: 350px;
-    }
+.canvas-wrapper canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
