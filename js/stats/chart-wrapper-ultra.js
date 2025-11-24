@@ -3,7 +3,7 @@
 export function createStatsCard(containerId, options) {
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`Container ${containerId} not found`);
+        console.error(`Container ${containerId} not found');
         return;
     }
     
