@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEST PREMIUM - Effets Cockpit</title>
     
-    <link rel="stylesheet" href="stats-charts.css">
+    <link rel="stylesheet" href="styles/stats-charts.css">
     
     <style>
         body {
@@ -47,9 +47,9 @@
     </div>
 
     <script type="module">
-        import { ChartWrapper, createStatsCard } from './chart-wrapper.js';
-        import { getMuscleData, getWeeklyProgress, getGlobalScore } from './stats-data-manager.js';
-        import { ChartEffects, addBadge, addVortexEffect } from './chart-effects.js';
+        import { ChartWrapper, createStatsCard } from './scripts/modules/chart-wrapper.js';
+        import { getMuscleData, getWeeklyProgress, getGlobalScore } from './scripts/modules/stats-data-manager.js';
+        import { ChartEffects, addBadge, addVortexEffect } from './scripts/modules/chart-effects.js';
         
         // CHARGER LES DONNÉES
         const muscleData = getMuscleData({ topN: 6 });
