@@ -103,28 +103,30 @@ body {
    ============================================ */
 
 .card-body {
-    padding: 0;
+    padding: 0 !important;
     width: 100%;
     position: relative;
 }
 
 .canvas-wrapper {
     width: 100%;
-    aspect-ratio: 1 / 1; /* ✅ FORCE LE CARRÉ - GARANTI */
+    aspect-ratio: 1 / 1;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(10, 14, 39, 0.6);
+    padding: 0;
+    margin: 0;
 }
 
 .canvas-wrapper canvas {
     display: block;
     width: 100% !important;
     height: 100% !important;
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 1 / 1; /* ✅ DOUBLE SÉCURITÉ */
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain;
 }
 
 /* ============================================
