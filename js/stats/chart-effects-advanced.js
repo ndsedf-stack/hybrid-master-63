@@ -1,365 +1,398 @@
-// chart-effects-advanced.js - EFFETS VISUELS ULTRA PREMIUM
+// chart-effects-advanced.js - EFFETS VISUELS COCKPIT HOLOGRAPHIQUE
 
 // ============================================
-//  PROJECTEURS LASER DIRECTIONNELS
+//  HALOS MULTI-COUCHES DYNAMIQUES
 // ============================================
 
-export class LaserSpotlight {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.spots = [];
-        this.initSpots();
-    }
+export function createMultiLayerHalo(card, intensity = 1) {
+    // Supprimer anciens halos
+    const oldHalos = card.querySelectorAll('.halo-layer');
+    oldHalos.forEach(h => h.remove());
     
-    initSpots() {
-        // 4 projecteurs aux coins qui balayent la zone
-        this.spots = [
-            { x: 0.1, y: 0.1, angle: 45, speed: 0.002, radius: 150, intensity: 0.3 },
-            { x: 0.9, y: 0.1, angle: 135, speed: -0.0015, radius: 180, intensity: 0.25 },
-            { x: 0.1, y: 0.9, angle: -45, speed: 0.0018, radius: 160, intensity: 0.28 },
-            { x: 0.9, y: 0.9, angle: -135, speed: -0.002, radius: 170, intensity: 0.22 }
-        ];
-    }
+    // Créer 3 couches de halos
+    const haloLayers = [
+        { color: 'rgba(0, 212, 255', size: 40, blur: 60, speed: 3 },   // Cyan doux
+        { color: 'rgba(138, 43, 226', size: 60, blur: 80, speed: 4 },  // Violet pulsant
+        { color: 'rgba(236, 72, 153', size: 80, blur: 100, speed: 5 }  // Magenta discret
+    ];
     
-    update() {
-        this.spots.forEach(spot => {
-            spot.angle += spot.speed * 60;
-        });
-    }
-    
-    render() {
-        const w = this.canvas.width;
-        const h = this.canvas.height;
-        
-        this.spots.forEach(spot => {
-            const x = w * spot.x;
-            const y = h * spot.y;
-            
-            // Gradient radial avec effet laser
-            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, spot.radius);
-            gradient.addColorStop(0, `rgba(0, 212, 255, ${spot.intensity})`);
-            gradient.addColorStop(0.5, `rgba(138, 43, 226, ${spot.intensity * 0.5})`);
-            gradient.addColorStop(1, 'rgba(0, 212, 255, 0)');
-            
-            this.ctx.save();
-            this.ctx.globalCompositeOperation = 'screen';
-            this.ctx.fillStyle = gradient;
-            this.ctx.fillRect(0, 0, w, h);
-            this.ctx.restore();
-            
-            // Faisceau directionnel
-            this.ctx.save();
-            this.ctx.globalCompositeOperation = 'screen';
-            this.ctx.translate(x, y);
-            this.ctx.rotate(spot.angle);
-            
-            const beamGradient = this.ctx.createLinearGradient(0, 0, spot.radius * 2, 0);
-            beamGradient.addColorStop(0, `rgba(0, 212, 255, ${spot.intensity * 0.5})`);
-            beamGradient.addColorStop(1, 'rgba(0, 212, 255, 0)');
-            
-            this.ctx.fillStyle = beamGradient;
-            this.ctx.fillRect(0, -20, spot.radius * 2, 40);
-            this.ctx.restore();
-        });
-    }
+    haloLayers.forEach((layer, i) => {
+        const halo = document.createElement('div');
+        halo.className = `halo-layer halo-${i}`;
+        halo.style.cssText = `
+            position: absolute;
+            top: -${layer.size}px;
+            left: -${layer.size}px;
+            right: -${layer.size}px;
+            bottom: -${layer.size}px;
+            border-radius: 20px;
+            pointer-events: none;
+            opacity: ${0.3 * intensity};
+            box-shadow: 
+                0 0 ${layer.blur}px ${layer.color}, ${0.3 * intensity}),
+                inset 0 0 ${layer.blur / 2}px ${layer.color}, ${0.15 * intensity});
+            animation: halo-pulse-${i} ${layer.speed}s ease-in-out infinite;
+        `;
+        card.appendChild(halo);
+    });
 }
 
 // ============================================
-//  VORTEX ADAPTATIF SELON PROGRESSION
+//  REFLETS HOLOGRAPHIQUES ANIMÉS
 // ============================================
 
-export class AdaptiveVortex {
-    constructor(canvas, centerX, centerY) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.particles = [];
-        this.progressValue = 0;
-        this.targetProgress = 0;
-        this.initParticles();
-    }
-    
-    initParticles() {
-        const count = 60;
-        for (let i = 0; i < count; i++) {
-            this.particles.push({
-                angle: (Math.PI * 2 * i) / count,
-                radius: 80 + Math.random() * 40,
-                speed: 0.01 + Math.random() * 0.02,
-                size: 1 + Math.random() * 2,
-                opacity: 0.3 + Math.random() * 0.4,
-                spiralSpeed: 0.5 + Math.random() * 0.5
-            });
-        }
-    }
-    
-    setProgress(value) {
-        this.targetProgress = Math.max(0, Math.min(1, value));
-    }
-    
-    update() {
-        // Smooth transition vers target
-        this.progressValue += (this.targetProgress - this.progressValue) * 0.05;
-        
-        // Intensité du vortex selon progression
-        const vortexIntensity = 0.5 + this.progressValue * 1.5;
-        
-        this.particles.forEach(p => {
-            // Rotation spirale
-            p.angle += p.speed * vortexIntensity;
-            
-            // Attraction vers le centre selon progression
-            const targetRadius = 20 + (80 * (1 - this.progressValue));
-            p.radius += (targetRadius - p.radius) * 0.02;
-            
-            // Pulse
-            p.size = (1 + Math.random() * 2) * (0.8 + this.progressValue * 0.4);
-        });
-    }
-    
-    render() {
-        this.particles.forEach(p => {
-            const x = this.centerX + Math.cos(p.angle) * p.radius;
-            const y = this.centerY + Math.sin(p.angle) * p.radius;
-            
-            // Particule avec glow
-            this.ctx.save();
-            this.ctx.globalCompositeOperation = 'screen';
-            
-            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, p.size * 3);
-            gradient.addColorStop(0, `rgba(0, 212, 255, ${p.opacity * this.progressValue})`);
-            gradient.addColorStop(0.5, `rgba(138, 43, 226, ${p.opacity * 0.5})`);
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            
-            this.ctx.fillStyle = gradient;
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, p.size * 3, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            this.ctx.restore();
-        });
-    }
-}
-
-// ============================================
-//  HUD OVERLAY CONTEXTUEL
-// ============================================
-
-export class HUDOverlay {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.active = false;
-        this.mouseX = 0;
-        this.mouseY = 0;
-        this.data = {};
-        this.opacity = 0;
-        this.targetOpacity = 0;
-    }
-    
-    show(x, y, data) {
-        this.active = true;
-        this.mouseX = x;
-        this.mouseY = y;
-        this.data = data;
-        this.targetOpacity = 1;
-    }
-    
-    hide() {
-        this.active = false;
-        this.targetOpacity = 0;
-    }
-    
-    update() {
-        this.opacity += (this.targetOpacity - this.opacity) * 0.15;
-    }
-    
-    render() {
-        if (this.opacity < 0.01) return;
-        
-        this.ctx.save();
-        this.ctx.globalAlpha = this.opacity;
-        
-        // Position du HUD (éviter les bords)
-        let hudX = this.mouseX + 20;
-        let hudY = this.mouseY - 60;
-        
-        if (hudX + 200 > this.canvas.width) hudX = this.mouseX - 220;
-        if (hudY < 20) hudY = this.mouseY + 20;
-        
-        // Background glassmorphism
-        this.ctx.fillStyle = 'rgba(10, 15, 35, 0.85)';
-        this.ctx.strokeStyle = 'rgba(0, 212, 255, 0.6)';
-        this.ctx.lineWidth = 1;
-        
-        this.ctx.beginPath();
-        this.ctx.roundRect(hudX, hudY, 180, 80, 8);
-        this.ctx.fill();
-        this.ctx.stroke();
-        
-        // Scanlines
-        this.ctx.strokeStyle = 'rgba(0, 212, 255, 0.1)';
-        this.ctx.lineWidth = 1;
-        for (let i = 0; i < 80; i += 4) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(hudX, hudY + i);
-            this.ctx.lineTo(hudX + 180, hudY + i);
-            this.ctx.stroke();
-        }
-        
-        // Texte HUD
-        this.ctx.fillStyle = '#00d4ff';
-        this.ctx.font = 'bold 11px "Orbitron", monospace';
-        this.ctx.fillText('[ HUD OVERLAY ]', hudX + 10, hudY + 18);
-        
-        this.ctx.fillStyle = '#ffffff';
-        this.ctx.font = '13px "Orbitron", monospace';
-        
-        let lineY = hudY + 35;
-        Object.entries(this.data).forEach(([key, value]) => {
-            this.ctx.fillStyle = '#8a2be2';
-            this.ctx.fillText(`${key}:`, hudX + 10, lineY);
-            this.ctx.fillStyle = '#00ff88';
-            this.ctx.fillText(String(value), hudX + 90, lineY);
-            lineY += 18;
-        });
-        
-        this.ctx.restore();
-    }
-}
-
-// ============================================
-//  ANIMATIONS DE MONTÉE PROGRESSIVE
-// ============================================
-
-export class ProgressiveReveal {
-    constructor(canvas, duration = 1500) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.duration = duration;
-        this.startTime = null;
-        this.progress = 0;
-        this.type = 'spiral'; // spiral, radar, rings
-    }
-    
-    start(type = 'spiral') {
-        this.type = type;
-        this.startTime = Date.now();
-        this.progress = 0;
-    }
-    
-    update() {
-        if (this.startTime === null) return;
-        
-        const elapsed = Date.now() - this.startTime;
-        this.progress = Math.min(1, elapsed / this.duration);
-        
-        if (this.progress >= 1) {
-            this.startTime = null;
-        }
-    }
-    
-    getClipFunction() {
-        if (this.progress >= 1) return null;
-        
-        const centerX = this.canvas.width / 2;
-        const centerY = this.canvas.height / 2;
-        const maxRadius = Math.max(this.canvas.width, this.canvas.height);
-        
-        return (ctx) => {
-            ctx.save();
-            ctx.beginPath();
-            
-            if (this.type === 'spiral') {
-                const turns = 3;
-                const points = 100;
-                const currentPoints = Math.floor(points * this.progress);
-                
-                for (let i = 0; i <= currentPoints; i++) {
-                    const angle = (i / points) * Math.PI * 2 * turns;
-                    const radius = (i / points) * maxRadius * this.progress;
-                    const x = centerX + Math.cos(angle) * radius;
-                    const y = centerY + Math.sin(angle) * radius;
-                    
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.lineTo(centerX, centerY);
-                
-            } else if (this.type === 'radar') {
-                const angle = Math.PI * 2 * this.progress;
-                ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, maxRadius, -Math.PI / 2, -Math.PI / 2 + angle);
-                ctx.lineTo(centerX, centerY);
-                
-            } else if (this.type === 'rings') {
-                const radius = maxRadius * this.progress;
-                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            }
-            
-            ctx.closePath();
-            ctx.clip();
-        };
-    }
-    
-    isAnimating() {
-        return this.progress < 1;
-    }
-}
-
-// ============================================
-//  REFLETS ANIMÉS GLASSMORPHISM
-// ============================================
-
-export class AnimatedGlassReflection {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.time = 0;
-    }
-    
-    update() {
-        this.time += 0.01;
-    }
-    
-    render() {
-        const w = this.canvas.width;
-        const h = this.canvas.height;
-        
-        // Reflet diagonal animé
-        this.ctx.save();
-        this.ctx.globalCompositeOperation = 'screen';
-        
-        const gradient = this.ctx.createLinearGradient(
-            0, 0,
-            w, h
+export function createHolographicReflections(card) {
+    const reflection = document.createElement('div');
+    reflection.className = 'holographic-reflection';
+    reflection.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 20px;
+        pointer-events: none;
+        background: linear-gradient(
+            135deg,
+            transparent 0%,
+            rgba(0, 212, 255, 0.1) 20%,
+            rgba(138, 43, 226, 0.1) 40%,
+            transparent 60%,
+            rgba(236, 72, 153, 0.1) 80%,
+            transparent 100%
         );
-        
-        const pos1 = 0.3 + Math.sin(this.time) * 0.15;
-        const pos2 = 0.5 + Math.sin(this.time) * 0.15;
-        
-        gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
-        gradient.addColorStop(pos1, 'rgba(255, 255, 255, 0.03)');
-        gradient.addColorStop(pos2, 'rgba(0, 212, 255, 0.08)');
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.fillRect(0, 0, w, h);
-        
-        this.ctx.restore();
+        background-size: 300% 300%;
+        animation: holographic-drift 10s ease-in-out infinite;
+        mix-blend-mode: screen;
+    `;
+    card.appendChild(reflection);
+}
+
+// ============================================
+//  SPOTLIGHTS DIRECTIONNELS
+// ============================================
+
+export function createSpotlights(card) {
+    const spotlight1 = document.createElement('div');
+    const spotlight2 = document.createElement('div');
+    
+    spotlight1.className = 'spotlight spotlight-1';
+    spotlight2.className = 'spotlight spotlight-2';
+    
+    const spotlightStyle = `
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(0, 212, 255, 0.3) 0%,
+            transparent 70%
+        );
+        pointer-events: none;
+        filter: blur(40px);
+        mix-blend-mode: screen;
+        transition: all 0.3s ease;
+    `;
+    
+    spotlight1.style.cssText = spotlightStyle;
+    spotlight2.style.cssText = spotlightStyle + 'background: radial-gradient(circle, rgba(138, 43, 226, 0.3) 0%, transparent 70%);';
+    
+    card.appendChild(spotlight1);
+    card.appendChild(spotlight2);
+    
+    // Suivre la souris/doigt
+    let mouseX = 0, mouseY = 0;
+    
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+        updateSpotlights();
+    });
+    
+    card.addEventListener('touchmove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const touch = e.touches[0];
+        mouseX = touch.clientX - rect.left;
+        mouseY = touch.clientY - rect.top;
+        updateSpotlights();
+    });
+    
+    function updateSpotlights() {
+        spotlight1.style.left = (mouseX - 100) + 'px';
+        spotlight1.style.top = (mouseY - 100) + 'px';
+        spotlight2.style.left = (mouseX - 80) + 'px';
+        spotlight2.style.top = (mouseY - 120) + 'px';
     }
 }
 
 // ============================================
-//  EXPORT GLOBAL
+//  SCANLINES HUD PREMIUM
 // ============================================
 
-window.ChartEffectsAdvanced = {
-    LaserSpotlight,
-    AdaptiveVortex,
-    HUDOverlay,
-    ProgressiveReveal,
-    AnimatedGlassReflection
+export function createScanlines(card) {
+    const scanlines = document.createElement('div');
+    scanlines.className = 'scanlines-hud';
+    scanlines.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 20px;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            0deg,
+            rgba(0, 212, 255, 0.03) 0px,
+            transparent 1px,
+            transparent 2px,
+            rgba(0, 212, 255, 0.03) 3px
+        );
+        animation: scanlines-scroll 10s linear infinite;
+        opacity: 0.5;
+    `;
+    card.appendChild(scanlines);
+}
+
+// ============================================
+//  PARTICULES ORBITANTES SYNCHRONISÉES
+// ============================================
+
+export function createOrbitalParticles(card, count = 20, speed = 1) {
+    const container = document.createElement('div');
+    container.className = 'orbital-particles';
+    container.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+        border-radius: 20px;
+    `;
+    
+    for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'orbital-particle';
+        
+        const size = 2 + Math.random() * 3;
+        const angle = (360 / count) * i;
+        const distance = 100 + Math.random() * 100;
+        const duration = 8 / speed + Math.random() * 4;
+        const delay = Math.random() * 5;
+        
+        particle.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background: rgba(0, 212, 255, 0.8);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+            animation: orbital-rotation-${i} ${duration}s linear infinite;
+            animation-delay: ${delay}s;
+            transform-origin: center center;
+        `;
+        
+        // Créer l'animation CSS dynamiquement
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes orbital-rotation-${i} {
+                0% {
+                    transform: rotate(${angle}deg) translateX(${distance}px) rotate(-${angle}deg);
+                    opacity: 0;
+                }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% {
+                    transform: rotate(${angle + 360}deg) translateX(${distance}px) rotate(-${angle + 360}deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        
+        container.appendChild(particle);
+    }
+    
+    card.appendChild(container);
+}
+
+// ============================================
+//  VORTEX LUMINEUX
+// ============================================
+
+export function createVortex(card, intensity = 0.5) {
+    const vortex = document.createElement('div');
+    vortex.className = 'vortex-effect';
+    vortex.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        margin: -150px 0 0 -150px;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(0, 212, 255, ${0.2 * intensity}) 0%,
+            rgba(138, 43, 226, ${0.1 * intensity}) 50%,
+            transparent 100%
+        );
+        pointer-events: none;
+        animation: vortex-spin ${5 / intensity}s linear infinite;
+        filter: blur(20px);
+        mix-blend-mode: screen;
+    `;
+    card.appendChild(vortex);
+}
+
+// ============================================
+//  PULSE SUR INTERACTION
+// ============================================
+
+export function addInteractionPulse(card) {
+    card.addEventListener('click', () => {
+        card.style.animation = 'none';
+        setTimeout(() => {
+            card.style.animation = 'interaction-pulse 0.6s ease-out';
+        }, 10);
+    });
+    
+    card.addEventListener('mouseenter', () => {
+        const halos = card.querySelectorAll('.halo-layer');
+        halos.forEach(halo => {
+            halo.style.opacity = parseFloat(halo.style.opacity) * 1.5;
+        });
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        const halos = card.querySelectorAll('.halo-layer');
+        halos.forEach(halo => {
+            halo.style.opacity = parseFloat(halo.style.opacity) / 1.5;
+        });
+    });
+}
+
+// ============================================
+//  BADGES HOLOGRAPHIQUES
+// ============================================
+
+export function createHolographicBadge(card, text, position = 'top-right') {
+    const badge = document.createElement('div');
+    badge.className = `holographic-badge ${position}`;
+    badge.textContent = text;
+    badge.style.cssText = `
+        position: absolute;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(138, 43, 226, 0.3));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 212, 255, 0.5);
+        border-radius: 20px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #00d4ff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        animation: badge-float 2s ease-in-out infinite;
+        z-index: 10;
+    `;
+    
+    // Positionnement
+    if (position === 'top-right') {
+        badge.style.top = '20px';
+        badge.style.right = '20px';
+    } else if (position === 'top-left') {
+        badge.style.top = '20px';
+        badge.style.left = '20px';
+    }
+    
+    card.appendChild(badge);
+}
+
+// ============================================
+//  HUD OVERLAY FLOTTANT
+// ============================================
+
+export function createHudOverlay(card, data) {
+    const hud = document.createElement('div');
+    hud.className = 'hud-overlay';
+    hud.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 40px;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(0, 212, 255, 0.6);
+        border-radius: 10px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 48px;
+        font-weight: 700;
+        color: #00d4ff;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 100;
+        animation: hud-appear 0.5s ease-out forwards;
+    `;
+    
+    hud.textContent = data.value || '0';
+    card.appendChild(hud);
+    
+    // Disparaître après 1.5s
+    setTimeout(() => {
+        hud.style.animation = 'hud-disappear 0.5s ease-out forwards';
+        setTimeout(() => hud.remove(), 500);
+    }, 1500);
+}
+
+// ============================================
+//  SYSTÈME UNIVERSEL D'APPLICATION
+// ============================================
+
+export function applyAllPremiumEffects(card, config = {}) {
+    const {
+        intensity = 1,
+        particles = 20,
+        speed = 1,
+        showBadge = false,
+        badgeText = 'RECORD',
+        badgePosition = 'top-right'
+    } = config;
+    
+    // Appliquer tous les effets dans l'ordre
+    createMultiLayerHalo(card, intensity);
+    createHolographicReflections(card);
+    createSpotlights(card);
+    createScanlines(card);
+    createOrbitalParticles(card, particles, speed);
+    createVortex(card, intensity);
+    addInteractionPulse(card);
+    
+    if (showBadge) {
+        createHolographicBadge(card, badgeText, badgePosition);
+    }
+    
+    // Ajouter la classe pour les animations CSS
+    card.classList.add('premium-cockpit');
+}
+
+export default {
+    createMultiLayerHalo,
+    createHolographicReflections,
+    createSpotlights,
+    createScanlines,
+    createOrbitalParticles,
+    createVortex,
+    addInteractionPulse,
+    createHolographicBadge,
+    createHudOverlay,
+    applyAllPremiumEffects
 };

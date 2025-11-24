@@ -283,3 +283,130 @@
         font-size: 14px;
     }
 }
+
+/* ============================================
+   ANIMATIONS COCKPIT HOLOGRAPHIQUE
+   ============================================ */
+
+@keyframes halo-pulse-0 {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes halo-pulse-1 {
+    0%, 100% { 
+        opacity: 0.25;
+        transform: scale(1) rotate(0deg);
+    }
+    50% { 
+        opacity: 0.4;
+        transform: scale(1.08) rotate(2deg);
+    }
+}
+
+@keyframes halo-pulse-2 {
+    0%, 100% { 
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.35;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes holographic-drift {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+@keyframes scanlines-scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(10px); }
+}
+
+@keyframes vortex-spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes interaction-pulse {
+    0% { 
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+    50% { 
+        transform: scale(1.02);
+        box-shadow: 0 0 60px rgba(0, 212, 255, 0.6);
+    }
+    100% { 
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+}
+
+@keyframes badge-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes hud-appear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes hud-disappear {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* Classe premium cockpit */
+.premium-cockpit {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.premium-cockpit::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 22px;
+    background: linear-gradient(
+        45deg,
+        rgba(0, 212, 255, 0.5),
+        rgba(138, 43, 226, 0.5),
+        rgba(236, 72, 153, 0.5),
+        rgba(0, 212, 255, 0.5)
+    );
+    background-size: 300% 300%;
+    animation: premium-border 10s ease infinite;
+    z-index: -1;
+    filter: blur(10px);
+}
+
+@keyframes premium-border {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
