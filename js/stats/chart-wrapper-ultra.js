@@ -1,14 +1,16 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
 export function createStatsCard(config) {
-    // ✅ Gère si c'est un objet de config complet
-    const containerId = config.containerId || config;
-    const options = config.title ? config : {}; // Si config a un title, c'est l'objet complet
+    // ✅ Extraire containerId proprement
+    const containerId = config.containerId;
+    
+    if (!containerId) {
+        console.error("containerId is required in config");
+        return;
+    }
     
     // ✅ Récupère le container
-    const container = typeof containerId === "string"
-        ? document.getElementById(containerId)
-        : containerId;
+    const container = document.getElementById(containerId);
 
     if (!container) {
         console.error("Container not found:", containerId);
@@ -19,7 +21,7 @@ export function createStatsCard(config) {
     container.innerHTML = `
         <div class="stats-card premium-card">
             <div class="card-header">
-                <h3 class="card-title">${options.title || config.title || 'Stats'}</h3>
+                <h3 class="card-title">${config.title || 'Stats'}</h3>
                 <div class="period-indicator">
                     <span class="period-dot active" data-period="week">S</span>
                     <span class="period-dot" data-period="month">M</span>
@@ -27,7 +29,7 @@ export function createStatsCard(config) {
                 </div>
             </div>
             <div class="card-body">
-                <canvas id="${typeof containerId === 'string' ? containerId : container.id}-canvas"></canvas>
+                <canvas id="${containerId}-canvas"></canvas>
             </div>
             <div class="card-footer">
                 <span class="card-stat">${config.icon || '📊'} ${config.period || 'Month'}</span>
@@ -36,10 +38,9 @@ export function createStatsCard(config) {
     `;
 
     // Initialiser le canvas
-    const canvasId = typeof containerId === 'string' ? containerId : container.id;
-    const canvas = document.getElementById(`${canvasId}-canvas`);
+    const canvas = document.getElementById(`${containerId}-canvas`);
     if (!canvas) {
-        console.error("Canvas not found:", `${canvasId}-canvas`);
+        console.error("Canvas not found:", `${containerId}-canvas`);
         return;
     }
     
@@ -67,8 +68,8 @@ export function createStatsCard(config) {
     }
 
     // Sinon utiliser l'ancien système (pour compatibilité)
-    const type = options.type || config.type || config.chartType;
-    const data = options.data || config.data || {};
+    const type = config.type || config.chartType;
+    const data = config.data || {};
 
     switch (type) {
         case 'radar':
@@ -193,7 +194,7 @@ function drawZonesChart(ctx, data) {
     const barHeight = 40;
     const startY = 80;
 
-    data.forEach((zone, i) => {
+    (data || []).forEach((zone, i) => {
         const barWidth = (canvas.width - 60) * ((zone.percentage || 0) / 100);
         const y = startY + i * (barHeight + 10);
 
@@ -214,11 +215,12 @@ function drawVolumeChart(ctx, data) {
 
     const barWidth = 50;
     const gap = 20;
-    const maxValue = Math.max(...(data.datasets || []).map(d => d.value || 0), 1);
+    const datasets = data.datasets || [];
+    const maxValue = Math.max(...datasets.map(d => d.value || 0), 1);
     const startX = 40;
     const bottomY = 160;
 
-    (data.datasets || []).forEach((dataset, i) => {
+    datasets.forEach((dataset, i) => {
         const height = ((dataset.value || 0) / maxValue) * 120;
         const x = startX + i * (barWidth + gap);
         const y = bottomY - height;
