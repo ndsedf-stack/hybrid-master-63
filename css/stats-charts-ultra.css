@@ -259,3 +259,89 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================================
+   GRILLE FORCÉE - CARTES ÉGALES
+   ============================================ */
+
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    gap: 20px !important;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Force TOUTES les cartes à avoir la même largeur */
+.stats-grid > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+.stats-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+/* Responsive pour iPhone */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 15px !important;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 430px) {
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+}
+
+/* ============================================
+   GRILLE FORCÉE - CARTES ÉGALES
+   ============================================ */
+
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    gap: 20px !important;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Force TOUTES les cartes à avoir la même largeur */
+.stats-grid > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+.stats-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+/* Responsive pour iPhone */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 15px !important;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 430px) {
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+}
