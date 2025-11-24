@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST - Système de Graphiques Universel</title>
+    
+    <link rel="stylesheet" href="stats-charts.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to bottom, #0f172a, #020617);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #22d3ee;
+            font-size: 24px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .test-info {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 32px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        .test-info strong {
+            color: #22d3ee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎯 Test Système Universel</h1>
+        
+        <div class="test-info">
+            <strong>✅ CE TEST VALIDE :</strong><br>
+            • Aspect ratio 1:1 forcé sur iPhone<br>
+            • Centrage automatique<br>
+            • Resize intelligent<br>
+            • 3 types : Canvas, SVG, HTML<br>
+            • Responsive iPhone 15 Pro Max
+        </div>
+        
+        <!-- EXEMPLE 1: CANVAS RADAR CHART -->
+        <div id="example1"></div>
+        
+        <!-- EXEMPLE 2: SVG CIRCLE CHART -->
+        <div id="example2"></div>
+        
+        <!-- EXEMPLE 3: HTML CARD CHART -->
+        <div id="example3"></div>
+    </div>
+
+    <script type="module">
+        import { ChartWrapper, createStatsCard } from './chart-wrapper.js';
+        
+        // =============================================
+        // EXEMPLE 1: CANVAS RADAR CHART (comme Muscle HUD)
+        // =============================================
+        
+        const chart1 = createStatsCard({
+            containerId: 'example1',
+            title: 'Muscle Radar',
+            icon: '💪',
+            chartType: 'canvas',
+            chartId: 'radarCanvas',
+            footerHTML: `
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Volume Total</div>
+                    <div class="chart-stat-value">12.5k</div>
+                </div>
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Intensité</div>
+                    <div class="chart-stat-value">78%</div>
+                </div>
+            `,
+            onRender: (canvas, ctx, size) => {
+                // Clear
+                ctx.clearRect(0, 0, size.width, size.height);
+                
+                const center = size.width / 2;
+                const radius = Math.min(size.width, size.height) * 0.35;
+                
+                // Données de test
+                const muscles = [
+                    { name: 'PECS', value: 0.9, color: '#06b6d4' },
+                    { name: 'DOS', value: 0.8, color: '#22d3ee' },
+                    { name: 'JAMBES', value: 0.7, color: '#0ea5e9' },
+                    { name: 'ÉPAULES', value: 0.6, color: '#0284c7' },
+                    { name: 'BRAS', value: 0.75, color: '#0369a1' },
+                    { name: 'CORE', value: 0.65, color: '#075985' }
+                ];
+                
+                const angleStep = (Math.PI * 2) / muscles.length;
+                
+                // Grille de fond
+                ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 4; i++) {
+                    ctx.beginPath();
+                    ctx.arc(center, center, radius * (i + 1) / 4, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+                
+                // Axes
+                muscles.forEach((_, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const x = center + Math.cos(angle) * radius;
+                    const y = center + Math.sin(angle) * radius;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(center, center);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                });
+                
+                // Polygone de données
+                ctx.beginPath();
+                muscles.forEach((muscle, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = radius * muscle.value;
+                    const x = center + Math.cos(angle) * r;
+                    const y = center + Math.sin(angle) * r;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                ctx.closePath();
+                
+                // Fill
+                const gradient = ctx.createRadialGradient(center, center, 0, center, center, radius);
+                gradient.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
+                gradient.addColorStop(1, 'rgba(6, 182, 212, 0.05)');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Stroke
+                ctx.strokeStyle = '#06b6d4';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Points
+                muscles.forEach((muscle, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = radius * muscle.value;
+                    const x = center + Math.cos(angle) * r;
+                    const y = center + Math.sin(angle) * r;
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 6, 0, Math.PI * 2);
+                    ctx.fillStyle = muscle.color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Labels
+                    const labelX = center + Math.cos(angle) * (radius + 30);
+                    const labelY = center + Math.sin(angle) * (radius + 30);
+                    ctx.fillStyle = '#22d3ee';
+                    ctx.font = 'bold 12px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(muscle.name, labelX, labelY);
+                });
+            }
+        });
+        
+        // =============================================
+        // EXEMPLE 2: SVG CIRCLE CHART
+        // =============================================
+        
+        const chart2 = createStatsCard({
+            containerId: 'example2',
+            title: 'Progress Rings',
+            icon: '🎯',
+            chartType: 'svg',
+            chartId: 'svgChart',
+            footerHTML: `
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Sessions</div>
+                    <div class="chart-stat-value">12</div>
+                </div>
+                <div class="chart-stat">
+                    <div class="chart-stat-label">Streak</div>
+                    <div class="chart-stat-value">5</div>
+                </div>
+            `,
+            onRender: (svg, _, size) => {
+                const center = size.width / 2;
+                const rings = [
+                    { radius: 120, progress: 0.75, color: '#06b6d4', label: 'Volume' },
+                    { radius: 90, progress: 0.85, color: '#fb923c', label: 'Intensity' },
+                    { radius: 60, progress: 0.60, color: '#a855f7', label: 'Recovery' }
+                ];
+                
+                svg.innerHTML = '';
+                
+                rings.forEach((ring, i) => {
+                    const circumference = 2 * Math.PI * ring.radius;
+                    const offset = circumference * (1 - ring.progress);
+                    
+                    // Background circle
+                    const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    bgCircle.setAttribute('cx', center);
+                    bgCircle.setAttribute('cy', center);
+                    bgCircle.setAttribute('r', ring.radius);
+                    bgCircle.setAttribute('fill', 'none');
+                    bgCircle.setAttribute('stroke', 'rgba(100, 116, 139, 0.2)');
+                    bgCircle.setAttribute('stroke-width', '12');
+                    svg.appendChild(bgCircle);
+                    
+                    // Progress circle
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', center);
+                    circle.setAttribute('cy', center);
+                    circle.setAttribute('r', ring.radius);
+                    circle.setAttribute('fill', 'none');
+                    circle.setAttribute('stroke', ring.color);
+                    circle.setAttribute('stroke-width', '12');
+                    circle.setAttribute('stroke-linecap', 'round');
+                    circle.setAttribute('stroke-dasharray', circumference);
+                    circle.setAttribute('stroke-dashoffset', offset);
+                    circle.setAttribute('transform', `rotate(-90 ${center} ${center})`);
+                    circle.style.filter = `drop-shadow(0 0 8px ${ring.color})`;
+                    svg.appendChild(circle);
+                    
+                    // Label
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', center);
+                    text.setAttribute('y', center + (i - 1) * 20);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', ring.color);
+                    text.setAttribute('font-size', '14');
+                    text.setAttribute('font-weight', 'bold');
+                    text.textContent = `${ring.label} ${Math.round(ring.progress * 100)}%`;
+                    svg.appendChild(text);
+                });
+            }
+        });
+        
+        // =============================================
+        // EXEMPLE 3: HTML CARD CHART
+        // =============================================
+        
+        const chart3 = new ChartWrapper('example3', {
+            type: 'html',
+            aspectRatio: 1,
+            onRender: (container, _, size) => {
+                container.innerHTML = `
+                    <div style="
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 20px;
+                        padding: 20px;
+                    ">
+                        <div style="
+                            font-size: 64px;
+                            filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.5));
+                        ">💎</div>
+                        
+                        <div style="
+                            font-size: 48px;
+                            font-weight: 900;
+                            color: #22d3ee;
+                            text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+                        ">94</div>
+                        
+                        <div style="
+                            font-size: 12px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.2em;
+                            color: rgba(148, 163, 184, 0.8);
+                        ">Score Global</div>
+                        
+                        <div style="
+                            width: 80%;
+                            height: 8px;
+                            background: rgba(100, 116, 139, 0.2);
+                            border-radius: 4px;
+                            overflow: hidden;
+                        ">
+                            <div style="
+                                width: 94%;
+                                height: 100%;
+                                background: linear-gradient(90deg, #06b6d4, #22d3ee);
+                                box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+                            "></div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        // Wrapper pour la carte 3
+        document.getElementById('example3').innerHTML = `
+            <div class="stats-chart-card green">
+                <div class="chart-header">
+                    <span class="chart-icon">⚡</span>
+                    <h3 class="chart-title">Score Global</h3>
+                </div>
+                <div class="chart-body" id="example3-inner"></div>
+                <div class="chart-footer">
+                    <div class="chart-stat">
+                        <div class="chart-stat-label">Progression</div>
+                        <div class="chart-stat-value">+12%</div>
+                    </div>
+                    <div class="chart-stat">
+                        <div class="chart-stat-label">Objectif</div>
+                        <div class="chart-stat-value">100</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const chart3Real = new ChartWrapper('example3-inner', {
+            type: 'html',
+            aspectRatio: 1,
+            onRender: (container) => {
+                container.innerHTML = `
+                    <div style="
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 20px;
+                        padding: 20px;
+                    ">
+                        <div style="font-size: 64px;">💎</div>
+                        <div style="font-size: 48px; font-weight: 900; color: #22c55e; text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);">94</div>
+                        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(148, 163, 184, 0.8);">Score Global</div>
+                        <div style="width: 80%; height: 8px; background: rgba(100, 116, 139, 0.2); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 94%; height: 100%; background: linear-gradient(90deg, #22c55e, #16a34a); box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);"></div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        console.log('✅ Système de graphiques universel chargé !');
+        console.log('📱 Teste sur iPhone 15 Pro Max en portrait');
+        console.log('🔄 Teste aussi en paysage');
+        console.log('✓ Tous les graphiques doivent rester carrés');
+        console.log('✓ Tous les graphiques doivent être centrés');
+        console.log('✓ Aucune déformation');
+    </script>
+
+</body>
+</html>
