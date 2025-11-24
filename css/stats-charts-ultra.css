@@ -239,14 +239,7 @@ body {
     z-index: 2;
 }
 
-.stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+
 
 .stats-card {
     width: 100%;
@@ -255,35 +248,17 @@ body {
 }
 
 @media (max-width: 430px) {
-    .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+    
 }
 
 /* ============================================
    GRILLE FORCÉE - CARTES ÉGALES
    ============================================ */
 
-.stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+
 
 /* Force TOUTES les cartes à avoir la même largeur */
-.stats-grid > * {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-}
+
 
 .stats-card {
     width: 100% !important;
@@ -294,46 +269,21 @@ body {
 
 /* Responsive pour iPhone */
 @media (max-width: 768px) {
-    .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+    
 }
 
 @media (max-width: 430px) {
-    .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+    
 }
 
 /* ============================================
    GRILLE FORCÉE - CARTES ÉGALES
    ============================================ */
 
-.stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+
 
 /* Force TOUTES les cartes à avoir la même largeur */
-.stats-grid > * {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-}
+
 
 .stats-card {
     width: 100% !important;
@@ -344,23 +294,46 @@ body {
 
 /* Responsive pour iPhone */
 @media (max-width: 768px) {
-    .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
+    
 }
 
 @media (max-width: 430px) {
-    .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
-    gap: 20px !important;
+    
+}
+
+/* ============================================
+   GRILLE - UNE SEULE DÉFINITION
+   ============================================ */
+
+
+
+
+
+@media (max-width: 767px) {
+    
+}
+
+/* ============================================
+   GRILLE - UNE SEULE DEFINITION
+   ============================================ */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
     padding: 20px;
     max-width: 100%;
     margin: 0 auto;
 }
+
+.stats-grid > * {
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+    }
 }
