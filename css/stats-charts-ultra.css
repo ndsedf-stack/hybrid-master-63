@@ -390,3 +390,34 @@ body {
         padding: 10px;
     }
 }
+
+/* ============================================
+   FIX CANVAS SIZE - FORCE REMPLISSAGE
+   ============================================ */
+
+.stats-card {
+    max-height: 600px;  /* Limite la hauteur des cartes */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    flex: 1;  /* Prend tout l'espace disponible */
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.canvas-wrapper {
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .stats-card {
+        max-height: 500px;
+    }
+    
+    .card-body {
+        min-height: 250px;
+        max-height: 350px;
+    }
+}
