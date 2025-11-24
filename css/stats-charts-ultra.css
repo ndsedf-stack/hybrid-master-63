@@ -254,14 +254,7 @@ body {
     min-height: 160px;  /* ✅ HAUTEUR MINIMUM GARANTIE */
 }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    max-width: 1600px;
-    margin: 0 auto;
-}
+
 
 .stats-card {
     width: 100%;
@@ -270,30 +263,17 @@ body {
 }
 
 @media (max-width: 430px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
+    
 }
 
 /* ============================================
    GRILLE FORCÉE - CARTES ÉGALES
    ============================================ */
 
-.stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 1600px;
-    margin: 0 auto;
-}
+
 
 /* Force TOUTES les cartes à avoir la même largeur */
-.stats-grid > * {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-}
+
 
 .stats-card {
     width: 100% !important;
@@ -304,39 +284,21 @@ body {
 
 /* Responsive pour iPhone */
 @media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-        gap: 15px !important;
-        padding: 10px;
-    }
+    
 }
 
 @media (max-width: 430px) {
-    .stats-grid {
-        grid-template-columns: 1fr !important;
-        gap: 15px !important;
-    }
+    
 }
 
 /* ============================================
    GRILLE FORCÉE - CARTES ÉGALES
    ============================================ */
 
-.stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-    gap: 20px !important;
-    padding: 20px;
-    max-width: 1600px;
-    margin: 0 auto;
-}
+
 
 /* Force TOUTES les cartes à avoir la même largeur */
-.stats-grid > * {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-}
+
 
 .stats-card {
     width: 100% !important;
@@ -347,18 +309,11 @@ body {
 
 /* Responsive pour iPhone */
 @media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-        gap: 15px !important;
-        padding: 10px;
-    }
+    
 }
 
 @media (max-width: 430px) {
-    .stats-grid {
-        grid-template-columns: 1fr !important;
-        gap: 15px !important;
-    }
+    
 }
 
 /* ============================================
@@ -380,4 +335,56 @@ body {
 .stats-card {
     overflow: visible !important;  /* ✅ Laisse le footer respirer */
     margin-bottom: 30px;  /* ✅ Espace entre les cartes */
+}
+
+/* ============================================
+   GRILLE FORCÉE - LARGEURS ÉGALES GARANTIES
+   ============================================ */
+
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 20px !important;
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+    align-items: start !important;
+}
+
+/* Force TOUTES les cartes à prendre 100% de leur cellule */
+.stats-grid > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+.stats-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+}
+
+/* Sur grand écran : 3 colonnes max */
+@media (min-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* Tablette : 2 colonnes */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Mobile : 1 colonne */
+@media (max-width: 767px) {
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        padding: 10px;
+    }
 }
