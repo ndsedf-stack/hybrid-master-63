@@ -1,16 +1,17 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
-export function createStatsCard(containerOrId, options) {
-    options = options || {}; // ✅ fallback si undefined
-
-    // ✅ accepte soit un ID string, soit un élément DOM
-    const container =
-        typeof containerOrId === "string"
-            ? document.getElementById(containerOrId)
-            : containerOrId;
+export function createStatsCard(config) {
+    // ✅ Gère si c'est un objet de config complet
+    const containerId = config.containerId || config;
+    const options = config.title ? config : {}; // Si config a un title, c'est l'objet complet
+    
+    // ✅ Récupère le container
+    const container = typeof containerId === "string"
+        ? document.getElementById(containerId)
+        : containerId;
 
     if (!container) {
-        console.error("Container not found:", containerOrId);
+        console.error("Container not found:", containerId);
         return;
     }
 
@@ -18,7 +19,7 @@ export function createStatsCard(containerOrId, options) {
     container.innerHTML = `
         <div class="stats-card premium-card">
             <div class="card-header">
-                <h3 class="card-title">${options.title || 'Stats'}</h3>
+                <h3 class="card-title">${options.title || config.title || 'Stats'}</h3>
                 <div class="period-indicator">
                     <span class="period-dot active" data-period="week">S</span>
                     <span class="period-dot" data-period="month">M</span>
@@ -26,42 +27,71 @@ export function createStatsCard(containerOrId, options) {
                 </div>
             </div>
             <div class="card-body">
-                <canvas id="${container.id}-canvas"></canvas>
+                <canvas id="${typeof containerId === 'string' ? containerId : container.id}-canvas"></canvas>
             </div>
             <div class="card-footer">
-                <span class="card-stat">📊 ${options.period || 'Month'}</span>
+                <span class="card-stat">${config.icon || '📊'} ${config.period || 'Month'}</span>
             </div>
         </div>
     `;
 
     // Initialiser le canvas
-    const canvas = document.getElementById(`${container.id}-canvas`);
+    const canvasId = typeof containerId === 'string' ? containerId : container.id;
+    const canvas = document.getElementById(`${canvasId}-canvas`);
+    if (!canvas) {
+        console.error("Canvas not found:", `${canvasId}-canvas`);
+        return;
+    }
+    
     const ctx = canvas.getContext('2d');
+    
+    // Si onRender est fourni, l'utiliser
+    if (config.onRender && typeof config.onRender === 'function') {
+        // Obtenir les données
+        const data = config.dataSource ? config.dataSource() : config.data || {};
+        
+        // Définir la taille du canvas
+        const size = 300;
+        canvas.width = size;
+        canvas.height = size;
+        
+        // Appeler le rendu personnalisé
+        config.onRender(canvas, ctx, size, data);
+        
+        // Appliquer les effets si demandés
+        if (config.effects) {
+            applyPremiumEffects(container, config.effects);
+        }
+        
+        return;
+    }
 
-    // Adapter selon le type
-    switch (options.type) {
+    // Sinon utiliser l'ancien système (pour compatibilité)
+    const type = options.type || config.type || config.chartType;
+    const data = options.data || config.data || {};
+
+    switch (type) {
         case 'radar':
-            drawRadarChart(ctx, options.data || { labels: [], values: [] });
+            drawRadarChart(ctx, data);
             break;
         case 'rings':
-            drawRingsChart(ctx, options.data || { current: 0, target: 1 });
+            drawRingsChart(ctx, data);
             break;
         case 'zones':
-            drawZonesChart(ctx, options.data || []);
+            drawZonesChart(ctx, data);
             break;
         case 'volume':
-            drawVolumeChart(ctx, options.data || { datasets: [] });
+            drawVolumeChart(ctx, data);
             break;
         case 'score':
-            drawScoreChart(ctx, options.data || { score: 0, maxScore: 100, stars: 0 });
+            drawScoreChart(ctx, data);
             break;
     }
 
-    // Appliquer les effets premium
     applyPremiumEffects(container);
 }
 
-// === CHARTS ===
+// === CHARTS (anciennes fonctions pour compatibilité) ===
 
 function drawRadarChart(ctx, data) {
     const canvas = ctx.canvas;
@@ -71,7 +101,7 @@ function drawRadarChart(ctx, data) {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = 100;
-    const numPoints = data.labels.length;
+    const numPoints = (data.labels || []).length;
 
     ctx.strokeStyle = 'rgba(0, 212, 255, 0.2)';
     ctx.lineWidth = 1;
@@ -97,7 +127,7 @@ function drawRadarChart(ctx, data) {
 
     for (let i = 0; i <= numPoints; i++) {
         const angle = (Math.PI * 2 * i / numPoints) - Math.PI / 2;
-        const value = (data.values[i % numPoints] || 0) / 100;
+        const value = ((data.values || [])[i % numPoints] || 0) / 100;
         const x = centerX + Math.cos(angle) * radius * value;
         const y = centerY + Math.sin(angle) * radius * value;
         if (i === 0) ctx.moveTo(x, y);
@@ -112,7 +142,7 @@ function drawRadarChart(ctx, data) {
     ctx.font = '12px Rajdhani';
     ctx.textAlign = 'center';
 
-    data.labels.forEach((label, i) => {
+    (data.labels || []).forEach((label, i) => {
         const angle = (Math.PI * 2 * i / numPoints) - Math.PI / 2;
         const x = centerX + Math.cos(angle) * (radius + 30);
         const y = centerY + Math.sin(angle) * (radius + 30);
@@ -184,11 +214,11 @@ function drawVolumeChart(ctx, data) {
 
     const barWidth = 50;
     const gap = 20;
-    const maxValue = Math.max(...data.datasets.map(d => d.value || 0), 1);
+    const maxValue = Math.max(...(data.datasets || []).map(d => d.value || 0), 1);
     const startX = 40;
     const bottomY = 160;
 
-    data.datasets.forEach((dataset, i) => {
+    (data.datasets || []).forEach((dataset, i) => {
         const height = ((dataset.value || 0) / maxValue) * 120;
         const x = startX + i * (barWidth + gap);
         const y = bottomY - height;
@@ -226,7 +256,7 @@ function drawScoreChart(ctx, data) {
     ctx.fillText(stars, centerX, centerY + 50);
 }
 
-function applyPremiumEffects(container) {
+function applyPremiumEffects(container, effects) {
     const card = container.querySelector('.stats-card');
     if (!card) return;
 
@@ -235,7 +265,9 @@ function applyPremiumEffects(container) {
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'particles-container';
 
-    for (let i = 0; i < 10; i++) {
+    const numParticles = effects && effects.particles ? effects.particles : 10;
+    
+    for (let i = 0; i < numParticles; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = Math.random() * 100 + '%';
