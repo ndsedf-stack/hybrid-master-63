@@ -1,6 +1,6 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
-export function createStatsCard(containerOrId, options) {
+export function createStatsCard(containerOrId, options = {}) {
     // ✅ accepte soit un ID string, soit un élément DOM
     const container =
         typeof containerOrId === "string"
@@ -30,7 +30,7 @@ export function createStatsCard(containerOrId, options) {
                 <span class="card-stat">📊 ${options.period || 'Month'}</span>
             </div>
         </div>
-    `; // ✅ fermeture correcte du template string
+    `;
 
     // Initialiser le canvas
     const canvas = document.getElementById(`${container.id}-canvas`);
@@ -39,19 +39,19 @@ export function createStatsCard(containerOrId, options) {
     // Adapter selon le type
     switch (options.type) {
         case 'radar':
-            drawRadarChart(ctx, options.data);
+            drawRadarChart(ctx, options.data || { labels: [], values: [] });
             break;
         case 'rings':
-            drawRingsChart(ctx, options.data);
+            drawRingsChart(ctx, options.data || { current: 0, target: 1 });
             break;
         case 'zones':
-            drawZonesChart(ctx, options.data);
+            drawZonesChart(ctx, options.data || []);
             break;
         case 'volume':
-            drawVolumeChart(ctx, options.data);
+            drawVolumeChart(ctx, options.data || { datasets: [] });
             break;
         case 'score':
-            drawScoreChart(ctx, options.data);
+            drawScoreChart(ctx, options.data || { score: 0, maxScore: 100, stars: 0 });
             break;
     }
 
@@ -71,7 +71,6 @@ function drawRadarChart(ctx, data) {
     const radius = 100;
     const numPoints = data.labels.length;
 
-    // Grille
     ctx.strokeStyle = 'rgba(0, 212, 255, 0.2)';
     ctx.lineWidth = 1;
 
@@ -89,7 +88,6 @@ function drawRadarChart(ctx, data) {
         ctx.stroke();
     }
 
-    // Données
     ctx.fillStyle = 'rgba(0, 212, 255, 0.3)';
     ctx.strokeStyle = '#00d4ff';
     ctx.lineWidth = 2;
@@ -97,7 +95,7 @@ function drawRadarChart(ctx, data) {
 
     for (let i = 0; i <= numPoints; i++) {
         const angle = (Math.PI * 2 * i / numPoints) - Math.PI / 2;
-        const value = data.values[i % numPoints] / 100;
+        const value = (data.values[i % numPoints] || 0) / 100;
         const x = centerX + Math.cos(angle) * radius * value;
         const y = centerY + Math.sin(angle) * radius * value;
         if (i === 0) ctx.moveTo(x, y);
@@ -108,7 +106,6 @@ function drawRadarChart(ctx, data) {
     ctx.fill();
     ctx.stroke();
 
-    // Labels
     ctx.fillStyle = '#fff';
     ctx.font = '12px Rajdhani';
     ctx.textAlign = 'center';
@@ -130,16 +127,14 @@ function drawRingsChart(ctx, data) {
     const centerY = canvas.height / 2;
     const radius = 80;
 
-    const progress = data.current / data.target;
+    const progress = data.target ? data.current / data.target : 0;
 
-    // Background
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = 20;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Progress
     ctx.strokeStyle = '#00d4ff';
     ctx.lineWidth = 20;
     ctx.lineCap = 'round';
@@ -147,7 +142,6 @@ function drawRingsChart(ctx, data) {
     ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * progress));
     ctx.stroke();
 
-    // Texte central
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 32px Orbitron';
     ctx.textAlign = 'center';
@@ -168,16 +162,16 @@ function drawZonesChart(ctx, data) {
     const startY = 80;
 
     data.forEach((zone, i) => {
-        const barWidth = (canvas.width - 60) * (zone.percentage / 100);
+        const barWidth = (canvas.width - 60) * ((zone.percentage || 0) / 100);
         const y = startY + i * (barHeight + 10);
 
-        ctx.fillStyle = zone.color;
+        ctx.fillStyle = zone.color || '#00d4ff';
         ctx.fillRect(30, y, barWidth, barHeight);
 
         ctx.fillStyle = '#fff';
         ctx.font = '14px Rajdhani';
         ctx.textAlign = 'left';
-        ctx.fillText(`${zone.zone} - ${zone.percentage}%`, 35, y + 25);
+        ctx.fillText(`${zone.zone || ''} - ${zone.percentage || 0}%`, 35, y + 25);
     });
 }
 
@@ -188,7 +182,7 @@ function drawVolumeChart(ctx, data) {
 
     const barWidth = 50;
     const gap = 20;
-    const maxValue = Math.max(...data.datasets.map(d => d.value));
+    const maxValue = Math.max(...data.datasets.map(d => d.value || 0), 1);
     const startX = 40;
     const bottomY = 160;
 
@@ -197,13 +191,13 @@ function drawVolumeChart(ctx, data) {
         const x = startX + i * (barWidth + gap);
         const y = bottomY - height;
 
-        ctx.fillStyle = dataset.color;
+        ctx.fillStyle = dataset.color || '#00d4ff';
         ctx.fillRect(x, y, barWidth, height);
 
         ctx.fillStyle = '#fff';
         ctx.font = '12px Rajdhani';
         ctx.textAlign = 'center';
-        ctx.fillText(Math.round(dataset.value / 1000) + 'K', x + barWidth / 2, y - 10);
+        ctx.fillText(Math.round((dataset.value || 0) / 1000) + 'K', x + barWidth / 2, y - 10);
     });
 }
 
@@ -219,13 +213,13 @@ function drawScoreChart(ctx, data) {
     ctx.font = 'bold 48px Orbitron';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(data.score.toFixed(1), centerX, centerY - 20);
+    ctx.fillText((data.score || 0).toFixed(1), centerX, centerY - 20);
 
     ctx.font = '18px Rajdhani';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText(`/ ${data.maxScore}`, centerX, centerY + 20);
+    ctx.fillText(`/ ${data.maxScore || 100}`, centerX, centerY + 20);
 
-    const stars = '⭐'.repeat(Math.floor(data.stars));
+    const stars = '⭐'.repeat(Math.floor(data.stars || 0));
     ctx.font = '24px Arial';
     ctx.fillText(stars, centerX, centerY + 50);
 }
@@ -241,6 +235,7 @@ function applyPremiumEffects(container) {
         particle.style.left = Math.random() * 100 + '%';
         particle.style.top = Math.random() * 100 + '%';
         particle.style.animationDelay = Math.random() * 3 + 's';
+        particle.style.animationDuration = 2 + Math.random() * 3 + 's';
         particlesContainer.appendChild(particle);
     }
     container.querySelector('.stats-card').appendChild(particlesContainer);
