@@ -27,7 +27,7 @@ export function createStatsCard(containerId, options) {
         </div>
     
     // Initialiser le canvas
-    const canvas = document.getElementById("containerId}-canvas");
+    const canvas = document.getElementById(`${containerId}-canvas`);
     const ctx = canvas.getContext('2d');
     
     // Adapter selon le type
