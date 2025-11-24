@@ -1,4 +1,5 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
+import * as premiumEffects from './chart-effects-advanced.js';
 
 export function createStatsCard(config) {
     const containerId = config.containerId;
@@ -96,6 +97,17 @@ export function createStatsCard(config) {
             resizeCanvas();
         });
     });
+
+    const card = container.querySelector('.stats-card');
+    if (card) {
+        setTimeout(() => {
+            premiumEffects.applyAllPremiumEffects(card, {
+                intensity: 1,
+                particles: 15,
+                speed: 1
+            });
+        }, 100);
+    }
 }
 
 function updateFooterStats(containerId, data) {
