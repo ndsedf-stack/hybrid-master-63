@@ -1,5 +1,3 @@
-import * as effects from './chart-effects-advanced.js';
-
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
 
 export function createStatsCard(config) {
@@ -16,157 +14,104 @@ export function createStatsCard(config) {
         return;
     }
 
-    // Structure HTML de base avec canvas PLEINE HAUTEUR
+    // Structure HTML EXACTE comme template
     container.innerHTML = `
-        <div class="stats-card premium-card">
+        <div class="stats-card">
             <div class="card-header">
                 <h3 class="card-title">${config.icon || '📊'} ${config.title || 'Stats'}</h3>
-                <div class="period-indicator">
-                    <span class="period-dot active" data-period="week">S</span>
-                    <span class="period-dot" data-period="month">M</span>
-                    <span class="period-dot" data-period="quarter">T</span>
+                <div class="period-selector">
+                    <button class="period-btn active" data-period="week">S</button>
+                    <button class="period-btn" data-period="month">M</button>
+                    <button class="period-btn" data-period="quarter">T</button>
                 </div>
             </div>
             <div class="card-body">
-                <canvas id="${containerId}-canvas"></canvas>
+                <div class="canvas-wrapper">
+                    <canvas id="${containerId}-canvas"></canvas>
+                </div>
             </div>
             <div class="card-footer">
-                <div class="footer-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">SETS</span>
-                        <span class="stat-value" id="${containerId}-sets">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">TUT</span>
-                        <span class="stat-value" id="${containerId}-tut">0:00</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">VOLUME</span>
-                        <span class="stat-value" id="${containerId}-volume">0 kg</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">STATUS</span>
-                        <span class="stat-value" id="${containerId}-status">-</span>
-                    </div>
+                <div class="stat-box">
+                    <div class="stat-label">SETS</div>
+                    <div class="stat-value" id="${containerId}-sets">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">TUT</div>
+                    <div class="stat-value" id="${containerId}-tut">0:00</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">VOLUME</div>
+                    <div class="stat-value" id="${containerId}-volume">0 kg</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">STATUS</div>
+                    <div class="stat-value" id="${containerId}-status">-</div>
                 </div>
             </div>
         </div>
     `;
 
-    // Initialiser le canvas avec taille responsive
+    // Setup canvas avec aspect ratio 1:1 FORCÉ
+    const canvasWrapper = container.querySelector('.canvas-wrapper');
     const canvas = document.getElementById(`${containerId}-canvas`);
-    if (!canvas) {
-        console.error("Canvas not found:", `${containerId}-canvas`);
+    
+    if (!canvas || !canvasWrapper) {
+        console.error("Canvas or wrapper not found");
         return;
     }
     
-    // Taille du canvas = largeur du container
-    const cardBody = canvas.parentElement;
-    const size = Math.min(cardBody.offsetWidth, 400); // Max 400px
-    canvas.width = size;
-    canvas.height = size;
-    canvas.style.width = size + 'px';
-    canvas.style.height = size + 'px';
-    
-    const ctx = canvas.getContext('2d');
-    
-    // Obtenir les données
-    const data = config.dataSource ? config.dataSource() : config.data || {};
-    
-    // Appeler le rendu personnalisé
-    if (config.onRender && typeof config.onRender === 'function') {
-        config.onRender(canvas, ctx, size, data);
+    // FORCER taille carrée
+    function resizeCanvas() {
+        const width = canvasWrapper.offsetWidth;
+        canvas.width = width;
+        canvas.height = width; // CARRÉ PARFAIT
+        canvas.style.width = width + 'px';
+        canvas.style.height = width + 'px';
+        
+        // Redessiner
+        if (config.onRender) {
+            const ctx = canvas.getContext('2d');
+            const data = config.dataSource ? config.dataSource() : {};
+            config.onRender(canvas, ctx, width, data);
+            updateFooterStats(containerId, data);
+        }
     }
     
-    // Mettre à jour les stats du footer
-    updateFooterStats(containerId, data);
+    // Première initialisation
+    setTimeout(resizeCanvas, 100);
     
-    // Appliquer les effets premium
-    if (config.effects) {
-        applyPremiumEffects(container, config.effects);
-    }
-    
-    // Resize handler
+    // Resize handler avec debounce
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            const newSize = Math.min(cardBody.offsetWidth, 400);
-            canvas.width = newSize;
-            canvas.height = newSize;
-            canvas.style.width = newSize + 'px';
-            canvas.style.height = newSize + 'px';
-            
-            if (config.onRender) {
-                config.onRender(canvas, ctx, newSize, data);
-            }
-        }, 300);
+        resizeTimeout = setTimeout(resizeCanvas, 300);
+    });
+    
+    // Event listeners pour période
+    const periodBtns = container.querySelectorAll('.period-btn');
+    periodBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            periodBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            resizeCanvas();
+        });
     });
 }
 
 function updateFooterStats(containerId, data) {
-    // Mettre à jour les stats du footer avec les vraies données
     const setsEl = document.getElementById(`${containerId}-sets`);
     const tutEl = document.getElementById(`${containerId}-tut`);
     const volumeEl = document.getElementById(`${containerId}-volume`);
     const statusEl = document.getElementById(`${containerId}-status`);
     
-    if (setsEl && data.totalSets) {
-        setsEl.textContent = data.totalSets;
-    }
-    
+    if (setsEl && data.totalSets) setsEl.textContent = data.totalSets;
     if (tutEl && data.totalTime) {
-        const minutes = Math.floor(data.totalTime / 60);
-        const seconds = data.totalTime % 60;
-        tutEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        const min = Math.floor(data.totalTime / 60);
+        const sec = data.totalTime % 60;
+        tutEl.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
     }
-    
     if (volumeEl && data.totalVolume) {
-        volumeEl.textContent = Math.round(data.totalVolume / 1000) + 'K kg';
+        volumeEl.textContent = Math.round(data.totalVolume / 1000) + ' kg';
     }
-    
-    if (statusEl && data.status) {
-        statusEl.textContent = data.status;
-    }
-}
-
-function applyPremiumEffects(container, effects) {
-    const card = container.querySelector('.stats-card');
-    if (!card) return;
-
-    // Ajouter les classes d'effets
-    if (effects.halo) {
-        card.classList.add('has-halo');
-    }
-    
-    if (effects.scanlines) {
-        card.classList.add('has-scanlines');
-        
-        // Créer l'overlay scanlines
-        const scanlines = document.createElement('div');
-        scanlines.className = 'scanlines-overlay';
-        card.appendChild(scanlines);
-    }
-    
-    if (effects.glow) {
-        card.classList.add('has-glow');
-    }
-    
-    // Créer les particules
-    if (effects.particles && effects.particles > 0) {
-        const particlesContainer = document.createElement('div');
-        particlesContainer.className = 'particles-container';
-
-        for (let i = 0; i < effects.particles; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 3 + 's';
-            particle.style.animationDuration = 2 + Math.random() * 3 + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        card.appendChild(particlesContainer);
-    }
+    if (statusEl && data.status) statusEl.textContent = data.status;
 }
