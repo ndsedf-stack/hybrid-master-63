@@ -63,22 +63,16 @@ export function createStatsCard(config) {
     
     // FORCER taille carrée
     function resizeCanvas() {
-        // ✅ SIMPLE : Prend la largeur du wrapper (déjà carré avec aspect-ratio)
-        const size = canvasWrapper.offsetWidth;
-        
-        canvas.width = size;
-        canvas.height = size;
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
+        const width = canvasWrapper.offsetWidth;
+        canvas.width = width;
+        canvas.height = width; // CARRÉ PARFAIT
+        canvas.style.width = width + 'px';
+        canvas.style.height = width + 'px';
         
         // Redessiner
         if (config.onRender) {
             const ctx = canvas.getContext('2d');
             const data = config.dataSource ? config.dataSource() : {};
-            config.onRender(canvas, ctx, size, data);
-            updateFooterStats(containerId, data);
-        }
-    };
             config.onRender(canvas, ctx, width, data);
             updateFooterStats(containerId, data);
         }
