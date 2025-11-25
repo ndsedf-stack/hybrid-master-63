@@ -15,7 +15,7 @@ class HybridMasterApp {
     // Initialisation des renderers
     this.homeRenderer = new HomeRenderer('content', this.handleDaySelected.bind(this));
     this.workoutRenderer = new WorkoutRenderer(
-      document.getElementById('content'),
+      document.querySelector('.app-content'),
       this.handleBackToHome.bind(this)
     );
     
@@ -128,7 +128,7 @@ class HybridMasterApp {
       });
 
       // Rendu de la page d'accueil
-      const contentElement = document.getElementById('content');
+      const contentElement = document.querySelector('.app-content');
       if (!contentElement) {
         throw new Error('Élément #content introuvable');
       }
@@ -210,7 +210,7 @@ class HybridMasterApp {
   }
 
   showError(message) {
-    const contentElement = document.getElementById('content');
+    const contentElement = document.querySelector('.app-content');
     if (contentElement) {
       contentElement.innerHTML = `
         <div class="error-message" style="padding: 20px; text-align: center;">
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
   } catch (error) {
     console.error('❌ Erreur fatale:', error);
-    const contentElement = document.getElementById('content');
+    const contentElement = document.querySelector('.app-content');
     if (contentElement) {
       contentElement.innerHTML = `
         <div style="padding: 20px; text-align: center;">

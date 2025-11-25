@@ -1,0 +1,25 @@
+/* EFFETS TACTILES iOS */
+button, .btn, [class*="btn"], .nav-item, .stats-card, [class*="card"] {
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:active, .btn:active, .nav-item:active, .stats-card:active {
+    transform: scale(0.95);
+}
+
+.stats-card.performance:active {
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+}
+
+.stats-card.recovery:active {
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+}
+
+.stats-card.analysis:active {
+    box-shadow: 0 0 30px rgba(155, 89, 255, 0.5);
+}
+
+.stats-card.records:active {
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.5);
+}

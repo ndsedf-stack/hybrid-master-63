@@ -866,30 +866,29 @@ progress.setAttribute('stroke-dashoffset',offset);
 }
 
 function initNeonTracker3D(data){
+var container=document.getElementById("ringsContainer");if(!container)return;
 var score=data.score||60;
 var sessions=data.sessions||{current:3,max:5};
 var sets=data.sets||{current:164,max:60};
 var isOptimal=score>=80;
 
-document.getElementById('scoreValue').textContent=Math.round(score);
+const scoreEl = document.getElementById("scoreValue"); if(scoreEl) scoreEl.textContent=Math.round(score);
 if(isOptimal){
-document.getElementById('scoreValue').style.color='#fbbf24';
-document.getElementById('scoreValue').style.filter='drop-shadow(0 0 12px rgba(251,191,36,0.8))';
-document.getElementById('statusBadge').style.color='#fbbf24';
-document.getElementById('statusBadge').style.borderColor='rgba(251,191,36,0.5)';
-document.getElementById('statusBadge').textContent='OPTIMIZED';
-document.getElementById('glassLens').style.boxShadow='0 0 25px rgba(251,191,36,0.2),inset 0 0 15px rgba(0,0,0,1)';
-document.getElementById('globalGlow').style.background='rgba(251,191,36,0.25)';
+const scoreEl2 = document.getElementById("scoreValue"); if(scoreEl2) scoreEl2.style.color="#fbbf24";
+const scoreEl3 = document.getElementById("scoreValue"); if(scoreEl3) scoreEl3.style.filter="drop-shadow(0 0 12px rgba(251,191,36,0.8))";
+const statusBadgeEl1=document.getElementById("statusBadge");if(statusBadgeEl1)statusBadgeEl1.style.color="#fbbf24";
+const statusBadgeEl2=document.getElementById("statusBadge");if(statusBadgeEl2)statusBadgeEl2.style.borderColor="rgba(251,191,36,0.5)";
+const statusBadgeEl3=document.getElementById("statusBadge");if(statusBadgeEl3)statusBadgeEl3.textContent="OPTIMIZED";
+const glassLensEl=document.getElementById("glassLens");if(glassLensEl)glassLensEl.style.boxShadow="0 0 25px rgba(251,191,36,0.2),inset 0 0 15px rgba(0,0,0,1)";
+const globalGlowEl=document.getElementById("globalGlow");if(globalGlowEl)globalGlowEl.style.background="rgba(251,191,36,0.25)";
 }
 
-document.getElementById('sessionsValue').textContent=sessions.current;
-document.getElementById('sessionsMax').textContent=sessions.max;
-document.getElementById('setsValue').textContent=sets.current;
-document.getElementById('setsMax').textContent=sets.max;
+const sessionsValueEl=document.getElementById("sessionsValue");if(sessionsValueEl)sessionsValueEl.textContent=sessions.current;
+const sessionsMaxEl=document.getElementById("sessionsMax");if(sessionsMaxEl)sessionsMaxEl.textContent=sessions.max;
+const setsValueEl=document.getElementById("setsValue");if(setsValueEl)setsValueEl.textContent=sets.current;
+const setsMaxEl=document.getElementById("setsMax");if(setsMaxEl)setsMaxEl.textContent=sets.max;
 
 var container=document.getElementById('ringsContainer');
-if(!container){console.error('❌ Container introuvable');return;}
-container.innerHTML='';
 
 var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
 svg.setAttribute('width','320');
