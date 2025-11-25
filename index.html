@@ -1,757 +1,461 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Hybrid Master 63</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d0d0d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Hybrid Master 63</title>
+    <link rel="stylesheet" href="styles/10-home.css">
+ <link rel="stylesheet" href="styles/stats-ultra.css">
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    :root {
-      --primary: #3B82F6;
-      --primary-light: #60A5FA;
-      --secondary: #10B981;
-      --secondary-light: #34D399;
-      --accent: #8B5CF6;
-      --accent-light: #A78BFA;
-      --bg-dark: #0F172A;
-      --bg-darker: #020617;
-      --text-muted: #94A3B8;
-    }
-    
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-darker);
-      color: white;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* FOND ANIMÉ AMÉLIORÉ */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%; 
-      left: -50%; 
-      right: -50%; 
-      bottom: -50%;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-      animation: gentleFloat 20s ease-in-out infinite;
-    }
-
-    @keyframes gentleFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-      50% { transform: translate(20px, 20px) scale(1.05); opacity: 0.8; }
-    }
-
-    /* TEXTURE GRAIN */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      opacity: 0.02;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .container {
-      max-width: 440px;
-      margin: 0 auto;
-      padding: 24px 20px 120px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* HEADER */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-      padding-top: 8px;
-      animation: fadeInDown 0.8s ease-out;
-    }
-    
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .logo {
-      font-size: clamp(24px, 6vw, 28px);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -1px;
-      filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
-    }
-
-    .header-icons { 
-      display: flex; 
-      gap: 12px; 
-    }
-    
-    .icon-btn {
-      width: 44px; 
-      height: 44px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 20px;
-    }
-
-    .icon-btn:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-
-    /* CARTES WORKOUT */
-    .workout-card {
-      background: linear-gradient(135deg, 
-        rgba(30,41,59,0.6) 0%, 
-        rgba(15,23,42,0.8) 100%
-      );
-      backdrop-filter: blur(30px) saturate(150%);
-      border-radius: 24px;
-      padding: 24px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      cursor: pointer;
-      animation: fadeInUp 0.6s ease-out backwards;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .workout-card:nth-child(1) { animation-delay: 0.1s; }
-    .workout-card:nth-child(2) { animation-delay: 0.2s; }
-    .workout-card:nth-child(3) { animation-delay: 0.3s; }
-    .workout-card:nth-child(4) { animation-delay: 0.4s; }
-
-    .workout-card::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 24px;
-      padding: 1px;
-      background: linear-gradient(135deg, var(--card-glow, transparent) 0%, transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-
-    .workout-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px var(--card-shadow, rgba(0,0,0,0.5));
-      border-color: rgba(255,255,255,0.15);
-    }
-    
-    .workout-card:hover::before {
-      opacity: 1;
-    }
-
-    .card-completed {
-      --card-glow: rgba(16, 185, 129, 0.6);
-      --card-shadow: rgba(16, 185, 129, 0.3);
-      background: linear-gradient(135deg, 
-        rgba(16, 185, 129, 0.15) 0%,
-        rgba(15, 23, 42, 0.8) 100%
-      );
-    }
-
-    .card-active {
-      --card-glow: rgba(59, 130, 246, 0.7);
-      --card-shadow: rgba(59, 130, 246, 0.4);
-      background: linear-gradient(135deg,
-        rgba(59, 130, 246, 0.2) 0%,
-        rgba(15, 23, 42, 0.8) 100%
-      );
-      animation: fadeInUp 0.6s ease-out backwards, cardPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes cardPulse {
-      0%, 100% { box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
-      50% { box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4); }
-    }
-
-    .card-progress {
-      --card-glow: rgba(139, 92, 246, 0.7);
-      --card-shadow: rgba(139, 92, 246, 0.4);
-      background: linear-gradient(135deg,
-        rgba(139, 92, 246, 0.2) 0%,
-        rgba(15, 23, 42, 0.8) 100%
-      );
-      animation: fadeInUp 0.6s ease-out backwards, cardPulse 3s ease-in-out infinite 0.5s;
-    }
-
-    .card-top { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: flex-start; 
-      margin-bottom: 20px;
-      gap: 12px;
-    }
-    
-    .day-badge {
-      display: inline-flex; 
-      align-items: center; 
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 14px;
-      font-size: clamp(12px, 3vw, 14px);
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .badge-blue {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: white;
-      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-    }
-    
-    .badge-green {
-      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
-      color: white;
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5);
-      animation: badgeGlow 2s ease-in-out infinite;
-    }
-
-    @keyframes badgeGlow {
-      0%, 100% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4); }
-      50% { box-shadow: 0 6px 30px rgba(16, 185, 129, 0.6); }
-    }
-    
-    .badge-purple {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-      color: white;
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
-      animation: badgeGlow 2s ease-in-out infinite 0.5s;
-    }
-    
-    .badge-completed {
-      background: linear-gradient(135deg, var(--secondary-light) 0%, var(--secondary) 100%);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 800;
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-    }
-
-    .day-info {
-      text-align: right;
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      font-weight: 600;
-    }
-
-    .workout-title { 
-      font-size: clamp(20px, 5vw, 24px);
-      font-weight: 800; 
-      margin: 16px 0 20px 0;
-      line-height: 1.2; 
-      letter-spacing: -0.5px;
-    }
-
-    /* STATS GRID */
-    .stats-grid {
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px; 
-      margin-bottom: 20px;
-      padding-right: 70px;
-    }
-    
-    .stat-box {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 16px 12px; 
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .stat-box:hover {
-      background: rgba(255,255,255,0.08);
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.15);
-    }
-    
-    .stat-value { 
-      font-size: clamp(20px, 5vw, 24px);
-      font-weight: 800; 
-      margin-bottom: 6px;
-      background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary-light) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .stat-label { 
-      font-size: 10px; 
-      color: var(--text-muted);
-      text-transform: uppercase; 
-      letter-spacing: 0.8px;
-      font-weight: 700;
-    }
-
-    /* BOUTONS */
-    .button-group { 
-      display: flex; 
-      gap: 12px;
-    }
-    
-    .btn {
-      flex: 1; 
-      padding: 16px; 
-      border: none; 
-      border-radius: 16px;
-      font-size: 15px; 
-      font-weight: 700; 
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .btn:active::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: white; 
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-    }
-    
-    .btn-primary:hover { 
-      transform: translateY(-2px); 
-      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5); 
-    }
-    
-    .btn-secondary {
-      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
-      color: white;
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-    }
-    
-    .btn-secondary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
-    }
-
-    /* CHECK CIRCLES ANIMÉS */
-    .check-circle {
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: bold;
-      animation: checkFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes checkFloat {
-      0%, 100% { transform: translateY(-50%) scale(1); }
-      50% { transform: translateY(-55%) scale(1.05); }
-    }
-
-    .check-green {
-      background: var(--secondary);
-      color: white;
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
-      animation: checkFloat 3s ease-in-out infinite, checkPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes checkPulse {
-      0%, 100% { 
-        transform: scale(1);
-        box-shadow: 0 0 25px rgba(16, 185, 129, 0.5); 
-      }
-      50% { 
-        transform: scale(1.1);
-        box-shadow: 0 0 40px rgba(16, 185, 129, 0.8); 
-      }
-    }
-    
-    .check-purple {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
-      animation: checkFloat 3s ease-in-out infinite 0.5s, checkPulse 2s ease-in-out infinite 0.5s;
-    }
-
-    /* CITATION STYLISÉE */
-    .quote-section {
-      margin: 40px 0;
-      padding: 24px 28px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(15, 23, 42, 0.6));
-      border-left: 4px solid var(--primary);
-      border-radius: 18px;
-      backdrop-filter: blur(20px);
-      position: relative;
-      animation: fadeInUp 0.8s ease-out 0.4s backwards;
-    }
-
-    .quote-section::before {
-      content: '"';
-      position: absolute;
-      top: -20px;
-      left: 20px;
-      font-size: 80px;
-      color: var(--primary);
-      opacity: 0.15;
-      font-family: Georgia, serif;
-      line-height: 1;
-    }
-
-    .quote-text {
-      font-size: 16px;
-      font-style: italic;
-      color: var(--primary-light);
-      line-height: 1.7;
-      font-weight: 500;
-    }
-    
-    .quote-author {
-      display: block;
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-align: right;
-    }
-
-    /* FAB FLOTTANT */
-    .fab {
-      position: fixed; 
-      bottom: calc(100px + env(safe-area-inset-bottom)); 
-      right: 20px;
-      width: 60px; 
-      height: 60px; 
-      border-radius: 18px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: white; 
-      font-size: 32px; 
-      font-weight: 300;
-      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      cursor: pointer; 
-      z-index: 100;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-      animation: fabFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes fabFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .fab:hover { 
-      transform: scale(1.1); 
-      box-shadow: 0 12px 40px rgba(59, 130, 246, 0.7);
-    }
-
-    /* BOTTOM NAV */
-    .bottom-nav {
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      right: 0;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(30px) saturate(180%);
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 12px 0 max(20px, env(safe-area-inset-bottom));
-      display: flex; 
-      justify-content: space-around;
-      z-index: 99;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
-    }
-    
-    .nav-item {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-      gap: 6px; 
-      padding: 10px 24px;
-      border-radius: 14px; 
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 11px; 
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .nav-item.active { 
-      color: var(--primary); 
-      background: rgba(59, 130, 246, 0.1);
-    }
-
-    .nav-item:hover {
-      transform: translateY(-2px);
-      color: var(--primary-light);
-    }
-
-    .nav-icon { 
-      font-size: 24px;
-      transition: transform 0.3s;
-    }
-
-    .nav-item:hover .nav-icon {
-      transform: scale(1.15);
-    }
-
-    @media (max-width: 400px) {
-      .container { padding: 20px 16px 130px; }
-      .workout-card { padding: 20px; }
-      .stats-grid { padding-right: 60px; }
-      .check-circle { width: 50px; height: 50px; right: 16px; }
-    }
-  </style>
+    <link rel="stylesheet" href="styles/nav-compact.css">
+    <link rel="stylesheet" href="styles/stats-cards-home.css">
+    <link rel="stylesheet" href="styles/header-scroll.css">
+    <link rel="stylesheet" href="styles/global-effects.css">
+    <link rel="stylesheet" href="styles/premium-effects.css">
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">HYBRID 63</div>
-      <div class="header-icons">
-        <button class="icon-btn" aria-label="Statistiques">🔥</button>
-        <button class="icon-btn" aria-label="Paramètres">⚙️</button>
-      </div>
-    </div>
-
-    <div id="workouts"></div>
-
-    <div class="quote-section">
-      <div class="quote-text">
-        Today's devil won't control me. Only God's power.
-      </div>
-      <cite class="quote-author">— Unknown</cite>
-    </div>
-  </div>
-
-  <button class="fab" aria-label="Ajouter">+</button>
-
-  <div class="bottom-nav">
-    <div class="nav-item active" role="button" tabindex="0" aria-label="Accueil">
-      <div class="nav-icon">🏠</div>
-      <div>Accueil</div>
-    </div>
-    <div class="nav-item" role="button" tabindex="0" aria-label="Statistiques">
-      <div class="nav-icon">📊</div>
-      <div>Stats</div>
-    </div>
-    <div class="nav-item" role="button" tabindex="0" aria-label="Profil">
-      <div class="nav-icon">👤</div>
-      <div>Profil</div>
-    </div>
-  </div>
-
-  <script type="module">
-    import programData from './scripts/program-data.js';
-    
-    const weekNumber = 1;
-    const weekData = programData.getWeek(weekNumber);
-    const container = document.getElementById('workouts');
-    
-    const daysConfig = {
-      dimanche: { 
-        label: 'Dimanche', 
-        icon: '🔥', 
-        badgeClass: 'badge-blue', 
-        dayNumber: 1
-      },
-      mardi: { 
-        label: 'Mardi', 
-        icon: '💪', 
-        badgeClass: 'badge-green', 
-        dayNumber: 3
-      },
-      vendredi: { 
-        label: 'Vendredi', 
-        icon: '⚡', 
-        badgeClass: 'badge-purple', 
-        dayNumber: 6
-      },
-      maison: { 
-        label: 'Maison', 
-        icon: '🏠', 
-        badgeClass: 'badge-green', 
-        dayNumber: '2+4'
-      }
-    };
-
-    function getWorkoutType(workout) {
-      const name = workout.name.toLowerCase();
-      
-      if (name.includes('maison') || name.includes('hammer')) {
-        return { emoji: '🏠', type: 'Maison' };
-      }
-      if (name.includes('dos') && name.includes('jambes')) {
-        return { emoji: '🏋️', type: 'Salle' };
-      }
-      if (name.includes('pecs') || name.includes('épaules')) {
-        return { emoji: '💪', type: 'Salle' };
-      }
-      return { emoji: '💪', type: 'Salle' };
-    }
-
-    const days = ['dimanche', 'mardi', 'vendredi', 'maison'];
-    
-    days.forEach((dayKey, index) => {
-      const workout = weekData[dayKey];
-      if (!workout) return;
-      
-      const config = daysConfig[dayKey];
-      const workoutType = getWorkoutType(workout);
-      
-      const card = document.createElement('div');
-      
-      let cardState = '';
-      let checkCircle = '';
-      let buttons = '';
-      let badgeStatus = '';
-      
-      if (index === 0) {
-        cardState = 'card-completed';
-        badgeStatus = '<span class="badge-completed">✓ COMPLÉTÉ</span>';
-        buttons = `
-          <div class="button-group">
-            <button class="btn btn-secondary" data-action="restart">Recommencer</button>
-            <button class="btn btn-primary" data-action="start">Voir Détails</button>
-          </div>
-        `;
-      } else if (index === 1) {
-        cardState = 'card-active';
-        checkCircle = '<div class="check-circle check-green">✓</div>';
-        badgeStatus = `
-          <div class="day-info">
-            ${workout.duration} min<br>Jour ${config.dayNumber}
-          </div>
-        `;
-      } else {
-        cardState = 'card-progress';
-        checkCircle = '<div class="check-circle check-purple">✓</div>';
-        badgeStatus = `
-          <div class="day-info">
-            ${workout.duration} min<br>Jour ${config.dayNumber}
-          </div>
-        `;
-      }
-      
-      card.className = `workout-card ${cardState}`;
-      card.innerHTML = `
-        <div class="card-top">
-          <div class="day-badge ${config.badgeClass}">
-            ${config.icon} ${config.label} ${workoutType.emoji}
-          </div>
-          ${badgeStatus}
+    <!-- HEADER FIXE -->
+    <header class="app-header">
+        <h1 class="app-logo">HYBRID MASTER 63</h1>
+        <div class="header-badges">
+            <div class="badge-item">
+                <span class="badge-icon">🔥</span>
+                <span class="badge-text">2 JOURS</span>
+            </div>
+            <div class="badge-item">
+                <span class="badge-icon">⚡</span>
+                <span class="badge-text">+7%</span>
+            </div>
         </div>
-        <div class="workout-title">${workout.name}</div>
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-value">⚡ ${workout.duration}</div>
-            <div class="stat-label">Minutes</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value">💪 ${workout.totalSets}</div>
-            <div class="stat-label">Séries</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value">🏋️ ${workout.exercises.length}</div>
-            <div class="stat-label">Exercices</div>
-          </div>
-        </div>
-        ${checkCircle}
-        ${buttons}
-      `;
-      
-      if (index === 0) {
-        const btnSecondary = card.querySelector('[data-action="restart"]');
-        const btnPrimary = card.querySelector('[data-action="start"]');
+    </header>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="app-content">
+        <!-- ONGLET HOME -->
+        <section id="tab-home" class="tab-content active">
+            <!-- Navigation semaine -->
+            <div class="week-selector glass">
+                <button class="week-btn" onclick="changeWeek(-1)">
+                    <span>←</span>
+                </button>
+                <div class="week-info">
+                    <div class="week-number">SEMAINE 1</div>
+                    <div class="bloc-label" id="block-label">BLOC 1</div>
+                </div>
+                <button class="week-btn" onclick="changeWeek(1)">
+                    <span>→</span>
+                </button>
+            </div>
+
+            <!-- Techniques du bloc -->
+            <div class="techniques-card glass">
+                <div class="card-title">
+                    <span class="title-icon">🎯</span>
+                    <span>TECHNIQUES DU BLOC</span>
+                </div>
+                <div class="tech-items">
+                    <div class="tech-box glass-light">
+                        <div class="tech-emoji">🎵</div>
+                        <div class="tech-label">TEMPO</div>
+                        <div class="tech-value" id="tech-tempo">3-1-2</div>
+                    </div>
+                    <div class="tech-box glass-light">
+                        <div class="tech-emoji">💪</div>
+                        <div class="tech-label">RPE</div>
+                        <div class="tech-value" id="tech-rpe">6-7</div>
+                    </div>
+                    <div class="tech-box glass-light">
+                        <div class="tech-emoji">⚡</div>
+                        <div class="tech-label">TECHNIQUE</div>
+                        <div class="tech-value" id="tech-technique">DROP SET</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objectif -->
+            <div class="objective-card glass glow-orange">
+                <span class="objective-icon">🎯</span>
+                <span class="objective-text" id="tech-objective">MAÎTRISER LA TECHNIQUE AVEC CHARGES MODÉRÉES</span>
+            </div>
+
+            <!-- Action rapide -->
+            <button class="cta-button glass glow-cyan" onclick="startQuickWorkout()">
+                <span class="pulse-ring"></span>
+                <span class="cta-icon">▶</span>
+                <span class="cta-text">COMMENCER SÉANCE</span>
+            </button>
+
+            <!-- Dernières séances -->
+            <div class="recent-workouts">
+                <div class="section-header">
+                    <span class="section-icon">📋</span>
+                    <span class="section-title">DERNIÈRES SÉANCES</span>
+                </div>
+                
+                <div class="workout-mini glass" data-status="completed" onclick="startWorkout('dimanche')">
+                    <div class="workout-mini-header">
+                        <div class="workout-mini-day">DIM</div>
+                        <div class="workout-mini-info">
+                            <div class="workout-mini-title">DOS + JAMBES + BRAS</div>
+                            <div class="workout-mini-meta">68min • 8 exos</div>
+                        </div>
+                        <div class="workout-mini-status">✅</div>
+                    </div>
+                </div>
+
+                <div class="workout-mini glass" data-status="active" onclick="startWorkout('mardi')">
+                    <div class="workout-mini-header">
+                        <div class="workout-mini-day">MAR</div>
+                        <div class="workout-mini-info">
+                            <div class="workout-mini-title">PECS + ÉPAULES + TRICEPS</div>
+                            <div class="workout-mini-meta">70min • 8 exos</div>
+                        </div>
+                        <div class="workout-mini-status">→</div>
+                    </div>
+                </div>
+
+                <div class="workout-mini glass" data-status="pending" onclick="startWorkout('vendredi')">
+                    <div class="workout-mini-header">
+                        <div class="workout-mini-day">VEN</div>
+                        <div class="workout-mini-info">
+                            <div class="workout-mini-title">DOS + JAMBES + BRAS</div>
+                            <div class="workout-mini-meta">73min • 9 exos</div>
+                        </div>
+                        <div class="workout-mini-status">○</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citation -->
+            <div class="quote-card glass">
+                <div class="quote-icon">💬</div>
+                <div class="quote-content">
+                    <p class="quote-text">The last three or four reps is what makes the muscle grow. This area of pain divides a champion from someone who's not a champion.</p>
+                    <p class="quote-author">— Arnold Schwarzenegger</p>
+                </div>
+            </div>
         
-        if (btnSecondary) {
-          btnSecondary.onclick = (e) => {
-            e.stopPropagation();
-            window.location.href = `workout-3d-full.html?week=${weekNumber}&day=${dayKey}`;
-          };
-        }
-        if (btnPrimary) {
-          btnPrimary.onclick = (e) => {
-            e.stopPropagation();
-            window.location.href = `workout-3d-full.html?week=${weekNumber}&day=${dayKey}`;
-          };
-        }
-      } else {
-        card.onclick = () => {
-          window.location.href = `workout-3d-full.html?week=${weekNumber}&day=${dayKey}`;
-        };
-      }
-      
-      container.appendChild(card);
-    });
+        <!-- STATISTIQUES CARDS -->
+        <div class="stats-section-home">
+            <h2 class="stats-section-title">📊 STATISTIQUES</h2>
+            <div class="stats-cards-grid">
+                <a href="stats-performance.html" class="stats-card performance">
+                    <span class="stats-card-icon">📈</span>
+                    <span class="stats-card-title">PERFORMANCE</span>
+                    <span class="stats-card-desc">Volume, progression, tendances</span>
+                </a>
+                <a href="stats-recovery.html" class="stats-card recovery">
+                    <span class="stats-card-icon">🔋</span>
+                    <span class="stats-card-title">RÉCUPÉRATION</span>
+                    <span class="stats-card-desc">Repos, fatigue, équilibre</span>
+                </a>
+                <a href="stats-analyse.html" class="stats-card analysis">
+                    <span class="stats-card-icon">🎯</span>
+                    <span class="stats-card-title">ANALYSE</span>
+                    <span class="stats-card-desc">Répartition, patterns</span>
+                </a>
+                <a href="stats-records.html" class="stats-card records">
+                    <span class="stats-card-icon">🏆</span>
+                    <span class="stats-card-title">RECORDS</span>
+                    <span class="stats-card-desc">PRs, achievements</span>
+                </a>
+            </div>
+        </div>
 
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
-  </script>
+        </section>
+
+        <!-- ONGLET WORKOUT -->
+        <section id="tab-workout" class="tab-content">
+            <!-- Barre de recherche -->
+            <div class="search-bar glass">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Rechercher une séance..." class="search-input">
+            </div>
+
+            <!-- Filtres catégories -->
+            <div class="categories-filter">
+                <div class="section-header">
+                    <span class="section-icon">🏷️</span>
+                    <span class="section-title">CATÉGORIES</span>
+                </div>
+                <div class="category-grid">
+                    <button class="category-btn glass glow-orange" onclick="filterWorkouts('push')">
+                        <div class="category-emoji">💪</div>
+                        <div class="category-name">PUSH</div>
+                        <div class="category-count">1/1</div>
+                    </button>
+                    <button class="category-btn glass glow-cyan" onclick="filterWorkouts('pull')">
+                        <div class="category-emoji">🏋️</div>
+                        <div class="category-name">PULL</div>
+                        <div class="category-count">1/1</div>
+                    </button>
+                    <button class="category-btn glass glow-violet" onclick="filterWorkouts('legs')">
+                        <div class="category-emoji">🦵</div>
+                        <div class="category-name">LEGS</div>
+                        <div class="category-count">2/2</div>
+                    </button>
+                    <button class="category-btn glass glow-green" onclick="filterWorkouts('home')">
+                        <div class="category-emoji">🏠</div>
+                        <div class="category-name">MAISON</div>
+                        <div class="category-count">0/2</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Liste complète des séances -->
+            <div class="workouts-full">
+                <div class="section-header">
+                    <span class="section-icon">📋</span>
+                    <span class="section-title">TOUTES LES SÉANCES</span>
+                </div>
+
+                <!-- Séance 1 -->
+                <div class="workout-full glass" data-category="pull legs" data-day="dimanche">
+                    <div class="workout-full-header">
+                        <div class="workout-full-day">DIM</div>
+                        <div class="workout-full-info">
+                            <div class="workout-full-title">DOS + JAMBES + BRAS</div>
+                            <div class="workout-full-meta">
+                                <span class="meta-tag">⏱️ 68min</span>
+                                <span class="meta-tag">💪 8 exos</span>
+                                <span class="meta-tag">🔄 32 séries</span>
+                            </div>
+                        </div>
+                        <div class="workout-full-status completed" onclick="startWorkout('dimanche')">✅</div>
+                    </div>
+                    <div class="workout-full-actions">
+                        <button class="workout-btn workout-btn-primary" onclick="startWorkout('dimanche')">
+                            <span>▶ DÉMARRER</span>
+                        </button>
+                        <button class="workout-btn workout-btn-secondary" onclick="toggleDetails(this)">
+                            <span>📝 DÉTAILS</span>
+                        </button>
+                    </div>
+                    <div class="workout-details">
+                        <div class="exercise-list">
+                            <div class="exercise-item glass-light">
+                                <span class="exercise-emoji">🏋️</span>
+                                <div class="exercise-info">
+                                    <div class="exercise-name">TRAP BAR DEADLIFT</div>
+                                    <div class="exercise-specs">5 × 6-8 • 75kg • 120s • RPE 6-8</div>
+                                </div>
+                            </div>
+                            <div class="exercise-item glass-light">
+                                <span class="exercise-emoji">🦵</span>
+                                <div class="exercise-info">
+                                    <div class="exercise-name">GOBLET SQUAT</div>
+                                    <div class="exercise-specs">4 × 10 • 25kg • 75s • Tempo 3-1-2</div>
+                                </div>
+                            </div>
+                            <div class="exercise-item glass-light">
+                                <span class="exercise-emoji">🦵</span>
+                                <div class="exercise-info">
+                                    <div class="exercise-name">LEG PRESS</div>
+                                    <div class="exercise-specs">4 × 10 • 110kg • 75s • Drop-set</div>
+                                </div>
+                            </div>
+                            <div class="superset-group glass-light">
+                                <div class="superset-label">🔄 SUPERSET</div>
+                                <div class="exercise-item">
+                                    <span class="exercise-emoji">💪</span>
+                                    <div class="exercise-info">
+                                        <div class="exercise-name">LAT PULLDOWN</div>
+                                        <div class="exercise-specs">4 × 10 • 60kg • 90s</div>
+                                    </div>
+                                </div>
+                                <div class="exercise-item">
+                                    <span class="exercise-emoji">🏋️</span>
+                                    <div class="exercise-info">
+                                        <div class="exercise-name">LANDMINE PRESS</div>
+                                        <div class="exercise-specs">4 × 10 • 35kg • 90s</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Séance 2 -->
+                <div class="workout-full glass" data-category="push" data-day="mardi">
+                    <div class="workout-full-header">
+                        <div class="workout-full-day">MAR</div>
+                        <div class="workout-full-info">
+                            <div class="workout-full-title">PECS + ÉPAULES + TRICEPS</div>
+                            <div class="workout-full-meta">
+                                <span class="meta-tag">⏱️ 70min</span>
+                                <span class="meta-tag">💪 8 exos</span>
+                                <span class="meta-tag">🔄 35 séries</span>
+                            </div>
+                        </div>
+                        <div class="workout-full-status active" onclick="startWorkout('mardi')">→</div>
+                    </div>
+                    <div class="workout-full-actions">
+                        <button class="workout-btn workout-btn-primary" onclick="startWorkout('mardi')">
+                            <span>▶ DÉMARRER</span>
+                        </button>
+                        <button class="workout-btn workout-btn-secondary" onclick="toggleDetails(this)">
+                            <span>📝 DÉTAILS</span>
+                        </button>
+                    </div>
+                    <div class="workout-details"></div>
+                </div>
+
+                <!-- Séance 3 -->
+                <div class="workout-full glass" data-category="pull legs" data-day="vendredi">
+                    <div class="workout-full-header">
+                        <div class="workout-full-day">VEN</div>
+                        <div class="workout-full-info">
+                            <div class="workout-full-title">DOS + JAMBES + BRAS</div>
+                            <div class="workout-full-meta">
+                                <span class="meta-tag">⏱️ 73min</span>
+                                <span class="meta-tag">💪 9 exos</span>
+                                <span class="meta-tag">🔄 36 séries</span>
+                            </div>
+                        </div>
+                        <div class="workout-full-status pending" onclick="startWorkout('vendredi')">○</div>
+                    </div>
+                    <div class="workout-full-actions">
+                        <button class="workout-btn workout-btn-primary" onclick="startWorkout('vendredi')">
+                            <span>▶ DÉMARRER</span>
+                        </button>
+                        <button class="workout-btn workout-btn-secondary" onclick="toggleDetails(this)">
+                            <span>📝 DÉTAILS</span>
+                        </button>
+                    </div>
+                    <div class="workout-details"></div>
+                </div>
+
+                <!-- Séance 4 -->
+                <div class="workout-full glass" data-category="home" data-day="maison">
+                    <div class="workout-full-header">
+                        <div class="workout-full-day">🏠</div>
+                        <div class="workout-full-info">
+                            <div class="workout-full-title">BICEPS EXPRESS</div>
+                            <div class="workout-full-meta">
+                                <span class="meta-tag">⏱️ 15min</span>
+                                <span class="meta-tag">💪 1 exo</span>
+                                <span class="meta-tag">🔄 3 séries</span>
+                            </div>
+                        </div>
+                        <div class="workout-full-status pending" onclick="startWorkout('maison')">○</div>
+                    </div>
+                    <div class="workout-full-actions">
+                        <button class="workout-btn workout-btn-primary" onclick="startWorkout('maison')">
+                            <span>▶ DÉMARRER</span>
+                        </button>
+                        <button class="workout-btn workout-btn-secondary" onclick="toggleDetails(this)">
+                            <span>📝 DÉTAILS</span>
+                        </button>
+                    </div>
+                    <div class="workout-details"></div>
+                </div>
+        </section>
+
+        <!-- ONGLET STATS -->
+
+        <!-- ONGLET PLUS -->
+        <section id="tab-plus" class="tab-content">
+            <!-- Contenu PLUS ici -->
+        </section>
+
+        <!-- TAB PERFORMANCE -->
+        <section id="performance" class="tab-content">
+            <div class="performance-header">
+                <h1>📊 PERFORMANCE</h1>
+                <p class="subtitle">Analyse détaillée de ta progression</p>
+            </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">SEMAINE 1</div>
+                        <div class="stat-value">28.0k kg</div>
+                        <div class="stat-sublabel">75% INT • 156 sets</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">SEMAINE 2</div>
+                        <div class="stat-value">29.5k kg</div>
+                        <div class="stat-sublabel">78% INT • 164 sets</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">SEMAINE 3</div>
+                        <div class="stat-value">27.8k kg</div>
+                        <div class="stat-sublabel">72% INT • 152 sets</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">SEMAINE 4</div>
+                        <div class="stat-value">31.2k kg</div>
+                        <div class="stat-sublabel">80% INT • 172 sets</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav glass" style="background: rgba(20, 25, 35, 0.95); backdrop-filter: blur(20px);">
+        <button class="nav-item" data-tab="home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">HOME</span>
+        </button>
+        <button class="nav-item" data-tab="workout">
+            <span class="nav-icon">💪</span>
+            <span class="nav-label">WORKOUT</span>
+        </button>
+        <button class="nav-item" data-tab="plus">
+            <span class="nav-icon">➕</span>
+            <span class="nav-label">PLUS</span>
+        </button>
+    </nav>
+
+    <script type="module">
+        import programData from './scripts/program-data.js';
+        window.programData = programData;
+    </script>
+    <script src="scripts/10-home.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Stats modules -->
+    <script src="scripts/modules/stats-engine.js"></script>
+    <script src="scripts/modules/stats-ui.js"></script>
+    <script src="scripts/modules/body-tracker.js"></script>
+    <script src="scripts/modules/pr-detector.js"></script>
+    <script src="scripts/modules/calculators.js"></script>
+    <script src="scripts/modules/advanced-charts-premium.js"></script>
+    <script src="scripts/modules/stats-init.js"></script>
+    <script src="scripts/modules/superset-tracker.js"></script>
+    <script src="scripts/modules/advanced-charts.js"></script>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/touch-effects.js"></script>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">SEMAINE 1</div>
+            <div class="stat-value">28.0k kg</div>
+            <div class="stat-sublabel">75% INT • 156 sets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">SEMAINE 2</div>
+            <div class="stat-value">29.5k kg</div>
+            <div class="stat-sublabel">78% INT • 164 sets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">SEMAINE 3</div>
+            <div class="stat-value">27.8k kg</div>
+            <div class="stat-sublabel">72% INT • 152 sets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">SEMAINE 4</div>
+            <div class="stat-value">31.2k kg</div>
+            <div class="stat-sublabel">80% INT • 172 sets</div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
+
+</div>

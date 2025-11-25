@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Séance Ultra - Hybrid Master 63</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #000;
+      color: white;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .bg-animated {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    .orb-1 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.4), transparent);
+      top: -50px; left: -50px;
+      animation-delay: 0s;
+    }
+    
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(155, 89, 255, 0.3), transparent);
+      bottom: -100px; right: -100px;
+      animation-delay: 2s;
+    }
+    
+    .orb-3 {
+      width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(0, 255, 159, 0.3), transparent);
+      top: 40%; left: 50%;
+      transform: translateX(-50%);
+      animation-delay: 4s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+    
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: #00e5ff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00e5ff;
+      animation: particle-float 15s linear infinite;
+      opacity: 0;
+    }
+    
+    @keyframes particle-float {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+    }
+    
+    .app-container {
+      min-height: 100vh;
+      padding: 0 16px 120px 16px;
+      padding-top: max(20px, env(safe-area-inset-top));
+      position: relative;
+      z-index: 2;
+    }
+    
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(30px) saturate(200%);
+      border-bottom: 2px solid;
+      border-image: linear-gradient(90deg, #00e5ff, #9b59ff, #00ff9f) 1;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      margin: 0 -16px 20px -16px;
+      box-shadow: 0 10px 40px rgba(0, 229, 255, 0.3);
+    }
+    
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    
+    .back-btn {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(155, 89, 255, 0.2));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00e5ff;
+      font-size: 20px;
+      border: 2px solid rgba(0, 229, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .back-btn:hover {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.8);
+    }
+    
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #00e5ff 0%, #00ff9f 50%, #9b59ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.8));
+      animation: glow-text 3s ease-in-out infinite;
+    }
+    
+    @keyframes glow-text {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.8)); }
+      50% { filter: drop-shadow(0 0 40px rgba(155, 89, 255, 0.8)); }
+    }
+    
+    .header-actions { display: flex; gap: 8px; }
+    
+    .header-icon {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .header-icon:hover {
+      background: rgba(0, 229, 255, 0.2);
+      border-color: #00e5ff;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+      transform: scale(1.1);
+    }
+    
+    .hero-3d {
+      position: relative;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15) 0%, rgba(155, 89, 255, 0.15) 50%, rgba(0, 255, 159, 0.15) 100%);
+      border: 2px solid;
+      border-image: linear-gradient(135deg, #00e5ff, #9b59ff, #00ff9f) 1;
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0, 229, 255, 0.4), 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(0, 229, 255, 0.1);
+      animation: hero-pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes hero-pulse {
+      0%, 100% { box-shadow: 0 0 60px rgba(0, 229, 255, 0.4), 0 20px 40px rgba(0, 0, 0, 0.6); }
+      50% { box-shadow: 0 0 100px rgba(155, 89, 255, 0.6), 0 25px 50px rgba(0, 0, 0, 0.8); }
+    }
+    
+    .hero-glow {
+      position: absolute;
+      inset: -50%;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.3), transparent 70%);
+      animation: rotate 10s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .hero-content { position: relative; z-index: 2; }
+    
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(20px, 6vw, 28px);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.8), 0 0 40px rgba(155, 89, 255, 0.6);
+      letter-spacing: 2px;
+      animation: title-glow 3s ease-in-out infinite;
+    }
+    
+    @keyframes title-glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(0, 229, 255, 0.8), 0 0 40px rgba(155, 89, 255, 0.6); }
+      50% { text-shadow: 0 0 40px rgba(0, 229, 255, 1), 0 0 80px rgba(155, 89, 255, 0.8); }
+    }
+    
+    .hero-subtitle {
+      font-size: 11px;
+      color: #00e5ff;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+    }
+    
+    .stats-3d {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    
+    .stat-3d {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid rgba(0, 229, 255, 0.3);
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .stat-icon-3d {
+      font-size: 32px;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 15px currentColor);
+      animation: icon-float 3s ease-in-out infinite;
+    }
+    
+    @keyframes icon-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    .stat-value-3d {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: #00e5ff;
+      margin-bottom: 4px;
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+    }
+    
+    .stat-label-3d {
+      font-size: 9px;
+      color: #7a8090;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+    
+    .holo-card {
+      position: relative;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid;
+      border-image: linear-gradient(135deg, rgba(0, 229, 255, 0.5), rgba(155, 89, 255, 0.5), rgba(0, 255, 159, 0.5)) 1;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.3), inset 0 0 40px rgba(0, 229, 255, 0.05);
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    
+    .progress-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: #7a8090;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .progress-percent {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00e5ff, #9b59ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.8));
+    }
+    
+    .progress-bar-3d {
+      height: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid rgba(0, 229, 255, 0.3);
+      position: relative;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    }
+    
+    .progress-fill-3d {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00e5ff 0%, #9b59ff 50%, #00ff9f 100%);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), inset 0 2px 10px rgba(255, 255, 255, 0.3);
+      transition: width 0.5s ease-out;
+    }
+    
+    .progress-fill-3d::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 1.5s linear infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .progress-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 10px;
+      color: #00e5ff;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+    }
+    
+    .section-title-ultra {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      color: #7a8090;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 24px 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-icon-ultra {
+      font-size: 20px;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+    
+    .section-title-ultra::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.5), transparent);
+    }
+    
+    .serie-ultra {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid rgba(0, 229, 255, 0.4);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .serie-ultra.active {
+      border-color: #00e5ff;
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.6), inset 0 0 40px rgba(0, 229, 255, 0.1);
+    }
+    
+    .serie-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .serie-number-3d {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, #00e5ff, #9b59ff);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #000;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), inset 0 2px 10px rgba(255, 255, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .serie-info {
+      flex: 1;
+      margin-left: 16px;
+    }
+    
+    .serie-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    
+    .serie-specs {
+      font-size: 12px;
+      color: #00e5ff;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    }
+    
+    .serie-status-3d {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      border: 3px solid;
+      position: relative;
+      overflow: hidden;
+      background: rgba(0, 229, 255, 0.2);
+      border-color: #00e5ff;
+      color: #00e5ff;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+    
+    .input-ultra {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid rgba(0, 229, 255, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .input-row-ultra {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .input-row-ultra:last-child { margin-bottom: 0; }
+    
+    .input-label-ultra {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: #00e5ff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+    }
+    
+    .input-controls-ultra {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .input-btn-ultra {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(155, 89, 255, 0.2));
+      border: 2px solid rgba(0, 229, 255, 0.5);
+      border-radius: 10px;
+      color: #00e5ff;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+    
+    .input-btn-ultra:hover, .input-btn-ultra:active {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.8);
+      border-color: #00e5ff;
+    }
+    
+    .input-value-ultra {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      min-width: 70px;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    
+    .rpe-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    
+    .rpe-stars-ultra { display: flex; gap: 4px; }
+    
+    .rpe-star-ultra {
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      filter: grayscale(100%);
+      opacity: 0.3;
+    }
+    
+    .rpe-star-ultra.active {
+      filter: grayscale(0%);
+      opacity: 1;
+      animation: star-glow 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes star-glow {
+      0%, 100% { filter: drop-shadow(0 0 5px #ffc107); }
+      50% { filter: drop-shadow(0 0 15px #ffc107); }
+    }
+    
+    .neon-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #00e5ff, #00ff9f);
+      border: none;
+      border-radius: 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.4);
+      transition: all 0.3s;
+      margin-top: 16px;
+    }
+    
+    .neon-btn:hover, .neon-btn:active {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(0, 229, 255, 1), 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
+    
+    .timer-hologram {
+      background: rgba(0, 0, 0, 0.9);
+      border: 3px solid;
+      border-image: linear-gradient(135deg, #00e5ff, #9b59ff) 1;
+      border-radius: 20px;
+      padding: 24px;
+      margin: 20px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(155, 89, 255, 0.5), inset 0 0 40px rgba(155, 89, 255, 0.1);
+    }
+    
+    .timer-label-3d {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      color: #9b59ff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      text-shadow: 0 0 20px rgba(155, 89, 255, 0.8);
+    }
+    
+    .timer-display-3d {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 64px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00e5ff, #9b59ff, #00ff9f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px rgba(155, 89, 255, 0.8));
+      margin-bottom: 20px;
+    }
+    
+    .timer-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    
+    .timer-btn-3d {
+      padding: 12px 24px;
+      background: rgba(155, 89, 255, 0.2);
+      border: 2px solid rgba(155, 89, 255, 0.5);
+      border-radius: 12px;
+      color: #9b59ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .timer-btn-3d:hover, .timer-btn-3d:active {
+      border-color: #9b59ff;
+      box-shadow: 0 0 30px rgba(155, 89, 255, 0.6);
+      transform: translateY(-2px);
+    }
+    
+    .bottom-nav-ultra {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(30px);
+      border-top: 3px solid;
+      border-image: linear-gradient(90deg, #00e5ff, #9b59ff, #00ff9f) 1;
+      padding: 16px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      display: flex;
+      gap: 12px;
+      box-shadow: 0 -10px 40px rgba(0, 229, 255, 0.3);
+      z-index: 100;
+    }
+    
+    .nav-btn-ultra {
+      flex: 1;
+      padding: 16px;
+      border-radius: 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .nav-btn-ultra.prev {
+      background: rgba(0, 229, 255, 0.1);
+      color: #00e5ff;
+      border: 2px solid rgba(0, 229, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+    
+    .nav-btn-ultra.next {
+      background: linear-gradient(135deg, #00e5ff, #00ff9f);
+      color: #000;
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.6);
+    }
+    
+    .nav-btn-ultra:disabled { opacity: 0.3; cursor: not-allowed; }
+  </style>
+    <link rel="stylesheet" href="styles/10-home.css">
+    <link rel="stylesheet" href="styles/stats-ultra.css">
+    <link rel="stylesheet" href="styles/nav-compact.css">
+    <link rel="stylesheet" href="styles/premium-effects.css">
+    <link rel="stylesheet" href="styles/global-effects.css">
+</head>
+<body>
+  <div class="bg-animated">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+  </div>
+  
+  <div class="particles" id="particles"></div>
+  
+  <div class="app-container" id="app">
+    <div class="header">
+      <div class="header-left">
+        <div class="back-btn" onclick="window.location.href='index.html'">←</div>
+        <div class="logo">MASTER 63</div>
+      </div>
+      <div class="header-actions">
+        <div class="header-icon" onclick="saveProgress()">💾</div>
+        <div class="header-icon" onclick="exitWorkout()">✕</div>
+      </div>
+    </div>
+    
+    <div id="workout-content"></div>
+    
+    <div class="bottom-nav-ultra">
+      <button class="nav-btn-ultra prev" id="prev-btn">← PRÉCÉDENT</button>
+      <button class="nav-btn-ultra next" id="next-btn">SUIVANT →</button>
+    </div>
+  </div>
+  
+  <script type="module">
+    import programData from './scripts/program-data.js';
+    
+    let currentExerciseIndex = 0, currentWeek = 1, currentDay = 'dimanche', workout = null;
+    let sessionData = { reps: 0, weight: 0, rpe: 7, completedSets: [], startTime: Date.now(), totalTime: 0, totalVolume: 0 };
+    let timerInterval = null, restTimerInterval = null, restTimeRemaining = 0;
+    
+    function init() {
+      const urlParams = new URLSearchParams(window.location.search);
+      currentWeek = parseInt(urlParams.get('week')) || 1;
+      currentDay = urlParams.get('day') || 'dimanche';
+      const weekData = programData.getWeek(currentWeek);
+      workout = weekData[currentDay];
+      if (!workout) { alert('❌ Séance introuvable'); window.location.href = 'index.html'; return; }
+      loadProgress(); generateParticles(); startSessionTimer(); render();
+    }
+    
+    function generateParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+        const colors = ['#00e5ff', '#9b59ff', '#00ff9f'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.background = color;
+        particle.style.boxShadow = `0 0 10px ${color}`;
+        container.appendChild(particle);
+      }
+    }
+    
+    function startSessionTimer() {
+      timerInterval = setInterval(() => {
+        sessionData.totalTime++;
+        const timeEl = document.getElementById('stat-time');
+        if (timeEl) {
+          const m = Math.floor(sessionData.totalTime / 60);
+          const s = sessionData.totalTime % 60;
+          timeEl.textContent = `${m}:${String(s).padStart(2, '0')}`;
+        }
+        const volumeEl = document.getElementById('stat-volume');
+        if (volumeEl) volumeEl.textContent = `${sessionData.totalVolume}kg`;
+      }, 1000);
+    }
+    
+    function startRestTimer(duration) {
+      restTimeRemaining = duration;
+      if (restTimerInterval) clearInterval(restTimerInterval);
+      restTimerInterval = setInterval(() => {
+        restTimeRemaining--;
+        const timerDisplay = document.getElementById('timer-display');
+        if (timerDisplay) {
+          const m = Math.floor(restTimeRemaining / 60);
+          const s = restTimeRemaining % 60;
+          timerDisplay.textContent = `${m}:${String(s).padStart(2, '0')}`;
+        }
+        if (restTimeRemaining <= 0) {
+          clearInterval(restTimerInterval);
+          restTimerInterval = null;
+          if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+          showToast('✅ Repos terminé !', 'success');
+        }
+      }, 1000);
+    }
+    
+    window.pauseRestTimer = () => {
+      if (restTimerInterval) { clearInterval(restTimerInterval); restTimerInterval = null; showToast('⏸ Timer en pause', 'info'); }
+    };
+    
+    window.skipRestTimer = () => {
+      if (restTimerInterval) {
+        clearInterval(restTimerInterval);
+        restTimerInterval = null;
+        restTimeRemaining = 0;
+        const timerDisplay = document.getElementById('timer-display');
+        if (timerDisplay) timerDisplay.textContent = '0:00';
+        showToast('⏭ Repos ignoré', 'info');
+      }
+    };
+    
+    window.resetRestTimer = () => {
+      const exercise = workout.exercises[currentExerciseIndex];
+      startRestTimer(exercise.rest || 120);
+      showToast('🔄 Timer réinitialisé', 'info');
+    };
+    
+    function render() {
+      const exercise = workout.exercises[currentExerciseIndex];
+      const sets = parseInt(exercise.sets) || 5;
+      if (!sessionData.completedSets[currentExerciseIndex]) {
+        sessionData.completedSets[currentExerciseIndex] = [];
+        sessionData.reps = parseReps(exercise.reps);
+        sessionData.weight = parseFloat(exercise.weight) || 0;
+        sessionData.rpe = 7;
+      }
+      const completedCount = sessionData.completedSets[currentExerciseIndex].length;
+      const progressPercent = Math.round((completedCount / sets) * 100);
+      let totalExercisesCompleted = 0;
+      for (let i = 0; i < currentExerciseIndex; i++) {
+        if (sessionData.completedSets[i] && sessionData.completedSets[i].length >= workout.exercises[i].sets) totalExercisesCompleted++;
+      }
+      if (completedCount >= sets) totalExercisesCompleted++;
+      
+      const html = `
+        <div class="hero-3d">
+          <div class="hero-glow"></div>
+          <div class="hero-content">
+            <div class="hero-title">${exercise.name}</div>
+            <div class="hero-subtitle">SEMAINE ${currentWeek} • ${currentDay.toUpperCase()} • EXERCICE ${currentExerciseIndex + 1}/${workout.exercises.length}</div>
+            <div class="stats-3d">
+              <div class="stat-3d"><div class="stat-icon-3d">⏱️</div><div class="stat-value-3d" id="stat-time">0:00</div><div class="stat-label-3d">Temps</div></div>
+              <div class="stat-3d"><div class="stat-icon-3d">💪</div><div class="stat-value-3d">${totalExercisesCompleted}/${workout.exercises.length}</div><div class="stat-label-3d">Exercices</div></div>
+              <div class="stat-3d"><div class="stat-icon-3d">📊</div><div class="stat-value-3d" id="stat-volume">${sessionData.totalVolume}kg</div><div class="stat-label-3d">Volume</div></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="holo-card">
+          <div class="progress-header">
+            <div class="progress-label">PROGRESSION</div>
+            <div class="progress-percent">${progressPercent}%</div>
+          </div>
+          <div class="progress-bar-3d">
+            <div class="progress-fill-3d" style="width: ${progressPercent}%"></div>
+          </div>
+          <div class="progress-footer">
+            <span>${completedCount}/${sets} SÉRIES</span>
+            <span>${(sessionData.weight * completedCount * sessionData.reps).toFixed(0)}KG</span>
+          </div>
+        </div>
+        
+        <div class="section-title-ultra"><span class="section-icon-ultra">🏋️</span><span>SÉRIE EN COURS</span></div>
+        
+        <div class="serie-ultra active">
+          <div class="serie-header">
+            <div class="serie-number-3d">${completedCount + 1}</div>
+            <div class="serie-info">
+              <div class="serie-name">SÉRIE ${completedCount + 1}/${sets}</div>
+              <div class="serie-specs">${exercise.weight}kg • ${exercise.reps} reps • ${exercise.rest || 120}s repos</div>
+            </div>
+            <div class="serie-status-3d">→</div>
+          </div>
+          
+          <div class="input-ultra">
+            <div class="input-row-ultra">
+              <div class="input-label-ultra">RÉPÉTITIONS</div>
+              <div class="input-controls-ultra">
+                <div class="input-btn-ultra" onclick="changeReps(-1)">−</div>
+                <div class="input-value-ultra" id="input-reps">${sessionData.reps}</div>
+                <div class="input-btn-ultra" onclick="changeReps(1)">+</div>
+              </div>
+            </div>
+            <div class="input-row-ultra">
+              <div class="input-label-ultra">POIDS (KG)</div>
+              <div class="input-controls-ultra">
+                <div class="input-btn-ultra" onclick="changeWeight(-2.5)">−</div>
+                <div class="input-value-ultra" id="input-weight">${sessionData.weight}</div>
+                <div class="input-btn-ultra" onclick="changeWeight(2.5)">+</div>
+              </div>
+            </div>
+            <div class="input-row-ultra">
+              <div class="input-label-ultra">DIFFICULTÉ (RPE)</div>
+              <div class="rpe-container">
+                <div class="rpe-stars-ultra">
+                  ${Array.from({length: 10}, (_, i) => `<span class="rpe-star-ultra ${i < sessionData.rpe ? 'active' : ''}" onclick="setRPE(${i + 1})">⭐</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="neon-btn" onclick="validateSet()">✅ VALIDER LA SÉRIE</button>
+        </div>
+        
+        ${restTimerInterval || restTimeRemaining > 0 ? `
+        <div class="timer-hologram">
+          <div class="timer-label-3d">⏱️ TEMPS DE REPOS</div>
+          <div class="timer-display-3d" id="timer-display">${Math.floor(restTimeRemaining / 60)}:${String(restTimeRemaining % 60).padStart(2, '0')}</div>
+          <div class="timer-controls">
+            <button class="timer-btn-3d" onclick="${restTimerInterval ? 'pauseRestTimer()' : 'resetRestTimer()'}"><span>${restTimerInterval ? '⏸ PAUSE' : '▶ REPRENDRE'}</span></button>
+            <button class="timer-btn-3d" onclick="skipRestTimer()"><span>⏭ SKIP</span></button>
+            <button class="timer-btn-3d" onclick="resetRestTimer()"><span>🔄 RESET</span></button>
+          </div>
+        </div>` : ''}
+        
+        ${currentExerciseIndex < workout.exercises.length - 1 ? `
+        <div class="section-title-ultra"><span class="section-icon-ultra">📋</span><span>PROCHAIN EXERCICE</span></div>
+        <div class="serie-ultra" style="opacity: 0.6;">
+          <div class="serie-header">
+            <div class="serie-number-3d" style="background: rgba(255,255,255,0.2); color: #7a8090; box-shadow: none;">${currentExerciseIndex + 2}</div>
+            <div class="serie-info">
+              <div class="serie-name">${workout.exercises[currentExerciseIndex + 1].name}</div>
+              <div class="serie-specs">${workout.exercises[currentExerciseIndex + 1].sets}×${workout.exercises[currentExerciseIndex + 1].reps} • ${workout.exercises[currentExerciseIndex + 1].weight}kg</div>
+            </div>
+            <div class="serie-status-3d" style="border-color: #7a8090; color: #7a8090; box-shadow: none;">○</div>
+          </div>
+        </div>` : '<div class="section-title-ultra"><span class="section-icon-ultra">🎉</span><span>DERNIER EXERCICE !</span></div>'}
+      `;
+      
+      document.getElementById('workout-content').innerHTML = html;
+      document.getElementById('prev-btn').disabled = currentExerciseIndex === 0;
+      document.getElementById('next-btn').disabled = currentExerciseIndex >= workout.exercises.length - 1;
+      document.getElementById('prev-btn').onclick = () => { if (currentExerciseIndex > 0) { currentExerciseIndex--; skipRestTimer(); window.scrollTo({top:0,behavior:'smooth'}); render(); showToast('⬅️ Exercice précédent', 'info'); } };
+      document.getElementById('next-btn').onclick = () => { if (currentExerciseIndex < workout.exercises.length - 1) { currentExerciseIndex++; skipRestTimer(); window.scrollTo({top:0,behavior:'smooth'}); render(); showToast('➡️ Exercice suivant', 'info'); } else { finishWorkout(); } };
+    }
+    
+    function parseReps(reps) {
+      if (typeof reps === 'number') return reps;
+      const match = String(reps).match(/(\d+)/);
+      return match ? parseInt(match[1]) : 8;
+    }
+    
+    window.changeReps = (delta) => {
+      sessionData.reps = Math.max(1, sessionData.reps + delta);
+      document.getElementById('input-reps').textContent = sessionData.reps;
+      if (navigator.vibrate) navigator.vibrate(10);
+    };
+    
+    window.changeWeight = (delta) => {
+      sessionData.weight = Math.max(0, parseFloat((sessionData.weight + delta).toFixed(1)));
+      document.getElementById('input-weight').textContent = sessionData.weight;
+      if (navigator.vibrate) navigator.vibrate(10);
+    };
+    
+    window.setRPE = (value) => {
+      sessionData.rpe = value;
+      const stars = document.querySelectorAll('.rpe-star-ultra');
+      stars.forEach((star, i) => { if (i < value) star.classList.add('active'); else star.classList.remove('active'); });
+      if (navigator.vibrate) navigator.vibrate(20);
+    };
+    
+    window.validateSet = () => {
+      const exercise = workout.exercises[currentExerciseIndex];
+      const setData = { reps: sessionData.reps, weight: sessionData.weight, rpe: sessionData.rpe, timestamp: Date.now() };
+      sessionData.completedSets[currentExerciseIndex].push(setData);
+      sessionData.totalVolume += sessionData.weight * sessionData.reps;
+      if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+      showToast('✅ Série validée !', 'success');
+      startRestTimer(exercise.rest || 120);
+      saveProgress();
+      const sets = parseInt(exercise.sets) || 5;
+      if (sessionData.completedSets[currentExerciseIndex].length >= sets) {
+        setTimeout(() => { if (confirm(`🎉 Exercice "${exercise.name}" terminé !\n\nPasser au suivant ?`)) { if (currentExerciseIndex < workout.exercises.length - 1) { currentExerciseIndex++; skipRestTimer(); window.scrollTo({top:0,behavior:'smooth'}); render(); } else { finishWorkout(); } } }, 1000);
+      } else { render(); }
+    };
+    
+    function finishWorkout() {
+      if (confirm('🎉 SÉANCE TERMINÉE !\n\nFélicitations ! Voulez-vous enregistrer vos résultats ?')) {
+        saveProgress();
+        showToast('💾 Progression sauvegardée !', 'success');
+        setTimeout(() => { window.location.href = 'index.html?tab=stats'; }, 1500);
+      }
+    }
+    
+    window.saveProgress = () => {
+      const key = `workout_${currentWeek}_${currentDay}`;
+      const data = { currentExerciseIndex, sessionData, timestamp: Date.now() };
+      localStorage.setItem(key, JSON.stringify(data));
+    };
+    
+    function loadProgress() {
+      const key = `workout_${currentWeek}_${currentDay}`;
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+            currentExerciseIndex = data.currentExerciseIndex || 0;
+            sessionData = { ...sessionData, ...data.sessionData };
+          }
+        } catch (e) {}
+      }
+    }
+    
+    window.exitWorkout = () => {
+      if (confirm('⚠️ Quitter la séance ?\n\nVotre progression sera sauvegardée.')) {
+        saveProgress();
+        window.location.href = 'index.html';
+      }
+    };
+    
+    function showToast(message, type = 'info') {
+      document.querySelectorAll('.toast-ultra').forEach(t => t.remove());
+      const toast = document.createElement('div');
+      toast.className = `toast-ultra toast-${type}`;
+      toast.textContent = message;
+      const colors = { info: 'rgba(0, 229, 255, 0.5)', success: 'rgba(0, 255, 159, 0.5)', warning: 'rgba(255, 193, 7, 0.5)', error: 'rgba(255, 107, 53, 0.5)' };
+      toast.style.cssText = `position: fixed; top: 80px; left: 50%; transform: translateX(-50%); padding: 12px 20px; border-radius: 12px; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px); border: 2px solid ${colors[type]}; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; z-index: 10000; box-shadow: 0 0 30px ${colors[type]}; animation: toast-slide 0.4s ease-out; max-width: 90%; text-align: center;`;
+      const style = document.createElement('style');
+      style.textContent = '@keyframes toast-slide { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } }';
+      document.head.appendChild(style);
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.style.animation = 'toast-fade 0.4s ease-out forwards'; setTimeout(() => toast.remove(), 400); }, 2500);
+    }
+    
+    init();
+  </script>
+</body>
+</html>
