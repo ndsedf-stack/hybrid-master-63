@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLUME LOAD avec CSS Commun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS COMMUN (effets cockpit) -->
+    <link rel="stylesheet" href="css/chart-base-common.css">
+    
+    <!-- CSS SPÉCIFIQUE VOLUME LOAD -->
+    <link rel="stylesheet" href="css/volume-load-specific.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: #0a0a0a;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="volumeContainer"></div>
+    <script type="module">
+        import VolumeLoadGauge from './js/volume-load-standalone.js';
+        
+        // Données VOLUME LOAD
+        const volumeData = {
+            totalVolume: 18500,       // Volume total en KG
+            maxVolume: 25000,         // Maximum de la jauge
+            optimalMin: 15000,        // Début zone optimale
+            optimalMax: 22000,        // Fin zone optimale
+            totalSets: 42,            // Nombre total de séries
+            totalTUT: 2400,           // Time Under Tension en secondes (40 minutes)
+            sessions: 4               // Nombre de sessions
+        };
+        
+        const gauge = new VolumeLoadGauge('volumeContainer', volumeData);
+        console.log('✅ VOLUME LOAD avec CSS commun initialisé !');
+    </script>
+</body>
+</html>

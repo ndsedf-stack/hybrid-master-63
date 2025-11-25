@@ -1,0 +1,150 @@
+/* CARTES STATS - FORCE iOS */
+.stats-section-home {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.stats-section-title {
+    text-align: center;
+    color: #00e5ff;
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.stats-cards-grid {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.stats-card {
+    -webkit-flex: 1 1 calc(50% - 8px);
+    flex: 1 1 calc(50% - 8px);
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 25px 15px;
+    background: rgba(30, 40, 55, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    text-decoration: none;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.stats-card.performance { border-color: rgba(0, 229, 255, 0.4); }
+.stats-card.recovery { border-color: rgba(76, 175, 80, 0.4); }
+.stats-card.analysis { border-color: rgba(155, 89, 255, 0.4); }
+.stats-card.records { border-color: rgba(255, 193, 7, 0.4); }
+
+.stats-card:active {
+    -webkit-transform: scale(0.95) !important;
+    transform: scale(0.95) !important;
+}
+
+.stats-card.performance:active {
+    border-color: #00e5ff !important;
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.5) !important;
+}
+
+.stats-card.recovery:active {
+    border-color: #4caf50 !important;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.5) !important;
+}
+
+.stats-card.analysis:active {
+    border-color: #9b59ff !important;
+    box-shadow: 0 0 30px rgba(155, 89, 255, 0.5) !important;
+}
+
+.stats-card.records:active {
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.5) !important;
+}
+
+.stats-card-icon { font-size: 40px; }
+.stats-card-title { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+.stats-card-desc { color: rgba(255, 255, 255, 0.5); font-size: 11px; text-align: center; }
+
+/* EFFETS PERMANENTS - HALOS ET GLOW */
+.stats-card {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.performance {
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.recovery {
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.analysis {
+    box-shadow: 0 0 20px rgba(155, 89, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card.records {
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.3), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Titres avec glow */
+.stats-card-title {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* Icônes avec glow */
+.stats-card-icon {
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Nav items glow */
+.nav-item.active {
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.4) !important;
+}
+
+.nav-item.active .nav-icon {
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
+}
+
+/* SECTION STATS - MÊME STYLE QUE TECHNIQUES DU BLOC */
+.stats-section-home {
+    background: rgba(28, 28, 30, 0.85) !important;
+    backdrop-filter: blur(40px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    margin: 20px !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 229, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.stats-section-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    color: #00e5ff !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 15px !important;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2) !important;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.5) !important;
+}
+
+.stats-cards-grid {
+    gap: 12px !important;
+    padding: 0 !important;
+}

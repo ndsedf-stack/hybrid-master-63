@@ -1,0 +1,66 @@
+/* === NAV CENTRÉE - FORCE iOS === */
+nav.bottom-nav,
+.bottom-nav,
+.bottom-nav.glass {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+    width: auto !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+    -webkit-justify-content: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 10px !important;
+    background: rgba(30, 40, 55, 0.95) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 20px !important;
+    border: 2px solid rgba(0, 229, 255, 0.4) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+}
+
+.nav-item {
+    -webkit-flex: 1 !important;
+    flex: 1 !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+    -webkit-flex-direction: column !important;
+    flex-direction: column !important;
+    -webkit-align-items: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 14px 10px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    -webkit-transition: all 0.2s ease !important;
+    transition: all 0.2s ease !important;
+    -webkit-tap-highlight-color: rgba(0, 229, 255, 0.3) !important;
+}
+
+.nav-item:active,
+.nav-item.touching {
+    background: rgba(0, 229, 255, 0.2) !important;
+    border-color: rgba(0, 229, 255, 0.5) !important;
+    -webkit-transform: scale(0.95) !important;
+    transform: scale(0.95) !important;
+}
+
+.nav-item.active {
+    background: rgba(0, 229, 255, 0.15) !important;
+    border-color: rgba(0, 229, 255, 0.5) !important;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3) !important;
+}
+
+.nav-icon { font-size: 24px !important; }
+.nav-label { font-size: 10px !important; font-weight: 700 !important; color: rgba(255,255,255,0.6) !important; }
+.nav-item.active .nav-label { color: #00e5ff !important; }
+
+body { padding-bottom: 120px !important; }

@@ -1,0 +1,171 @@
+/* ================================================================
+   VOLUME LOAD - CSS SPÉCIFIQUE
+   Utilise chart-base-common.css pour les effets communs
+   ================================================================ */
+
+/* Wrapper de la jauge */
+.volume-gauge-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Canvas */
+#volumeGaugeCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* Halos animés autour de la jauge */
+.volume-halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.volume-halo-1 {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, transparent 70%);
+    animation: halo-pulse-volume-1 3s ease-in-out infinite;
+}
+
+.volume-halo-2 {
+    width: 90%;
+    height: 90%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    animation: halo-pulse-volume-2 4s ease-in-out infinite 0.5s;
+}
+
+@keyframes halo-pulse-volume-1 {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+@keyframes halo-pulse-volume-2 {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.08);
+        opacity: 0.6;
+    }
+}
+
+/* Footer avec 4 cartes stats */
+.volume-stats-footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.volume-stat-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.volume-stat-card:hover {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(34, 211, 238, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 211, 238, 0.2);
+}
+
+.volume-stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.volume-stat-value {
+    font-size: 20px;
+    font-weight: 900;
+    color: #22d3ee;
+    font-family: 'Orbitron', monospace;
+}
+
+/* Variantes de couleur pour les badges */
+.badge-cyan {
+    background: rgba(34, 211, 238, 0.15);
+    border-color: #22d3ee;
+    color: #22d3ee;
+}
+
+.badge-green {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.badge-amber {
+    background: rgba(251, 191, 36, 0.15);
+    border-color: #fbbf24;
+    color: #fbbf24;
+}
+
+.badge-red {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .volume-stats-footer {
+        gap: 8px;
+    }
+    
+    .volume-stat-card {
+        padding: 8px;
+    }
+    
+    .volume-stat-label {
+        font-size: 9px;
+    }
+    
+    .volume-stat-value {
+        font-size: 16px;
+    }
+    
+    .volume-gauge-wrapper {
+        max-width: 100%;
+    }
+}
+
+/* Animation pour le canvas au chargement */
+@keyframes fadeInCanvas {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#volumeGaugeCanvas {
+    animation: fadeInCanvas 0.6s ease-out;
+}
