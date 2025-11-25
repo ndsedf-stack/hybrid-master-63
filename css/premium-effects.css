@@ -1,0 +1,196 @@
+/* ============================================
+   PREMIUM COCKPIT STYLE - INSPIRED DESIGN
+   ============================================ */
+
+/* Background gradient atmosphérique */
+body {
+    background: linear-gradient(135deg, 
+        #0a0e27 0%, 
+        #0f1535 25%,
+        #1a1f3a 50%,
+        #1e1a3f 75%,
+        #2a1f4a 100%
+    ) !important;
+    background-attachment: fixed;
+}
+
+/* HALO EXTERNE MASSIF */
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: -150px;
+    left: -150px;
+    right: -150px;
+    bottom: -150px;
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 240, 255, 0.15) 0%,
+        rgba(168, 85, 247, 0.12) 30%,
+        rgba(217, 70, 239, 0.08) 50%,
+        transparent 70%
+    );
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: -1;
+    animation: halo-pulse 4s ease-in-out infinite;
+}
+
+@keyframes halo-pulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* BORDER ULTRA-GLOW avec gradient cyan→magenta */
+.stats-card {
+    border: 3px solid transparent !important;
+    background: 
+        linear-gradient(135deg, 
+            rgba(15, 23, 42, 0.95) 0%, 
+            rgba(20, 28, 52, 0.92) 100%
+        ) padding-box,
+        linear-gradient(135deg, 
+            #00f0ff 0%, 
+            #00d4ff 25%,
+            #a855f7 50%,
+            #d946ef 75%,
+            #e879f9 100%
+        ) border-box !important;
+    backdrop-filter: blur(30px) saturate(150%) !important;
+    box-shadow: 
+        0 0 60px rgba(0, 240, 255, 0.4),
+        0 0 100px rgba(168, 85, 247, 0.3),
+        inset 0 0 80px rgba(0, 240, 255, 0.05),
+        inset 0 0 40px rgba(168, 85, 247, 0.03) !important;
+}
+
+/* REFLETS DIAGONAUX ANIMÉS */
+.stats-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(0, 240, 255, 0.1) 45%,
+        rgba(168, 85, 247, 0.08) 50%,
+        rgba(0, 240, 255, 0.1) 55%,
+        transparent 70%
+    );
+    pointer-events: none;
+    animation: diagonal-sweep 8s linear infinite;
+    z-index: 1;
+}
+
+@keyframes diagonal-sweep {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+/* Badge holographique */
+.holographic-badge {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #d946ef, #e879f9);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 0 30px rgba(168, 85, 247, 0.8),
+        0 0 60px rgba(217, 70, 239, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    animation: badge-float 3s ease-in-out infinite;
+}
+
+@keyframes badge-float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+/* TYPOGRAPHIE NEON */
+.card-title {
+    text-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.8),
+        0 0 40px rgba(0, 240, 255, 0.4),
+        0 0 60px rgba(168, 85, 247, 0.3) !important;
+    background: linear-gradient(135deg, #00f0ff, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-value {
+    color: #00f0ff !important;
+    text-shadow: 
+        0 0 20px rgba(0, 240, 255, 1),
+        0 0 40px rgba(0, 240, 255, 0.8),
+        0 0 60px rgba(0, 212, 255, 0.6) !important;
+    font-weight: 700;
+}
+
+/* SCANLINES VERTICALES */
+.scanlines-vertical {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(0, 240, 255, 0.02) 0px,
+        transparent 1px,
+        transparent 4px,
+        rgba(168, 85, 247, 0.02) 5px,
+        transparent 6px,
+        transparent 10px
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* RESPONSIVE PORTRAIT iPhone Pro Max */
+@media (max-width: 430px) and (orientation: portrait) {
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+        padding: 24px 16px !important;
+    }
+    
+    .stats-card {
+        margin: 0 !important;
+    }
+    
+    .stats-card::before {
+        top: -100px;
+        left: -100px;
+        right: -100px;
+        bottom: -100px;
+    }
+}
