@@ -1,4 +1,5 @@
 // chart-wrapper-ultra.js - SYSTÈME UNIVERSEL DE CRÉATION DE GRAPHIQUES
+import * as advancedEffects from './premium-effects-advanced.js';
 import * as premiumEffects from './chart-effects-advanced.js';
 
 export function createStatsCard(config) {
@@ -106,6 +107,19 @@ export function createStatsCard(config) {
                 particles: 15,
                 speed: 1
             });
+        
+        // Effets avancés ultra-premium
+        setTimeout(() => {
+            advancedEffects.applyAllAdvancedEffects(card, {
+                scoreValue: 8.5,
+                enableHalos: true,
+                enableReflections: true,
+                enableScanlines: true,
+                enableParticles: true,
+                enableBadge: true,
+                enableHud: true
+            });
+        }, 300);
         }, 100);
     }
 }
