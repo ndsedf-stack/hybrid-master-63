@@ -607,3 +607,6 @@ export function createMuscleHudRadar(containerId, period = 'month') {
         }
     });
 }
+        }
+    });
+}
