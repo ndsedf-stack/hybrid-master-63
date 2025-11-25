@@ -1,0 +1,113 @@
+/* BIO-METRICS SPECIFIC - Labels autour du radar */
+
+#labelsContainer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.bio-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.9);
+    color: #d1d5db;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    pointer-events: all;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 50;
+}
+
+.bio-label.secondary {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #6b7280;
+}
+
+.bio-label.selected {
+    background: rgba(234, 179, 8, 0.15);
+    border-color: #eab308;
+    color: #facc15;
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+}
+
+.bio-label:hover {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: #22d3ee;
+    color: #fff;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.bio-label svg {
+    width: 10px;
+    height: 10px;
+    color: #22d3ee;
+}
+
+.bio-label.selected svg {
+    color: #facc15;
+}
+
+/* Tooltip au survol */
+.bio-tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.bio-label:hover .bio-tooltip,
+.bio-tooltip.visible {
+    opacity: 1;
+}
+
+.tooltip-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.tooltip-label {
+    font-size: 8px;
+    color: #6b7280;
+    letter-spacing: 0.05em;
+}
+
+.tooltip-value {
+    font-size: 14px;
+    font-weight: 900;
+    color: #22d3ee;
+}
+
+.tooltip-unit {
+    font-size: 8px;
+    color: #9ca3af;
+}
+
+.tooltip-divider {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}

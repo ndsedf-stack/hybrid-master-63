@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST - VOLUME LOAD avec Données</title>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #050810;
+            font-family: 'Rajdhani', -apple-system, sans-serif;
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .controls {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            padding: 20px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 2px solid rgba(0, 229, 255, 0.3);
+            border-radius: 16px;
+        }
+        
+        .controls h2 {
+            color: #00e5ff;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00e5ff 0%, #9b59ff 100%);
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+        
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        
+        /* Copie du CSS VOLUME LOAD */
+        .volume-load-section {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            position: relative;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(0, 229, 255, 0.3);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 
+                0 0 30px rgba(0, 229, 255, 0.2),
+                inset 0 0 50px rgba(0, 229, 255, 0.05);
+        }
+        
+        .volume-load-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .volume-load-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #00e5ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+        }
+        
+        .gauge-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            padding: 20px;
+        }
+        
+        #volumeGaugeCanvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 229, 255, 0.05);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            background: rgba(0, 229, 255, 0.1);
+            border-color: rgba(0, 229, 255, 0.4);
+            transform: scale(1.02);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #00e5ff;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+        
+        .halo {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .halo-1 {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,229,255,0.15) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .halo-2 {
+            width: 90%;
+            height: 90%;
+            background: radial-gradient(circle, rgba(0,229,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite 0.5s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.8; }
+        }
+        
+        .debug-info {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .debug-info h3 {
+            color: #00e5ff;
+            margin-bottom: 10px;
+        }
+        
+        .debug-info pre {
+            color: #94a3b8;
+            white-space: pre-wrap;
+        }
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="controls">
+        <h2>🧪 CONTRÔLES DE TEST</h2>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="injectAndReload()">📥 Charger données test (20.4k kg)</button>
+            <button class="btn btn-secondary" onclick="reloadPage()">🔄 Recharger la page</button>
+            <button class="btn btn-danger" onclick="clearAndReload()">🗑️ Effacer données</button>
+        </div>
+    </div>
+    
+    <div class="volume-load-section">
+        <div class="volume-load-header">
+            <h2 class="volume-load-title">📊 WEEKLY VOLUME LOAD</h2>
+        </div>
+        
+        <div class="gauge-container">
+            <div class="halo halo-1"></div>
+            <div class="halo halo-2"></div>
+            <canvas id="volumeGaugeCanvas"></canvas>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">SÉRIES</div>
+                <div class="stat-value" id="setsValue">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">TUT</div>
+                <div class="stat-value" id="tutValue">0:00</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">VOLUME</div>
+                <div class="stat-value" id="volumeValue">0k kg</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">STATUT</div>
+                <div class="stat-value" id="statusValue">⚠️ AJUSTER</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="debug-info">
+        <h3>🔍 DEBUG INFO</h3>
+        <pre id="debugOutput">Chargement...</pre>
+    </div>
+    
+    <script src="test-data-utils.js"></script>
+    <script type="module" src="volume-load-gauge.js"></script>
+    
+    <script>
+        function injectAndReload() {
+            if (window.testDataUtils) {
+                window.testDataUtils.inject();
+                alert('✅ Données injectées ! Rechargement...');
+                setTimeout(() => location.reload(), 500);
+            }
+        }
+        
+        function clearAndReload() {
+            if (confirm('⚠️ Effacer toutes les données ?')) {
+                if (window.testDataUtils) {
+                    window.testDataUtils.clear();
+                }
+                location.reload();
+            }
+        }
+        
+        function reloadPage() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>

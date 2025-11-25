@@ -1,0 +1,306 @@
+/* ==========================================
+   CHART BASE COMMON - Effets Cockpit Universels
+   Tous les graphiques standalone utilisent ce CSS
+   ========================================== */
+
+/* CARTE PRINCIPALE avec effets cockpit */
+.chart-card-common {
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid #00e5ff;
+    border-radius: 20px;
+    padding: 24px;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    
+    backdrop-filter: blur(20px) saturate(180%);
+    
+    box-shadow: 
+        0 0 10px rgba(0, 229, 255, 0.4),
+        0 0 20px rgba(0, 229, 255, 0.3),
+        0 0 40px rgba(0, 229, 255, 0.2),
+        0 0 60px rgba(0, 229, 255, 0.1),
+        inset 0 0 40px rgba(0, 229, 255, 0.05),
+        0 15px 40px rgba(0, 0, 0, 0.6);
+    
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* SCANLINES VERTICALES */
+.chart-card-common::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 229, 255, 0.04) 2px,
+        rgba(0, 229, 255, 0.04) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: scanlines-vertical 10s linear infinite;
+}
+
+@keyframes scanlines-vertical {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(4px); }
+}
+
+/* REFLETS DIAGONAUX MOBILES (vitre cockpit) */
+.chart-card-common::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(
+        120deg,
+        transparent 40%,
+        rgba(0, 229, 255, 0.02) 48%,
+        rgba(138, 43, 226, 0.02) 50%,
+        rgba(255, 0, 255, 0.02) 52%,
+        transparent 60%
+    );
+    pointer-events: none;
+    z-index: 2;
+    filter: blur(30px);
+    animation: diagonal-sweep 12s ease-in-out infinite;
+}
+
+@keyframes diagonal-sweep {
+    0% { transform: translate(-50%, -50%) rotate(120deg); }
+    50% { transform: translate(0%, 0%) rotate(120deg); }
+    100% { transform: translate(50%, 50%) rotate(120deg); }
+}
+
+/* HOVER: HALO RESPIRANT */
+.chart-card-common:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(0, 229, 255, 1);
+    
+    box-shadow: 
+        0 0 20px rgba(0, 229, 255, 0.6),
+        0 0 40px rgba(0, 229, 255, 0.4),
+        0 0 60px rgba(0, 229, 255, 0.3),
+        0 0 100px rgba(0, 229, 255, 0.2),
+        0 0 80px rgba(138, 43, 226, 0.2),
+        inset 0 0 50px rgba(0, 229, 255, 0.1),
+        0 25px 70px rgba(0, 0, 0, 0.7);
+}
+
+/* HEADER */
+.chart-header-common {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 10;
+}
+
+.chart-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.chart-icon-common {
+    font-size: 24px;
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.8));
+    animation: breathing-pulse 3s ease-in-out infinite;
+}
+
+@keyframes breathing-pulse {
+    0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.8));
+    }
+    50% { 
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 15px rgba(0, 229, 255, 1)) drop-shadow(0 0 25px rgba(0, 229, 255, 0.5));
+    }
+}
+
+.chart-title-common {
+    font-size: 18px;
+    font-weight: 900;
+    color: #00e5ff;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-family: 'Orbitron', monospace;
+    text-shadow: 
+        0 0 10px rgba(0, 229, 255, 0.8),
+        0 0 20px rgba(0, 229, 255, 0.6);
+}
+
+.chart-subtitle-common {
+    font-size: 10px;
+    color: #9ca3af;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* BADGE (top right) */
+.chart-badge-common {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 10px;
+    color: #9ca3af;
+    font-family: 'Courier New', monospace;
+    z-index: 10;
+}
+
+/* CHART ZONE */
+.chart-zone-common {
+    position: relative;
+    min-height: 350px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    overflow: visible;
+    z-index: 5;
+}
+
+/* GLOW PULSANT CENTRAL */
+.chart-zone-common::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    height: 70%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
+    animation: breathing-glow 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes breathing-glow {
+    0%, 100% { 
+        opacity: 0.4;
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+/* BACKGROUND EFFECTS CONTAINER */
+.chart-bg-effects {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.chart-radial-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(6, 182, 212, 0.1) 0%, transparent 60%);
+    opacity: 0.6;
+}
+
+.chart-grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 12px 12px; /* 🔥 CHANGÉ DE 24px À 12px */
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 70%, transparent 100%);
+}
+
+.chart-scanline-anim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.05), transparent);
+    height: 10px;
+    width: 100%;
+    animation: scan 4s linear infinite;
+}
+
+@keyframes scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(400px); }
+}
+
+/* FOOTER */
+.chart-footer-common {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(0, 229, 255, 0.03);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: 8px;
+    position: relative;
+    z-index: 10;
+}
+
+.chart-footer-label {
+    font-size: 10px;
+    color: rgba(0, 229, 255, 0.6);
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 1.5px;
+}
+
+.chart-footer-value {
+    font-size: 12px;
+    font-weight: bold;
+    color: #00e5ff;
+    font-family: 'Orbitron', monospace;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .chart-card-common {
+        max-width: 100%;
+        padding: 20px;
+        margin: 24px auto;
+    }
+    
+    .chart-title-common {
+        font-size: 16px;
+    }
+}
+
+/* ===== FIX HAUTEUR ÉGALE POUR LES 2 CARTES ===== */
+.chart-card-common {
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-zone-common {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .chart-card-common {
+        min-height: 500px;
+    }
+}
