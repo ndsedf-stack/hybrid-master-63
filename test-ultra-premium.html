@@ -236,7 +236,7 @@
 
     <script type="module">
         import { createStatsCard } from './js/stats/chart-wrapper-ultra.js';
-        import readyCharts from './js/stats/ready-charts-collection.js';
+        import { createMuscleRadar, createProgressRings, createIntensityZones, createVolumeLoad, createGlobalScore, createMuscleHudRadar } from './js/stats/ready-charts-collection.js';
         
         // ============================================
         //  CONSOLE LOGGER
@@ -322,19 +322,22 @@
             
             setTimeout(() => {
                 try {
-                    readyCharts.createMuscleRadar('chart-radar', 'month');
+                    createMuscleRadar('chart-radar', 'month');
                     log('✅ Radar musculaire créé', 'info');
                     
-                    readyCharts.createProgressRings('chart-rings', 'month');
+                    createProgressRings('chart-rings', 'month');
                     log('✅ Anneaux de progression créés', 'info');
                     
-                    readyCharts.createIntensityZones('chart-zones', 'month');
+                    createIntensityZones('chart-zones', 'month');
                     log('✅ Zones d\'intensité créées', 'info');
                     
-                    readyCharts.createVolumeLoadChart('chart-volume', 'month');
+                    createVolumeLoad('chart-volume', 'month');
                     log('✅ Chart volume créé', 'info');
                     
-                    readyCharts.createGlobalScoreGauge('chart-score', 'month');
+                    createGlobalScore('chart-score', 'month');
+
+                    createMuscleHudRadar('muscle-hud-radar', 'month');
+                    log('✅ Muscle HUD Radar créé', 'info');
                     log('✅ Jauge score global créée', 'info');
                     
                     log('🎉 Tous les graphiques sont prêts !', 'info');
