@@ -114,11 +114,17 @@ body {
 
 
 .stat-box {
+    padding: 20px;
+    text-align: center;
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid rgba(0, 212, 255, 0.3);
     border-radius: 12px;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .stat-box:hover {
@@ -168,8 +174,18 @@ body {
     
     
     .stat-box {
-        padding: 15px 10px;
-    }
+    padding: 20px;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
     
     .stat-label {
         font-size: 10px;

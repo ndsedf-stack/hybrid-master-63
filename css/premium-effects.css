@@ -4,14 +4,9 @@
 
 /* Background gradient atmosphérique */
 body {
-    background: linear-gradient(135deg, 
-        #0a0e27 0%, 
-        #0f1535 25%,
-        #1a1f3a 50%,
-        #1e1a3f 75%,
-        #2a1f4a 100%
-    ) !important;
-    background-attachment: fixed;
+    background: #000000 !important;
+    position: relative;
+    overflow-x: hidden;
 }
 
 /* HALO EXTERNE MASSIF */
