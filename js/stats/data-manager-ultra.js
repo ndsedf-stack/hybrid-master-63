@@ -388,3 +388,49 @@ const dataManager = new DataManager();
 window.DataManager = dataManager;
 
 export default dataManager;
+
+    // ============================================
+    //  MIGRATION WORKOUT_HISTORY → COMPLETED_SESSIONS
+    // ============================================
+    
+    migrateWorkoutHistory() {
+        try {
+            const workoutHistory = localStorage.getItem('workout_history');
+            const completedSessions = localStorage.getItem('completedSessions');
+            
+            // Si déjà migré, skip
+            if (!workoutHistory || completedSessions) {
+                console.log('✅ Données déjà migrées ou pas de workout_history');
+                return;
+            }
+            
+            const oldData = JSON.parse(workoutHistory);
+            
+            // Convertir au nouveau format
+            const newData = oldData
+                .filter(session => session.completed)
+                .map(session => ({
+                    date: session.date,
+                    exercises: session.exercises || []
+                }));
+            
+            // Sauvegarder dans le nouveau format
+            localStorage.setItem('completedSessions', JSON.stringify(newData));
+            
+            console.log(`✅ Migration réussie: ${newData.length} sessions migrées`);
+            
+            // Optionnel: garder l'ancien en backup
+            localStorage.setItem('workout_history_backup', workoutHistory);
+            
+        } catch (error) {
+            console.error('❌ Erreur migration:', error);
+        }
+    }
+    
+    // Auto-migration au démarrage
+    init() {
+        this.migrateWorkoutHistory();
+    }
+
+// Auto-init
+dataManager.init();
