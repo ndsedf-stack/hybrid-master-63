@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 STATS ULTRA PREMIUM - SYSTÈME COMPLET</title>
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- STYLES -->
+    <link rel="stylesheet" href="./css/stats-charts-ultra.css?v=1764030393?v=3">
+    <link rel="stylesheet" href="./css/premium-effects.css?v=1764030393">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0a0f23 0%, #1a1f3a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.5);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .demo-header h1 {
+            font-size: 32px;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .demo-header p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .demo-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(138, 43, 226, 0.2));
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 8px;
+            color: #00d4ff;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(138, 43, 226, 0.3));
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .console-log {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            max-height: 200px;
+            background: rgba(10, 15, 35, 0.95);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 12px;
+            padding: 16px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+        }
+        
+        .console-log .log-entry {
+            margin: 4px 0;
+            color: #00ff88;
+        }
+        
+        .console-log .log-entry.info {
+            color: #00d4ff;
+        }
+        
+        .console-log .log-entry.warning {
+            color: #ffaa00;
+        }
+        
+        .console-log .log-entry.error {
+            color: #ff3366;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .console-log {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+        }
+    
+
+
+    
+
+@media (max-width: 768px) {
+    .demo-header {
+        padding: 15px 10px !important;
+    }
+    
+    .demo-header h1 {
+        font-size: 22px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .demo-header p {
+        font-size: 10px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .demo-controls {
+        display: flex !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+        width: 100% !important;
+        padding: 0 5px !important;
+    }
+    
+    .demo-controls button {
+        font-size: 9px !important;
+        padding: 8px 6px !important;
+        white-space: nowrap !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+}
+
+    
+/* RESPONSIVE HEADER - ULTRA COMPACT */
+@media (max-width: 768px) {
+    .demo-header h1 {
+        font-size: 20px !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .demo-header p {
+        font-size: 9px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .demo-controls {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .demo-controls button {
+        font-size: 11px !important;
+        padding: 10px 8px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="demo-header">
+        <h1>🚀 SYSTÈME ULTRA PREMIUM</h1>
+        <p>13 graphiques cockpit · Effets avancés · Interactions premium · Data connectées</p>
+        
+        <div class="demo-controls">
+            <button class="demo-btn" onclick="testAllFeatures()">🧪 TESTER TOUT</button>
+            <button class="demo-btn" onclick="toggleNightMode()">🌙 MODE NUIT</button>
+            <button class="demo-btn" onclick="refreshData()">🔄 REFRESH DATA</button>
+            <button class="demo-btn" onclick="exportAllStats()">📥 EXPORT</button>
+        </div>
+    </div>
+    
+    <!-- CHARTS GRID -->
+    <div class="charts-grid">
+        <div class="stats-grid">
+            <div id="chart-radar"></div>
+            <div id="chart-rings"></div>
+            <div id="chart-zones"></div>
+            <div id="chart-volume"></div>
+            <div id="chart-score"></div>
+        </div>
+    </div>
+    
+    <!-- CONSOLE LOG -->
+    <div class="console-log" id="console">
+        <div class="log-entry info">✅ Système initialisé</div>
+    </div>
+    
+    <!-- SCRIPTS ULTRA PREMIUM -->
+    <script type="module" src="./js/stats/chart-effects-advanced.js"></script>
+    <script type="module" src="./js/stats/chart-interactions.js"></script>
+    <script type="module" src="./js/stats/data-manager-ultra.js"></script>
+    
+    <script type="module">
+        import { createStatsCard } from './js/stats/chart-wrapper-ultra.js';
+        import readyCharts from './js/stats/ready-charts-collection.js';
+        
+        // ============================================
+        //  CONSOLE LOGGER
+        // ============================================
+        
+        function log(message, type = 'info') {
+            const console = document.getElementById('console');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString('fr-FR');
+            entry.textContent = `[${timestamp}] ${message}`;
+            console.appendChild(entry);
+            console.scrollTop = console.scrollHeight;
+            
+            // Limit à 20 entrées
+            if (console.children.length > 20) {
+                console.removeChild(console.firstChild);
+            }
+        }
+        
+        // ============================================
+        //  DONNÉES DE TEST
+        // ============================================
+        
+        function generateTestData() {
+            const sessions = [];
+            const muscles = ['Pecs', 'Dos', 'Épaules', 'Bras', 'Jambes', 'Core'];
+            const exercises = {
+                'Pecs': ['Développé couché', 'Pompes', 'Écarté'],
+                'Dos': ['Tractions', 'Rowing', 'Tirage'],
+                'Épaules': ['Développé militaire', 'Élévations'],
+                'Bras': ['Curl', 'Extensions triceps'],
+                'Jambes': ['Squat', 'Leg press', 'Fentes'],
+                'Core': ['Crunch', 'Planche', 'Russian twist']
+            };
+            
+            // 30 sessions sur 2 mois
+            for (let i = 0; i < 30; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - (60 - i * 2));
+                
+                const muscle = muscles[i % muscles.length];
+                const exList = exercises[muscle];
+                
+                const sessionExercises = exList.map(name => ({
+                    name,
+                    muscle,
+                    sets: Array.from({ length: 3 + Math.floor(Math.random() * 2) }, () => ({
+                        reps: 8 + Math.floor(Math.random() * 8),
+                        weight: 20 + Math.floor(Math.random() * 60)
+                    }))
+                }));
+                
+                sessions.push({
+                    id: `session_${i}`,
+                    date: date.toISOString(),
+                    exercises: sessionExercises
+                });
+            }
+            
+            localStorage.setItem('completedSessions', JSON.stringify(sessions));
+            log(`✅ ${sessions.length} sessions générées`, 'info');
+        }
+        
+        // ============================================
+        //  INITIALISATION
+        // ============================================
+        
+        function init() {
+            log('🚀 Initialisation du système...', 'info');
+            
+            // Générer data si vide
+            const existing = localStorage.getItem('completedSessions');
+            if (!existing || JSON.parse(existing).length === 0) {
+                log('📊 Génération de données de test...', 'info');
+                generateTestData();
+            } else {
+                log(`✅ ${JSON.parse(existing).length} sessions chargées`, 'info');
+            }
+            
+            // Initialiser tous les graphiques
+            log('📈 Création des graphiques...', 'info');
+            
+            setTimeout(() => {
+                try {
+                    readyCharts.createMuscleRadar('chart-radar', 'month');
+                    log('✅ Radar musculaire créé', 'info');
+                    
+                    readyCharts.createProgressRings('chart-rings', 'month');
+                    log('✅ Anneaux de progression créés', 'info');
+                    
+                    readyCharts.createIntensityZones('chart-zones', 'month');
+                    log('✅ Zones d\'intensité créées', 'info');
+                    
+                    readyCharts.createVolumeLoadChart('chart-volume', 'month');
+                    log('✅ Chart volume créé', 'info');
+                    
+                    readyCharts.createGlobalScoreGauge('chart-score', 'month');
+                    log('✅ Jauge score global créée', 'info');
+                    
+                    log('🎉 Tous les graphiques sont prêts !', 'info');
+                    
+                } catch (error) {
+                    log(`❌ Erreur: ${error.message}`, 'error');
+                    console.error(error);
+                }
+            }, 500);
+            
+            // Init mode nuit auto
+            if (window.ChartInteractions) {
+                new window.ChartInteractions.AutoNightMode();
+                log('🌙 Mode nuit automatique activé', 'info');
+            }
+        }
+        
+        // ============================================
+        //  FONCTIONS GLOBALES
+        // ============================================
+        
+        window.testAllFeatures = function() {
+            log('🧪 Test de toutes les fonctionnalités...', 'info');
+            
+            // Test data manager
+            const stats = window.DataManager.exportData('month');
+            log(`📊 Stats exportées: ${stats.sessions} sessions`, 'info');
+            log(`🏆 Score: ${stats.globalScore.score}`, 'info');
+            log(`💪 Volume: ${Math.round(stats.globalScore.volume / 1000)}K`, 'info');
+            
+            // Test badges
+            const badges = window.DataManager.getBadges('month');
+            log(`🎖️ ${badges.length} badges actifs`, 'info');
+            
+            log('✅ Tests terminés !', 'info');
+        };
+        
+        window.toggleNightMode = function() {
+            document.body.classList.toggle('night-mode');
+            const isNight = document.body.classList.contains('night-mode');
+            log(`🌙 Mode nuit: ${isNight ? 'ON' : 'OFF'}`, 'info');
+        };
+        
+        window.refreshData = function() {
+            log('🔄 Refresh des données...', 'info');
+            window.DataManager.clearCache();
+            location.reload();
+        };
+        
+        window.exportAllStats = function() {
+            const stats = window.DataManager.exportData('month');
+            const json = JSON.stringify(stats, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `stats_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            log('📥 Stats exportées !', 'info');
+        };
+        
+        // ============================================
+        //  START
+        // ============================================
+        
+        init();
+        
+        // Log infos système
+        setTimeout(() => {
+            const mem = performance.memory;
+            if (mem) {
+                log(`💾 Mémoire: ${Math.round(mem.usedJSHeapSize / 1048576)}MB`, 'info');
+            }
+        }, 2000);
+        
+// Ajouter scanlines verticales à chaque carte
+document.querySelectorAll('.stats-card').forEach(card => {
+    const scanlines = document.createElement('div');
+    scanlines.className = 'scanlines-vertical';
+    card.appendChild(scanlines);
+});
+
+</script>
+</body>
+</html>
