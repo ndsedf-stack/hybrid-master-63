@@ -431,6 +431,18 @@ export default dataManager;
     init() {
         this.migrateWorkoutHistory();
     }
+}
 
-// Auto-init
+// ============================================
+//  INSTANCE GLOBALE
+// ============================================
+
+const dataManager = new DataManager();
+
+// Auto-migration au démarrage
 dataManager.init();
+
+window.DataManager = dataManager;
+
+export default dataManager;
+
