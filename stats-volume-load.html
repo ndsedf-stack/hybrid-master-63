@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Load Tracker - Hybrid Master 63</title>
+    
+    <!-- Police Rajdhani -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tes styles existants -->
+    <link rel="stylesheet" href="styles/01-reset.css">
+    <link rel="stylesheet" href="styles/02-variables.css">
+    
+    <!-- Style pour cette page -->
+    <link rel="stylesheet" href="styles/volume-load.css">
+</head>
+<body>
+    <div class="volume-load-page">
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="page-title">VOLUME LOAD</h1>
+            <div class="page-subtitle">
+                <div class="subtitle-line"></div>
+                <p>Hypertrophy Tracker</p>
+                <div class="subtitle-line"></div>
+            </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="info-box">
+            <p>
+                <span class="highlight-cyan">Volume Load</span> = Sets × Reps × Poids • 
+                Zone optimale hypertrophie: <span class="highlight-green">15-22k kg/semaine</span> • 
+                TUT optimal: <span class="highlight-cyan">20-70s par set</span>
+            </p>
+        </div>
+
+        <!-- Jauge Container -->
+        <div class="gauge-container">
+            <div class="gauge-glow"></div>
+            <canvas id="volumeGaugeCanvas"></canvas>
+        </div>
+
+        <!-- Stats Cards -->
+        <div id="statsContainer" class="stats-grid">
+            <!-- Les stats seront injectées par JS -->
+        </div>
+
+        <!-- Légende -->
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-dot orange"></span>
+                <span>Sous-optimal (&lt;15k)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot green"></span>
+                <span class="green-text">Zone Hypertrophie (15-22k)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot red"></span>
+                <span class="red-text">Surcharge (&gt;22k)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import du module unique (calculator intégré) -->
+    <script type="module">
+        import { VolumeLoadGauge } from './scripts/modules/volume-load-gauge.js';
+
+        // Initialisation quand le DOM est prêt
+        document.addEventListener('DOMContentLoaded', () => {
+            const gauge = new VolumeLoadGauge('volumeGaugeCanvas', 'statsContainer');
+            console.log('✅ Volume Load Gauge initialisée avec données réelles');
+        });
+    </script>
+</body>
+</html>
