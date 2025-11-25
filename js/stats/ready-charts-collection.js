@@ -602,5 +602,8 @@ export function createMuscleHudRadar(containerId, period = 'month') {
                 // Stats (small)
                 ctx.font = 'bold 8px monospace';
                 ctx.fillStyle = 'rgba(255,255,255,0.6)';
-                ctx.fillText(``${m.volume}kg • ${m.sets}s`), lx, ly + 14);
+                ctx.fillText(`${m.volume}kg • ${m.sets}s`), lx, ly + 14);
             });
+        }
+    });
+}
