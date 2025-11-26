@@ -1,0 +1,47 @@
+.bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px !important;
+    padding: 20px !important;
+    background: rgba(10, 15, 25, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(0, 229, 255, 0.2) !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    height: auto !important;
+}
+
+.nav-item {
+    padding: 12px 8px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(155, 89, 255, 0.15)) !important;
+    border: 1px solid #00e5ff !important;
+}
+
+.nav-icon {
+    font-size: 24px !important;
+}
+
+.nav-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+}
+
+.nav-item.active .nav-label {
+    color: #00e5ff !important;
+}

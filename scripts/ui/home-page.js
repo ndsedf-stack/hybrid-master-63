@@ -2,7 +2,8 @@
  * HOME-PAGE.JS - Gestion de la page d'accueil
  * Intégration avec programData existant
  */
-import programData from '../program-data.js';
+
+import { programData } from '../program-data.js';
 
 class HomePage {
     constructor() {
@@ -12,123 +13,151 @@ class HomePage {
     }
 
     init() {
-        this.loadWorkoutsForWeek(this.currentWeek);
-        this.attachEventListeners();
+        this.renderWorkouts();
+        this.setupEventListeners();
     }
 
-    loadWorkoutsForWeek(weekNumber) {
-        const weekData = programData.getWeek(weekNumber);
-        
-        if (!weekData) {
-            console.error('Week data not found for week', weekNumber);
-            return;
+    renderWorkouts() {
+        if (!this.workoutsContainer) return;
+
+        const weekData = programData.weeks[this.currentWeek];
+        if (!weekData) return;
+
+        let html = '';
+
+        weekData.days.forEach((day, index) => {
+            const dayNumber = index + 1;
+            const status = this.getWorkoutStatus(this.currentWeek, dayNumber);
+            const stats = this.calculateStats(day);
+
+            html += `
+                <div class="workout-card ${status}" data-week="${this.currentWeek}" data-day="${dayNumber}">
+                    <div class="workout-header">
+                        <div class="workout-info">
+                            <span class="workout-badge ${status}">${this.getDayName(dayNumber)} • Jour ${dayNumber}</span>
+                            <h2 class="workout-title">${day.name || `Jour ${dayNumber}`}</h2>
+                        </div>
+                        ${status === 'completed' ? '<div class="workout-check completed">✓</div>' : ''}
+                        ${status === 'active' ? '<div class="workout-check active">✓</div>' : ''}
+                    </div>
+                    
+                    <div class="workout-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">⚡</span>
+                            <span>${stats.duration} min</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">💪</span>
+                            <span>${stats.sets} séries</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🏋️</span>
+                            <span>${stats.exercises} exercices</span>
+                        </div>
+                    </div>
+                    
+                    <div class="workout-actions">
+                        ${status === 'completed' 
+                            ? '<button class="workout-btn btn-completed">✓ Complété</button>'
+                            : `<button class="workout-btn btn-start" onclick="startWorkout(${this.currentWeek}, ${dayNumber})">Commencer</button>`
+                        }
+                    </div>
+                </div>
+            `;
+        });
+
+        this.workoutsContainer.innerHTML = html;
+    }
+
+    calculateStats(day) {
+        let duration = 0;
+        let sets = 0;
+        const exercises = day.exercises ? day.exercises.length : 0;
+
+        if (day.exercises) {
+            day.exercises.forEach(exercise => {
+                sets += exercise.sets || 0;
+                // Estimation : 3min par série + 1min repos
+                duration += (exercise.sets || 0) * 4;
+            });
         }
 
-        console.log('Week data loaded:', weekData);
-
-        this.workoutsContainer.innerHTML = '';
-        
-        // ✅ Utiliser les vraies clés de votre structure
-        const dayOrder = ['dimanche', 'mardi', 'vendredi'];
-        const dayLabels = {
-            'dimanche': { name: 'Dimanche', emoji: '🔥', number: 1 },
-            'mardi': { name: 'Mardi', emoji: '💪', number: 2 },
-            'vendredi': { name: 'Vendredi', emoji: '⚡', number: 3 }
+        return {
+            duration: duration || 60,
+            sets: sets || 0,
+            exercises: exercises
         };
-        
-        dayOrder.forEach((dayKey) => {
-            const workout = weekData[dayKey]; // ✅ Accès direct, pas weekData.workouts
-            if (workout) {
-                const card = this.createWorkoutCard({
-                    dayKey: dayKey,
-                    dayLabel: dayLabels[dayKey],
-                    workout: workout,
-                    weekNumber: weekNumber
-                });
-                this.workoutsContainer.appendChild(card);
-            }
-        });
     }
 
-    createWorkoutCard(data) {
-        const card = document.createElement('div');
-        card.className = 'workout-card';
+    getWorkoutStatus(week, day) {
+        const completed = localStorage.getItem(`workout-${week}-${day}-completed`);
+        const inProgress = localStorage.getItem(`workout-${week}-${day}-inprogress`);
         
-        // ✅ Les stats sont déjà dans workout !
-        const duration = data.workout.duration || 60;
-        const sets = data.workout.totalSets || 0;
-        const exercises = data.workout.exercises?.length || 0;
-        
-        card.innerHTML = `
-            <div class="card-header">
-                <div class="day-info">
-                    <span class="day-emoji">${data.dayLabel.emoji}</span>
-                    <span class="day-name">${data.dayLabel.name}</span>
-                    <span class="day-number">• Jour ${data.dayLabel.number}</span>
-                </div>
-            </div>
-            
-            <h2 class="workout-title">${data.workout.name}</h2>
-            
-            <div class="workout-stats">
-                <div class="stat-item">
-                    <span class="stat-icon">⚡</span>
-                    <div class="stat-content">
-                        <span class="stat-value">${duration}</span>
-                        <span class="stat-label">min</span>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-icon">💪</span>
-                    <div class="stat-content">
-                        <span class="stat-value">${sets}</span>
-                        <span class="stat-label">séries</span>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-icon">🏋️</span>
-                    <div class="stat-content">
-                        <span class="stat-value">${exercises}</span>
-                        <span class="stat-label">exercices</span>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="btn-start" data-week="${data.weekNumber}" data-day="${data.dayKey}">
-                Commencer →
-            </button>
-        `;
-        
-        return card;
+        if (completed) return 'completed';
+        if (inProgress) return 'active';
+        return 'planned';
     }
 
-    attachEventListeners() {
-        this.workoutsContainer.addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn-start');
-            if (btn) {
-                const week = btn.dataset.week;
-                const day = btn.dataset.day;
-                console.log(`🚀 Démarrage: Week ${week}, Day ${day}`);
-window.location.href = `workout.html?week=${week}&day=${day}`;            }
-        });
+    getDayName(dayNumber) {
+        const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        return days[dayNumber - 1] || `Jour ${dayNumber}`;
+    }
 
-        document.querySelectorAll('.nav-item').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-                e.currentTarget.classList.add('active');
+    setupEventListeners() {
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
             });
         });
 
-        const fabBtn = document.getElementById('createWorkoutBtn');
-        if (fabBtn) {
-            fabBtn.addEventListener('click', () => {
-                alert('➕ Créer un entraînement personnalisé');
+        // FAB
+        const fab = document.getElementById('createWorkoutBtn');
+        if (fab) {
+            fab.addEventListener('click', () => {
+                alert('Créer un workout personnalisé - Fonctionnalité à venir !');
             });
         }
+
+        // Streak button
+        const streakBtn = document.getElementById('streakBtn');
+        if (streakBtn) {
+            streakBtn.addEventListener('click', () => {
+                const streak = this.calculateStreak();
+                alert(`🔥 Streak actuel : ${streak} jours !`);
+            });
+        }
+    }
+
+    calculateStreak() {
+        let streak = 0;
+        const today = new Date();
+        
+        for (let i = 0; i < 30; i++) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            const dateStr = date.toISOString().split('T')[0];
+            
+            if (localStorage.getItem(`workout-completed-${dateStr}`)) {
+                streak++;
+            } else if (i > 0) {
+                break;
+            }
+        }
+        
+        return streak;
     }
 }
 
+// Fonction globale pour démarrer un workout
+window.startWorkout = function(week, day) {
+    localStorage.setItem(`workout-${week}-${day}-inprogress`, 'true');
+    window.location.href = `workout-3d-ultra.html?week=${week}&day=${day}`;
+};
+
+// Initialisation
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🏠 Initialisation de la page d\'accueil...');
     new HomePage();
 });

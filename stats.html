@@ -3,15 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats - Hybrid Master</title>
-    
-    <!-- React & ReactDOM via CDN -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel Standalone pour compiler JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+    <title>📊 Progress Tracker - Hybrid Master</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -20,487 +13,1063 @@
         }
 
         body {
-            background: #0A0A0A;
-            color: #FFFFFF;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+            position: relative;
             overflow-x: hidden;
-            min-height: 100vh;
         }
 
-        #root {
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            min-height: 100vh;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* Animations */
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes spin-reverse-slow {
-            from { transform: rotate(360deg); }
-            to { transform: rotate(0deg); }
-        }
-
-        .animate-spin-slow {
-            animation: spin-slow 8s linear infinite;
-        }
-
-        .animate-spin-reverse-slow {
-            animation: spin-reverse-slow 8s linear infinite;
-        }
-
-        /* Container */
-        .stats-container {
-            max-width: 1400px;
+        .container {
+            max-width: 480px;
             margin: 0 auto;
-            padding: 32px 24px;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
         }
 
         .header h1 {
-            font-size: 48px;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00D9FF 0%, #9D4EDD 100%);
+            background: linear-gradient(135deg, #00d9ff 0%, #00ff88 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
+            background-clip: text;
+            margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
         }
 
-        .header p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 16px;
+        .header .subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* Grid Layout */
-        .stats-grid {
+        .stats-overview {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 32px;
-            margin-bottom: 32px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
         }
 
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.15);
-        }
-
-        .stat-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .ring-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 0 auto;
-        }
-
-        .ring-center {
+        .stat-card::before {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 10;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            opacity: 0.8;
         }
 
-        .ring-value {
-            font-size: 48px;
+        .stat-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00D9FF 0%, #00FF88 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #00d9ff;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+            margin-bottom: 5px;
         }
 
-        .ring-label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 4px;
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Status Badge */
-        .status-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 16px;
-        }
-
-        .status-consistent {
-            background: rgba(0, 255, 136, 0.15);
-            color: #00FF88;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-        }
-
-        .status-warning {
-            background: rgba(255, 215, 0, 0.15);
-            color: #FFD700;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .status-inactive {
-            background: rgba(255, 51, 102, 0.15);
-            color: #FF3366;
-            border: 1px solid rgba(255, 51, 102, 0.3);
-        }
-
-        /* Back Button */
-        .back-button {
-            position: fixed;
-            top: 24px;
-            left: 24px;
+        .chart-container {
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(12px);
-            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        .back-button:hover {
-            background: rgba(0, 217, 255, 0.15);
-            border-color: rgba(0, 217, 255, 0.3);
-            transform: translateX(-4px);
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00d9ff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-subtitle {
+            font-size: 11px;
+            color: rgba(0, 255, 136, 0.7);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .heatmap-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .heatmap-day {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .heatmap-day.completed {
+            background: rgba(0, 255, 136, 0.3);
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .heatmap-day.partial {
+            background: rgba(255, 170, 0, 0.3);
+            border-color: #ffaa00;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+        }
+
+        .heatmap-day.missed {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .heatmap-day.today {
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+        }
+
+        .weekly-recap {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .week-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .week-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .week-header:active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .week-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00d9ff;
+        }
+
+        .week-completion {
+            font-size: 14px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .week-completion.complete {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .week-completion.partial {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+
+        .week-completion.missed {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        .exercise-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .exercise-table th {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 1px;
+        }
+
+        .exercise-table td {
+            padding: 12px 8px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .exercise-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .exercise-name {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .exercise-expected {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .exercise-actual {
+            color: #00d9ff;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .status-icon {
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .status-icon.success {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+        }
+
+        .status-icon.error {
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
+        }
+
+        .warning-box {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .warning-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .warning-text {
+            font-size: 12px;
+            color: #ffaa00;
+            line-height: 1.5;
+        }
+
+        .warning-title {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 12px;
+            color: #00d9ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 217, 255, 0.2);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(0, 217, 255, 0.4);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 255, 136, 0.2));
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+
+        .backup-info {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .backup-info p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .backup-time {
+            font-size: 12px;
+            color: #00d9ff;
+            font-weight: 600;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 217, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.success {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88;
+        }
+
+        .toast.error {
+            background: rgba(255, 68, 68, 0.2);
+            border: 2px solid #ff4444;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="home.html" class="back-button">← Retour</a>
-    <div id="root"></div>
+    <div class="container">
+        <div class="header">
+            <h1>📊 PROGRESS TRACKER</h1>
+            <div class="subtitle">Weekly Overview</div>
+        </div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-value" id="totalSessions">0</div>
+                <div class="stat-label">Séances</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💪</div>
+                <div class="stat-value" id="totalSets">0</div>
+                <div class="stat-label">Séries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔁</div>
+                <div class="stat-value" id="totalReps">0</div>
+                <div class="stat-label">Répétitions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏋️</div>
+                <div class="stat-value" id="totalVolume">0</div>
+                <div class="stat-label">Volume (T)</div>
+            </div>
+        </div>
 
-        // CircularProgress Component (ton composant React tel quel)
-        const CircularProgress = ({
-            size,
-            radius,
-            strokeWidth,
-            progress,
-            max,
-            colorStart,
-            colorEnd,
-            variant = 'solid',
-            trackColor = "rgba(255,255,255,0.05)",
-            glow = false,
-            rotate = false,
-            counterClockwise = false,
-            cut = 0,
-            rotationOffset = 0,
-        }) => {
-            const normalizedRadius = radius - strokeWidth / 2;
-            const fullCircumference = normalizedRadius * 2 * Math.PI;
-            const visibleCircumference = fullCircumference * ((360 - cut) / 360);
+        <div class="chart-container">
+            <div class="chart-title">Workout Volume</div>
+            <div class="chart-subtitle">7 Last Days</div>
+            <canvas id="volumeChart"></canvas>
+        </div>
+
+        <div class="heatmap-container">
+            <div class="chart-title">Gym Sessions</div>
+            <div class="chart-subtitle">Heatmap Calendar</div>
+            <div class="heatmap-grid" id="heatmapGrid"></div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Muscle Distribution</div>
+            <div class="chart-subtitle">Top 6 Exercises</div>
+            <canvas id="muscleChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Muscle Balance</div>
+            <div class="chart-subtitle">Volume by Group</div>
+            <canvas id="radarChart"></canvas>
+        </div>
+
+        <div class="weekly-recap">
+            <div class="chart-title">Récapitulatif par Semaine</div>
+            <div class="chart-subtitle">Attendu vs Obtenu</div>
+            <div id="weeklyRecapContent"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="home-final.html" class="btn">🏠 Accueil</a>
+            <a href="workout-timer-neurofit.html?week=1&day=dimanche" class="btn">🎯 Timer</a>
+            <button class="btn btn-primary" onclick="exportData()">📥 Exporter</button>
+            <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">📤 Importer</button>
+        </div>
+
+        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+
+        <div class="backup-info">
+            <p>Dernière sauvegarde</p>
+            <div class="backup-time" id="lastBackup">Jamais</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ProgramData } from './scripts/program-data.js';
+        
+        const programData = new ProgramData();
+        
+        // Toast notification
+        function showNotification(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
             
-            const [offset, setOffset] = useState(visibleCircumference);
-            const id = React.useId();
-            const gradientId = `grad-${id}`;
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        function loadWorkoutHistory() {
+            const history = localStorage.getItem('workoutHistory');
+            return history ? JSON.parse(history) : [];
+        }
 
-            const percentage = Math.min(100, Math.max(0, (progress / max) * 100));
-
-            useEffect(() => {
-                const strokeLength = (percentage / 100) * visibleCircumference;
-                const progressOffset = visibleCircumference - strokeLength;
-                setOffset(progressOffset);
-            }, [percentage, visibleCircumference]);
-
-            const dashCount = variant === 'dots' ? 40 : 60;
-            const dashLength = visibleCircumference / dashCount;
-            const dashGap = variant === 'dots' ? dashLength * 2 : 3; 
+        function calculateStats() {
+            const history = loadWorkoutHistory();
             
-            const cutLength = fullCircumference - visibleCircumference;
-            
-            const trackDashArray = variant === 'dashed' || variant === 'dots'
-                ? `${dashLength - dashGap} ${dashGap}` 
-                : `${visibleCircumference} ${cutLength}`;
+            const stats = {
+                totalSessions: history.length,
+                totalSets: 0,
+                totalReps: 0,
+                totalVolume: 0,
+                muscleGroups: {},
+                dailyVolume: {}
+            };
 
-            const progressDashArray = variant === 'dashed' || variant === 'dots'
-                ? `${dashLength - dashGap} ${dashGap}`
-                : `${visibleCircumference} ${cutLength}`;
+            history.forEach(session => {
+                session.exercises?.forEach(ex => {
+                    ex.sets?.forEach(set => {
+                        stats.totalSets++;
+                        stats.totalReps += set.reps || 0;
+                        const volume = (set.weight || 0) * (set.reps || 0) / 1000;
+                        stats.totalVolume += volume;
 
-            return (
-                <div 
-                    className={`${rotate ? (counterClockwise ? 'animate-spin-reverse-slow' : 'animate-spin-slow') : ''}`}
-                    style={{ 
-                        transform: rotate ? undefined : `rotate(${rotationOffset}deg)`,
-                        position: 'absolute',
-                        inset: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        pointerEvents: 'none'
-                    }}
-                >
-                    <svg
-                        width={size}
-                        height={size}
-                        style={{ width: size, height: size, transform: `rotate(-90deg)`, overflow: 'visible' }}
-                    >
-                        <defs>
-                            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor={colorStart} />
-                                <stop offset="100%" stopColor={colorEnd} />
-                            </linearGradient>
-                            
-                            <filter id={`glow-${id}`} x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
+                        const muscle = ex.muscle || 'Autre';
+                        stats.muscleGroups[muscle] = (stats.muscleGroups[muscle] || 0) + volume;
 
-                        {/* Track Background */}
-                        <circle
-                            cx={size / 2}
-                            cy={size / 2}
-                            r={normalizedRadius}
-                            stroke={trackColor}
-                            strokeWidth={strokeWidth}
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeDasharray={trackDashArray} 
-                            style={{ opacity: 1, transition: 'all 1s' }}
-                        />
-
-                        {/* Progress Fill */}
-                        <circle
-                            cx={size / 2}
-                            cy={size / 2}
-                            r={normalizedRadius}
-                            stroke={`url(#${gradientId})`}
-                            strokeWidth={strokeWidth}
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeDasharray={progressDashArray}
-                            strokeDashoffset={offset}
-                            style={{ 
-                                transition: 'stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
-                                filter: glow ? `url(#glow-${id})` : undefined
-                            }}
-                        />
-                        
-                        {/* Glossy Tip */}
-                        {variant === 'solid' && cut === 0 && (
-                            <circle
-                                cx={size / 2}
-                                cy={size / 2}
-                                r={normalizedRadius}
-                                stroke="white"
-                                strokeWidth={1}
-                                fill="none"
-                                strokeDasharray={fullCircumference}
-                                strokeDashoffset={offset}
-                                style={{ 
-                                    opacity: 0.5, 
-                                    mixBlendMode: 'overlay',
-                                    filter: 'blur(0.5px)',
-                                    transition: 'stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)' 
-                                }}
-                            />
-                        )}
-                    </svg>
-                </div>
-            );
-        };
-
-        // Main Stats Component
-        const StatsApp = () => {
-            const [stats, setStats] = useState({
-                score: 85,
-                sessions: { current: 28, max: 30 },
-                sets: { current: 142, max: 150 },
-                volume: { current: 45600, max: 50000 }, // kg
-                consistency: { current: 6, max: 7 }, // jours
-                status: 'consistent'
+                        const date = session.date.split('T')[0];
+                        stats.dailyVolume[date] = (stats.dailyVolume[date] || 0) + volume;
+                    });
+                });
             });
 
-            return (
-                <div className="stats-container">
-                    <div className="header">
-                        <h1>📊 Statistiques</h1>
-                        <p>Semaine 7 • Hybrid Master</p>
+            return stats;
+        }
+
+        function updateOverview() {
+            const stats = calculateStats();
+            
+            document.getElementById('totalSessions').textContent = stats.totalSessions;
+            document.getElementById('totalSets').textContent = stats.totalSets;
+            document.getElementById('totalReps').textContent = stats.totalReps;
+            document.getElementById('totalVolume').textContent = stats.totalVolume.toFixed(1);
+        }
+
+        function renderVolumeChart() {
+            const stats = calculateStats();
+            const today = new Date();
+            const last7Days = [];
+            const volumes = [];
+            const days = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
+
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                last7Days.push(days[date.getDay()]);
+                volumes.push((stats.dailyVolume[dateStr] || 0) * 1000);
+            }
+
+            const ctx = document.getElementById('volumeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: last7Days,
+                    datasets: [{
+                        data: volumes,
+                        backgroundColor: volumes.map((v, i) => 
+                            i % 2 === 0 ? 'rgba(0, 217, 255, 0.6)' : 'rgba(0, 255, 136, 0.6)'
+                        ),
+                        borderWidth: 0,
+                        borderRadius: 8,
+                        barThickness: 35
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(10, 14, 26, 0.95)',
+                            titleColor: '#00d9ff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(0, 217, 255, 0.3)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: (ctx) => `${ctx.parsed.y.toFixed(0)} kg`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { 
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                font: { size: 10 },
+                                callback: (val) => val + ' kg'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { 
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                font: { size: 11, weight: 'bold' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderHeatMap() {
+            const grid = document.getElementById('heatmapGrid');
+            const history = loadWorkoutHistory();
+            const today = new Date();
+            
+            for (let i = 34; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                const daySession = history.find(s => s.date.startsWith(dateStr));
+                const isToday = i === 0;
+                
+                const day = document.createElement('div');
+                day.className = 'heatmap-day';
+                
+                if (daySession) {
+                    const completionRate = daySession.exercises?.length > 0 ? 1 : 0;
+                    day.classList.add(completionRate >= 0.8 ? 'completed' : 'partial');
+                } else {
+                    day.classList.add('missed');
+                }
+                
+                if (isToday) day.classList.add('today');
+                
+                day.textContent = date.getDate();
+                grid.appendChild(day);
+            }
+        }
+
+        function renderMuscleChart() {
+            const stats = calculateStats();
+            const muscles = Object.entries(stats.muscleGroups)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+
+            const ctx = document.getElementById('muscleChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: muscles.map(m => m[0]),
+                    datasets: [{
+                        data: muscles.map(m => m[1]),
+                        backgroundColor: [
+                            'rgba(0, 217, 255, 0.8)',
+                            'rgba(0, 255, 136, 0.8)',
+                            'rgba(255, 170, 0, 0.8)',
+                            'rgba(168, 85, 247, 0.8)',
+                            'rgba(255, 68, 68, 0.8)',
+                            'rgba(255, 255, 255, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                font: { size: 11 },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(10, 14, 26, 0.95)',
+                            titleColor: '#00d9ff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(0, 217, 255, 0.3)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: (ctx) => `${ctx.label}: ${ctx.parsed.toFixed(1)}T`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderRadarChart() {
+            const stats = calculateStats();
+            const muscleGroups = ['Dos', 'Jambes', 'Pecs', 'Épaules', 'Bras'];
+            const data = muscleGroups.map(m => {
+                const value = Object.entries(stats.muscleGroups)
+                    .filter(([key]) => key.toLowerCase().includes(m.toLowerCase()))
+                    .reduce((sum, [, val]) => sum + val, 0);
+                return value;
+            });
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: muscleGroups,
+                    datasets: [{
+                        label: 'Volume (T)',
+                        data: data,
+                        backgroundColor: 'rgba(0, 217, 255, 0.2)',
+                        borderColor: 'rgba(0, 217, 255, 0.8)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#00d9ff',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: {
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                font: { size: 12, weight: 'bold' }
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(10, 14, 26, 0.95)',
+                            titleColor: '#00d9ff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(0, 217, 255, 0.3)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: (ctx) => `${ctx.parsed.r.toFixed(1)}T`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderWeeklyRecap() {
+            const history = loadWorkoutHistory();
+            const container = document.getElementById('weeklyRecapContent');
+            
+            const weekData = {};
+            
+            for (let weekNum = 1; weekNum <= 26; weekNum++) {
+                try {
+                    const weekInfo = programData.getWeek(weekNum);
+                    if (!weekInfo) continue;
+                    
+                    const weekSessions = history.filter(s => s.week === weekNum);
+                    
+                    weekData[weekNum] = {
+                        info: weekInfo,
+                        sessions: weekSessions,
+                        days: ['dimanche', 'mardi', 'jeudi']
+                    };
+                } catch (e) {
+                    console.log(`Week ${weekNum} not found`);
+                }
+            }
+            
+            let html = '';
+            const currentWeek = parseInt(new URLSearchParams(window.location.search).get('week')) || 1;
+            
+            Object.entries(weekData).slice(0, 5).forEach(([weekNum, data]) => {
+                const totalExpected = 3;
+                const totalCompleted = data.sessions.length;
+                const completionRate = (totalCompleted / totalExpected * 100).toFixed(0);
+                
+                let statusClass = 'missed';
+                if (completionRate >= 100) statusClass = 'complete';
+                else if (completionRate > 0) statusClass = 'partial';
+                
+                html += `
+                    <div class="week-section">
+                        <div class="week-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                            <div class="week-title">Semaine ${weekNum}</div>
+                            <div class="week-completion ${statusClass}">${totalCompleted}/${totalExpected} séances</div>
+                        </div>
+                        <div style="display: none;">
+                            ${renderWeekDetails(weekNum, data)}
+                        </div>
                     </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Aucune donnée disponible</p>';
+        }
 
-                    <div className="stats-grid">
-                        {/* Score Global */}
-                        <div className="stat-card">
-                            <h3 className="stat-title">Score Global</h3>
-                            <div className="ring-container">
-                                <CircularProgress
-                                    size={300}
-                                    radius={140}
-                                    strokeWidth={16}
-                                    progress={stats.score}
-                                    max={100}
-                                    colorStart="#00D9FF"
-                                    colorEnd="#9D4EDD"
-                                    glow={true}
-                                    variant="solid"
-                                />
-                                <div className="ring-center">
-                                    <div className="ring-value">{stats.score}</div>
-                                    <div className="ring-label">/ 100</div>
-                                    <div className={`status-badge status-${stats.status}`}>
-                                        {stats.status === 'consistent' ? '🔥 Excellent' : 
-                                         stats.status === 'warning' ? '⚠️ Attention' : 
-                                         '💤 Inactif'}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Sessions Complétées */}
-                        <div className="stat-card">
-                            <h3 className="stat-title">Sessions Complétées</h3>
-                            <div className="ring-container">
-                                <CircularProgress
-                                    size={300}
-                                    radius={140}
-                                    strokeWidth={14}
-                                    progress={stats.sessions.current}
-                                    max={stats.sessions.max}
-                                    colorStart="#00FF88"
-                                    colorEnd="#00D9FF"
-                                    glow={true}
-                                    variant="solid"
-                                    rotate={true}
-                                />
-                                <div className="ring-center">
-                                    <div className="ring-value">{stats.sessions.current}</div>
-                                    <div className="ring-label">/ {stats.sessions.max} sessions</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Séries Totales */}
-                        <div className="stat-card">
-                            <h3 className="stat-title">Séries Totales</h3>
-                            <div className="ring-container">
-                                <CircularProgress
-                                    size={300}
-                                    radius={140}
-                                    strokeWidth={12}
-                                    progress={stats.sets.current}
-                                    max={stats.sets.max}
-                                    colorStart="#FFD700"
-                                    colorEnd="#FF3366"
-                                    glow={true}
-                                    variant="dashed"
-                                />
-                                <div className="ring-center">
-                                    <div className="ring-value">{stats.sets.current}</div>
-                                    <div className="ring-label">/ {stats.sets.max} sets</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Volume Total */}
-                        <div className="stat-card">
-                            <h3 className="stat-title">Volume Total</h3>
-                            <div className="ring-container">
-                                <CircularProgress
-                                    size={300}
-                                    radius={140}
-                                    strokeWidth={14}
-                                    progress={stats.volume.current}
-                                    max={stats.volume.max}
-                                    colorStart="#FF3366"
-                                    colorEnd="#9D4EDD"
-                                    glow={true}
-                                    variant="solid"
-                                    rotate={true}
-                                    counterClockwise={true}
-                                />
-                                <div className="ring-center">
-                                    <div className="ring-value">{(stats.volume.current / 1000).toFixed(1)}k</div>
-                                    <div className="ring-label">kg soulevés</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Consistance */}
-                        <div className="stat-card">
-                            <h3 className="stat-title">Consistance</h3>
-                            <div className="ring-container">
-                                <CircularProgress
-                                    size={300}
-                                    radius={140}
-                                    strokeWidth={16}
-                                    progress={stats.consistency.current}
-                                    max={stats.consistency.max}
-                                    colorStart="#9D4EDD"
-                                    colorEnd="#00FF88"
-                                    glow={true}
-                                    variant="dots"
-                                />
-                                <div className="ring-center">
-                                    <div className="ring-value">{stats.consistency.current}</div>
-                                    <div className="ring-label">/ {stats.consistency.max} jours</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Arc partiel (270°) */}
-                        <div className="stat-card">
-                            <h3 className="stat-title">Progression Semaine</h3>
-                            <div className="ring-container">
-                                <CircularProgress
-                                    size={300}
-                                    radius={140}
-                                    strokeWidth={18}
-                                    progress={75}
-                                    max={100}
-                                    colorStart="#00D9FF"
-                                    colorEnd="#00FF88"
-                                    glow={true}
-                                    variant="solid"
-                                    cut={90}
-                                    rotationOffset={135}
-                                />
-                                <div className="ring-center">
-                                    <div className="ring-value">75%</div>
-                                    <div className="ring-label">Complété</div>
-                                </div>
-                            </div>
+        function renderWeekDetails(weekNum, data) {
+            let html = '<table class="exercise-table">';
+            html += `
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Attendu</th>
+                        <th>Obtenu</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            const days = ['dimanche', 'mardi', 'jeudi'];
+            let hasErrors = false;
+            
+            days.forEach(dayName => {
+                const dayData = data.info[dayName];
+                if (!dayData) return;
+                
+                const daySession = data.sessions.find(s => s.day === dayName);
+                
+                const expectedExercises = dayData.exercises?.length || 0;
+                const expectedSets = dayData.totalSets || 0;
+                
+                if (daySession) {
+                    const actualExercises = daySession.exercises?.length || 0;
+                    const actualSets = daySession.exercises?.reduce((sum, ex) => sum + (ex.sets?.length || 0), 0) || 0;
+                    
+                    const exercisesMatch = actualExercises === expectedExercises;
+                    const setsMatch = actualSets === expectedSets;
+                    
+                    html += `
+                        <tr>
+                            <td class="exercise-name">Séance ${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</td>
+                            <td class="exercise-expected">${expectedSets} séries</td>
+                            <td class="exercise-actual">${actualSets} séries</td>
+                            <td class="status-icon ${setsMatch ? 'success' : 'error'}">${setsMatch ? '✅' : '❌'}</td>
+                        </tr>
+                    `;
+                    
+                    if (!setsMatch) hasErrors = true;
+                    
+                    dayData.exercises?.forEach(expectedEx => {
+                        const actualEx = daySession.exercises?.find(e => e.name === expectedEx.name);
+                        const expectedSetsEx = expectedEx.sets || 0;
+                        const actualSetsEx = actualEx?.sets?.length || 0;
+                        const match = actualSetsEx === expectedSetsEx;
+                        
+                        if (!match) hasErrors = true;
+                        
+                        html += `
+                            <tr style="opacity: 0.8;">
+                                <td class="exercise-name" style="padding-left: 20px; font-size: 12px;">↳ ${expectedEx.name}</td>
+                                <td class="exercise-expected">${expectedSetsEx}</td>
+                                <td class="exercise-actual">${actualSetsEx}</td>
+                                <td class="status-icon ${match ? 'success' : 'error'}">${match ? '✅' : '❌'}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html += `
+                        <tr>
+                            <td class="exercise-name">Séance ${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</td>
+                            <td class="exercise-expected">${expectedSets} séries</td>
+                            <td class="exercise-actual">0 séries</td>
+                            <td class="status-icon error">❌</td>
+                        </tr>
+                    `;
+                    hasErrors = true;
+                }
+            });
+            
+            html += '</tbody></table>';
+            
+            if (hasErrors) {
+                html += `
+                    <div class="warning-box">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-text">
+                            <div class="warning-title">Corrections nécessaires</div>
+                            Certains tests ont échoué. Vérifiez les valeurs ci-dessus.
                         </div>
                     </div>
-                </div>
-            );
-        };
+                `;
+            }
+            
+            return html;
+        }
 
-        // Render
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<StatsApp />);
+        function exportData() {
+            const data = {
+                workoutHistory: JSON.parse(localStorage.getItem('workoutHistory') || '[]'),
+                exportDate: new Date().toISOString(),
+                version: '1.0',
+                programWeeks: 26
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hybrid-master-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            
+            localStorage.setItem('lastBackup', new Date().toISOString());
+            updateLastBackup();
+            
+            showNotification('✅ Données exportées avec succès !', 'success');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    localStorage.setItem('workoutHistory', JSON.stringify(data.workoutHistory || []));
+                    localStorage.setItem('lastBackup', new Date().toISOString());
+                    showNotification('✅ Données importées avec succès !', 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } catch (error) {
+                    showNotification('❌ Erreur : Fichier invalide', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function checkAutoBackup() {
+            const lastBackup = localStorage.getItem('lastBackup');
+            const now = new Date();
+            
+            if (!lastBackup) {
+                localStorage.setItem('lastBackup', now.toISOString());
+            } else {
+                const lastBackupDate = new Date(lastBackup);
+                const daysSince = (now - lastBackupDate) / (1000 * 60 * 60 * 24);
+                
+                if (daysSince >= 7) {
+                    const data = {
+                        workoutHistory: JSON.parse(localStorage.getItem('workoutHistory') || '[]'),
+                        exportDate: now.toISOString(),
+                        version: '1.0'
+                    };
+                    localStorage.setItem('autoBackup', JSON.stringify(data));
+                    localStorage.setItem('lastBackup', now.toISOString());
+                    console.log('✅ Backup automatique créé');
+                }
+            }
+            
+            updateLastBackup();
+        }
+
+        function updateLastBackup() {
+            const lastBackup = localStorage.getItem('lastBackup');
+            const elem = document.getElementById('lastBackup');
+            
+            if (lastBackup && elem) {
+                const date = new Date(lastBackup);
+                const options = { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                elem.textContent = date.toLocaleString('fr-FR', options);
+            } else if (elem) {
+                elem.textContent = 'Jamais';
+            }
+        }
+
+        window.exportData = exportData;
+        window.importData = importData;
+
+        updateOverview();
+        renderVolumeChart();
+        renderHeatMap();
+        renderMuscleChart();
+        renderRadarChart();
+        renderWeeklyRecap();
+        checkAutoBackup();
     </script>
 </body>
 </html>
