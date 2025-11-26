@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats - Hybrid Master</title>
+    
+    <!-- React & ReactDOM via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone pour compiler JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #root {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Animations */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse-slow {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+
+        .animate-spin-reverse-slow {
+            animation: spin-reverse-slow 8s linear infinite;
+        }
+
+        /* Container */
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00D9FF 0%, #9D4EDD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+
+        /* Grid Layout */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.15);
+        }
+
+        .stat-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .ring-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        .ring-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .ring-value {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00D9FF 0%, #00FF88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ring-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 4px;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        .status-consistent {
+            background: rgba(0, 255, 136, 0.15);
+            color: #00FF88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .status-warning {
+            background: rgba(255, 215, 0, 0.15);
+            color: #FFD700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .status-inactive {
+            background: rgba(255, 51, 102, 0.15);
+            color: #FF3366;
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 217, 255, 0.15);
+            border-color: rgba(0, 217, 255, 0.3);
+            transform: translateX(-4px);
+        }
+    </style>
+</head>
+<body>
+    <a href="home.html" class="back-button">← Retour</a>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // CircularProgress Component (ton composant React tel quel)
+        const CircularProgress = ({
+            size,
+            radius,
+            strokeWidth,
+            progress,
+            max,
+            colorStart,
+            colorEnd,
+            variant = 'solid',
+            trackColor = "rgba(255,255,255,0.05)",
+            glow = false,
+            rotate = false,
+            counterClockwise = false,
+            cut = 0,
+            rotationOffset = 0,
+        }) => {
+            const normalizedRadius = radius - strokeWidth / 2;
+            const fullCircumference = normalizedRadius * 2 * Math.PI;
+            const visibleCircumference = fullCircumference * ((360 - cut) / 360);
+            
+            const [offset, setOffset] = useState(visibleCircumference);
+            const id = React.useId();
+            const gradientId = `grad-${id}`;
+
+            const percentage = Math.min(100, Math.max(0, (progress / max) * 100));
+
+            useEffect(() => {
+                const strokeLength = (percentage / 100) * visibleCircumference;
+                const progressOffset = visibleCircumference - strokeLength;
+                setOffset(progressOffset);
+            }, [percentage, visibleCircumference]);
+
+            const dashCount = variant === 'dots' ? 40 : 60;
+            const dashLength = visibleCircumference / dashCount;
+            const dashGap = variant === 'dots' ? dashLength * 2 : 3; 
+            
+            const cutLength = fullCircumference - visibleCircumference;
+            
+            const trackDashArray = variant === 'dashed' || variant === 'dots'
+                ? `${dashLength - dashGap} ${dashGap}` 
+                : `${visibleCircumference} ${cutLength}`;
+
+            const progressDashArray = variant === 'dashed' || variant === 'dots'
+                ? `${dashLength - dashGap} ${dashGap}`
+                : `${visibleCircumference} ${cutLength}`;
+
+            return (
+                <div 
+                    className={`${rotate ? (counterClockwise ? 'animate-spin-reverse-slow' : 'animate-spin-slow') : ''}`}
+                    style={{ 
+                        transform: rotate ? undefined : `rotate(${rotationOffset}deg)`,
+                        position: 'absolute',
+                        inset: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'none'
+                    }}
+                >
+                    <svg
+                        width={size}
+                        height={size}
+                        style={{ width: size, height: size, transform: `rotate(-90deg)`, overflow: 'visible' }}
+                    >
+                        <defs>
+                            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor={colorStart} />
+                                <stop offset="100%" stopColor={colorEnd} />
+                            </linearGradient>
+                            
+                            <filter id={`glow-${id}`} x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        {/* Track Background */}
+                        <circle
+                            cx={size / 2}
+                            cy={size / 2}
+                            r={normalizedRadius}
+                            stroke={trackColor}
+                            strokeWidth={strokeWidth}
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeDasharray={trackDashArray} 
+                            style={{ opacity: 1, transition: 'all 1s' }}
+                        />
+
+                        {/* Progress Fill */}
+                        <circle
+                            cx={size / 2}
+                            cy={size / 2}
+                            r={normalizedRadius}
+                            stroke={`url(#${gradientId})`}
+                            strokeWidth={strokeWidth}
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeDasharray={progressDashArray}
+                            strokeDashoffset={offset}
+                            style={{ 
+                                transition: 'stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                                filter: glow ? `url(#glow-${id})` : undefined
+                            }}
+                        />
+                        
+                        {/* Glossy Tip */}
+                        {variant === 'solid' && cut === 0 && (
+                            <circle
+                                cx={size / 2}
+                                cy={size / 2}
+                                r={normalizedRadius}
+                                stroke="white"
+                                strokeWidth={1}
+                                fill="none"
+                                strokeDasharray={fullCircumference}
+                                strokeDashoffset={offset}
+                                style={{ 
+                                    opacity: 0.5, 
+                                    mixBlendMode: 'overlay',
+                                    filter: 'blur(0.5px)',
+                                    transition: 'stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)' 
+                                }}
+                            />
+                        )}
+                    </svg>
+                </div>
+            );
+        };
+
+        // Main Stats Component
+        const StatsApp = () => {
+            const [stats, setStats] = useState({
+                score: 85,
+                sessions: { current: 28, max: 30 },
+                sets: { current: 142, max: 150 },
+                volume: { current: 45600, max: 50000 }, // kg
+                consistency: { current: 6, max: 7 }, // jours
+                status: 'consistent'
+            });
+
+            return (
+                <div className="stats-container">
+                    <div className="header">
+                        <h1>📊 Statistiques</h1>
+                        <p>Semaine 7 • Hybrid Master</p>
+                    </div>
+
+                    <div className="stats-grid">
+                        {/* Score Global */}
+                        <div className="stat-card">
+                            <h3 className="stat-title">Score Global</h3>
+                            <div className="ring-container">
+                                <CircularProgress
+                                    size={300}
+                                    radius={140}
+                                    strokeWidth={16}
+                                    progress={stats.score}
+                                    max={100}
+                                    colorStart="#00D9FF"
+                                    colorEnd="#9D4EDD"
+                                    glow={true}
+                                    variant="solid"
+                                />
+                                <div className="ring-center">
+                                    <div className="ring-value">{stats.score}</div>
+                                    <div className="ring-label">/ 100</div>
+                                    <div className={`status-badge status-${stats.status}`}>
+                                        {stats.status === 'consistent' ? '🔥 Excellent' : 
+                                         stats.status === 'warning' ? '⚠️ Attention' : 
+                                         '💤 Inactif'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Sessions Complétées */}
+                        <div className="stat-card">
+                            <h3 className="stat-title">Sessions Complétées</h3>
+                            <div className="ring-container">
+                                <CircularProgress
+                                    size={300}
+                                    radius={140}
+                                    strokeWidth={14}
+                                    progress={stats.sessions.current}
+                                    max={stats.sessions.max}
+                                    colorStart="#00FF88"
+                                    colorEnd="#00D9FF"
+                                    glow={true}
+                                    variant="solid"
+                                    rotate={true}
+                                />
+                                <div className="ring-center">
+                                    <div className="ring-value">{stats.sessions.current}</div>
+                                    <div className="ring-label">/ {stats.sessions.max} sessions</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Séries Totales */}
+                        <div className="stat-card">
+                            <h3 className="stat-title">Séries Totales</h3>
+                            <div className="ring-container">
+                                <CircularProgress
+                                    size={300}
+                                    radius={140}
+                                    strokeWidth={12}
+                                    progress={stats.sets.current}
+                                    max={stats.sets.max}
+                                    colorStart="#FFD700"
+                                    colorEnd="#FF3366"
+                                    glow={true}
+                                    variant="dashed"
+                                />
+                                <div className="ring-center">
+                                    <div className="ring-value">{stats.sets.current}</div>
+                                    <div className="ring-label">/ {stats.sets.max} sets</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Volume Total */}
+                        <div className="stat-card">
+                            <h3 className="stat-title">Volume Total</h3>
+                            <div className="ring-container">
+                                <CircularProgress
+                                    size={300}
+                                    radius={140}
+                                    strokeWidth={14}
+                                    progress={stats.volume.current}
+                                    max={stats.volume.max}
+                                    colorStart="#FF3366"
+                                    colorEnd="#9D4EDD"
+                                    glow={true}
+                                    variant="solid"
+                                    rotate={true}
+                                    counterClockwise={true}
+                                />
+                                <div className="ring-center">
+                                    <div className="ring-value">{(stats.volume.current / 1000).toFixed(1)}k</div>
+                                    <div className="ring-label">kg soulevés</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Consistance */}
+                        <div className="stat-card">
+                            <h3 className="stat-title">Consistance</h3>
+                            <div className="ring-container">
+                                <CircularProgress
+                                    size={300}
+                                    radius={140}
+                                    strokeWidth={16}
+                                    progress={stats.consistency.current}
+                                    max={stats.consistency.max}
+                                    colorStart="#9D4EDD"
+                                    colorEnd="#00FF88"
+                                    glow={true}
+                                    variant="dots"
+                                />
+                                <div className="ring-center">
+                                    <div className="ring-value">{stats.consistency.current}</div>
+                                    <div className="ring-label">/ {stats.consistency.max} jours</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Arc partiel (270°) */}
+                        <div className="stat-card">
+                            <h3 className="stat-title">Progression Semaine</h3>
+                            <div className="ring-container">
+                                <CircularProgress
+                                    size={300}
+                                    radius={140}
+                                    strokeWidth={18}
+                                    progress={75}
+                                    max={100}
+                                    colorStart="#00D9FF"
+                                    colorEnd="#00FF88"
+                                    glow={true}
+                                    variant="solid"
+                                    cut={90}
+                                    rotationOffset={135}
+                                />
+                                <div className="ring-center">
+                                    <div className="ring-value">75%</div>
+                                    <div className="ring-label">Complété</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<StatsApp />);
+    </script>
+</body>
+</html>
